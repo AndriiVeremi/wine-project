@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "5005:5000"
+    env_file:
+      - ./.env
+    depends_on:
+      - mongodb
+    networks:
+      - wine-network
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - wine-network
+
+networks:
+  wine-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
