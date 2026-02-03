@@ -25,13 +25,11 @@ const connectDB = async () => {
 
 const importData = async () => {
   try {
-    // Очищення перед завантаженням
     await User.deleteMany();
     await Winery.deleteMany();
     await Wine.deleteMany();
     await Review.deleteMany();
 
-    // Завантаження даних
     await User.insertMany(users);
     await Winery.insertMany(wineries);
     await Wine.insertMany(wines);
