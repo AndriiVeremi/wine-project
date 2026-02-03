@@ -23,7 +23,8 @@ export const users = [
   {
     _id: owner1Id,
     firebaseUid: 'firebaseUid_owner1',
-    name: 'Іван Власник',
+    firstName: 'Іван',
+    lastName: 'Власник',
     email: 'ivan.owner@example.com',
     role: 'WINERY_OWNER',
     winery: winery1Id,
@@ -32,7 +33,8 @@ export const users = [
   {
     _id: owner2Id,
     firebaseUid: 'firebaseUid_owner2',
-    name: 'Марія Засновник',
+    firstName: 'Марія',
+    lastName: 'Засновник',
     email: 'maria.founder@example.com',
     role: 'WINERY_OWNER',
     winery: winery2Id,
@@ -41,7 +43,8 @@ export const users = [
   {
     _id: user1Id,
     firebaseUid: 'firebaseUid_user1',
-    name: 'Олександр Користувач',
+    firstName: 'Олександр',
+    lastName: 'Користувач',
     email: 'alex.user@example.com',
     role: 'USER',
     favoriteWines: [wine1Id, wine2Id, wine6Id],
@@ -49,7 +52,8 @@ export const users = [
   {
     _id: user2Id,
     firebaseUid: 'firebaseUid_user2',
-    name: 'Олена Дослідниця',
+    firstName: 'Олена',
+    lastName: 'Дослідниця',
     email: 'olena.explorer@example.com',
     role: 'USER',
     favoriteWines: [wine4Id],
@@ -92,7 +96,7 @@ export const wineries = [
   {
     _id: winery3Id,
     name: 'Вина Прикарпаття',
-    owner: owner1Id, // Один власник може мати кілька виноробень
+    owner: owner1Id,
     history: 'Невелика виноробня в Карпатах, що спеціалізується на унікальних локальних сортах.',
     country: 'Ukraine',
     region: 'Lviv',

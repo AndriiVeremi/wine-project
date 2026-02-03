@@ -26,6 +26,7 @@ cd wine-project
 **Бекенд:**
 1.  У папці `backend` створіть копію файлу `.env.example` та назвіть її `.env`.
 2.  Встановіть `MONGO_URI=mongodb://mongodb:27017/wine-db`.
+3.  Додайте `FIREBASE_SERVICE_ACCOUNT_CREDS_JSON`. Це JSON-об'єкт з обліковими даними сервісного акаунту Firebase. Його необхідно для створення користувачів та призначення ролей на бекенді.
 
 ### 3. Запуск
 
@@ -34,7 +35,7 @@ cd wine-project
 **Бекенд (Docker):**
 У папці `backend` виконайте:
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 *Бекенд буде доступний на `http://localhost:5005`.*
 
@@ -73,7 +74,7 @@ npm run dev
 
 ### 5. Зупинка
 
-*   **Бекенд:** `docker-compose down` у папці `backend`.
+*   **Бекенд:** `docker compose down` у папці `backend`.
 *   **Фронтенд:** `Ctrl + C` у відповідному терміналі.
 
 
