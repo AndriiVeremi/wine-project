@@ -1,23 +1,83 @@
 import mongoose from 'mongoose';
 
-// User IDs
+// User ID
 const owner1Id = new mongoose.Types.ObjectId();
 const owner2Id = new mongoose.Types.ObjectId();
 const user1Id = new mongoose.Types.ObjectId();
 const user2Id = new mongoose.Types.ObjectId();
 
-// Winery IDs
+// Winery ID
 const winery1Id = new mongoose.Types.ObjectId();
 const winery2Id = new mongoose.Types.ObjectId();
 const winery3Id = new mongoose.Types.ObjectId();
 
-// Wine IDs
+// Wine ID
 const wine1Id = new mongoose.Types.ObjectId();
 const wine2Id = new mongoose.Types.ObjectId();
 const wine3Id = new mongoose.Types.ObjectId();
 const wine4Id = new mongoose.Types.ObjectId();
 const wine5Id = new mongoose.Types.ObjectId();
 const wine6Id = new mongoose.Types.ObjectId();
+
+// Location ID
+const ukraineId = new mongoose.Types.ObjectId();
+const odesaId = new mongoose.Types.ObjectId();
+const khersonId = new mongoose.Types.ObjectId();
+const lvivId = new mongoose.Types.ObjectId();
+
+const georgiaId = new mongoose.Types.ObjectId();
+const guriaId = new mongoose.Types.ObjectId();
+const imeretiId = new mongoose.Types.ObjectId();
+const kakhetiId = new mongoose.Types.ObjectId();
+const kvemoKartliId = new mongoose.Types.ObjectId();
+const mtskhetaMtianetiId = new mongoose.Types.ObjectId();
+const rachaLechkhumiKvemoSvanetiId = new mongoose.Types.ObjectId();
+const samegreloZemoSvanetiId = new mongoose.Types.ObjectId();
+const samtskheJavakhetiId = new mongoose.Types.ObjectId();
+const shidaKartliId = new mongoose.Types.ObjectId();
+const abkhaziaId = new mongoose.Types.ObjectId();
+const adjaraId = new mongoose.Types.ObjectId();
+const tbilisiId = new mongoose.Types.ObjectId();
+
+export const locations = [
+  // Країни
+  { _id: ukraineId, name: 'Ukraine', type: 'country' },
+  { _id: georgiaId, name: 'Georgia', type: 'country' },
+
+  // Регіони України
+  { _id: odesaId, name: 'Odesa', type: 'region', parentLocation: ukraineId },
+  { _id: khersonId, name: 'Kherson', type: 'region', parentLocation: ukraineId },
+  { _id: lvivId, name: 'Lviv', type: 'region', parentLocation: ukraineId },
+
+  // Регіони грузії
+  { _id: guriaId, name: 'Guria', type: 'region', parentLocation: georgiaId },
+  { _id: imeretiId, name: 'Imereti', type: 'region', parentLocation: georgiaId },
+  { _id: kakhetiId, name: 'Kakheti', type: 'region', parentLocation: georgiaId },
+  { _id: kvemoKartliId, name: 'Kvemo Kartli', type: 'region', parentLocation: georgiaId },
+  { _id: mtskhetaMtianetiId, name: 'Mtskheta-Mtianeti', type: 'region', parentLocation: georgiaId },
+  {
+    _id: rachaLechkhumiKvemoSvanetiId,
+    name: 'Racha-Lechkhumi and Kvemo Svaneti',
+    type: 'region',
+    parentLocation: georgiaId,
+  },
+  {
+    _id: samegreloZemoSvanetiId,
+    name: 'Samegrelo-Zemo Svaneti',
+    type: 'region',
+    parentLocation: georgiaId,
+  },
+  {
+    _id: samtskheJavakhetiId,
+    name: 'Samtskhe-Javakheti',
+    type: 'region',
+    parentLocation: georgiaId,
+  },
+  { _id: shidaKartliId, name: 'Shida Kartli', type: 'region', parentLocation: georgiaId },
+  { _id: abkhaziaId, name: 'Abkhazia', type: 'region', parentLocation: georgiaId },
+  { _id: adjaraId, name: 'Adjara', type: 'region', parentLocation: georgiaId },
+  { _id: tbilisiId, name: 'Tbilisi', type: 'region', parentLocation: georgiaId },
+];
 
 export const users = [
   {
@@ -65,9 +125,10 @@ export const wineries = [
     _id: winery1Id,
     name: 'Виноробня "Сонячна Долина"',
     owner: owner1Id,
-    history: 'Наша історія починається з великої любові до винограду, вирощеного під теплим українським сонцем.',
-    country: 'Ukraine',
-    region: 'Odesa',
+    history:
+      'Наша історія починається з великої любові до винограду, вирощеного під теплим українським сонцем.',
+    country: ukraineId,
+    region: odesaId,
     address: 'вул. Винна, 1, Одеса',
     isVip: true,
     logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=SD_Logo',
@@ -76,14 +137,16 @@ export const wineries = [
       'https://placehold.co/600x400/EEE/31343C?text=SD_Gallery_2',
     ],
     whereToBuy: [{ name: 'GoodWine', url: 'https://goodwine.ua/sd' }],
+    contactEmail: 'contact1@example.com',
+    contactPhone: '+380991112233',
   },
   {
     _id: winery2Id,
     name: 'Шато Каменка',
     owner: owner2Id,
     history: 'Сімейна виноробня, що зберігає старовинні традиції виноробства регіону Каменка.',
-    country: 'Ukraine',
-    region: 'Kherson',
+    country: ukraineId,
+    region: khersonId,
     address: 'с. Каменка, вул. Центральна, 10',
     isVip: false,
     logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=CK_Logo',
@@ -92,14 +155,16 @@ export const wineries = [
       'https://placehold.co/600x400/EEE/31343C?text=CK_Gallery_2',
     ],
     whereToBuy: [{ name: 'WineTime', url: 'https://winetime.ua/chateau' }],
+    contactEmail: 'contact2@example.com',
+    contactPhone: '+380994445566',
   },
   {
     _id: winery3Id,
     name: 'Вина Прикарпаття',
     owner: owner1Id,
     history: 'Невелика виноробня в Карпатах, що спеціалізується на унікальних локальних сортах.',
-    country: 'Ukraine',
-    region: 'Lviv',
+    country: ukraineId,
+    region: lvivId,
     address: 'м. Стрий, вул. Замкова, 5',
     isVip: false,
     logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=VP_Logo',
@@ -108,6 +173,8 @@ export const wineries = [
       'https://placehold.co/600x400/EEE/31343C?text=VP_Gallery_2',
     ],
     whereToBuy: [{ name: 'Rozetka', url: 'https://rozetka.com.ua/vp' }],
+    contactEmail: 'contact3@example.com',
+    contactPhone: '+380997778899',
   },
 ];
 
@@ -132,7 +199,8 @@ export const wines = [
     name: 'Шардоне Одеса',
     vintage: 2022,
     grape: 'Шардоне',
-    description: 'Свіже біле вино з яскравими фруктовими ароматами та легким мінеральним присмаком.',
+    description:
+      'Свіже біле вино з яскравими фруктовими ароматами та легким мінеральним присмаком.',
     tastingNotes: ['зелене яблуко', 'лимон', 'мінерали'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Chardonnay_Odesa',
     type: 'white',
@@ -146,7 +214,7 @@ export const wines = [
     name: 'Мерло Каменка',
     vintage: 2021,
     grape: 'Мерло',
-    description: 'Оксамитове червоне вино з нотками сливи, вишні та м\'якими танінами.',
+    description: "Оксамитове червоне вино з нотками сливи, вишні та м'якими танінами.",
     tastingNotes: ['слива', 'вишня', 'ваніль'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Merlot_Kamenka',
     type: 'red',
@@ -199,34 +267,34 @@ export const wines = [
 ];
 
 export const reviews = [
-    {
-        wineId: wine1Id,
-        userId: user1Id,
-        rating: 5,
-        comment: 'Це вино просто неперевершене! Ідеальний смак для особливих моментів.',
-    },
-    {
-        wineId: wine1Id,
-        userId: user2Id,
-        rating: 4,
-        comment: 'Дуже сподобалось, але хотілося б трохи більше тіла.',
-    },
-    {
-        wineId: wine2Id,
-        userId: user1Id,
-        rating: 4,
-        comment: 'Чудове повсякденне вино, приємне і освіжаюче.',
-    },
-    {
-        wineId: wine3Id,
-        userId: owner1Id,
-        rating: 5,
-        comment: 'Мерло Каменка - гордість нашої землі. Рекомендую!',
-    },
-    {
-        wineId: wine4Id,
-        userId: user2Id,
-        rating: 3,
-        comment: 'Трохи занадто легке для мого смаку, але для літа підійде.',
-    },
+  {
+    wineId: wine1Id,
+    userId: user1Id,
+    rating: 5,
+    comment: 'Це вино просто неперевершене! Ідеальний смак для особливих моментів.',
+  },
+  {
+    wineId: wine1Id,
+    userId: user2Id,
+    rating: 4,
+    comment: 'Дуже сподобалось, але хотілося б трохи більше тіла.',
+  },
+  {
+    wineId: wine2Id,
+    userId: user1Id,
+    rating: 4,
+    comment: 'Чудове повсякденне вино, приємне і освіжаюче.',
+  },
+  {
+    wineId: wine3Id,
+    userId: owner1Id,
+    rating: 5,
+    comment: 'Мерло Каменка - гордість нашої землі. Рекомендую!',
+  },
+  {
+    wineId: wine4Id,
+    userId: user2Id,
+    rating: 3,
+    comment: 'Трохи занадто легке для мого смаку, але для літа підійде.',
+  },
 ];

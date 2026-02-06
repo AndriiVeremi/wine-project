@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -66,7 +66,7 @@ function App() {
           </Routes>
         </div>
       </main>
-      <footer className="app-footer">Wine-project Created by ...</footer>
+      <footer className="app-footer">Wine-project Created by Wine-team</footer>
     </div>
   );
 }

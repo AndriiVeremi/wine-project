@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 
-const validateBody = (schema: Joi.ObjectSchema) => 
-  (req: Request, res: Response, next: NextFunction) => {
+const validateBody =
+  (schema: Joi.ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
     const { error } = schema.validate(req.body);
 
     if (error) {
-      // Форматуємо помилки Joi для кращої читабельності
-      const errors = error.details.map(err => ({
+      const errors = error.details.map((err) => ({
         field: err.context?.key,
         message: err.message,
       }));

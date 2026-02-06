@@ -3,6 +3,7 @@ import { firebaseAdmin } from '../services/firebase';
 import User from '../models/userModel';
 import { AuthenticatedRequest } from '../middleware/auth';
 import HttpError from '../utils/HttpError';
+import * as userService from '../services/userService';
 
 const auth = firebaseAdmin.auth();
 
@@ -11,21 +12,16 @@ export const getUserProfile = async (req: AuthenticatedRequest, res: Response) =
     throw new HttpError('Unauthorized', 401);
   }
 
-  const user = await User.findOne({ firebaseUid: req.user.uid });
-
-  if (!user) {
-    throw new HttpError('User profile not found.', 404);
-  }
+  const user = await userService.getUserProfileByFirebaseUid(req.user.uid);
 
   res.status(200).json(user);
 };
 
 export const registerUser = async (req: Request, res: Response) => {
   const { email, password, firstName, lastName, role } = req.body;
-
   const allowedRoles = ['USER', 'WINERY_OWNER'];
   const assignedRole = allowedRoles.includes(role) ? role : 'USER';
-  
+
   try {
     const userRecord = await auth.createUser({
       email,
@@ -57,30 +53,31 @@ export const registerUser = async (req: Request, res: Response) => {
         role: newUser.role,
       },
     });
-
   } catch (error: any) {
     if (error.code !== 'auth/email-already-exists') {
       try {
         const user = await auth.getUserByEmail(email);
         if (user) {
-            await auth.deleteUser(user.uid);
-            console.log(`Cleaned up Firebase user ${user.uid} due to a database or logic error.`);
+          await auth.deleteUser(user.uid);
+          console.log(
+            `Видалено користувача Firebase ${user.uid} через помилку бази даних або логіки.`,
+          );
         }
       } catch (cleanupError) {
-        console.error('Failed to cleanup Firebase user:', cleanupError);
+        console.error('Не вдалося видалити користувача Firebase:', cleanupError);
       }
     }
-    
+
     if (error.code === 'auth/email-already-exists') {
-      throw new HttpError('Email already in use.', 409);
+      throw new HttpError('Email вже використовується.', 409);
     }
     if (error.code === 'auth/weak-password') {
-        throw new HttpError('Password should be at least 6 characters.', 400);
+      throw new HttpError('Пароль повинен містити щонайменше 6 символів.', 400);
     }
     if (error.code === 11000) {
-        throw new HttpError('A user with this email or UID already exists in the database.', 409);
+      throw new HttpError('Користувач з таким email або UID вже існує в базі даних.', 409);
     }
-    
-    throw new HttpError('Error registering user', 500);
+
+    throw new HttpError('Помилка реєстрації користувача', 500);
   }
 };
