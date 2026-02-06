@@ -88,6 +88,7 @@ backend/src/
 ├── middleware/      # Middleware-функції
 ├── models/          # Моделі Mongoose
 ├── routes/          # Маршрути
+├── schemas/         # Joi схеми валідації даних
 ├── services/        # Бізнес-логіка
 ├── tests/           # Тести
 ├── types/           # TypeScript типи
@@ -102,7 +103,8 @@ frontend/src/
 ├── components/      # React-компоненти
 │   ├── common/      # Загальні компоненти
 │   ├── forms/       # Компоненти форм
-│   └── layout/      # Компоненти розмітки (header, footer)
+│   ├── layout/      # Компоненти розмітки (header, footer)
+│   └── modals/      # Модальні вікна
 ├── config/          # Конфігурація (Firebase)
 ├── hooks/           # Кастомні хуки
 ├── pages/           # Компоненти сторінок

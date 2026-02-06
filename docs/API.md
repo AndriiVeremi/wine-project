@@ -103,18 +103,24 @@
 ## Локації (`/api/locations`)
 
 ### **GET** `/api/locations/countries`
-- **Опис:** Отримати унікальний список країн, де є виноробні.
+- **Опис:** Отримати список об'єктів країн.
 - **Response (200 OK):**
   ```json
-  [ "Ukraine", "Italy", "France" ]
+  [
+    { "id": "60d21b4667d0d8992e610c85", "name": "Ukraine", "type": "country" },
+    { "id": "60d21b4667d0d8992e610c86", "name": "Georgia", "type": "country" }
+  ]
   ```
 
 ### **GET** `/api/locations/regions`
-- **Опис:** Отримати унікальний список регіонів для обраної країни.
-- **Query Params:** `?country=Ukraine`
+- **Опис:** Отримати список об'єктів регіонів для обраної країни.
+- **Query Params:** `?countryId=<country_location_id>` (використовуйте ID країни з GET /api/locations/countries)
 - **Response (200 OK):**
   ```json
-  [ "Odesa", "Kherson", "Lviv" ]
+  [
+    { "id": "60d21b4667d0d8992e610c87", "name": "Odesa", "type": "region", "parentLocation": "60d21b4667d0d8992e610c85" },
+    { "id": "60d21b4667d0d8992e610c88", "name": "Kherson", "type": "region", "parentLocation": "60d21b4667d0d8992e610c85" }
+  ]
   ```
 
 ---
@@ -129,8 +135,8 @@
   {
     "name": "Виноробня 'Сонячна Долина'",
     "history": "Історія нашої виноробні починається з 1999 року...",
-    "country": "Ukraine",
-    "region": "Odesa",
+    "country": "60d21b4667d0d8992e610c85", // ID країни з Location
+    "region": "60d21b4667d0d8992e610c87", // ID регіону з Location
     "address": "вул. Винна, 1",
     "logoUrl": "https://example.com/logo.png",
     "galleryUrl": ["https://example.com/gallery1.png"],
@@ -143,8 +149,31 @@
 
 ### **GET** `/api/wineries`
 - **Опис:** Отримати список виноробень. **VIP-виноробні завжди відображаються першими.**
-- **Query Params:** `?search=Сонячна`
-- **Response (200 OK):** `[ { winery1 }, { winery2 }, ... ]`
+- **Query Params:**
+  *   `search=Назва` (пошук за назвою)
+  *   `countryId=<location_id>` (фільтрація за ID країни з Location)
+  *   `regionId=<location_id>` (фільтрація за ID регіону з Location)
+  *   `sortBy=name_asc` (поле для сортування, наприклад, `name_asc`, `name_desc`, `country_asc`, `region_desc`)
+  *   `page=1` (номер сторінки, за замовчуванням 1)
+  *   `limit=10` (кількість елементів на сторінці, за замовчуванням 10)
+- **Response (200 OK):**
+  ```json
+  [
+    {
+      "id": "60d21b4667d0d8992e610c90",
+      "name": "Виноробня 'Сонячна Долина'",
+      "owner": "60d21b4667d0d8992e610c81",
+      "history": "...",
+      "country": { "id": "60d21b4667d0d8992e610c85", "name": "Ukraine", "type": "country" },
+      "region": { "id": "60d21b4667d0d8992e610c87", "name": "Odesa", "type": "region", "parentLocation": "60d21b4667d0d8992e610c85" },
+      "address": "...",
+      "isVip": true,
+      "logoUrl": "...",
+      "galleryUrl": ["..."],
+      "whereToBuy": [...]
+    }
+  ]
+  ```
 
 ### **GET** `/api/wineries/:id`
 - **Опис:** Отримати повну інформацію про одну виноробню.

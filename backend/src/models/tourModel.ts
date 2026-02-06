@@ -14,10 +14,10 @@ export interface ITour extends Document {
 }
 
 const tourSchema: Schema = new Schema({
-  winery: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'Winery', 
-    required: true 
+  winery: {
+    type: Schema.Types.ObjectId,
+    ref: 'Winery',
+    required: true,
   },
   name: { type: String, required: true },
   description: { type: String },

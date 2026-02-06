@@ -3,9 +3,18 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import apiRouter from '@/routes/api';
-import errorMiddleware from '@/middleware/errorMiddleware'; // Import the new error middleware
+import errorMiddleware from '@/middleware/errorMiddleware';
 
 dotenv.config();
+
+// Import Mongoose Models to ensure they are registered
+import '@/models/userModel';
+import '@/models/wineryModel';
+import '@/models/wineModel';
+import '@/models/reviewModel';
+import '@/models/grapeModel';
+import '@/models/tourModel';
+import '@/models/locationModel';
 
 const app: Express = express();
 const port = process.env.PORT || 5000;

@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { IGrape } from './grapeModel';
 
 export interface IWine extends Document {
   winery: mongoose.Types.ObjectId;
   name: string;
   vintage: number;
-  grape: string;
+  grape: mongoose.Types.ObjectId | IGrape;
   description: string;
   tastingNotes: string[];
   imageUrl: string;
@@ -22,7 +23,7 @@ const wineSchema: Schema = new Schema({
   },
   name: { type: String, required: true },
   vintage: { type: Number, required: true },
-  grape: { type: String, required: true },
+  grape: { type: Schema.Types.ObjectId, ref: 'Grape', required: true },
   description: { type: String },
   tastingNotes: [String],
   imageUrl: { type: String },

@@ -20,14 +20,16 @@ const userSchema: Schema = new Schema({
     enum: ['USER', 'WINERY_OWNER', 'ADMIN'],
     default: 'USER',
   },
-  winery: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'Winery' 
+  winery: {
+    type: Schema.Types.ObjectId,
+    ref: 'Winery',
   },
-  favoriteWines: [{ 
-    type: Schema.Types.ObjectId, 
-    ref: 'Wine' 
-  }],
+  favoriteWines: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Wine',
+    },
+  ],
 });
 
 export default mongoose.model<IUser>('User', userSchema);

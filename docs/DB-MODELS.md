@@ -1,11 +1,11 @@
 # Data Models
 
-This document describes the Mongoose/MongoDB data models for the application.
+Цей документ описує моделі даних Mongoose/MongoDB для програми.
 
 ---
 
 ## User (Користувач)
-Represents a user of the application.
+Представляє користувача програми.
 ```javascript
 {
   firebaseUid: { type: String, required: true, unique: true }, // Унікальний ID з Firebase
@@ -22,16 +22,18 @@ Represents a user of the application.
 }
 ```
 
-## Winery (Виноробня)
+## Wineries (Виноробня)
 Represents a winery.
 ```javascript
 {
   name: { type: String, required: true, unique: true },
   owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   history: String,
-  country: String,
-  region: String,
+  country: { type: Schema.Types.ObjectId, ref: 'Location' },
+  region: { type: Schema.Types.ObjectId, ref: 'Location' },
   address: String,
+  contactEmail: String,
+  contactPhone: String,
   isVip: { type: Boolean, default: false }, // VIP-статус виноробні
   logoUrl: String,
   galleryUrl: [String],
@@ -49,7 +51,7 @@ Represents a specific wine product.
   winery: { type: Schema.Types.ObjectId, ref: 'Winery', required: true },
   name: { type: String, required: true },
   vintage: { type: Number, required: true }, // Рік врожаю
-  grape: { type: String, required: true }, // Сорт винограду
+  grape: { type: Schema.Types.ObjectId, ref: 'Grape', required: true }, // Сорт винограду
   description: String,
   tastingNotes: [String], // "Теги" смаків для пошуку
   imageUrl: String,
@@ -104,5 +106,15 @@ Represents a wine tour offered by a winery.
     min: Number, 
     max: Number 
   } // Розмір групи
+}
+```
+
+## Location (Локація)
+Represents a geographical location, such as a country or a region.
+```javascript
+{
+  name: { type: String, required: true, unique: true }, // Назва локації (країна, регіон)
+  type: { type: String, enum: ['country', 'region'], required: true }, // Тип локації
+  parentLocation: { type: Schema.Types.ObjectId, ref: 'Location', default: null } // Для регіонів, що належать країні
 }
 ```

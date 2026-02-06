@@ -4,7 +4,8 @@ import User from '@/models/userModel';
 import Winery from '@/models/wineryModel';
 import Wine from '@/models/wineModel';
 import Review from '@/models/reviewModel';
-import { users, wineries, wines, reviews } from './seedData';
+import Location from '@/models/locationModel'; 
+import { users, wineries, wines, reviews, locations } from './seedData'; 
 
 dotenv.config();
 
@@ -29,7 +30,9 @@ const importData = async () => {
     await Winery.deleteMany();
     await Wine.deleteMany();
     await Review.deleteMany();
+    await Location.deleteMany(); 
 
+    await Location.insertMany(locations); 
     await User.insertMany(users);
     await Winery.insertMany(wineries);
     await Wine.insertMany(wines);
@@ -50,6 +53,7 @@ const destroyData = async () => {
     await Winery.deleteMany();
     await Wine.deleteMany();
     await Review.deleteMany();
+    await Location.deleteMany(); 
 
     console.log('Data Destroyed!');
     process.exit();

@@ -9,26 +9,26 @@ export interface IReview extends Document {
 }
 
 const reviewSchema: Schema = new Schema({
-  wineId: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'Wine', 
-    required: true 
+  wineId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Wine',
+    required: true,
   },
-  userId: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'User', 
-    required: true 
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
-  rating: { 
-    type: Number, 
-    required: true, 
-    min: 1, 
-    max: 5 
+  rating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
   },
   comment: { type: String },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
