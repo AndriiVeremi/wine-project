@@ -2,22 +2,24 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import apiRouter from '@/routes/api';
+import errorMiddleware from '@/middleware/errorMiddleware'; // Import the new error middleware
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 5000;
 
-// === Налаштування Middleware ===
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
-// === Роути (маршрути) ===
-app.get('/api', (req: Request, res: Response) => {
-  res.json({ message: 'Hello from Wine Discovery Platform Backend!' });
-});
+// Підключення роутів
+app.use('/api', apiRouter);
 
-// === Запуск сервера та підключення до БД ===
+// Middleware для обробки помилок (завжди після роутів)
+app.use(errorMiddleware);
+
+// Запуск сервера та підключення до БД
 const startServer = async () => {
   try {
     const mongoUri = process.env.MONGO_URI;

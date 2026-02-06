@@ -26,6 +26,7 @@ cd wine-project
 **Бекенд:**
 1.  У папці `backend` створіть копію файлу `.env.example` та назвіть її `.env`.
 2.  Встановіть `MONGO_URI=mongodb://mongodb:27017/wine-db`.
+3.  Додайте `FIREBASE_SERVICE_ACCOUNT_CREDS_JSON`. Це JSON-об'єкт з обліковими даними сервісного акаунту Firebase. Його необхідно для створення користувачів та призначення ролей на бекенді.
 
 ### 3. Запуск
 
@@ -34,7 +35,7 @@ cd wine-project
 **Бекенд (Docker):**
 У папці `backend` виконайте:
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 *Бекенд буде доступний на `http://localhost:5005`.*
 
@@ -49,8 +50,31 @@ npm run dev
 ```
 *Фронтенд буде доступний на `http://localhost:5173` (або за адресою, вказаною Vite).*
 
-### 4. Зупинка
-*   **Бекенд:** `docker-compose down` у папці `backend`.
+### 4. Наповнення бази даних (Seeding)
+
+Для тестування та розробки необхідно наповнити базу даних початковими даними.
+
+1.  **Переконайтесь, що Docker-контейнери бекенду та бази даних запущено.**
+    ```bash
+    # У папці backend/
+    docker compose up -d
+    ```
+2.  **Завантажте дані:**
+    Ця команда видалить старі дані та завантажить нові з файлу `backend/src/data/seedData.ts`. Вона виконується всередині Docker-контейнера бекенду.
+    ```bash
+    # У папці backend/
+    docker compose run --rm backend npm run db:seed
+    ```
+3.  **Видаліть дані:**
+    Ця команда повністю очистить відповідні колекції в базі даних. Вона також виконується всередині Docker-контейнера бекенду.
+    ```bash
+    # У папці backend/
+    docker compose run --rm backend npm run db:destroy
+    ```
+
+### 5. Зупинка
+
+*   **Бекенд:** `docker compose down` у папці `backend`.
 *   **Фронтенд:** `Ctrl + C` у відповідному терміналі.
 
 
@@ -60,6 +84,7 @@ npm run dev
 ```
 backend/src/
 ├── controllers/     # Обробники запитів
+├── data/            # Фіктивні дані DB
 ├── middleware/      # Middleware-функції
 ├── models/          # Моделі Mongoose
 ├── routes/          # Маршрути

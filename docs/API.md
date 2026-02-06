@@ -6,20 +6,31 @@
 
 ## Автентифікація та Користувачі (`/users`)
 
-### **POST** `/api/users`
-- **Опис:** Створення профілю нового користувача в базі даних. Викликається один раз після успішної реєстрації/першого входу через Firebase.
-- **Headers:** `Authorization: Bearer <firebase_token>`
-- **Body:** Не потрібен. Сервер витягує дані (`uid`, `email`, `name`) з валідного Firebase токена.
+### **POST** `/api/users/register`
+- **Опис:** Реєстрація нового користувача. Цей публічний ендпоінт створює користувача в Firebase Authentication, призначає йому роль (`USER` або `WINERY_OWNER`) і створює профіль користувача в базі даних.
+- **Headers:** Не потрібні (публічний).
+- **Body:**
+  ```json
+  {
+    "firstName": "Новий Користувач",
+    "lastName": "Новий Користувач",
+    "email": "new.user@example.com",
+    "password": "password123",
+    "role": "USER"
+  }
+  ```
 - **Response (201 Created):**
   ```json
   {
-    "id": "60d21b4667d0d8992e610c85",
-    "firebaseUid": "FIREBASE_UID_HERE",
-    "name": "Іван Франко",
-    "email": "ivan.franko@example.com",
-    "role": "USER",
-    "winery": null,
-    "favoriteWines": []
+    "message": "User registered successfully.",
+    "user": {
+      "id": "60d21b4667d0d8992e610c85",
+      "uid": "FIREBASE_UID_HERE",
+      "email": "new.user@example.com",
+      "firstName": "Новий Користувач",
+      "lastName": "Новий Користувач",
+      "role": "USER"
+    }
   }
   ```
 
@@ -31,7 +42,8 @@
   {
     "id": "60d21b4667d0d8992e610c85",
     "firebaseUid": "FIREBASE_UID_HERE",
-    "name": "Іван Франко",
+    "firstName": "Іван",
+    "lastName": "Франко",
     "email": "ivan.franko@example.com",
     "role": "USER",
     "winery": null,
