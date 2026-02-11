@@ -5,8 +5,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase';
 import AuthModal from './components/modals/AuthModal';
 
-const HomePage = () => <h2>Головна сторінка</h2>;
-const WineriesPage = () => <h2>Сторінка виноробень</h2>;
+const HomePage = () => <h2>Home Page</h2>;
+const WineriesPage = () => <h2>Wineries Page</h2>;
 
 function App() {
   const { user, logout, setUser, isLoading, openAuthModal } = useAuthStore();
@@ -19,7 +19,7 @@ function App() {
   }, [setUser]);
 
   if (isLoading) {
-    return <div>Завантаження...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -29,29 +29,29 @@ function App() {
         <nav className="app-nav">
           <ul>
             <li>
-              <Link to="/">Головна</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/wineries">Виноробні</Link>
+              <Link to="/wineries">Wineries</Link>
             </li>
             {user ? (
               <>
                 <li>
-                  <button onClick={logout}>Вийти</button>
+                  <button onClick={logout}>Logout</button>
                 </li>
                 <li>
-                  <span style={{ color: 'lightgreen', marginLeft: '1rem' }}>Роль: {user.role}</span>
+                  <span style={{ color: 'lightgreen', marginLeft: '1rem' }}>Role: {user.role}</span>
                 </li>
               </>
             ) : (
               <>
                 <li>
                   {/* Changed from Link to button */}
-                  <button onClick={() => openAuthModal('login')}>Увійти</button>
+                  <button onClick={() => openAuthModal('login')}>Login</button>
                 </li>
                 <li>
                   {/* Changed from Link to button */}
-                  <button onClick={() => openAuthModal('register')}>Реєстрація</button>
+                  <button onClick={() => openAuthModal('register')}>Register</button>
                 </li>
               </>
             )}

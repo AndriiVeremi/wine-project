@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import { registerUser, getUserProfile } from '../controllers/userController';
-import { authMiddleware } from '../middleware/auth';
-import validateBody from '../middleware/validateBody';
-import { registerSchema, loginSchema } from '../schemas/userSchemas'; // Import Joi schemas
+import * as userController from '@/controllers/userController';
+import { authMiddleware } from '@/middleware/auth';
+import validateBody from '@/middleware/validateBody';
+import { registerSchema, loginSchema } from '@/schemas/userSchemas';
 
 const router = Router();
 
 router.post(
   '/register',
   validateBody(registerSchema),
-  registerUser
+  userController.registerUser
 );
 
 router.post(
@@ -17,6 +17,6 @@ router.post(
   validateBody(loginSchema),
 );
 
-router.get('/me', authMiddleware, getUserProfile);
+router.get('/me', authMiddleware, userController.getUserProfile);
 
 export default router;

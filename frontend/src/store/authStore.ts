@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import type { User } from 'firebase/auth';
-import { auth } from '../config/firebase';
-import { registerUserApi } from '../api/authApi';
-import type { IRegisterData } from '../types/auth';
+import { auth } from '@/config/firebase';
+import { registerUserApi } from '@/api/authApi';
+import type { IRegisterData } from '@/types/auth';
 
 interface AppUser {
   uid: string;
@@ -56,6 +56,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setUser: async (firebaseUser: User | null) => {
     if (firebaseUser) {
       const tokenResult = await firebaseUser.getIdTokenResult();
+      console.log('Firebase ID Token:', tokenResult.token);
       const roleClaim = tokenResult.claims.role;
       const role = typeof roleClaim === 'string' ? roleClaim : 'USER';
       let firstName: string | null = null;

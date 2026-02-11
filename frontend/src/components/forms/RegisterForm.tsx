@@ -50,7 +50,7 @@ const RegisterForm = () => {
     setFormError('');
 
     if (password !== confirmPassword) {
-      setFormError('Паролі не співпадають.');
+      setFormError('Passwords do not match.');
       return;
     }
 
@@ -67,7 +67,7 @@ const RegisterForm = () => {
     <form style={styles.form} onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Ім'я"
+        placeholder="First Name"
         value={firstName}
         onChange={(e) => setFirstName(e.target.value)}
         required
@@ -75,7 +75,7 @@ const RegisterForm = () => {
       />
       <input
         type="text"
-        placeholder="Прізвище"
+        placeholder="Last Name"
         value={lastName}
         onChange={(e) => setLastName(e.target.value)}
         required
@@ -91,7 +91,7 @@ const RegisterForm = () => {
       />
       <input
         type="password"
-        placeholder="Пароль (мін. 6 символів)"
+        placeholder="Password (min. 6 characters)"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
@@ -99,7 +99,7 @@ const RegisterForm = () => {
       />
       <input
         type="password"
-        placeholder="Підтвердіть пароль"
+        placeholder="Confirm Password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         required
@@ -110,11 +110,11 @@ const RegisterForm = () => {
         onChange={(e) => setRole(e.target.value as 'USER' | 'WINERY_OWNER')}
         style={styles.input}
       >
-        <option value="USER">Я звичайний користувач</option>
-        <option value="WINERY_OWNER">Я власник виноробні</option>
+        <option value="USER">I am a regular user</option>
+        <option value="WINERY_OWNER">I am a winery owner</option>
       </select>
       <button type="submit" disabled={isLoading} style={styles.button}>
-        {isLoading ? 'Реєстрація...' : 'Зареєструватися'}
+        {isLoading ? 'Registering...' : 'Register'}
       </button>
       {/* Display either a local form error or a global error from the store */}
       {formError && <p style={styles.error}>{formError}</p>}

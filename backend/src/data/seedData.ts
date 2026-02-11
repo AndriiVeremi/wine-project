@@ -1,17 +1,14 @@
 import mongoose from 'mongoose';
 
-// User ID
 const owner1Id = new mongoose.Types.ObjectId();
 const owner2Id = new mongoose.Types.ObjectId();
 const user1Id = new mongoose.Types.ObjectId();
 const user2Id = new mongoose.Types.ObjectId();
 
-// Winery ID
 const winery1Id = new mongoose.Types.ObjectId();
 const winery2Id = new mongoose.Types.ObjectId();
 const winery3Id = new mongoose.Types.ObjectId();
 
-// Wine ID
 const wine1Id = new mongoose.Types.ObjectId();
 const wine2Id = new mongoose.Types.ObjectId();
 const wine3Id = new mongoose.Types.ObjectId();
@@ -19,7 +16,13 @@ const wine4Id = new mongoose.Types.ObjectId();
 const wine5Id = new mongoose.Types.ObjectId();
 const wine6Id = new mongoose.Types.ObjectId();
 
-// Location ID
+const kabernetSauvignonId = new mongoose.Types.ObjectId();
+const chardonnayId = new mongoose.Types.ObjectId();
+const merlotId = new mongoose.Types.ObjectId();
+const kabernetFrancId = new mongoose.Types.ObjectId();
+const rieslingId = new mongoose.Types.ObjectId();
+const isabellaId = new mongoose.Types.ObjectId();
+
 const ukraineId = new mongoose.Types.ObjectId();
 const odesaId = new mongoose.Types.ObjectId();
 const khersonId = new mongoose.Types.ObjectId();
@@ -40,16 +43,13 @@ const adjaraId = new mongoose.Types.ObjectId();
 const tbilisiId = new mongoose.Types.ObjectId();
 
 export const locations = [
-  // Країни
   { _id: ukraineId, name: 'Ukraine', type: 'country' },
   { _id: georgiaId, name: 'Georgia', type: 'country' },
 
-  // Регіони України
   { _id: odesaId, name: 'Odesa', type: 'region', parentLocation: ukraineId },
   { _id: khersonId, name: 'Kherson', type: 'region', parentLocation: ukraineId },
   { _id: lvivId, name: 'Lviv', type: 'region', parentLocation: ukraineId },
 
-  // Регіони грузії
   { _id: guriaId, name: 'Guria', type: 'region', parentLocation: georgiaId },
   { _id: imeretiId, name: 'Imereti', type: 'region', parentLocation: georgiaId },
   { _id: kakhetiId, name: 'Kakheti', type: 'region', parentLocation: georgiaId },
@@ -83,8 +83,8 @@ export const users = [
   {
     _id: owner1Id,
     firebaseUid: 'firebaseUid_owner1',
-    firstName: 'Іван',
-    lastName: 'Власник',
+    firstName: 'Ivan',
+    lastName: 'Owner',
     email: 'ivan.owner@example.com',
     role: 'WINERY_OWNER',
     winery: winery1Id,
@@ -93,8 +93,8 @@ export const users = [
   {
     _id: owner2Id,
     firebaseUid: 'firebaseUid_owner2',
-    firstName: 'Марія',
-    lastName: 'Засновник',
+    firstName: 'Maria',
+    lastName: 'Founder',
     email: 'maria.founder@example.com',
     role: 'WINERY_OWNER',
     winery: winery2Id,
@@ -103,8 +103,8 @@ export const users = [
   {
     _id: user1Id,
     firebaseUid: 'firebaseUid_user1',
-    firstName: 'Олександр',
-    lastName: 'Користувач',
+    firstName: 'Oleksandr',
+    lastName: 'User',
     email: 'alex.user@example.com',
     role: 'USER',
     favoriteWines: [wine1Id, wine2Id, wine6Id],
@@ -112,8 +112,8 @@ export const users = [
   {
     _id: user2Id,
     firebaseUid: 'firebaseUid_user2',
-    firstName: 'Олена',
-    lastName: 'Дослідниця',
+    firstName: 'Olena',
+    lastName: 'Explorer',
     email: 'olena.explorer@example.com',
     role: 'USER',
     favoriteWines: [wine4Id],
@@ -123,13 +123,13 @@ export const users = [
 export const wineries = [
   {
     _id: winery1Id,
-    name: 'Виноробня "Сонячна Долина"',
+    name: 'Winery "Sunny Valley"',
     owner: owner1Id,
     history:
-      'Наша історія починається з великої любові до винограду, вирощеного під теплим українським сонцем.',
+      'Our story begins with a great love for grapes grown under the warm Ukrainian sun.',
     country: ukraineId,
     region: odesaId,
-    address: 'вул. Винна, 1, Одеса',
+    address: '1, Vynna St., Odesa',
     isVip: true,
     logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=SD_Logo',
     galleryUrl: [
@@ -142,12 +142,12 @@ export const wineries = [
   },
   {
     _id: winery2Id,
-    name: 'Шато Каменка',
+    name: 'Chateau Kamenka',
     owner: owner2Id,
-    history: 'Сімейна виноробня, що зберігає старовинні традиції виноробства регіону Каменка.',
+    history: 'A family winery that preserves the ancient winemaking traditions of the Kamenka region.',
     country: ukraineId,
     region: khersonId,
-    address: 'с. Каменка, вул. Центральна, 10',
+    address: '10, Tsentralna St., Kamenka village',
     isVip: false,
     logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=CK_Logo',
     galleryUrl: [
@@ -160,12 +160,12 @@ export const wineries = [
   },
   {
     _id: winery3Id,
-    name: 'Вина Прикарпаття',
+    name: 'Wines of Prykarpattia',
     owner: owner1Id,
-    history: 'Невелика виноробня в Карпатах, що спеціалізується на унікальних локальних сортах.',
+    history: 'A small winery in the Carpathians, specializing in unique local varieties.',
     country: ukraineId,
     region: lvivId,
-    address: 'м. Стрий, вул. Замкова, 5',
+    address: '5, Zamkova St., Stryi',
     isVip: false,
     logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=VP_Logo',
     galleryUrl: [
@@ -178,15 +178,24 @@ export const wineries = [
   },
 ];
 
+export const grapes = [
+  { _id: kabernetSauvignonId, name: 'Cabernet Sauvignon' },
+  { _id: chardonnayId, name: 'Chardonnay' },
+  { _id: merlotId, name: 'Merlot' },
+  { _id: kabernetFrancId, name: 'Cabernet Franc' },
+  { _id: rieslingId, name: 'Riesling' },
+  { _id: isabellaId, name: 'Isabella' },
+];
+
 export const wines = [
   {
     _id: wine1Id,
     winery: winery1Id,
-    name: 'Каберне Совіньйон Резерв',
+    name: 'Cabernet Sauvignon Reserve',
     vintage: 2020,
-    grape: 'Каберне Совіньйон',
-    description: 'Вишукане червоне вино з насиченим смаком чорної смородини та нотками шкіри.',
-    tastingNotes: ['чорна смородина', 'шкіра', 'дуб'],
+    grape: kabernetSauvignonId,
+    description: 'Exquisite red wine with a rich taste of black currant and notes of leather.',
+    tastingNotes: ['black currant', 'leather', 'oak'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=CS_Reserve',
     type: 'red',
     color: 'dry',
@@ -196,12 +205,12 @@ export const wines = [
   {
     _id: wine2Id,
     winery: winery1Id,
-    name: 'Шардоне Одеса',
+    name: 'Chardonnay Odesa',
     vintage: 2022,
-    grape: 'Шардоне',
+    grape: chardonnayId,
     description:
-      'Свіже біле вино з яскравими фруктовими ароматами та легким мінеральним присмаком.',
-    tastingNotes: ['зелене яблуко', 'лимон', 'мінерали'],
+      'Fresh white wine with bright fruit aromas and a light mineral aftertaste.',
+    tastingNotes: ['green apple', 'lemon', 'minerals'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Chardonnay_Odesa',
     type: 'white',
     color: 'dry',
@@ -211,11 +220,11 @@ export const wines = [
   {
     _id: wine3Id,
     winery: winery2Id,
-    name: 'Мерло Каменка',
+    name: 'Merlot Kamenka',
     vintage: 2021,
-    grape: 'Мерло',
-    description: "Оксамитове червоне вино з нотками сливи, вишні та м'якими танінами.",
-    tastingNotes: ['слива', 'вишня', 'ваніль'],
+    grape: merlotId,
+    description: 'Velvety red wine with notes of plum, cherry and soft tannins.',
+    tastingNotes: ['plum', 'cherry', 'vanilla'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Merlot_Kamenka',
     type: 'red',
     color: 'semi-dry',
@@ -225,11 +234,11 @@ export const wines = [
   {
     _id: wine4Id,
     winery: winery2Id,
-    name: 'Розе Каберне',
+    name: 'Rose Cabernet',
     vintage: 2022,
-    grape: 'Каберне Фран',
-    description: 'Освіжаюче рожеве вино з ароматами полуниці та легким, приємним смаком.',
-    tastingNotes: ['полуниця', 'малина', 'цитрус'],
+    grape: kabernetFrancId,
+    description: 'Refreshing rose wine with aromas of strawberry and a light, pleasant taste.',
+    tastingNotes: ['strawberry', 'raspberry', 'citrus'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Rose_Cabernet',
     type: 'rose',
     color: 'dry',
@@ -239,25 +248,25 @@ export const wines = [
   {
     _id: wine5Id,
     winery: winery3Id,
-    name: 'Рислинг Карпатський',
+    name: 'Riesling Carpathian',
     vintage: 2020,
-    grape: 'Ріслінг',
-    description: 'Унікальне біле вино з Карпат з яскравою кислотністю та ароматами квітів.',
-    tastingNotes: ['квіти', 'персик', 'мінерали'],
+    grape: rieslingId,
+    description: 'A unique white wine from the Carpathians with bright acidity and floral aromas.',
+    tastingNotes: ['flowers', 'peach', 'minerals'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Riesling_Carpathian',
     type: 'white',
-    color: 'sweet',
+    color: 'semi-sweet', 
     averageRating: 4.2,
     price: 710,
   },
   {
     _id: wine6Id,
     winery: winery3Id,
-    name: 'Ізабелла Ігриста',
+    name: 'Isabella Sparkling',
     vintage: 2022,
-    grape: 'Ізабелла',
-    description: 'Легке ігристе вино з характерним ягідним ароматом, ідеальне для святкування.',
-    tastingNotes: ['лісові ягоди', 'мускат'],
+    grape: isabellaId,
+    description: 'Light sparkling wine with a characteristic berry aroma, ideal for celebrations.',
+    tastingNotes: ['forest berries', 'muscat'],
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Isabella_Sparkling',
     type: 'sparkling',
     color: 'semi-dry',
@@ -266,35 +275,36 @@ export const wines = [
   },
 ];
 
+
 export const reviews = [
   {
     wineId: wine1Id,
     userId: user1Id,
     rating: 5,
-    comment: 'Це вино просто неперевершене! Ідеальний смак для особливих моментів.',
+    comment: 'This wine is simply unsurpassed! The perfect taste for special moments.',
   },
   {
     wineId: wine1Id,
     userId: user2Id,
     rating: 4,
-    comment: 'Дуже сподобалось, але хотілося б трохи більше тіла.',
+    comment: 'I liked it very much, but I would like a little more body.',
   },
   {
     wineId: wine2Id,
     userId: user1Id,
     rating: 4,
-    comment: 'Чудове повсякденне вино, приємне і освіжаюче.',
+    comment: 'A wonderful everyday wine, pleasant and refreshing.',
   },
   {
     wineId: wine3Id,
     userId: owner1Id,
     rating: 5,
-    comment: 'Мерло Каменка - гордість нашої землі. Рекомендую!',
+    comment: 'Merlot Kamenka is the pride of our land. I recommend it!',
   },
   {
     wineId: wine4Id,
     userId: user2Id,
     rating: 3,
-    comment: 'Трохи занадто легке для мого смаку, але для літа підійде.',
+    comment: 'A little too light for my taste, but it will do for the summer.',
   },
 ];

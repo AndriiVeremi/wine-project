@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { firebaseAdmin } from '../services/firebase';
+import { firebaseAdmin } from '@/services/firebase';
 import { DecodedIdToken } from 'firebase-admin/auth';
-import User from '../models/userModel';
+import User from '@/models/userModel';
 
 export interface AuthenticatedRequest extends Request {
   user?: DecodedIdToken;
@@ -33,7 +33,7 @@ export const authMiddleware = async (
       req.userRole = mongoUser.role;
     } else {
       console.warn(`Firebase user ${decodedToken.uid} found, but no corresponding MongoDB user.`);
-      res.status(401).send({ message: 'Unauthorized: User profile not found in database.' });
+      res.status(401).send({ message: 'Unauthorized: User profile not found.' });
       return;
     }
 
@@ -50,14 +50,14 @@ export const roleMiddleware = (allowedRoles: string[]) => {
     if (!req.user || !req.userId || !userRole) {
       return res.status(403).send({
         message:
-          'Forbidden: User authentication or profile data is incomplete. Ensure authMiddleware runs first.',
+          'User authentication or profile data is incomplete.',
       });
     }
 
     if (allowedRoles.includes(userRole)) {
       next();
     } else {
-      res.status(403).send({ message: 'Forbidden: You do not have the required permissions.' });
+      res.status(403).send({ message: 'You do not have the required permissions.' });
     }
   };
 };

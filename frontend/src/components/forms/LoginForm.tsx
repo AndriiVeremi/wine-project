@@ -57,14 +57,14 @@ const LoginForm = () => {
       />
       <input
         type="password"
-        placeholder="Пароль"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
         style={styles.input}
       />
       <button type="submit" disabled={isLoading} style={styles.button}>
-        {isLoading ? 'Вхід...' : 'Увійти'}
+        {isLoading ? 'Logging in...' : 'Login'}
       </button>
       {globalError && <p style={styles.error}>{globalError}</p>}
     </form>

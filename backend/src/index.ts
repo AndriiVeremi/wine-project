@@ -22,13 +22,13 @@ const port = process.env.PORT || 5000;
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
-// Підключення роутів
+// Route connections
 app.use('/api', apiRouter);
 
-// Middleware для обробки помилок (завжди після роутів)
+// Error handling middleware (always after routes)
 app.use(errorMiddleware);
 
-// Запуск сервера та підключення до БД
+// Start server and connect to DB
 const startServer = async () => {
   try {
     const mongoUri = process.env.MONGO_URI;
