@@ -125,6 +125,58 @@
 
 ---
 
+## Регіони (`/api/regions`)
+
+### **GET** `/api/regions/:name`
+- **Опис:** Отримати детальну інформацію про один регіон.
+- **Response (200 OK):**
+  ```json
+  {
+    "name": "Kakheti",
+    "description": "Kakheti is the principal wine-producing region of Georgia...",
+    "imageUrl": "https://example.com/kakheti.png",
+    "country": { "id": "...", "name": "Georgia" },
+    "climate": {
+      "title": "Geographic location and climate",
+      "description": "Kakheti lies between...",
+      "features": ["warm and dry summers", "mild autumns"]
+    },
+    "soils": {
+      "title": "Soils of Kakheti",
+      "description": "The diversity of soils...",
+      "mainTypes": ["alluvial soils", "clay-limestone soils"],
+      "properties": ["good drainage", "deep vine root systems"]
+    },
+    "traditions": {
+      "title": "Winemaking culture and traditions",
+      "description": "Kakheti is the birthplace of qvevri winemaking...",
+      "rituals": ["religious rituals", "traditional feasts (supra)"]
+    },
+    "grapeVarieties": {
+      "title": "Main grape varieties of Kakheti",
+      "white": [{ "name": "Rkatsiteli", "description": "the most widely planted..." }],
+      "red": [{ "name": "Saperavi", "description": "a teinturier grape..." }]
+    },
+    "typicalWines": {
+      "title": "Typical wines of the region",
+      "description": "Wines from Kakheti are known for...",
+      "styles": ["dry white wines", "amber (orange) wines"]
+    },
+    "pdos": {
+      "title": "Protected Designations of Origin (PDO)",
+      "description": "Kakheti contains the highest number...",
+      "list": ["Tsinandali", "Mukuzani"]
+    },
+    "importance": {
+      "title": "Importance of Kakheti for Georgian winemaking",
+      "description": "Internationally, Kakheti largely shapes...",
+      "points": ["the majority of the country’s vineyards..."]
+    }
+  }
+  ```
+
+---
+
 ## Виноробні (`/api/wineries`)
 
 ### **POST** `/api/wineries`
