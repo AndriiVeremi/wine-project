@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IGrape } from '@/models/grapeModel';
 
 export interface IWine extends Document {
   winery: mongoose.Types.ObjectId;
@@ -9,10 +8,19 @@ export interface IWine extends Document {
   description: string;
   tastingNotes: string[];
   imageUrl: string;
-  type: 'red' | 'white' | 'rose' | 'sparkling' | 'dessert';
-  color: 'dry' | 'semi-dry' | 'semi-sweet' | 'sweet';
+  type: 'red' | 'white' | 'rose' | 'orange' | 'sparkling' | 'dessert';
+  sweetness: 'dry' | 'semi-dry' | 'semi-sweet' | 'sweet';
   averageRating: number;
   price: number;
+  volume?: number;
+  boxQuantity?: number;
+  hasPackaging?: boolean;
+  alcohol?: string;
+  decanting?: boolean;
+  bottleDiameter?: string;
+  servingTemperature?: string;
+  foodPairing?: string[];
+  supplier?: string;
 }
 
 const wineSchema: Schema = new Schema({
@@ -29,16 +37,25 @@ const wineSchema: Schema = new Schema({
   imageUrl: { type: String },
   type: {
     type: String,
-    enum: ['red', 'white', 'rose', 'sparkling', 'dessert'],
+    enum: ['red', 'white', 'rose', 'orange', 'sparkling', 'dessert'],
     required: true,
   },
-  color: {
+  sweetness: {
     type: String,
     enum: ['dry', 'semi-dry', 'semi-sweet', 'sweet'],
     required: true,
   },
   averageRating: { type: Number, default: 0 },
   price: { type: Number, required: true },
+  volume: { type: Number },
+  boxQuantity: { type: Number },
+  hasPackaging: { type: Boolean },
+  alcohol: { type: String },
+  decanting: { type: Boolean },
+  bottleDiameter: { type: String },
+  servingTemperature: { type: String },
+  foodPairing: [String],
+  supplier: { type: String },
 });
 
 export default mongoose.model<IWine>('Wine', wineSchema);

@@ -7,7 +7,6 @@ import errorMiddleware from '@/middleware/errorMiddleware';
 
 dotenv.config();
 
-// Import Mongoose Models to ensure they are registered
 import '@/models/userModel';
 import '@/models/wineryModel';
 import '@/models/wineModel';
@@ -15,6 +14,7 @@ import '@/models/reviewModel';
 import '@/models/grapeModel';
 import '@/models/tourModel';
 import '@/models/locationModel';
+import '@/models/regionModel';
 
 const app: Express = express();
 const port = process.env.PORT || 5000;
@@ -22,13 +22,10 @@ const port = process.env.PORT || 5000;
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
-// Route connections
 app.use('/api', apiRouter);
 
-// Error handling middleware (always after routes)
 app.use(errorMiddleware);
 
-// Start server and connect to DB
 const startServer = async () => {
   try {
     const mongoUri = process.env.MONGO_URI;

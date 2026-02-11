@@ -5,8 +5,9 @@ import Winery from '@/models/wineryModel';
 import Wine from '@/models/wineModel';
 import Review from '@/models/reviewModel';
 import Location from '@/models/locationModel';
-import Grape from '@/models/grapeModel'; 
-import { users, wineries, wines, reviews, locations, grapes } from '@/data/seedData'; 
+import Grape from '@/models/grapeModel';
+import Region from '@/models/regionModel';
+import { users, wineries, wines, reviews, locations, grapes, regions } from '@/data/seedData';
 
 dotenv.config();
 
@@ -33,7 +34,8 @@ const importData = async () => {
     await Wine.deleteMany();
     await Review.deleteMany();
     await Location.deleteMany();
-    await Grape.deleteMany(); 
+    await Grape.deleteMany();
+    await Region.deleteMany();
     console.log('Existing data cleared.');
 
     console.log('Importing locations...');
@@ -45,6 +47,16 @@ const importData = async () => {
       }
     }
     console.log('Locations imported.');
+    
+    console.log('Importing regions...');
+    for (const item of regions) {
+      try {
+        await Region.create(item);
+      } catch (error: any) {
+        console.error(`Error importing region ${item.name}: ${error.message}`);
+      }
+    }
+    console.log('Regions imported.');
 
     console.log('Importing users...');
     for (const item of users) {
@@ -55,7 +67,6 @@ const importData = async () => {
       }
     }
     console.log('Users imported.');
-
     console.log('Importing wineries...');
     for (const item of wineries) {
       try {
@@ -121,11 +132,11 @@ const destroyData = async () => {
     await Winery.deleteMany();
     await Wine.deleteMany();
     await Review.deleteMany();
-    await Location.deleteMany();
-    await Grape.deleteMany(); 
-
-    console.log('Data Destroyed!');
-    process.exit();
+        await Location.deleteMany();
+        await Grape.deleteMany();
+        await Region.deleteMany();
+    
+        console.log('Data Destroyed!');    process.exit();
   } catch (error: any) {
     console.error(`Error with data destruction: ${error.message}`);
     process.exit(1);
