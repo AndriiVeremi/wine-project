@@ -10,6 +10,6 @@ describe('App', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('Головна сторінка')).toBeInTheDocument();
+    expect(screen.getByText('Main Page')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import userRoutes from './userRoutes';
-import wineryRoutes from './wineryRoutes';
+import userRoutes from '@/routes/userRoutes';
+import wineryRoutes from '@/routes/wineryRoutes';
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import User from '@/models/userModel';
 import HttpError from '@/utils/HttpError';
-import { firebaseAdmin } from './firebase';
+import { firebaseAdmin } from '@/services/firebase';
 import { Types } from 'mongoose';
 
 const auth = firebaseAdmin.auth();

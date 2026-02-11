@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { firebaseAdmin } from '../services/firebase';
-import User from '../models/userModel';
-import { AuthenticatedRequest } from '../middleware/auth';
-import HttpError from '../utils/HttpError';
-import * as userService from '../services/userService';
+import { firebaseAdmin } from '@/services/firebase';
+import User from '@/models/userModel';
+import { AuthenticatedRequest } from '@/middleware/auth';
+import HttpError from '@/utils/HttpError';
+import * as userService from '@/services/userService';
 
 const auth = firebaseAdmin.auth();
 
@@ -60,24 +60,24 @@ export const registerUser = async (req: Request, res: Response) => {
         if (user) {
           await auth.deleteUser(user.uid);
           console.log(
-            `Видалено користувача Firebase ${user.uid} через помилку бази даних або логіки.`,
+            `User ${user.uid} deleted due to DB error.`,
           );
         }
       } catch (cleanupError) {
-        console.error('Не вдалося видалити користувача Firebase:', cleanupError);
+        console.error('Failed to delete user', cleanupError);
       }
     }
 
     if (error.code === 'auth/email-already-exists') {
-      throw new HttpError('Email вже використовується.', 409);
+      throw new HttpError('This email is already in use.', 409);
     }
     if (error.code === 'auth/weak-password') {
-      throw new HttpError('Пароль повинен містити щонайменше 6 символів.', 400);
+      throw new HttpError('Password must be at least 6 characters long.', 400);
     }
     if (error.code === 11000) {
-      throw new HttpError('Користувач з таким email або UID вже існує в базі даних.', 409);
+      throw new HttpError('User with this email already exists in the database.', 409);
     }
 
-    throw new HttpError('Помилка реєстрації користувача', 500);
+    throw new HttpError('User registration error', 500);
   }
 };

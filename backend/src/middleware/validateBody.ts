@@ -10,7 +10,7 @@ const validateBody =
         field: err.context?.key,
         message: err.message,
       }));
-      return res.status(400).json({ message: 'Помилка валідації', errors });
+      return res.status(400).json({ message: 'Validation error', errors });
     }
     next();
   };
