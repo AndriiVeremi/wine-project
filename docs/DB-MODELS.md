@@ -55,11 +55,11 @@ Represents a specific wine product.
   description: String,
   tastingNotes: [String], // Taste "tags" for searching
   imageUrl: String,
-  type: { 
+  color: { 
     type: String, 
     enum: ['red', 'white', 'rose', 'orange'], 
     required: true 
-  }, // Type of wine
+  }, // Color of wine
   sweetness: { 
     type: String, 
     enum: ['dry', 'semi-dry', 'sweet'], 

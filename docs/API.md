@@ -66,8 +66,8 @@
       "name": "Каберне Совіньйон",
       "winery": { "id": "...", "name": "Виноробня 'Сонячна Долина'" },
       "imageUrl": "https://example.com/wine.png",
-      "type": "red",
-      "color": "dry"
+      "color": "red",
+      "sweetness": "dry"
     }
   ]
   ```
@@ -264,7 +264,7 @@
 
 ### **GET** `/api/wines`
 - **Опис:** Отримати список вин з гнучкою фільтрацією. **Вина від VIP-виноробень завжди відображаються першими.**
-- **Query Params:** `?type=red&color=dry&minRating=4&maxPrice=1000&sortBy=price_asc`
+- **Query Params:** `?color=red&sweetness=dry&minRating=4&maxPrice=1000&sortBy=price_asc`
 - **Response (200 OK):** `[ { wine1 }, { wine2 }, ... ]`
 
 ### **GET** `/api/wines/:id`
@@ -284,8 +284,8 @@
     "description": "Класичне червоне вино з насиченим смаком вишні та смородини.",
     "tastingNotes": ["вишня", "смородина", "дуб", "ваніль"],
     "imageUrl": "https://example.com/wine.png",
-    "type": "red",
-    "color": "dry"
+    "color": "red",
+    "sweetness": "dry"
   }
   ```
 - **Response (201 Created):** Створений об'єкт вина.
