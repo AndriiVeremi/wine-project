@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import userRoutes from './userRoutes';
+import userRoutes from '@/routes/userRoutes';
+import wineryRoutes from '@/routes/wineryRoutes';
 
 const router = Router();
 
@@ -8,5 +9,6 @@ router.get('/', (req, res) => {
 });
 
 router.use('/users', userRoutes);
+router.use('/wineries', wineryRoutes);
 
 export default router;

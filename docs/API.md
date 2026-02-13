@@ -66,8 +66,8 @@
       "name": "Каберне Совіньйон",
       "winery": { "id": "...", "name": "Виноробня 'Сонячна Долина'" },
       "imageUrl": "https://example.com/wine.png",
-      "type": "red",
-      "color": "dry"
+      "color": "red",
+      "sweetness": "dry"
     }
   ]
   ```
@@ -103,18 +103,76 @@
 ## Локації (`/api/locations`)
 
 ### **GET** `/api/locations/countries`
-- **Опис:** Отримати унікальний список країн, де є виноробні.
+- **Опис:** Отримати список об'єктів країн.
 - **Response (200 OK):**
   ```json
-  [ "Ukraine", "Italy", "France" ]
+  [
+    { "id": "60d21b4667d0d8992e610c85", "name": "Ukraine", "type": "country" },
+    { "id": "60d21b4667d0d8992e610c86", "name": "Georgia", "type": "country" }
+  ]
   ```
 
 ### **GET** `/api/locations/regions`
-- **Опис:** Отримати унікальний список регіонів для обраної країни.
-- **Query Params:** `?country=Ukraine`
+- **Опис:** Отримати список об'єктів регіонів для обраної країни.
+- **Query Params:** `?countryId=<country_location_id>` (використовуйте ID країни з GET /api/locations/countries)
 - **Response (200 OK):**
   ```json
-  [ "Odesa", "Kherson", "Lviv" ]
+  [
+    { "id": "60d21b4667d0d8992e610c87", "name": "Odesa", "type": "region", "parentLocation": "60d21b4667d0d8992e610c85" },
+    { "id": "60d21b4667d0d8992e610c88", "name": "Kherson", "type": "region", "parentLocation": "60d21b4667d0d8992e610c85" }
+  ]
+  ```
+
+---
+
+## Регіони (`/api/regions`)
+
+### **GET** `/api/regions/:name`
+- **Опис:** Отримати детальну інформацію про один регіон.
+- **Response (200 OK):**
+  ```json
+  {
+    "name": "Kakheti",
+    "description": "Kakheti is the principal wine-producing region of Georgia...",
+    "imageUrl": "https://example.com/kakheti.png",
+    "country": { "id": "...", "name": "Georgia" },
+    "climate": {
+      "title": "Geographic location and climate",
+      "description": "Kakheti lies between...",
+      "features": ["warm and dry summers", "mild autumns"]
+    },
+    "soils": {
+      "title": "Soils of Kakheti",
+      "description": "The diversity of soils...",
+      "mainTypes": ["alluvial soils", "clay-limestone soils"],
+      "properties": ["good drainage", "deep vine root systems"]
+    },
+    "traditions": {
+      "title": "Winemaking culture and traditions",
+      "description": "Kakheti is the birthplace of qvevri winemaking...",
+      "rituals": ["religious rituals", "traditional feasts (supra)"]
+    },
+    "grapeVarieties": {
+      "title": "Main grape varieties of Kakheti",
+      "white": [{ "name": "Rkatsiteli", "description": "the most widely planted..." }],
+      "red": [{ "name": "Saperavi", "description": "a teinturier grape..." }]
+    },
+    "typicalWines": {
+      "title": "Typical wines of the region",
+      "description": "Wines from Kakheti are known for...",
+      "styles": ["dry white wines", "amber (orange) wines"]
+    },
+    "pdos": {
+      "title": "Protected Designations of Origin (PDO)",
+      "description": "Kakheti contains the highest number...",
+      "list": ["Tsinandali", "Mukuzani"]
+    },
+    "importance": {
+      "title": "Importance of Kakheti for Georgian winemaking",
+      "description": "Internationally, Kakheti largely shapes...",
+      "points": ["the majority of the country’s vineyards..."]
+    }
+  }
   ```
 
 ---
@@ -129,8 +187,8 @@
   {
     "name": "Виноробня 'Сонячна Долина'",
     "history": "Історія нашої виноробні починається з 1999 року...",
-    "country": "Ukraine",
-    "region": "Odesa",
+    "country": "60d21b4667d0d8992e610c85", // ID країни з Location
+    "region": "60d21b4667d0d8992e610c87", // ID регіону з Location
     "address": "вул. Винна, 1",
     "logoUrl": "https://example.com/logo.png",
     "galleryUrl": ["https://example.com/gallery1.png"],
@@ -143,8 +201,31 @@
 
 ### **GET** `/api/wineries`
 - **Опис:** Отримати список виноробень. **VIP-виноробні завжди відображаються першими.**
-- **Query Params:** `?search=Сонячна`
-- **Response (200 OK):** `[ { winery1 }, { winery2 }, ... ]`
+- **Query Params:**
+  *   `search=Назва` (пошук за назвою)
+  *   `countryId=<location_id>` (фільтрація за ID країни з Location)
+  *   `regionId=<location_id>` (фільтрація за ID регіону з Location)
+  *   `sortBy=name_asc` (поле для сортування, наприклад, `name_asc`, `name_desc`, `country_asc`, `region_desc`)
+  *   `page=1` (номер сторінки, за замовчуванням 1)
+  *   `limit=10` (кількість елементів на сторінці, за замовчуванням 10)
+- **Response (200 OK):**
+  ```json
+  [
+    {
+      "id": "60d21b4667d0d8992e610c90",
+      "name": "Виноробня 'Сонячна Долина'",
+      "owner": "60d21b4667d0d8992e610c81",
+      "history": "...",
+      "country": { "id": "60d21b4667d0d8992e610c85", "name": "Ukraine", "type": "country" },
+      "region": { "id": "60d21b4667d0d8992e610c87", "name": "Odesa", "type": "region", "parentLocation": "60d21b4667d0d8992e610c85" },
+      "address": "...",
+      "isVip": true,
+      "logoUrl": "...",
+      "galleryUrl": ["..."],
+      "whereToBuy": [...]
+    }
+  ]
+  ```
 
 ### **GET** `/api/wineries/:id`
 - **Опис:** Отримати повну інформацію про одну виноробню.
@@ -183,7 +264,7 @@
 
 ### **GET** `/api/wines`
 - **Опис:** Отримати список вин з гнучкою фільтрацією. **Вина від VIP-виноробень завжди відображаються першими.**
-- **Query Params:** `?type=red&color=dry&minRating=4&maxPrice=1000&sortBy=price_asc`
+- **Query Params:** `?color=red&sweetness=dry&minRating=4&maxPrice=1000&sortBy=price_asc`
 - **Response (200 OK):** `[ { wine1 }, { wine2 }, ... ]`
 
 ### **GET** `/api/wines/:id`
@@ -203,8 +284,8 @@
     "description": "Класичне червоне вино з насиченим смаком вишні та смородини.",
     "tastingNotes": ["вишня", "смородина", "дуб", "ваніль"],
     "imageUrl": "https://example.com/wine.png",
-    "type": "red",
-    "color": "dry"
+    "color": "red",
+    "sweetness": "dry"
   }
   ```
 - **Response (201 Created):** Створений об'єкт вина.

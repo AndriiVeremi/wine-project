@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '../../store/authStore';
 import Modal from '../common/Modal';
 import LoginForm from '../forms/LoginForm';
@@ -37,23 +37,23 @@ const AuthModal = () => {
     <Modal isOpen={isAuthModalOpen} onClose={closeAuthModal}>
       {view === 'login' ? (
         <div>
-          <h2>Вхід</h2>
+          <h2>Login</h2>
           <LoginForm />
           <p style={styles.toggleText}>
-            Немає акаунту?
+            Don't have an account?
             <span style={styles.toggleLink} onClick={toggleView}>
-              Зареєструватися
+              Register
             </span>
           </p>
         </div>
       ) : (
         <div>
-          <h2>Реєстрація</h2>
+          <h2>Register</h2>
           <RegisterForm />
           <p style={styles.toggleText}>
-            Вже є акаунт?
+            Already have an account?
             <span style={styles.toggleLink} onClick={toggleView}>
-              Увійти
+              Login
             </span>
           </p>
         </div>
