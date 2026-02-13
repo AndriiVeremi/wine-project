@@ -266,7 +266,7 @@ export const grapes = [
     name: 'Cabernet Sauvignon',
     description:
       'One of the world most widely recognized red wine grape varieties. It is grown in nearly every major wine producing country among a diverse spectrum of climates.',
-    type: 'red',
+    color: 'red',
     alsoKnownAs: ['Bordeaux', 'Cab'],
     characteristics: ['full-bodied', 'high tannins', 'black currant', 'cedar'],
     foodPairing: ['red meat', 'lamb', 'hard cheese'],
@@ -278,7 +278,7 @@ export const grapes = [
     name: 'Chardonnay',
     description:
       'A green-skinned grape variety used in the production of white wine. The variety originated in the Burgundy wine region of eastern France.',
-    type: 'white',
+    color: 'white',
     alsoKnownAs: [],
     characteristics: ['unoaked', 'crisp', 'green apple', 'citrus', 'oaked', 'buttery', 'vanilla'],
     foodPairing: ['fish', 'chicken', 'creamy sauces'],
@@ -290,7 +290,7 @@ export const grapes = [
     name: 'Merlot',
     description:
       'A dark blue-colored wine grape variety, that is used as both a blending grape and for varietal wines. ',
-    type: 'red',
+    color: 'red',
     alsoKnownAs: [],
     characteristics: ['soft tannins', 'plum', 'cherry', 'chocolate'],
     foodPairing: ['poultry', 'pork', 'mushrooms'],
@@ -302,7 +302,7 @@ export const grapes = [
     name: 'Cabernet Franc',
     description:
       'One of the major black grape varieties worldwide. It is principally grown for blending with Cabernet Sauvignon and Merlot in the Bordeaux style, but can also be vinified alone.',
-    type: 'red',
+    color: 'red',
     alsoKnownAs: [],
     characteristics: ['raspberry', 'bell pepper', 'graphite'],
     foodPairing: ['roasted chicken', 'duck', 'vegetarian dishes'],
@@ -314,7 +314,7 @@ export const grapes = [
     name: 'Riesling',
     description:
       'A white grape variety which originated in the Rhine region. Riesling is an aromatic grape variety displaying flowery, almost perfumed, aromas as well as high acidity.',
-    type: 'white',
+    color: 'white',
     alsoKnownAs: [],
     characteristics: ['aromatic', 'high acidity', 'apple', 'peach', 'mineral'],
     foodPairing: ['spicy food', 'pork', 'cured meat'],
@@ -326,7 +326,7 @@ export const grapes = [
     name: 'Isabella',
     description:
       'A particular American grape variety, a hybrid of Vitis labrusca and Vitis vinifera, used for table, juice, and wine production.',
-    type: 'red',
+    color: 'red',
     alsoKnownAs: ['Fragolino'],
     characteristics: ['strawberry', 'foxy', 'sweet'],
     foodPairing: ['fruit desserts', 'chocolate'],
@@ -355,7 +355,7 @@ export const wines = [
 
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=CS_Reserve',
 
-    type: 'red',
+    color: 'red',
 
     sweetness: 'dry',
 
@@ -401,7 +401,7 @@ export const wines = [
 
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Chardonnay_Odesa',
 
-    type: 'white',
+    color: 'white',
 
     sweetness: 'dry',
 
@@ -447,7 +447,7 @@ export const wines = [
 
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Merlot_Kamenka',
 
-    type: 'red',
+    color: 'red',
 
     sweetness: 'semi-dry',
 
@@ -493,7 +493,7 @@ export const wines = [
 
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Rose_Cabernet',
 
-    type: 'rose',
+    color: 'rose',
 
     sweetness: 'dry',
 
@@ -539,7 +539,7 @@ export const wines = [
 
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Riesling_Carpathian',
 
-    type: 'white',
+    color: 'white',
 
     sweetness: 'semi-sweet',
 
@@ -585,7 +585,7 @@ export const wines = [
 
     imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Isabella_Sparkling',
 
-    type: 'rose',
+    color: 'rose',
 
     sweetness: 'semi-dry',
 
