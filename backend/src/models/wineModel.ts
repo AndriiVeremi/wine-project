@@ -8,7 +8,7 @@ export interface IWine extends Document {
   description: string;
   tastingNotes: string[];
   imageUrl: string;
-  type: 'red' | 'white' | 'rose' | 'orange' | 'sparkling' | 'dessert';
+  color: 'red' | 'white' | 'rose' | 'orange';
   sweetness: 'dry' | 'semi-dry' | 'semi-sweet' | 'sweet';
   averageRating: number;
   price: number;
@@ -35,9 +35,9 @@ const wineSchema: Schema = new Schema({
   description: { type: String },
   tastingNotes: [String],
   imageUrl: { type: String },
-  type: {
+  color: {
     type: String,
-    enum: ['red', 'white', 'rose', 'orange', 'sparkling', 'dessert'],
+    enum: ['red', 'white', 'rose', 'orange'],
     required: true,
   },
   sweetness: {
