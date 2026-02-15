@@ -6,37 +6,31 @@ import { createWineSchema, updateWineSchema } from '@/schemas/wineSchemas';
 
 const router = Router();
 
-router.get(
-  '/',
-  wineController.getAllWines
-);
+router.get('/', wineController.getAllWines);
 
 router.post(
   '/',
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   validateBody(createWineSchema),
-  wineController.createWine
+  wineController.createWine,
 );
 
-router.get(
-  '/:id',
-  wineController.getWineById
-);
+router.get('/:id', wineController.getWineById);
 
 router.patch(
   '/:id',
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   validateBody(updateWineSchema),
-  wineController.updateWine
+  wineController.updateWine,
 );
 
 router.delete(
   '/:id',
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
-  wineController.deleteWine
+  wineController.deleteWine,
 );
 
 export default router;

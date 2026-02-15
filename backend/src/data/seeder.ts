@@ -20,8 +20,9 @@ const connectDB = async () => {
     }
     await mongoose.connect(mongoURI);
     console.log('MongoDB Connected for Seeding...');
-  } catch (err: any) {
-    console.error(`Error connecting to DB: ${err.message}`);
+  } catch (err: unknown) {
+    const error = err as { message?: string };
+    console.error(`Error connecting to DB: ${error.message}`);
     process.exit(1);
   }
 };
@@ -42,17 +43,19 @@ const importData = async () => {
     for (const item of locations) {
       try {
         await Location.create(item);
-      } catch (error: any) {
+      } catch (err: unknown) {
+        const error = err as { message?: string };
         console.error(`Error importing location ${item.name}: ${error.message}`);
       }
     }
     console.log('Locations imported.');
-    
+
     console.log('Importing regions...');
     for (const item of regions) {
       try {
         await Region.create(item);
-      } catch (error: any) {
+      } catch (err: unknown) {
+        const error = err as { message?: string };
         console.error(`Error importing region ${item.name}: ${error.message}`);
       }
     }
@@ -62,7 +65,8 @@ const importData = async () => {
     for (const item of users) {
       try {
         await User.create(item);
-      } catch (error: any) {
+      } catch (err: unknown) {
+        const error = err as { message?: string };
         console.error(`Error importing user ${item.firstName} ${item.lastName}: ${error.message}`);
       }
     }
@@ -71,7 +75,8 @@ const importData = async () => {
     for (const item of wineries) {
       try {
         await Winery.create(item);
-      } catch (error: any) {
+      } catch (err: unknown) {
+        const error = err as { message?: string };
         console.error(`Error importing winery ${item.name}: ${error.message}`);
       }
     }
@@ -81,7 +86,8 @@ const importData = async () => {
     for (const item of grapes) {
       try {
         await Grape.create(item);
-      } catch (error: any) {
+      } catch (err: unknown) {
+        const error = err as { message?: string };
         console.error(`Error importing grape ${item.name}: ${error.message}`);
       }
     }
@@ -92,17 +98,22 @@ const importData = async () => {
       try {
         let grapeId;
         if (item.grape instanceof mongoose.Types.ObjectId) {
-            grapeId = item.grape;
+          grapeId = item.grape;
         } else if (typeof item.grape === 'string') {
-            console.log(`Attempting to cast string grape "${item.grape}" to ObjectId for wine "${item.name}"`);
-            grapeId = new mongoose.Types.ObjectId(item.grape);
+          console.log(
+            `Attempting to cast string grape "${item.grape}" to ObjectId for wine "${item.name}"`,
+          );
+          grapeId = new mongoose.Types.ObjectId(item.grape);
         } else {
-            console.warn(`Grape for wine "${item.name}" is neither a string nor an ObjectId. Value: ${item.grape}, Type: ${typeof item.grape}`);
-            grapeId = new mongoose.Types.ObjectId(item.grape);
+          console.warn(
+            `Grape for wine "${item.name}" is neither a string nor an ObjectId. Value: ${item.grape}, Type: ${typeof item.grape}`,
+          );
+          grapeId = new mongoose.Types.ObjectId(item.grape);
         }
-        
+
         await Wine.create({ ...item, grape: grapeId });
-      } catch (error: any) {
+      } catch (err: unknown) {
+        const error = err as { message?: string };
         console.error(`Error importing wine ${item.name}: ${error.message}`);
       }
     }
@@ -111,16 +122,39 @@ const importData = async () => {
     console.log('Importing reviews...');
     for (const item of reviews) {
       try {
-        await Review.create(item);
-      } catch (error: any) {
-        console.error(`Error importing review for wine ID ${item.wineId} by user ID ${item.userId}: ${error.message}`);
+        let wineIdValue;
+        let userIdValue;
+
+        if (item.wineId instanceof mongoose.Types.ObjectId) {
+          wineIdValue = item.wineId;
+        } else if (typeof item.wineId === 'string') {
+          wineIdValue = new mongoose.Types.ObjectId(item.wineId);
+        } else {
+          wineIdValue = item.wineId;
+        }
+
+        if (item.userId instanceof mongoose.Types.ObjectId) {
+          userIdValue = item.userId;
+        } else if (typeof item.userId === 'string') {
+          userIdValue = new mongoose.Types.ObjectId(item.userId);
+        } else {
+          userIdValue = item.userId;
+        }
+
+        await Review.create({ ...item, wineId: wineIdValue, userId: userIdValue });
+      } catch (err: unknown) {
+        const error = err as { message?: string };
+        console.error(
+          `Error importing review for wine ID ${item.wineId} by user ID ${item.userId}: ${error.message}`,
+        );
       }
     }
     console.log('Reviews imported.');
 
     console.log('Data Imported!');
     process.exit();
-  } catch (error: any) {
+  } catch (err: unknown) {
+    const error = err as { message?: string };
     console.error(`Critical error during data import: ${error.message}`);
     process.exit(1);
   }
@@ -132,12 +166,14 @@ const destroyData = async () => {
     await Winery.deleteMany();
     await Wine.deleteMany();
     await Review.deleteMany();
-        await Location.deleteMany();
-        await Grape.deleteMany();
-        await Region.deleteMany();
-    
-        console.log('Data Destroyed!');    process.exit();
-  } catch (error: any) {
+    await Location.deleteMany();
+    await Grape.deleteMany();
+    await Region.deleteMany();
+
+    console.log('Data Destroyed!');
+    process.exit();
+  } catch (err: unknown) {
+    const error = err as { message?: string };
     console.error(`Error with data destruction: ${error.message}`);
     process.exit(1);
   }
