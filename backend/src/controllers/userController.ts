@@ -4,7 +4,6 @@ import User from '@/models/userModel';
 import { AuthenticatedRequest } from '@/middleware/auth';
 import HttpError from '@/utils/HttpError';
 import * as userService from '@/services/userService';
-import Wine from '@/models/wineModel';
 
 const auth = firebaseAdmin.auth();
 
@@ -54,8 +53,9 @@ export const registerUser = async (req: Request, res: Response) => {
         role: newUser.role,
       },
     });
-  } catch (error: any) {
-    if (error.code !== 'auth/email-already-exists') {
+  } catch (error: unknown) {
+    const err = error as { code?: string };
+    if (err.code !== 'auth/email-already-exists') {
       try {
         const user = await auth.getUserByEmail(email);
         if (user) {
@@ -67,13 +67,13 @@ export const registerUser = async (req: Request, res: Response) => {
       }
     }
 
-    if (error.code === 'auth/email-already-exists') {
+    if (err.code === 'auth/email-already-exists') {
       throw new HttpError('This email is already in use.', 409);
     }
-    if (error.code === 'auth/weak-password') {
+    if (err.code === 'auth/weak-password') {
       throw new HttpError('Password must be at least 6 characters long.', 400);
     }
-    if (error.code === 11000) {
+    if (err.code === '11000') {
       throw new HttpError('User with this email already exists in the database.', 409);
     }
 

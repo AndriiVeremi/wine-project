@@ -49,8 +49,7 @@ export const roleMiddleware = (allowedRoles: string[]) => {
 
     if (!req.user || !req.userId || !userRole) {
       return res.status(403).send({
-        message:
-          'User authentication or profile data is incomplete.',
+        message: 'User authentication or profile data is incomplete.',
       });
     }
 

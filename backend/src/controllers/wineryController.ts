@@ -21,9 +21,10 @@ export const registerWinery = async (req: AuthenticatedRequest, res: Response) =
       message: 'Winery registered successfully.',
       winery: newWinery,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
@@ -40,9 +41,10 @@ export const getWineries = async (req: Request, res: Response) => {
       limit,
       totalPages,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
@@ -51,9 +53,10 @@ export const getWinery = async (req: Request, res: Response) => {
     const { id } = req.params;
     const winery = await wineryService.getWineryById(id as string);
     res.status(200).json(winery);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
@@ -87,8 +90,9 @@ export const updateWinery = async (req: AuthenticatedRequest, res: Response) => 
       message: 'Successfully updated.',
       winery: updatedWinery,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };

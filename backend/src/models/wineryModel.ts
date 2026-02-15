@@ -10,30 +10,32 @@ export interface IWinery extends Document {
   isVip: boolean;
   logoUrl: string;
   galleryUrl: string[];
-    whereToBuy: { name: string; url: string }[];
-    contactEmail: string;
-    contactPhone: string;
-  }
-  
-  const winerySchema: Schema = new Schema({
-    name: { type: String, required: true, unique: true },
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
-    history: { type: String },
-    country: { type: Schema.Types.ObjectId, ref: 'Location' },
-    region: { type: Schema.Types.ObjectId, ref: 'Location' },
-    address: { type: String },
-    isVip: { type: Boolean, default: false },
-    logoUrl: { type: String },
-    galleryUrl: [String],
-    whereToBuy: [{
+  whereToBuy: { name: string; url: string }[];
+  contactEmail: string;
+  contactPhone: string;
+}
+
+const winerySchema: Schema = new Schema({
+  name: { type: String, required: true, unique: true },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  history: { type: String },
+  country: { type: Schema.Types.ObjectId, ref: 'Location' },
+  region: { type: Schema.Types.ObjectId, ref: 'Location' },
+  address: { type: String },
+  isVip: { type: Boolean, default: false },
+  logoUrl: { type: String },
+  galleryUrl: [String],
+  whereToBuy: [
+    {
       name: String,
-      url: String
-    }],
-    contactEmail: { type: String, required: true },
-    contactPhone: { type: String, required: true },
-  });
+      url: String,
+    },
+  ],
+  contactEmail: { type: String, required: true },
+  contactPhone: { type: String, required: true },
+});
 export default mongoose.model<IWinery>('Winery', winerySchema);

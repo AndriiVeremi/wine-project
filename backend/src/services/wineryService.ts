@@ -46,7 +46,7 @@ interface GetWineriesParams {
 export const getWineries = async (params: GetWineriesParams) => {
   const { search, countryId, regionId, sortBy, page = 1, limit = 10 } = params;
 
-  const query: any = {};
+  const query: Record<string, unknown> = {};
 
   if (search) {
     query.name = { $regex: search, $options: 'i' };

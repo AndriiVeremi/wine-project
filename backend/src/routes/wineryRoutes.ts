@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as wineryController from '@/controllers/wineryController';
-import { authMiddleware } from '@/middleware/auth'; 
+import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { registerWinerySchema, updateWinerySchema } from '@/schemas/winerySchemas';
 
@@ -10,24 +10,18 @@ router.post(
   '/',
   authMiddleware,
   validateBody(registerWinerySchema),
-  wineryController.registerWinery
+  wineryController.registerWinery,
 );
 
-router.get(
-  '/',
-  wineryController.getWineries
-);
+router.get('/', wineryController.getWineries);
 
-router.get(
-  '/:id',
-  wineryController.getWinery
-);
+router.get('/:id', wineryController.getWinery);
 
 router.patch(
   '/:id',
   authMiddleware,
   validateBody(updateWinerySchema),
-  wineryController.updateWinery
+  wineryController.updateWinery,
 );
 
 export default router;

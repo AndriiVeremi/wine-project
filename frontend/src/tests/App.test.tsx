@@ -7,7 +7,7 @@ describe('App', () => {
     render(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Main Page')).toBeInTheDocument();

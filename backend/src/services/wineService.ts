@@ -1,12 +1,30 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, PipelineStage } from 'mongoose';
 import Wine, { IWine } from '@/models/wineModel';
 import Winery, { IWinery } from '@/models/wineryModel';
 import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import HttpError from '@/utils/HttpError';
 
+interface WineQuery {
+  country?: string;
+  region?: string;
+  color?: string;
+  sweetness?: string;
+  grape?: string;
+  wineryId?: string;
+  minRating?: string;
+  maxPrice?: string;
+  vintage?: string;
+  name?: string;
+  sortBy?: string;
+  page?: string;
+  limit?: string;
+}
+
 export class WineService {
-  public async getAllWines(query: any): Promise<{ wines: HydratedDocument<IWine>[]; totalCount: number }> {
+  public async getAllWines(
+    query: WineQuery,
+  ): Promise<{ wines: HydratedDocument<IWine>[]; totalCount: number }> {
     const {
       country,
       region,
@@ -23,19 +41,19 @@ export class WineService {
       limit = '10',
     } = query;
 
-    const filter: any = {};
-    const sort: any = {};
-    const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
-    const take = parseInt(limit as string);
+    const filter: Record<string, unknown> = {};
+    const sort: Record<string, 1 | -1> = {};
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const take = parseInt(limit);
 
     if (name) filter.name = { $regex: name, $options: 'i' };
 
     if (country || region) {
-      const wineryFilter: any = {};
+      const wineryFilter: Record<string, string> = {};
       if (country) wineryFilter.country = country;
       if (region) wineryFilter.region = region;
       const matchingWineries = await Winery.find(wineryFilter).select('_id');
-      const wineryIds = matchingWineries.map(w => w._id);
+      const wineryIds = matchingWineries.map((w) => w._id);
       if (wineryIds.length > 0) {
         filter.winery = { $in: wineryIds };
       } else {
@@ -58,18 +76,22 @@ export class WineService {
 
     if (wineryId) filter.winery = wineryId;
 
-    if (minRating) filter.averageRating = { ...filter.averageRating, $gte: parseFloat(minRating) };
+    if (minRating) {
+      filter.averageRating = { $gte: parseFloat(minRating) };
+    }
 
-    if (maxPrice) filter.price = { ...filter.price, $lte: parseFloat(maxPrice) };
+    if (maxPrice) {
+      filter.price = { $lte: parseFloat(maxPrice) };
+    }
 
-    if (vintage) filter.vintage = parseInt(vintage as string);
+    if (vintage) filter.vintage = parseInt(vintage);
 
     const [sortField, sortOrder] = sortBy.split('_');
     if (sortField && sortOrder) {
       sort[sortField] = sortOrder === 'asc' ? 1 : -1;
     }
 
-    const aggregationPipeline: any[] = [
+    const aggregationPipeline: PipelineStage[] = [
       { $match: filter },
       {
         $lookup: {
@@ -95,7 +117,7 @@ export class WineService {
       },
     ];
 
-    const totalCountPipeline: any[] = [
+    const totalCountPipeline: PipelineStage[] = [
       { $match: filter },
       {
         $lookup: {
@@ -117,7 +139,10 @@ export class WineService {
   }
 
   public async getWineById(wineId: string): Promise<HydratedDocument<IWine> | null> {
-    const wine = await Wine.findById(wineId).populate('winery', 'name isVip').populate('grape', 'name').exec();
+    const wine = await Wine.findById(wineId)
+      .populate('winery', 'name isVip')
+      .populate('grape', 'name')
+      .exec();
     return wine;
   }
 
@@ -155,7 +180,9 @@ export class WineService {
     userId: string,
     userRole: string,
   ): Promise<HydratedDocument<IWine> | null> {
-    const wine = await Wine.findById(wineId).populate<{ winery: HydratedDocument<IWinery> }>('winery').exec();
+    const wine = await Wine.findById(wineId)
+      .populate<{ winery: HydratedDocument<IWinery> }>('winery')
+      .exec();
 
     if (!wine) {
       return null;
@@ -186,7 +213,9 @@ export class WineService {
   }
 
   public async deleteWine(wineId: string, userId: string, userRole: string): Promise<void> {
-    const wine = await Wine.findById(wineId).populate<{ winery: HydratedDocument<IWinery> }>('winery').exec();
+    const wine = await Wine.findById(wineId)
+      .populate<{ winery: HydratedDocument<IWinery> }>('winery')
+      .exec();
 
     if (!wine) {
       throw new HttpError('Wine not found.', 404);

@@ -84,12 +84,17 @@ export const regions = [
     _id: kakhetiId,
     name: 'Kakheti',
     description: `Kakheti is the principal wine-producing region of Georgia, located in the eastern part of the country. It is home to the largest concentration of vineyards, wineries, and protected wine appellations. Kakheti is widely regarded as the historical and cultural heart of Georgian winemaking, with traditions dating back more than 8,000 years. The region plays a central role in shaping Georgia’s wine identity, combining ancient winemaking practices – most notably qvevri fermentation – with modern European techniques.`,
-    imageUrl: 'https://images.unsplash.com/photo-1621213426767-c25091763137?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    imageUrl:
+      'https://images.unsplash.com/photo-1621213426767-c25091763137?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     country: georgiaId,
     climate: {
       title: 'Geographic location and climate',
       description: `Kakheti lies between the Greater Caucasus Mountains and the Alazani River basin. Most vineyards are situated in the Alazani Valley, which provides ideal natural conditions for viticulture. These conditions allow grapes to ripen evenly, achieving balanced sugar levels while maintaining natural acidity.`,
-      features: ['warm and dry summers', 'mild autumns', 'a high number of sunny days throughout the growing season.'],
+      features: [
+        'warm and dry summers',
+        'mild autumns',
+        'a high number of sunny days throughout the growing season.',
+      ],
     },
     soils: {
       title: 'Soils of Kakheti',
@@ -108,7 +113,11 @@ export const regions = [
     traditions: {
       title: 'Winemaking culture and traditions',
       description: `Kakheti is the birthplace of qvevri winemaking, the traditional Georgian method of fermenting and aging wine in large clay vessels buried underground. This technique has been recognized by UNESCO as part of the Intangible Cultural Heritage of Humanity. Winemaking here represents a living cultural tradition passed down through generations.`,
-      rituals: ['religious rituals', 'traditional feasts (supra)', 'family and seasonal celebrations.'],
+      rituals: [
+        'religious rituals',
+        'traditional feasts (supra)',
+        'family and seasonal celebrations.',
+      ],
     },
     grapeVarieties: {
       title: 'Main grape varieties of Kakheti',
@@ -129,7 +138,8 @@ export const regions = [
       red: [
         {
           name: 'Saperavi',
-          description: 'a teinturier grape with dark flesh, producing deeply colored and structured wines',
+          description:
+            'a teinturier grape with dark flesh, producing deeply colored and structured wines',
         },
       ],
     },
@@ -207,8 +217,7 @@ export const wineries = [
     _id: winery1Id,
     name: 'Winery "Sunny Valley"',
     owner: owner1Id,
-    history:
-      'Our story begins with a great love for grapes grown under the warm Ukrainian sun.',
+    history: 'Our story begins with a great love for grapes grown under the warm Ukrainian sun.',
     country: ukraineId,
     region: odesaId,
     address: '1, Vynna St., Odesa',
@@ -226,7 +235,8 @@ export const wineries = [
     _id: winery2Id,
     name: 'Chateau Kamenka',
     owner: owner2Id,
-    history: 'A family winery that preserves the ancient winemaking traditions of the Kamenka region.',
+    history:
+      'A family winery that preserves the ancient winemaking traditions of the Kamenka region.',
     country: ukraineId,
     region: khersonId,
     address: '10, Tsentralna St., Kamenka village',
@@ -336,9 +346,7 @@ export const grapes = [
 ];
 
 export const wines = [
-
   {
-
     _id: wine1Id,
 
     winery: winery1Id,
@@ -380,11 +388,9 @@ export const wines = [
     foodPairing: ['Steak', 'Lamb', 'Aged Cheese'],
 
     supplier: 'Main Supplier Inc.',
-
   },
 
   {
-
     _id: wine2Id,
 
     winery: winery1Id,
@@ -426,11 +432,9 @@ export const wines = [
     foodPairing: ['Fish', 'Seafood', 'Salads'],
 
     supplier: 'Coastal Wines Distribution',
-
   },
 
   {
-
     _id: wine3Id,
 
     winery: winery2Id,
@@ -472,11 +476,9 @@ export const wines = [
     foodPairing: ['Pizza', 'Pasta', 'Grilled Vegetables'],
 
     supplier: 'Southern Grapes Ltd.',
-
   },
 
   {
-
     _id: wine4Id,
 
     winery: winery2Id,
@@ -518,11 +520,9 @@ export const wines = [
     foodPairing: ['Light snacks', 'Salads', 'Goat cheese'],
 
     supplier: 'Southern Grapes Ltd.',
-
   },
 
   {
-
     _id: wine5Id,
 
     winery: winery3Id,
@@ -564,11 +564,9 @@ export const wines = [
     foodPairing: ['Spicy Asian cuisine', 'Fruit desserts'],
 
     supplier: 'Mountain Vineyards Co.',
-
   },
 
   {
-
     _id: wine6Id,
 
     winery: winery3Id,
@@ -610,15 +608,11 @@ export const wines = [
     foodPairing: ['Appetizers', 'Fruits', 'Desserts'],
 
     supplier: 'Mountain Vineyards Co.',
-
   },
-
 ];
 
 export const reviews = [
-
   {
-
     wineId: wine1Id,
 
     userId: user1Id,
@@ -626,11 +620,9 @@ export const reviews = [
     rating: 5,
 
     comment: 'This wine is simply unsurpassed! The perfect taste for special moments.',
-
   },
 
   {
-
     wineId: wine1Id,
 
     userId: user2Id,
@@ -638,11 +630,9 @@ export const reviews = [
     rating: 4,
 
     comment: 'I liked it very much, but I would like a little more body.',
-
   },
 
   {
-
     wineId: wine2Id,
 
     userId: user1Id,
@@ -650,11 +640,9 @@ export const reviews = [
     rating: 4,
 
     comment: 'A wonderful everyday wine, pleasant and refreshing.',
-
   },
 
   {
-
     wineId: wine3Id,
 
     userId: owner1Id,
@@ -662,11 +650,9 @@ export const reviews = [
     rating: 5,
 
     comment: 'Merlot Kamenka is the pride of our land. I recommend it!',
-
   },
 
   {
-
     wineId: wine4Id,
 
     userId: user2Id,
@@ -674,7 +660,5 @@ export const reviews = [
     rating: 3,
 
     comment: 'A little too light for my taste, but it will do for the summer.',
-
   },
-
 ];
