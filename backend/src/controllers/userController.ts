@@ -4,6 +4,7 @@ import User from '@/models/userModel';
 import { AuthenticatedRequest } from '@/middleware/auth';
 import HttpError from '@/utils/HttpError';
 import * as userService from '@/services/userService';
+import Wine from '@/models/wineModel';
 
 const auth = firebaseAdmin.auth();
 
@@ -59,9 +60,7 @@ export const registerUser = async (req: Request, res: Response) => {
         const user = await auth.getUserByEmail(email);
         if (user) {
           await auth.deleteUser(user.uid);
-          console.log(
-            `User ${user.uid} deleted due to DB error.`,
-          );
+          console.log(`User ${user.uid} deleted due to DB error.`);
         }
       } catch (cleanupError) {
         console.error('Failed to delete user', cleanupError);
@@ -80,4 +79,37 @@ export const registerUser = async (req: Request, res: Response) => {
 
     throw new HttpError('User registration error', 500);
   }
+};
+
+export const getUserFavorites = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.userId) {
+    throw new HttpError('Unauthorized', 401);
+  }
+
+  const favorites = await userService.getUserFavorites(req.userId);
+  res.status(200).json(favorites);
+};
+
+export const addFavoriteWine = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.userId) {
+    throw new HttpError('Unauthorized', 401);
+  }
+
+  const { wineId } = req.body;
+  if (!wineId) {
+    throw new HttpError('Wine ID is required', 400);
+  }
+
+  const result = await userService.addFavoriteWine(req.userId, wineId);
+  res.status(200).json(result);
+};
+
+export const removeFavoriteWine = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.userId) {
+    throw new HttpError('Unauthorized', 401);
+  }
+
+  const wineId = req.params.wineId as string;
+  const result = await userService.removeFavoriteWine(req.userId, wineId);
+  res.status(200).json(result);
 };
