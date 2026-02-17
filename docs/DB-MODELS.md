@@ -1,140 +1,140 @@
-# Data Models
+# Моделі даних
 
-This document describes the Mongoose/MongoDB data models for the application.
+Цей документ описує моделі даних Mongoose/MongoDB для додатку.
 
 ---
 
-## User
-Represents an application user.
+## User (Користувач)
+Представляє користувача додатку.
 ```javascript
 {
-  firebaseUid: { type: String, required: true, unique: true }, // Unique ID from Firebase
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  firebaseUid: { type: String, required: true, unique: true }, // Унікальний ID з Firebase
+  firstName: { type: String, required: true }, // Ім'я користувача
+  lastName: { type: String, required: true }, // Прізвище користувача
+  email: { type: String, required: true, unique: true }, // Електронна пошта
   role: { 
     type: String, 
     enum: ['USER', 'WINERY_OWNER', 'ADMIN'], 
     default: 'USER' 
-  },
-  winery: { type: Schema.Types.ObjectId, ref: 'Winery' }, // ID of the owner's winery (if any)
-  favoriteWines: [{ type: Schema.Types.ObjectId, ref: 'Wine' }] // List of favorite wine IDs
+  }, // Роль користувача в системі
+  winery: { type: Schema.Types.ObjectId, ref: 'Winery' }, // ID виноробні власника (якщо є)
+  favoriteWines: [{ type: Schema.Types.ObjectId, ref: 'Wine' }] // Список ID улюблених вин
 }
 ```
 
-## Wineries
-Represents a winery.
+## Wineries (Виноробні)
+Представляє виноробню.
 ```javascript
 {
-  name: { type: String, required: true, unique: true },
-  owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  history: String,
-  country: { type: Schema.Types.ObjectId, ref: 'Location' },
-  region: { type: Schema.Types.ObjectId, ref: 'Location' },
-  address: String,
-  contactEmail: String,
-  contactPhone: String,
-  isVip: { type: Boolean, default: false }, // VIP status of the winery
-  logoUrl: String,
-  galleryUrl: [String],
+  name: { type: String, required: true, unique: true }, // Назва виноробні
+  owner: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Власник виноробні
+  history: String, // Історія виноробні
+  country: { type: Schema.Types.ObjectId, ref: 'Location' }, // Країна (з моделі Location)
+  region: { type: Schema.Types.ObjectId, ref: 'Location' }, // Регіон (з моделі Location)
+  address: String, // Адреса
+  contactEmail: String, // Контактна пошта
+  contactPhone: String, // Контактний телефон
+  isVip: { type: Boolean, default: false }, // VIP-статус виноробні
+  logoUrl: String, // URL логотипу
+  galleryUrl: [String], // Галерея зображень
   whereToBuy: [{ 
     name: String, 
     url: String 
-  }] // Where to buy
+  }] // Де придбати
 }
 ```
 
-## Wine
-Represents a specific wine product.
+## Wine (Вино)
+Представляє конкретний винний продукт.
 ```javascript
 {
-  winery: { type: Schema.Types.ObjectId, ref: 'Winery', required: true },
-  name: { type: String, required: true },
-  vintage: { type: Number, required: true }, // Vintage year
-  grape: { type: Schema.Types.ObjectId, ref: 'Grape', required: true }, // Grape variety
-  description: String,
-  tastingNotes: [String], // Taste "tags" for searching
-  imageUrl: String,
+  winery: { type: Schema.Types.ObjectId, ref: 'Winery', required: true }, // Виноробня, що виробляє вино
+  name: { type: String, required: true }, // Назва вина
+  vintage: { type: Number, required: true }, // Рік врожаю
+  grape: { type: Schema.Types.ObjectId, ref: 'Grape', required: true }, // Сорт винограду
+  description: String, // Опис вина
+  tastingNotes: [String], // Смакові "теги" для пошуку
+  imageUrl: String, // URL зображення вина
   color: { 
     type: String, 
     enum: ['red', 'white', 'rose', 'orange'], 
     required: true 
-  }, // Color of wine
+  }, // Колір вина
   sweetness: { 
     type: String, 
     enum: ['dry', 'semi-dry', 'sweet'], 
     required: true 
-  }, // Dryness/sweetness
-  averageRating: { type: Number, default: 0 }, // Average rating
-  price: { type: Number, required: true }, // Price
-  volume: Number, // Volume in liters
-  boxQuantity: Number, // Number of bottles in a box
-  hasPackaging: Boolean, // Whether the wine has packaging
-  alcohol: String, // Alcohol content
-  decanting: Boolean, // Whether decanting is required
-  bottleDiameter: String, // Bottle diameter
-  servingTemperature: String, // Recommended serving temperature
-  foodPairing: [String], // Gastronomic combination
-  supplier: String // Supplier
+  }, // Сухість/солодкість
+  averageRating: { type: Number, default: 0 }, // Середній рейтинг
+  price: { type: Number, required: true }, // Ціна
+  volume: Number, // Об'єм у літрах
+  boxQuantity: Number, // Кількість пляшок у ящику
+  hasPackaging: Boolean, // Чи має вино упаковку
+  alcohol: String, // Вміст алкоголю
+  decanting: Boolean, // Чи потрібна декантація
+  bottleDiameter: String, // Діаметр пляшки
+  servingTemperature: String, // Рекомендована температура подачі
+  foodPairing: [String], // Гастрономічне поєднання
+  supplier: String // Постачальник
 }
 ```
 
-## Review
-Represents a user review for a wine.
+## Review (Відгук)
+Представляє відгук користувача на вино.
 ```javascript
 {
-  wineId: { type: Schema.Types.ObjectId, ref: 'Wine', required: true },
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  rating: { type: Number, required: true, min: 1, max: 5 },
-  comment: String,
-  createdAt: { type: Date, default: Date.now }
+  wineId: { type: Schema.Types.ObjectId, ref: 'Wine', required: true }, // ID вина, до якого залишено відгук
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // ID користувача, що залишив відгук
+  rating: { type: Number, required: true, min: 1, max: 5 }, // Рейтинг від 1 до 5
+  comment: String, // Текст коментаря
+  createdAt: { type: Date, default: Date.now } // Дата створення відгуку
 }
 ```
 
-## Grape
-Represents a grape variety.
+## Grape (Сорт винограду)
+Представляє сорт винограду.
 ```javascript
 {
-  name: { type: String, required: true, unique: true }, // Name of the variety
-  description: String, // Description of the variety
-  type: { type: String, enum: ['red', 'white', 'rose'] }, // Type of grape
-  alsoKnownAs: [String], // Other names for the variety
-  characteristics: [String], // List of taste characteristics
-  foodPairing: [String], // List of recommended dishes
-  imageUrl: String, // URL of the grape image
-  regions: [{ type: Schema.Types.ObjectId, ref: 'Location' }] // Regions where this grape is grown
+  name: { type: String, required: true, unique: true }, // Назва сорту
+  description: String, // Опис сорту
+  type: { type: String, enum: ['red', 'white', 'rose'] }, // Тип винограду
+  alsoKnownAs: [String], // Інші назви сорту
+  characteristics: [String], // Список смакових характеристик
+  foodPairing: [String], // Список рекомендованих страв
+  imageUrl: String, // URL зображення винограду
+  regions: [{ type: Schema.Types.ObjectId, ref: 'Location' }] // Регіони, де вирощують цей виноград
 }
 ```
 
-## Tour
-Represents a wine tour offered by a winery.
+## Tour (Винний тур)
+Представляє винний тур, який пропонує виноробня.
 ```javascript
 {
-  winery: { type: Schema.Types.ObjectId, ref: 'Winery', required: true }, // Winery ID
-  name: { type: String, required: true }, // Tour name
-  description: String, // Description
-  duration: Number, // Duration in hours
-  price: Number, // Price
-  images: [String], // Tour gallery
+  winery: { type: Schema.Types.ObjectId, ref: 'Winery', required: true }, // ID виноробні
+  name: { type: String, required: true }, // Назва туру
+  description: String, // Опис
+  duration: Number, // Тривалість у годинах
+  price: Number, // Ціна
+  images: [String], // Галерея туру
   groupSize: { 
     min: Number, 
     max: Number 
-  } // Group size
+  } // Розмір групи
 }
 ```
 
-## Location
-Represents a geographical location, such as a country or a region.
+## Location (Локація)
+Представляє географічне місце, таке як країна або регіон.
 ```javascript
 {
-  name: { type: String, required: true, unique: true }, // Location name (country, region)
-  type: { type: String, enum: ['country', 'region'], required: true }, // Location type
-  parentLocation: { type: Schema.Types.ObjectId, ref: 'Location', default: null } // For regions belonging to a country
+  name: { type: String, required: true, unique: true }, // Назва локації (країна, регіон)
+  type: { type: String, enum: ['country', 'region'], required: true }, // Тип локації
+  parentLocation: { type: Schema.Types.ObjectId, ref: 'Location', default: null } // Для регіонів, що належать до країни
 }
 ```
 
-## Region
-Represents a detailed wine region page.
+## Region (Регіон)
+Представляє детальну сторінку винного регіону.
 ```javascript
 {
   name: { type: String, required: true, unique: true },
