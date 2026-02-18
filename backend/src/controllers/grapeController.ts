@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import GrapeService from '../services/grapeService';
+import GrapeService from '@/services/grapeService';
 
 class GrapeController {
   public async getGrapes(req: Request, res: Response, next: NextFunction) {

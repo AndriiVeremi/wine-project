@@ -1,3 +1,7 @@
+> **Примітка:** Цей документ містить опис API. Актуальну, інтерактивну та завжди оновлену документацію можна знайти в Swagger UI за адресою: [http://localhost:5005/api-docs](http://localhost:5005/api-docs).
+
+---
+
 # API Documentation
 
 (Примітка: "Захищено" означає, що ендпоінт вимагає дійсний Firebase токен для автентифікації.)
@@ -8,7 +12,7 @@
 
 ### **POST** `/api/users/register`
 - **Опис:** Реєстрація нового користувача. Цей публічний ендпоінт створює користувача в Firebase Authentication, призначає йому роль (`USER` або `WINERY_OWNER`) і створює профіль користувача в базі даних.
-- **Headers:** Не потрібні.
+- **Headers:** Not required.
 - **Body:**
   ```json
   {
@@ -33,9 +37,32 @@
     }
   }
   ```
+- **Errors:**
+  - `400`: Invalid input or user already exists
+  - `500`: Server error
+
+### **POST** `/api/users/login`
+- **Опис:** Вхід користувача в систему.
+- **Headers:** Not required.
+- **Body:**
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "token": "YOUR_JWT_TOKEN_HERE"
+  }
+  ```
+- **Errors:**
+  - `400`: Invalid credentials
+  - `500`: Server error
 
 ### **GET** `/api/users/me`
-- **Опис:** Профіль поточного користувача.
+- **Опис:** Отримати профіль поточного користувача.
 - **Headers:** `Authorization: Bearer <firebase_token>`
 - **Response (200 OK):**
   ```json
@@ -50,6 +77,10 @@
     "favoriteWines": ["60d21b4667d0d8992e610c99"]
   }
   ```
+- **Errors:**
+  - `401`: Unauthorized
+  - `404`: User not found
+  - `500`: Server error
 
 ---
 
@@ -71,9 +102,12 @@
     }
   ]
   ```
+- **Errors:**
+  - `401`: Unauthorized
+  - `500`: Server error
 
 ### **POST** `/api/users/me/favorites`
-- **Опис:** Додати до улюблених.
+- **Опис:** Додати вино до улюблених.
 - **Headers:** `Authorization: Bearer <firebase_token>`
 - **Body:**
   ```json
@@ -87,9 +121,9 @@
     "message": "Wine added to favorites"
   }
   ```
-- **Помилки:**
-  - `400`: Вино вже є в улюблених
-  - `404`: Вино не знайдено
+- **Errors:**
+  - `400`: Wine already in favorites
+  - `404`: Wine not found
 
 ### **DELETE** `/api/users/me/favorites/:wineId`
 - **Опис:** Видалити вино з улюблених.
@@ -100,15 +134,15 @@
     "message": "Wine removed from favorites"
   }
   ```
-- **Помилки:**
-  - `404`: Вино не знайдено
+- **Errors:**
+  - `404`: Wine not found
 
 ---
 
 ## Локації (`/api/locations`)
 
 ### **GET** `/api/locations/countries`
-- **Опис:** Список об'єктів країн.
+- **Опис:** Отримати список унікальних країн.
 - **Response (200 OK):**
   ```json
   [
@@ -116,10 +150,12 @@
     { "id": "60d21b4667d0d8992e610c86", "name": "Georgia", "type": "country" }
   ]
   ```
+- **Errors:**
+  - `500`: Server error
 
 ### **GET** `/api/locations/regions`
-- **Опис:** Список об'єктів регіонів для країни.
-- **Query Params:** `?countryId=<country_location_id>` (ID країни з GET /api/locations/countries)
+- **Опис:** Отримати список регіонів для вказаної країни.
+- **Query Params:** `?countryId=<country_location_id>`
 - **Response (200 OK):**
   ```json
   [
@@ -127,13 +163,16 @@
     { "id": "60d21b4667d0d8992e610c88", "name": "Kherson", "type": "region", "parentLocation": "60d21b4667d0d8992e610c85" }
   ]
   ```
+- **Errors:**
+  - `400`: Country query parameter is required
+  - `500`: Server error
 
 ---
 
 ## Регіони (`/api/regions`)
 
 ### **GET** `/api/regions/:name`
-- **Опис:** Отримати детальну інформацію про регіон.
+- **Опис:** Отримати детальну інформацію про регіон за його назвою.
 - **Response (200 OK):**
   ```json
   {
@@ -179,21 +218,24 @@
     }
   }
   ```
+- **Errors:**
+  - `404`: Region not found
+  - `500`: Server error
 
 ---
 
 ## Виноробні (`/api/wineries`)
 
 ### **POST** `/api/wineries`
-- **Опис:** Реєстрація виноробні. Роль користувача `WINERY_OWNER`.
+- **Опис:** Реєстрація нової виноробні. Потребує ролі `WINERY_OWNER`.
 - **Headers:** `Authorization: Bearer <firebase_token>`
 - **Body:**
   ```json
   {
     "name": "Виноробня 'Сонячна Долина'",
     "history": "Історія нашої виноробні починається з 1999 року...",
-    "country": "60d21b4667d0d8992e610c85", // ID країни з Location
-    "region": "60d21b4667d0d8992e610c87", // ID регіону з Location
+    "country": "60d21b4667d0d8992e610c85",
+    "region": "60d21b4667d0d8992e610c87",
     "address": "вул. Винна, 1",
     "logoUrl": "https://example.com/logo.png",
     "galleryUrl": ["https://example.com/gallery1.png"],
@@ -202,17 +244,22 @@
     ]
   }
   ```
-- **Response (201 Created):** Створений об'єкт виноробні.
+- **Response (201 Created):** Created winery object.
+- **Errors:**
+  - `400`: Invalid input
+  - `401`: Unauthorized
+  - `409`: Winery with this name already exists
+  - `500`: Server error
 
 ### **GET** `/api/wineries`
 - **Опис:** Отримати список виноробень. **VIP-виноробні завжди відображаються першими в списку.**
 - **Query Params:**
-  *   `search=Назва` (пошук за назвою)
-  *   `countryId=<location_id>` (фільтрація за ID країни з Location)
-  *   `regionId=<location_id>` (фільтрація за ID регіону з Location)
-  *   `sortBy=name_asc` (поле для сортування, наприклад, `name_asc`, `name_desc`, `country_asc`, `region_desc`)
-  *   `page=1` (номер сторінки, за замовчуванням 1)
-  *   `limit=10` (кількість елементів на сторінці, за замовчуванням 10)
+  *   `search=Назва` (search by name)
+  *   `countryId=<location_id>` (filter by country ID)
+  *   `regionId=<location_id>` (filter by region ID)
+  *   `sortBy=name_asc` (sort by field, e.g., `name_asc`, `name_desc`, `country_asc`, `region_desc`)
+  *   `page=1` (page number, default 1)
+  *   `limit=10` (items per page, default 10)
 - **Response (200 OK):**
   ```json
   [
@@ -231,10 +278,15 @@
     }
   ]
   ```
+- **Errors:**
+  - `500`: Server error
 
 ### **GET** `/api/wineries/:id`
-- **Опис:** Отримати повну про виноробню.
-- **Response (200 OK):** Детальний об'єкт виноробні, включно з масивом вин.
+- **Опис:** Отримати повну інформацію про виноробню.
+- **Response (200 OK):** Detailed winery object.
+- **Errors:**
+  - `404`: Winery not found
+  - `500`: Server error
 
 ### **PATCH** `/api/wineries/:id`
 - **Опис:** Оновити інформацію про виноробню (тільки власник або адмін).
@@ -246,14 +298,29 @@
     "address": "вул. Нова, 123"
   }
   ```
-- **Response (200 OK):** Оновлений об'єкт виноробні.
+- **Response (200 OK):** Updated winery object.
+- **Errors:**
+  - `400`: Invalid input
+  - `401`: Unauthorized
+  - `403`: Forbidden
+  - `404`: Winery not found
+  - `500`: Server error
+
+### **DELETE** `/api/wineries/:id`
+- **Опис:** Видалити виноробню (тільки власник або адмін).
+- **Headers:** `Authorization: Bearer <firebase_token>`
+- **Response (204 No Content):** No body.
+- **Errors:**
+  - `401`: Unauthorized
+  - `403`: Forbidden (user is not an admin or the owner)
+  - `404`: Winery not found
 
 ---
 
 ## Адміністрування (`/api/admin`)
 
 ### **PATCH** `/api/admin/wineries/:id/vip`
-- **Опис:** Встановити або зняти VIP-статус для виноробні.
+- **Опис:** Встановити або зняти VIP-статус для виноробні (тільки адмін).
 - **Headers:** `Authorization: Bearer <admin_firebase_token>`
 - **Body:**
   ```json
@@ -261,22 +328,32 @@
     "isVip": true
   }
   ```
-- **Response (200 OK):** Оновлений об'єкт виноробні.
+- **Response (200 OK):** Updated winery object.
+- **Errors:**
+  - `401`: Unauthorized
+  - `403`: Forbidden
+  - `404`: Winery not found
+  - `500`: Server error
 
 ---
 
 ## Вина (`/api/wines`)
 
 ### **GET** `/api/wines`
-- **Опис:** Список вин з гнучкою фільтрацією. **Вина від VIP-виноробень завжди відображаються першими.**
+- **Опис:** Отримати список вин з гнучкою фільтрацією. **Вина від VIP-виноробень завжди відображаються першими.**
 - **Query Params:**
   *   `color=red&sweetness=dry&minRating=4&maxPrice=1000&sortBy=price_asc`
-  *   `regionId=<location_id>` (фільтрація за ID регіону з Location)
-- **Response (200 OK):** `[ { wine1 }, { wine2 }, ... ]`
+  *   `regionId=<location_id>` (filter by region ID)
+- **Response (200 OK):** Array of wine objects.
+- **Errors:**
+  - `500`: Server error
 
 ### **GET** `/api/wines/:id`
 - **Опис:** Отримати детальну інформацію про вино.
-- **Response (200 OK):** Детальний об'єкт вина.
+- **Response (200 OK):** Detailed wine object.
+- **Errors:**
+  - `404`: Wine not found
+  - `500`: Server error
 
 ### **POST** `/api/wines`
 - **Опис:** Додати нове вино (тільки власник виноробні або адмін).
@@ -295,7 +372,12 @@
     "sweetness": "dry"
   }
   ```
-- **Response (201 Created):** Створений об'єкт вина.
+- **Response (201 Created):** Created wine object.
+- **Errors:**
+  - `400`: Invalid input
+  - `401`: Unauthorized
+  - `403`: Forbidden
+  - `500`: Server error
 
 ### **PATCH** `/api/wines/:id`
 - **Опис:** Оновити інформацію про вино (тільки власник або адмін).
@@ -308,12 +390,23 @@
     "price": 800
   }
   ```
-- **Response (200 OK):** Оновлений об'єкт вина.
+- **Response (200 OK):** Updated wine object.
+- **Errors:**
+  - `400`: Invalid input
+  - `401`: Unauthorized
+  - `403`: Forbidden
+  - `404`: Wine not found
+  - `500`: Server error
 
 ### **DELETE** `/api/wines/:id`
 - **Опис:** Видалити вино (тільки власник або адмін).
 - **Headers:** `Authorization: Bearer <firebase_token>`
-- **Response (204 No Content):** Немає тіла відповіді.
+- **Response (204 No Content):** No body.
+- **Errors:**
+  - `401`: Unauthorized
+  - `403`: Forbidden
+  - `404`: Wine not found
+  - `500`: Server error
 
 ---
 
@@ -342,6 +435,9 @@
     }
   ]
   ```
+- **Errors:**
+  - `404`: Wine not found
+  - `500`: Server error
 
 ### **POST** `/api/wines/:wineId/reviews`
 - **Опис:** Додати новий відгук до вина. Користувач може залишити лише один відгук для кожного вина.
@@ -353,27 +449,19 @@
     "comment": "Це найкраще вино, що я куштував! Відпад."
   }
   ```
-- **Response (201 Created):**
-  ```json
-  {
-    "_id": "60d21b4667d0d8992e610c85",
-    "wineId": "60d21b4667d0d8992e610c99",
-    "userId": "60d21b4667d0d8992e610c81",
-    "rating": 5,
-    "comment": "Це найкраще вино, що я куштував! Насичений смак та аромат.",
-    "createdAt": "2024-01-15T10:30:00.000Z"
-  }
-  ```
-- **Помилки:**
-  - `400`: Ви вже залишили відгук для цього вина
-  - `404`: Вино не знайдено
+- **Response (201 Created):** Created review object.
+- **Errors:**
+  - `400`: You have already reviewed this wine
+  - `401`: Unauthorized
+  - `404`: Wine not found
+  - `500`: Server error
 
 ---
 
 ## Сорти Винограду (`/api/grapes`)
 
 ### **GET** `/api/grapes`
-- **Опис:** Список сортів винограду.
+- **Опис:** Отримати список сортів винограду.
 - **Query Params:** `?search=Chard`
 - **Response (200 OK):**
   ```json
@@ -382,32 +470,79 @@
     { "id": "...", "name": "Charlemange" }
   ]
   ```
+- **Errors:**
+  - `500`: Server error
 
 ---
 
 ## Винні Тури (`/api/tours`)
 
+
+
 ### **GET** `/api/tours`
-- **Опис:** Список доступних турів.
-- **Query Params:** `?wineryId=...`
-- **Response (200 OK):** `[ { tour1 }, { tour2 }, ... ]`
+
+- **Опис:** Отримати список доступних турів.
+
+- **Query Params:** `?wineryId=<winery_id>`
+
+- **Response (200 OK):** Array of tour objects.
+
+- **Errors:**
+
+  - `500`: Server error
+
+
 
 ### **GET** `/api/tours/:id`
+
 - **Опис:** Отримати детальну інформацію про тур.
-- **Response (200 OK):** Детальний об'єкт туру.
+
+- **Response (200 OK):** Detailed tour object.
+
+- **Errors:**
+
+  - `404`: Tour not found
+
+  - `500`: Server error
+
+
 
 ### **POST** `/api/tours`
+
 - **Опис:** Додати новий тур (тільки власник виноробні або адмін).
+
 - **Headers:** `Authorization: Bearer <firebase_token>`
+
 - **Body:**
+
   ```json
+
   {
+
       "name": "Дегустаційний тур 'Серце виноробні'",
+
       "description": "Екскурсія по виноградниках, відвідування виробництва та дегустація 5 видів вин.",
+
       "duration": 3,
+
       "price": 1500,
+
       "images": ["https://example.com/tour1.png", "https://example.com/tour2.png"],
+
       "groupSize": { "min": 2, "max": 10 }
+
   }
+
   ```
-- **Response (201 Created):** Створений об'єкт туру.
+
+- **Response (201 Created):** Created tour object.
+
+- **Errors:**
+
+  - `400`: Invalid input
+
+  - `401`: Unauthorized
+
+  - `403`: Forbidden
+
+  - `500`: Server error
