@@ -62,7 +62,7 @@ export const deleteWine = async (req: AuthenticatedRequest, res: Response, next:
       throw new HttpError('User not authenticated or role missing', 401);
     }
     await wineService.deleteWine(id, req.userId, req.userRole);
-    res.status(200).json({ message: 'Вино успішно видалено' });
+    res.status(200).json({ message: 'Wine delete' });
   } catch (error) {
     next(error);
   }
