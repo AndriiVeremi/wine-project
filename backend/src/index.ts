@@ -1,9 +1,11 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
 import apiRouter from '@/routes/api';
 import errorMiddleware from '@/middleware/errorMiddleware';
+import { swaggerSpec } from '@/config/swagger';
 
 dotenv.config();
 
@@ -22,6 +24,7 @@ const port = process.env.PORT || 5000;
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', apiRouter);
 
 app.use(errorMiddleware);

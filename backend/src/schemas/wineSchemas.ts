@@ -1,0 +1,43 @@
+import Joi from 'joi';
+
+export const createWineSchema = Joi.object({
+  name: Joi.string().required(),
+  winery: Joi.string().required(),
+  vintage: Joi.number().integer().min(1900).max(new Date().getFullYear()).required(),
+  grape: Joi.string().required(),
+  price: Joi.number().min(0).required(),
+  description: Joi.string().optional(),
+  tastingNotes: Joi.array().items(Joi.string()).optional(),
+  imageUrl: Joi.string().uri().optional(),
+  color: Joi.string().valid('red', 'white', 'rose', 'orange').required(),
+  sweetness: Joi.string().valid('dry', 'semi-dry', 'semi-sweet', 'sweet').required(),
+  volume: Joi.number().optional(),
+  boxQuantity: Joi.number().optional(),
+  hasPackaging: Joi.boolean().optional(),
+  alcohol: Joi.string().optional(),
+  decanting: Joi.boolean().optional(),
+  bottleDiameter: Joi.string().optional(),
+  servingTemperature: Joi.string().optional(),
+  foodPairing: Joi.array().items(Joi.string()).optional(),
+  supplier: Joi.string().optional(),
+});
+
+export const updateWineSchema = Joi.object({
+  name: Joi.string().optional(),
+  grape: Joi.string().optional(),
+  price: Joi.number().min(0).optional(),
+  description: Joi.string().optional(),
+  tastingNotes: Joi.array().items(Joi.string()).optional(),
+  imageUrl: Joi.string().uri().optional(),
+  color: Joi.string().valid('red', 'white', 'rose', 'orange').optional(),
+  sweetness: Joi.string().valid('dry', 'semi-dry', 'semi-sweet', 'sweet').optional(),
+  volume: Joi.number().optional(),
+  boxQuantity: Joi.number().optional(),
+  hasPackaging: Joi.boolean().optional(),
+  alcohol: Joi.string().optional(),
+  decanting: Joi.boolean().optional(),
+  bottleDiameter: Joi.string().optional(),
+  servingTemperature: Joi.string().optional(),
+  foodPairing: Joi.array().items(Joi.string()).optional(),
+  supplier: Joi.string().optional(),
+}).min(1);

@@ -4,6 +4,7 @@ import HttpError from '@/utils/HttpError';
 import * as wineryService from '@/services/wineryService';
 import * as userService from '@/services/userService';
 import Winery from '@/models/wineryModel';
+import User from '@/models/userModel';
 
 export const registerWinery = async (req: AuthenticatedRequest, res: Response) => {
   if (!req.userId) {
@@ -21,9 +22,10 @@ export const registerWinery = async (req: AuthenticatedRequest, res: Response) =
       message: 'Winery registered successfully.',
       winery: newWinery,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
@@ -40,9 +42,10 @@ export const getWineries = async (req: Request, res: Response) => {
       limit,
       totalPages,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
@@ -51,15 +54,16 @@ export const getWinery = async (req: Request, res: Response) => {
     const { id } = req.params;
     const winery = await wineryService.getWineryById(id as string);
     res.status(200).json(winery);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
 export const updateWinery = async (req: AuthenticatedRequest, res: Response) => {
   if (!req.userId || !req.userRole) {
-    throw new HttpError('Неавторизовано', 401);
+    throw new HttpError('Unauthorized', 401);
   }
 
   const { id } = req.params;
@@ -87,8 +91,33 @@ export const updateWinery = async (req: AuthenticatedRequest, res: Response) => 
       message: 'Successfully updated.',
       winery: updatedWinery,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
+export const deleteWinery = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.userId) {
+    throw new HttpError('Unauthorized', 401);
+  }
+
+  const { id } = req.params;
+  const userId = req.userId;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new HttpError('User not found', 404);
+    }
+
+    await wineryService.deleteWineryById(id as string, user);
+
+    res.status(204).send();
+  } catch (error: unknown) {
+    console.error(error);
+    const err = error as { statusCode?: number; message?: string };
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };

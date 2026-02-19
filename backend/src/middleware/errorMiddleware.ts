@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {
+const errorMiddleware = (err: Error, req: Request, res: Response, _next: NextFunction) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({

@@ -1,5 +1,5 @@
 import Winery from '@/models/wineryModel';
-import User from '@/models/userModel';
+import User, { IUser } from '@/models/userModel';
 import HttpError from '@/utils/HttpError';
 import { Types } from 'mongoose';
 
@@ -46,7 +46,7 @@ interface GetWineriesParams {
 export const getWineries = async (params: GetWineriesParams) => {
   const { search, countryId, regionId, sortBy, page = 1, limit = 10 } = params;
 
-  const query: any = {};
+  const query: Record<string, unknown> = {};
 
   if (search) {
     query.name = { $regex: search, $options: 'i' };
@@ -122,4 +122,21 @@ export const updateWinery = async (
   await winery.save();
 
   return winery;
+};
+
+export const deleteWineryById = async (wineryId: Types.ObjectId | string, user: IUser) => {
+  const winery = await Winery.findById(wineryId);
+  if (!winery) {
+    throw new HttpError('Winery not found.', 404);
+  }
+
+  if (user.role !== 'ADMIN' && winery.owner.toString() !== user._id.toString()) {
+    throw new HttpError('You are not authorized to delete this winery.', 403);
+  }
+
+  if (winery.owner) {
+    await User.findByIdAndUpdate(winery.owner, { $unset: { winery: 1 } });
+  }
+
+  await Winery.findByIdAndDelete(wineryId);
 };

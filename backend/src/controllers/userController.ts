@@ -53,31 +53,63 @@ export const registerUser = async (req: Request, res: Response) => {
         role: newUser.role,
       },
     });
-  } catch (error: any) {
-    if (error.code !== 'auth/email-already-exists') {
+  } catch (error: unknown) {
+    const err = error as { code?: string };
+    if (err.code !== 'auth/email-already-exists') {
       try {
         const user = await auth.getUserByEmail(email);
         if (user) {
           await auth.deleteUser(user.uid);
-          console.log(
-            `User ${user.uid} deleted due to DB error.`,
-          );
+          console.log(`User ${user.uid} deleted due to DB error.`);
         }
       } catch (cleanupError) {
         console.error('Failed to delete user', cleanupError);
       }
     }
 
-    if (error.code === 'auth/email-already-exists') {
+    if (err.code === 'auth/email-already-exists') {
       throw new HttpError('This email is already in use.', 409);
     }
-    if (error.code === 'auth/weak-password') {
+    if (err.code === 'auth/weak-password') {
       throw new HttpError('Password must be at least 6 characters long.', 400);
     }
-    if (error.code === 11000) {
+    if (err.code === '11000') {
       throw new HttpError('User with this email already exists in the database.', 409);
     }
 
     throw new HttpError('User registration error', 500);
   }
+};
+
+export const getUserFavorites = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.userId) {
+    throw new HttpError('Unauthorized', 401);
+  }
+
+  const favorites = await userService.getUserFavorites(req.userId);
+  res.status(200).json(favorites);
+};
+
+export const addFavoriteWine = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.userId) {
+    throw new HttpError('Unauthorized', 401);
+  }
+
+  const { wineId } = req.body;
+  if (!wineId) {
+    throw new HttpError('Wine ID is required', 400);
+  }
+
+  const result = await userService.addFavoriteWine(req.userId, wineId);
+  res.status(200).json(result);
+};
+
+export const removeFavoriteWine = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.userId) {
+    throw new HttpError('Unauthorized', 401);
+  }
+
+  const wineId = req.params.wineId as string;
+  const result = await userService.removeFavoriteWine(req.userId, wineId);
+  res.status(200).json(result);
 };
