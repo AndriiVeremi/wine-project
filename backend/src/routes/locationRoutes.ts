@@ -18,7 +18,7 @@ const router = Router();
  *               type: array
  *               items:
  *                 type: string
- *                 example: France
+ *                 example: Georgia
  *       500:
  *         description: Server error
  */
@@ -37,7 +37,7 @@ router.get('/countries', LocationController.getCountries);
  *         schema:
  *           type: string
  *         description: The country to get regions for
- *         example: France
+ *         example: Georgia
  *     responses:
  *       200:
  *         description: A list of regions for the specified country.

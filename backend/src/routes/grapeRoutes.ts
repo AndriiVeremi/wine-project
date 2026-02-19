@@ -25,6 +25,26 @@ const router = Router();
  *                   name:
  *                     type: string
  *                     example: Cabernet Sauvignon
+ *                   type:
+ *                     type: string
+ *                     enum: [red, white, rose]
+ *                     example: red
+ *                   description:
+ *                     type: string
+ *                   alsoKnownAs:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   characteristics:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   foodPairing:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   imageUrl:
+ *                     type: string
  *       500:
  *         description: Server error
  */

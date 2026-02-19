@@ -10,7 +10,7 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:5005',
+        url: '/api',
       },
     ],
     components: {
@@ -25,6 +25,14 @@ const options: swaggerJsdoc.Options = {
         // User schema
       },
     },
+    tags: [
+      { name: 'Users', description: 'User management and authentication' },
+      { name: 'Wineries', description: 'Winery management' },
+      { name: 'Wines', description: 'Wine catalog management' },
+      { name: 'Reviews', description: 'Wine reviews and ratings' },
+      { name: 'Grapes', description: 'Grape varieties information' },
+      { name: 'Locations', description: 'Countries and regions information' },
+    ],
   },
   apis: ['./src/routes/*.ts'],
 };
