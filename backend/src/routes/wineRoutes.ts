@@ -14,16 +14,22 @@ const router = Router();
  *     summary: Retrieve a list of wines with optional filters
  *     parameters:
  *       - in: query
- *         name: type
+ *         name: color
  *         schema:
  *           type: string
- *           enum: [Red, White, Rose, Sparkling, Dessert]
- *         description: Filter by wine type
+ *           enum: [red, white, rose, orange]
+ *         description: Filter by wine color
+ *       - in: query
+ *         name: sweetness
+ *         schema:
+ *           type: string
+ *           enum: [dry, semi-dry, semi-sweet, sweet]
+ *         description: Filter by sweetness level
  *       - in: query
  *         name: grape
  *         schema:
  *           type: string
- *         description: Filter by grape variety
+ *         description: Filter by grape variety (ID)
  *       - in: query
  *         name: country
  *         schema:
@@ -50,10 +56,18 @@ const router = Router();
  *                   name:
  *                     type: string
  *                     example: Château Margaux
- *                   year:
+ *                   vintage:
  *                     type: integer
  *                     example: 2015
- *                   # ... other wine properties
+ *                   color:
+ *                     type: string
+ *                     enum: [red, white, rose, orange]
+ *                   sweetness:
+ *                     type: string
+ *                     enum: [dry, semi-dry, semi-sweet, sweet]
+ *                   price:
+ *                     type: number
+ *                     example: 500
  *       500:
  *         description: Server error
  */
@@ -81,23 +95,32 @@ router.get('/', wineController.getAllWines);
  *                 type: string
  *                 description: ID of the winery
  *                 example: 60d21b4667d0d8992e610c85
- *               year:
+ *               vintage:
  *                 type: integer
  *                 example: 2023
  *               grape:
  *                 type: string
  *                 description: ID of the grape variety
  *                 example: 60d21b4667d0d8992e610c86
- *               type:
+ *               color:
  *                 type: string
- *                 enum: [Red, White, Rose, Sparkling, Dessert]
- *                 example: Red
+ *                 enum: [red, white, rose, orange]
+ *                 example: red
+ *               sweetness:
+ *                 type: string
+ *                 enum: [dry, semi-dry, semi-sweet, sweet]
+ *                 example: dry
+ *               price:
+ *                 type: number
+ *                 example: 150
  *             required:
  *               - name
  *               - winery
- *               - year
+ *               - vintage
  *               - grape
- *               - type
+ *               - color
+ *               - sweetness
+ *               - price
  *     responses:
  *       201:
  *         description: Wine created successfully

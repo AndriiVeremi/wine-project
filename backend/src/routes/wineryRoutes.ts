@@ -23,29 +23,43 @@ const router = Router();
  *             properties:
  *               name:
  *                 type: string
- *                 example: My Awesome Winery
+ *                 example: My Winery
+ *               country:
+ *                 type: string
+ *                 description: ID of the country (Location)
+ *                 example: 60d21b4667d0d8992e610c80
  *               region:
  *                 type: string
- *                 example: Bordeaux
+ *                 description: ID of the region (Location)
+ *                 example: 60d21b4667d0d8992e610c81
  *               description:
  *                 type: string
  *                 example: A brief description of the winery.
+ *               history:
+ *                 type: string
+ *                 example: This winery has a long history...
  *               address:
  *                 type: string
- *                 example: 123 Winery Road
+ *                 example: 12 Novovolynsk
  *               contactEmail:
  *                 type: string
  *                 format: email
- *                 example: info@mywinery.com
+ *                 example: dashuk10@mywinery.com
  *               contactPhone:
  *                 type: string
- *                 example: "+1234567890"
+ *                 example: "+30963754422"
+ *               logoUrl:
+ *                 type: string
+ *                 example: http://example.com/logo.png
+ *               galleryUrl:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["http://example.com/img1.png"]
  *             required:
  *               - name
- *               - region
- *               - description
- *               - address
  *               - contactEmail
+ *               - contactPhone
  *     responses:
  *       201:
  *         description: Winery registered successfully
@@ -59,11 +73,7 @@ const router = Router();
  *                   example: 60d21b4667d0d8992e610c85
  *                 name:
  *                   type: string
- *                   example: My Awesome Winery
- *                 region:
- *                   type: string
- *                   example: Bordeaux
- *                 # ... other winery properties
+ *                   example: My Winery
  *       400:
  *         description: Invalid input
  *       401:
@@ -99,11 +109,16 @@ router.post(
  *                     example: 60d21b4667d0d8992e610c85
  *                   name:
  *                     type: string
- *                     example: My Awesome Winery
+ *                     example: My Winery
+ *                   country:
+ *                     type: string
+ *                     example: 60d21b4667d0d8992e610c80
  *                   region:
  *                     type: string
- *                     example: Bordeaux
- *                   # ... other winery properties
+ *                     example: 60d21b4667d0d8992e610c81
+ *                   isVip:
+ *                     type: boolean
+ *                     example: false
  *       500:
  *         description: Server error
  */
@@ -135,11 +150,13 @@ router.get('/', wineryController.getWineries);
  *                   example: 60d21b4667d0d8992e610c85
  *                 name:
  *                   type: string
- *                   example: My Awesome Winery
+ *                   example: My Winery
+ *                 country:
+ *                   type: string
+ *                   example: 60d21b4667d0d8992e610c80
  *                 region:
  *                   type: string
- *                   example: Bordeaux
- *                   # ... other winery properties
+ *                   example: 60d21b4667d0d8992e610c81
  *       404:
  *         description: Winery not found
  *       500:
@@ -175,7 +192,20 @@ router.get('/:id', wineryController.getWinery);
  *               description:
  *                 type: string
  *                 example: An updated description.
- *             # ... allow other fields to be updated
+ *               history:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               contactEmail:
+ *                 type: string
+ *               contactPhone:
+ *                 type: string
+ *               logoUrl:
+ *                 type: string
+ *               galleryUrl:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
  *         description: Winery updated successfully
@@ -190,7 +220,6 @@ router.get('/:id', wineryController.getWinery);
  *                 name:
  *                   type: string
  *                   example: My Updated Winery Name
- *                   # ... other winery properties
  *       400:
  *         description: Invalid input
  *       401:

@@ -11,7 +11,7 @@ const router = Router();
  * /users/register:
  *   post:
  *     tags: [Users]
- *     summary: Реєстрація нового користувача
+ *     summary: Register new user
  *     requestBody:
  *       required: true
  *       content:
@@ -21,14 +21,14 @@ const router = Router();
  *             properties:
  *               firstName:
  *                 type: string
- *                 example: John
+ *                 example: Andrii
  *               lastName:
  *                 type: string
- *                 example: Doe
+ *                 example: Veremii
  *               email:
  *                 type: string
  *                 format: email
- *                 example: john.doe@example.com
+ *                 example: dashuk10@example.com
  *               password:
  *                 type: string
  *                 format: password
@@ -60,7 +60,7 @@ router.post('/register', validateBody(registerSchema), userController.registerUs
  * /users/login:
  *   post:
  *     tags: [Users]
- *     summary: Вхід користувача в систему
+ *     summary: User login
  *     requestBody:
  *       required: true
  *       content:
@@ -71,11 +71,11 @@ router.post('/register', validateBody(registerSchema), userController.registerUs
  *               email:
  *                 type: string
  *                 format: email
- *                 example: john.doe@example.com
+ *                 example: dashuk10@example.com
  *               password:
  *                 type: string
  *                 format: password
- *                 example: "yourSecurePassword"
+ *                 example: "your password"
  *             required:
  *               - email
  *               - password
@@ -101,7 +101,7 @@ router.post('/login', validateBody(loginSchema));
  * /users/me:
  *   get:
  *     tags: [Users]
- *     summary: Отримати профіль поточного користувача
+ *     summary: User profile
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -121,7 +121,7 @@ router.get('/me', authMiddleware, userController.getUserProfile);
  * /users/me/favorites:
  *   get:
  *     tags: [Users]
- *     summary: Отримати список улюблених вин
+ *     summary: List of favorite wines
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -139,7 +139,7 @@ router.get('/me/favorites', authMiddleware, userController.getUserFavorites);
  * /users/me/favorites:
  *   post:
  *     tags: [Users]
- *     summary: Додати вино до улюблених
+ *     summary: Add wines to favorites
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -178,7 +178,7 @@ router.post(
  * /users/me/favorites/{wineId}:
  *   delete:
  *     tags: [Users]
- *     summary: Видалити вино з улюблених
+ *     summary: Delete wines from favorites
  *     security:
  *       - bearerAuth: []
  *     parameters:
