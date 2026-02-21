@@ -48,7 +48,6 @@ const router = Router();
  *         description: Server error
  */
 router.get('/:wineId/reviews', reviewController.getWineReviews);
-router.get('/:wineId/reviews/:reviewId', reviewController.getWineReviewById);
 
 /**
  * @swagger
@@ -101,7 +100,5 @@ router.post(
   validateBody(createReviewSchema),
   reviewController.createReview,
 );
-
-router.delete('/:wineId/reviews/:reviewId', authMiddleware, reviewController.deleteReview);
 
 export default router;

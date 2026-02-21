@@ -6,7 +6,6 @@ import reviewRoutes from '@/routes/reviewRoutes';
 import locationRoutes from '@/routes/locationRoutes';
 import grapeRoutes from '@/routes/grapeRoutes';
 
-
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -15,10 +14,9 @@ router.get('/', (req, res) => {
 
 router.use('/users', userRoutes);
 router.use('/wineries', wineryRoutes);
-router.use('/wines', reviewRoutes);
 router.use('/wines', wineRoutes);
+router.use('/wines', reviewRoutes);
 router.use('/locations', locationRoutes);
 router.use('/grapes', grapeRoutes);
-
 
 export default router;
