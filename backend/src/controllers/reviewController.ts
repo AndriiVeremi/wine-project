@@ -15,6 +15,19 @@ export const getWineReviews = async (req: Request, res: Response, next: NextFunc
   }
 };
 
+export const getWineReviewById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const reviewId = req.params.reviewId as string;
+    const review = await reviewService.getReviewById(reviewId);
+    if (!review) {
+      throw new HttpError('Review not found', 404);
+    }
+    res.status(200).json(review);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createReview = async (
   req: AuthenticatedRequest,
   res: Response,
@@ -59,6 +72,7 @@ export const deleteReview = async (
       throw new HttpError('User not authenticated', 401);
     }
     const reviewId = req.params.reviewId as string;
+    console.log('Deleting review with ID:', reviewId, 'by user:', req.userId, 'with role:', req.userRole);
     await reviewService.deleteReview(reviewId, req.userId, req.userRole);
     res.status(200).json({ message: 'Review deleted successfully' });
   } catch (error) {

@@ -12,6 +12,11 @@ export class ReviewService {
     return reviews;
   }
 
+  public async getReviewById(reviewId: string): Promise<HydratedDocument<IReview> | null> {
+    const review = await Review.findById(reviewId).populate('userId', 'firstName lastName').exec();
+    return review;
+  }
+
   public async createReview(
     wineId: string,
     userId: string,
