@@ -24,6 +24,8 @@ const router = Router();
  */
 router.get('/countries', LocationController.getCountries);
 
+router.get('/countries/:id', LocationController.getCountryById);
+
 /**
  * @swagger
  * /locations/regions:
@@ -40,7 +42,7 @@ router.get('/countries', LocationController.getCountries);
  *         example: Georgia
  *     responses:
  *       200:
- *         description: A list of regions for the specified country.
+ *         description: A list of regions for the specified counatry.
  *         content:
  *           application/json:
  *             schema:
@@ -52,7 +54,12 @@ router.get('/countries', LocationController.getCountries);
  *         description: Country query parameter is required
  *       500:
  *         description: Server error
- */
-router.get('/regions', LocationController.getRegionsByCountry);
+*/
+
+// router.get('/regions', LocationController.getRegionsByCountry);
+
+router.get('/regions/:countryId', LocationController.getRegionsByCountry);
+
+router.get('/regions/:countryId/:regionId', LocationController.getRegionsById);
 
 export default router;
