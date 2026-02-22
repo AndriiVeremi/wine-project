@@ -8,6 +8,8 @@ const user2Id = new mongoose.Types.ObjectId();
 const winery1Id = new mongoose.Types.ObjectId();
 const winery2Id = new mongoose.Types.ObjectId();
 const winery3Id = new mongoose.Types.ObjectId();
+const winery4Id = new mongoose.Types.ObjectId();
+const winery5Id = new mongoose.Types.ObjectId();
 
 const wine1Id = new mongoose.Types.ObjectId();
 const wine2Id = new mongoose.Types.ObjectId();
@@ -15,6 +17,10 @@ const wine3Id = new mongoose.Types.ObjectId();
 const wine4Id = new mongoose.Types.ObjectId();
 const wine5Id = new mongoose.Types.ObjectId();
 const wine6Id = new mongoose.Types.ObjectId();
+const wine7Id = new mongoose.Types.ObjectId();
+const wine8Id = new mongoose.Types.ObjectId();
+const wine9Id = new mongoose.Types.ObjectId();
+const wine10Id = new mongoose.Types.ObjectId();
 
 const kabernetSauvignonId = new mongoose.Types.ObjectId();
 const chardonnayId = new mongoose.Types.ObjectId();
@@ -22,6 +28,8 @@ const merlotId = new mongoose.Types.ObjectId();
 const kabernetFrancId = new mongoose.Types.ObjectId();
 const rieslingId = new mongoose.Types.ObjectId();
 const isabellaId = new mongoose.Types.ObjectId();
+const saperaviId = new mongoose.Types.ObjectId();
+const tsitskaTsolikouriId = new mongoose.Types.ObjectId();
 
 const ukraineId = new mongoose.Types.ObjectId();
 const odesaId = new mongoose.Types.ObjectId();
@@ -268,6 +276,37 @@ export const wineries = [
     contactEmail: 'contact3@example.com',
     contactPhone: '+380997778899',
   },
+  {
+    _id: winery4Id,
+    name: 'Kindzmarauli Marani',
+    owner: owner2Id,
+    history: 'One of the largest wineries in the Kindzmarauli microzone, founded in 2001.',
+    country: georgiaId,
+    region: kakhetiId,
+    address: 'Kvareli, Georgia',
+    isVip: true,
+    logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=KM_Logo',
+    galleryUrl: ['https://placehold.co/600x400/EEE/31343C?text=KM_Gallery_1'],
+    whereToBuy: [{ name: '8000 Vintages', url: 'https://8000vintages.ua' }],
+    contactEmail: 'contact4@example.com',
+    contactPhone: '+995322550000',
+  },
+  {
+    _id: winery5Id,
+    name: "Baia's Wine",
+    owner: owner2Id,
+    history:
+      'A family winery in the village of Obcha, Imereti, founded by two sisters, Baia and Gvantsa Abuladze.',
+    country: georgiaId,
+    region: imeretiId,
+    address: 'Obcha, Bagdati, Georgia',
+    isVip: false,
+    logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=BW_Logo',
+    galleryUrl: ['https://placehold.co/600x400/EEE/31343C?text=BW_Gallery_1'],
+    whereToBuy: [{ name: 'Vino&Vino', url: 'https://vinovino.ua' }],
+    contactEmail: 'contact5@example.com',
+    contactPhone: '+995555123456',
+  },
 ];
 
 export const grapes = [
@@ -342,6 +381,30 @@ export const grapes = [
     foodPairing: ['fruit desserts', 'chocolate'],
     imageUrl: 'https://placehold.co/400x300/EEE/31343C?text=Isabella',
     regions: [lvivId],
+  },
+  {
+    _id: saperaviId,
+    name: 'Saperavi',
+    description:
+      'A Georgian red grape variety that is one of the most well-known in the country. It is a teinturier grape, meaning its flesh and juice are red, which gives the wine a deep, inky color.',
+    color: 'red',
+    alsoKnownAs: [],
+    characteristics: ['deep color', 'high acidity', 'robust tannins', 'dark berries', 'spice'],
+    foodPairing: ['grilled meat', 'stews', 'aged cheeses'],
+    imageUrl: 'https://placehold.co/400x300/EEE/31343C?text=Saperavi',
+    regions: [kakhetiId],
+  },
+  {
+    _id: tsitskaTsolikouriId,
+    name: 'Tsitska-Tsolikouri',
+    description:
+      'A classic blend of two white grape varieties from Imereti, western Georgia. Tsitska provides acidity and citrus notes, while Tsolikouri adds body and floral aromas.',
+    color: 'white',
+    alsoKnownAs: [],
+    characteristics: ['aromatic', 'crisp acidity', 'green apple', 'pear', 'floral'],
+    foodPairing: ['salads', 'seafood', 'chicken'],
+    imageUrl: 'https://placehold.co/400x300/EEE/31343C?text=Tsitska-Tsolikouri',
+    regions: [imeretiId],
   },
 ];
 
@@ -608,6 +671,98 @@ export const wines = [
     foodPairing: ['Appetizers', 'Fruits', 'Desserts'],
 
     supplier: 'Mountain Vineyards Co.',
+  },
+  {
+    _id: wine7Id,
+    winery: winery4Id,
+    name: 'Saperavi Qvevri',
+    vintage: 2019,
+    grape: saperaviId,
+    description:
+      'Classic Kakhetian Saperavi, aged in qvevri. A full-bodied, tannic wine with a rich bouquet of black cherry and pomegranate.',
+    tastingNotes: ['black cherry', 'pomegranate', 'blackberry', 'spice'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Saperavi_Qvevri',
+    color: 'red',
+    sweetness: 'dry',
+    averageRating: 4.8,
+    price: 950,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: true,
+    alcohol: '14.0%',
+    decanting: true,
+    servingTemperature: '18-20°C',
+    foodPairing: ['Shashlik', 'Khachapuri', 'Aged Guda cheese'],
+    supplier: 'Georgian Wine Imports',
+  },
+  {
+    _id: wine8Id,
+    winery: winery4Id,
+    name: 'Kindzmarauli',
+    vintage: 2021,
+    grape: saperaviId,
+    description:
+      'A naturally semi-sweet red wine from the Kindzmarauli microzone. It has a harmonious taste with notes of ripe cherry and blackberry.',
+    tastingNotes: ['ripe cherry', 'blackberry', 'jam'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Kindzmarauli',
+    color: 'red',
+    sweetness: 'semi-sweet',
+    averageRating: 4.7,
+    price: 880,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: true,
+    alcohol: '11.5%',
+    decanting: false,
+    servingTemperature: '14-16°C',
+    foodPairing: ['Desserts', 'Fruits', 'Blue cheese'],
+    supplier: 'Georgian Wine Imports',
+  },
+  {
+    _id: wine9Id,
+    winery: winery5Id,
+    name: 'Tsitska-Tsolikouri',
+    vintage: 2022,
+    grape: tsitskaTsolikouriId,
+    description:
+      'A light, refreshing white wine from Imereti. It has a bright acidity and aromas of green apple, pear, and wildflowers.',
+    tastingNotes: ['green apple', 'pear', 'wildflowers', 'citrus'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Tsitska_Tsolikouri',
+    color: 'white',
+    sweetness: 'dry',
+    averageRating: 4.6,
+    price: 750,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: false,
+    alcohol: '12.0%',
+    decanting: false,
+    servingTemperature: '10-12°C',
+    foodPairing: ['Imeretian cheese', 'Pkhali', 'Grilled fish'],
+    supplier: 'Georgian Artisan Wines',
+  },
+  {
+    _id: wine10Id,
+    winery: winery5Id,
+    name: 'Otskhanuri Sapere',
+    vintage: 2020,
+    grape: saperaviId, // Assuming Otskhanuri Sapere is a type of Saperavi for simplicity
+    description:
+      'A rare red wine from Imereti, known for its high acidity and rich tannic structure. Notes of red berries, herbs, and spices.',
+    tastingNotes: ['red berries', 'herbs', 'spices', 'pomegranate'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Otskhanuri_Sapere',
+    color: 'red',
+    sweetness: 'dry',
+    averageRating: 4.5,
+    price: 1100,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: true,
+    alcohol: '13.0%',
+    decanting: true,
+    servingTemperature: '16-18°C',
+    foodPairing: ['Game', 'Spicy meat dishes', 'Lobio'],
+    supplier: 'Georgian Artisan Wines',
   },
 ];
 
