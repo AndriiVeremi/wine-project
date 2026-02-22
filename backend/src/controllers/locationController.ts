@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import LocationService from '@/services/locationService';
+import Location from '@/models/locationModel';
 import HttpError from '@/utils/HttpError';
 
 class LocationController {
@@ -20,7 +21,13 @@ class LocationController {
         throw new HttpError('Country query parameter is required', 400);
       }
 
-      const regions = await LocationService.getRegionsByCountry(country as string);
+      const countryDoc = await Location.findOne({ name: country as string, type: 'country' });
+
+      if (!countryDoc) {
+        throw new HttpError('Country not found', 404);
+      }
+
+      const regions = await LocationService.getRegionsByCountry(countryDoc._id);
       res.json(regions);
     } catch (error) {
       next(error);
