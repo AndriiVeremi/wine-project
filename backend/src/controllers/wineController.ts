@@ -29,10 +29,7 @@ export const getWineById = async (req: Request, res: Response, next: NextFunctio
 
 export const createWine = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    if (!req.userId) {
-      throw new HttpError('User not authenticated', 401);
-    }
-    const newWine = await wineService.createWine(req.body, req.userId);
+    const newWine = await wineService.createWine(req.body, req.userId!);
     res.status(201).json(newWine);
   } catch (error) {
     next(error);
@@ -42,10 +39,7 @@ export const createWine = async (req: AuthenticatedRequest, res: Response, next:
 export const updateWine = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id as string;
-    if (!req.userId || !req.userRole) {
-      throw new HttpError('User not authenticated or role missing', 401);
-    }
-    const updatedWine = await wineService.updateWine(id, req.body, req.userId, req.userRole);
+    const updatedWine = await wineService.updateWine(id, req.body, req.userId!, req.userRole!);
     if (!updatedWine) {
       throw new HttpError('Wine not found', 404);
     }
@@ -58,10 +52,7 @@ export const updateWine = async (req: AuthenticatedRequest, res: Response, next:
 export const deleteWine = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id as string;
-    if (!req.userId || !req.userRole) {
-      throw new HttpError('User not authenticated or role missing', 401);
-    }
-    await wineService.deleteWine(id, req.userId, req.userRole);
+    await wineService.deleteWine(id, req.userId!, req.userRole!);
     res.status(200).json({ message: 'Wine delete' });
   } catch (error) {
     next(error);
