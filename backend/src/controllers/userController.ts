@@ -1,36 +1,29 @@
-import { Request, Response } from 'express';
+import * as express from 'express';
 import { firebaseAdmin } from '@/services/firebase';
 import User from '@/models/userModel';
 import { AuthenticatedRequest } from '@/middleware/auth';
 import HttpError from '@/utils/HttpError';
 import * as userService from '@/services/userService';
 
-const auth = firebaseAdmin.auth();
-
-export const getUserProfile = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.user?.uid) {
-    throw new HttpError('Unauthorized', 401);
-  }
-
-  const user = await userService.getUserProfileByFirebaseUid(req.user.uid);
-
+export const getUserProfile = async (req: AuthenticatedRequest, res: express.Response) => {
+  const user = await userService.getUserProfileByFirebaseUid(req.user!.uid);
   res.status(200).json(user);
 };
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (req: express.Request, res: express.Response) => {
   const { email, password, firstName, lastName, role } = req.body;
   const allowedRoles = ['USER', 'WINERY_OWNER'];
   const assignedRole = allowedRoles.includes(role) ? role : 'USER';
 
   try {
-    const userRecord = await auth.createUser({
+    const userRecord = await firebaseAdmin.auth().createUser({
       email,
       password,
       displayName: `${firstName} ${lastName}`,
     });
 
     const uid = userRecord.uid;
-    await auth.setCustomUserClaims(uid, { role: assignedRole });
+    await firebaseAdmin.auth().setCustomUserClaims(uid, { role: assignedRole });
 
     const newUser = new User({
       firebaseUid: uid,
@@ -57,9 +50,9 @@ export const registerUser = async (req: Request, res: Response) => {
     const err = error as { code?: string };
     if (err.code !== 'auth/email-already-exists') {
       try {
-        const user = await auth.getUserByEmail(email);
+        const user = await firebaseAdmin.auth().getUserByEmail(email);
         if (user) {
-          await auth.deleteUser(user.uid);
+          await firebaseAdmin.auth().deleteUser(user.uid);
           console.log(`User ${user.uid} deleted due to DB error.`);
         }
       } catch (cleanupError) {
@@ -81,35 +74,23 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserFavorites = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.userId) {
-    throw new HttpError('Unauthorized', 401);
-  }
-
-  const favorites = await userService.getUserFavorites(req.userId);
+export const getUserFavorites = async (req: AuthenticatedRequest, res: express.Response) => {
+  const favorites = await userService.getUserFavorites(req.userId!);
   res.status(200).json(favorites);
 };
 
-export const addFavoriteWine = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.userId) {
-    throw new HttpError('Unauthorized', 401);
-  }
-
+export const addFavoriteWine = async (req: AuthenticatedRequest, res: express.Response) => {
   const { wineId } = req.body;
   if (!wineId) {
     throw new HttpError('Wine ID is required', 400);
   }
 
-  const result = await userService.addFavoriteWine(req.userId, wineId);
+  const result = await userService.addFavoriteWine(req.userId!, wineId);
   res.status(200).json(result);
 };
 
-export const removeFavoriteWine = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.userId) {
-    throw new HttpError('Unauthorized', 401);
-  }
-
+export const removeFavoriteWine = async (req: AuthenticatedRequest, res: express.Response) => {
   const wineId = req.params.wineId as string;
-  const result = await userService.removeFavoriteWine(req.userId, wineId);
+  const result = await userService.removeFavoriteWine(req.userId!, wineId);
   res.status(200).json(result);
 };

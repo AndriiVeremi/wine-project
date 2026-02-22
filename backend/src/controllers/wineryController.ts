@@ -7,11 +7,7 @@ import Winery from '@/models/wineryModel';
 import User from '@/models/userModel';
 
 export const registerWinery = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.userId) {
-    throw new HttpError('Unauthorized', 401);
-  }
-
-  const ownerId = req.userId;
+  const ownerId = req.userId!;
   const wineryData = req.body;
 
   try {
@@ -62,14 +58,10 @@ export const getWinery = async (req: Request, res: Response) => {
 };
 
 export const updateWinery = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.userId || !req.userRole) {
-    throw new HttpError('Unauthorized', 401);
-  }
-
   const { id } = req.params;
   const updateData = req.body;
-  const userId = req.userId;
-  const userRole = req.userRole;
+  const userId = req.userId!;
+  const userRole = req.userRole!;
 
   try {
     const winery = await Winery.findById(id as string);
@@ -99,12 +91,8 @@ export const updateWinery = async (req: AuthenticatedRequest, res: Response) => 
 };
 
 export const deleteWinery = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.userId) {
-    throw new HttpError('Unauthorized', 401);
-  }
-
   const { id } = req.params;
-  const userId = req.userId;
+  const userId = req.userId!;
 
   try {
     const user = await User.findById(userId);
