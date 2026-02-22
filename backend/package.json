@@ -9,7 +9,7 @@
     "test:coverage": "jest --coverage",
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn src/index.ts",
+    "dev": "ts-node-dev --poll -r tsconfig-paths/register --respawn src/index.ts",
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "db:seed": "ts-node -r tsconfig-paths/register src/data/seeder.ts --import",

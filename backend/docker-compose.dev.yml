@@ -1,0 +1,35 @@
+services:
+  backend:
+    container_name: backend
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongodb
+    networks:
+      - express-mongo
+    ports:
+      - "5005:5000"
+
+  mongodb:
+    container_name: mongodb
+    restart: always
+    image: mongo:4.2.0
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+
+networks:
+  express-mongo:
+  react-express:
+
+volumes:
+  mongo_data:
