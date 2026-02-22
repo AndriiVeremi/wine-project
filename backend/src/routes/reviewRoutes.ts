@@ -4,7 +4,7 @@ import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { createReviewSchema } from '@/schemas/reviewSchemas';
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 /**
  * @swagger
@@ -47,7 +47,7 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.get('/:wineId/reviews', reviewController.getWineReviews);
+router.get('/', reviewController.getWineReviews);
 
 /**
  * @swagger
@@ -94,11 +94,6 @@ router.get('/:wineId/reviews', reviewController.getWineReviews);
  *       500:
  *         description: Server error
  */
-router.post(
-  '/:wineId/reviews',
-  authMiddleware,
-  validateBody(createReviewSchema),
-  reviewController.createReview,
-);
+router.post('/', authMiddleware, validateBody(createReviewSchema), reviewController.createReview);
 
 export default router;

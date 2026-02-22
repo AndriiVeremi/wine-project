@@ -1,4 +1,5 @@
 import Location from '@/models/locationModel';
+import mongoose from 'mongoose';
 
 class LocationService {
   public async getCountries() {
@@ -6,7 +7,7 @@ class LocationService {
     return countries;
   }
 
-  public async getRegionsByCountry(countryId: string) {
+  public async getRegionsByCountry(countryId: mongoose.Types.ObjectId) {
     const regions = await Location.find({ type: 'region', parentLocation: countryId });
     return regions;
   }
