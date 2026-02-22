@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:clean": "fuser -k 5173/tcp 2>/dev/null; sleep 1; vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

@@ -4,6 +4,7 @@ import wineryRoutes from '@/routes/wineryRoutes';
 import wineRoutes from '@/routes/wineRoutes';
 import locationRoutes from '@/routes/locationRoutes';
 import grapeRoutes from '@/routes/grapeRoutes';
+import aiRoutes from '@/routes/aiRoutes';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/wineries', wineryRoutes);
 router.use('/wines', wineRoutes);
 router.use('/locations', locationRoutes);
 router.use('/grapes', grapeRoutes);
+router.use('/ai', aiRoutes);
 
 export default router;
