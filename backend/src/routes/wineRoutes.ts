@@ -3,6 +3,7 @@ import * as wineController from '@/controllers/wineController';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { createWineSchema, updateWineSchema } from '@/schemas/wineSchemas';
+import reviewRoutes from './reviewRoutes';
 
 const router = Router();
 
@@ -247,5 +248,7 @@ router.delete(
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   wineController.deleteWine,
 );
+
+router.use('/:id/reviews', reviewRoutes);
 
 export default router;

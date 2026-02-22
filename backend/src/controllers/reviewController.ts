@@ -7,7 +7,7 @@ const reviewService = new ReviewService();
 
 export const getWineReviews = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const wineId = req.params.wineId as string;
+    const wineId = req.params.id as string;
     const reviews = await reviewService.getReviewsByWine(wineId);
     res.status(200).json(reviews);
   } catch (error) {
@@ -24,7 +24,7 @@ export const createReview = async (
     if (!req.userId) {
       throw new HttpError('User not authenticated', 401);
     }
-    const wineId = req.params.wineId as string;
+    const wineId = req.params.id as string;
     const newReview = await reviewService.createReview(wineId, req.userId, req.body);
     res.status(201).json(newReview);
   } catch (error) {
