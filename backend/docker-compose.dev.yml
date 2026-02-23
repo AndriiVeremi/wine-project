@@ -15,17 +15,21 @@ services:
       - express-mongo
     ports:
       - "5005:5000"
+    env_file:
+      - ./.env
 
   mongodb:
     container_name: mongodb
     restart: always
-    image: mongo:4.2.0
+    image: mongo:latest
     volumes:
       - mongo_data:/data/db
     networks:
       - express-mongo
     expose:
       - 27017
+    ports:
+      - "27017:27017"
 
 networks:
   express-mongo:
