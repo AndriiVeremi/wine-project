@@ -4,6 +4,7 @@ module.exports = {
   testEnvironment: 'node',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^firebase-admin$': '<rootDir>/src/__mocks__/firebase.ts',
   },
   testMatch: ['**/*.test.ts'],
   collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/data/**'],
