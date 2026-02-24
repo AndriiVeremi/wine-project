@@ -2,4 +2,11 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^firebase-admin$': '<rootDir>/tests/__mocks__/firebase.ts',
+  },
+  testMatch: ['**/*.test.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/data/**'],
+  moduleFileExtensions: ['ts', 'js', 'json'],
 };
