@@ -3,6 +3,7 @@ import * as userController from '@/controllers/userController';
 import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { registerSchema, loginSchema, addFavoriteSchema } from '@/schemas/userSchemas';
+import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
 
@@ -150,7 +151,7 @@ router.get('/me/favorites', authMiddleware, userController.getUserFavorites);
  *             type: object
  *             properties:
  *               wineId:
- *                 type: string
+ *                 type: 699dd41edd32bbaa0b2e3062
  *                 description: The ID of the wine to add to favorites
  *             required:
  *               - wineId
@@ -198,6 +199,11 @@ router.post(
  *       500:
  *         description: Server error
  */
-router.delete('/me/favorites/:wineId', authMiddleware, userController.removeFavoriteWine);
+router.delete(
+  '/me/favorites/:wineId',
+  authMiddleware,
+  isValidId('wineId'),
+  userController.removeFavoriteWine,
+);
 
 export default router;
