@@ -75,9 +75,9 @@ describe('userService', () => {
       const mockUser = {
         _id: 'user-id-123',
         firebaseUid: 'test-uid',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
+        firstName: 'Andrii',
+        lastName: 'Veremii',
+        email: 'Dashuk10@example.com',
         role: 'USER',
       };
 
