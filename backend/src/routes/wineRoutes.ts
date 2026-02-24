@@ -3,7 +3,8 @@ import * as wineController from '@/controllers/wineController';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { createWineSchema, updateWineSchema } from '@/schemas/wineSchemas';
-import reviewRoutes from './reviewRoutes';
+import { isValidId } from '@/middleware/isValidId';
+import reviewRoutes from '@/routes/reviewRoutes';
 
 const router = Router();
 
@@ -163,7 +164,7 @@ router.post(
  *       500:
  *         description: Server error
  */
-router.get('/:id', wineController.getWineById);
+router.get('/:id', isValidId, wineController.getWineById);
 
 /**
  * @swagger
@@ -193,7 +194,7 @@ router.get('/:id', wineController.getWineById);
  *               year:
  *                 type: integer
  *                 example: 2024
- *     responses:
+ *             responses:
  *       200:
  *         description: Wine updated successfully
  *       400:
@@ -209,6 +210,7 @@ router.get('/:id', wineController.getWineById);
  */
 router.patch(
   '/:id',
+  isValidId,
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   validateBody(updateWineSchema),
@@ -244,6 +246,7 @@ router.patch(
  */
 router.delete(
   '/:id',
+  isValidId,
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   wineController.deleteWine,
