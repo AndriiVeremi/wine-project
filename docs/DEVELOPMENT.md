@@ -153,7 +153,61 @@ frontend/src/
 
 Для забезпечення якості коду проєкт використовує **Jest** для бекенду та **Vitest** для фронтенду.
 
-Дотримуйтесь цих правил при написанні тестів:
+### Запуск тестів
+
+**Бекенд (Jest):**
+```bash
+cd backend
+npm test              # запустити всі тести
+npm run test:watch    # запустити з автоперезагрузкою
+npm run test:coverage # показати покриття коду
+```
+
+**Фронтенд (Vitest):**
+```bash
+cd frontend
+npm test              # запустити всі тести
+npm run test:watch    # запустити з автоперезагрузкою
+npm run test:coverage # показати покриття коду
+npm run test:ui       # запустити з UI інтерфейсом
+```
+
+### Структура тестів
+
+Тести зберігаються в папці `src/__tests__/` (або `tests/`) поруч з тим, що тестується:
+```
+backend/src/
+├── __tests__/              # Unit-тести
+│   └── userService.test.ts
+├── __mocks__/              # Mоки (Firebase, MongoDB)
+└── ...
+
+frontend/src/
+├── tests/                  # Unit-тести
+└── ...
+```
+
+### Як писати тести
+
+1. **Сервіси (backend):** Тестуємо бізнес-логіку через моки моделей Mongoose.
+2. **Контролери:** Тестуємо через моки сервісів.
+3. **Middleware:** Тестуємо окремо, мокаємо залежності.
+
+Приклад тесту сервісу:
+```typescript
+import * as userService from '@/services/userService';
+
+jest.mock('@/models/userModel', () => ({ ... }));
+
+describe('userService', () => {
+  it('should throw error if user not found', async () => {
+    // Тест
+  });
+});
+```
+
+### Правила
+
 *   Новий функціонал має бути покритий тестами.
 *   Тестуйте критично важливі шляхи (critical paths).
 *   Мінімальне покриття коду тестами: **30%**.
