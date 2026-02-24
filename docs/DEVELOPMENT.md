@@ -90,9 +90,12 @@ backend/src/
 ├── routes/          # Маршрути
 ├── schemas/         # Joi схеми валідації даних
 ├── services/        # Бізнес-логіка
-├── tests/           # Тести
 ├── types/           # TypeScript типи
 └── index.ts         # Головний файл сервера
+
+backend/tests/
+├── __tests__/       # Unit-тести
+└── __mocks__/       # Mоки (Firebase, MongoDB)
 ```
 
 ### Frontend
@@ -174,17 +177,16 @@ npm run test:ui       # запустити з UI інтерфейсом
 
 ### Структура тестів
 
-Тести зберігаються в папці `src/__tests__/` (або `tests/`) поруч з тим, що тестується:
+Тести зберігаються в папці `tests/`:
 ```
-backend/src/
+backend/tests/
 ├── __tests__/              # Unit-тести
 │   └── userService.test.ts
 ├── __mocks__/              # Mоки (Firebase, MongoDB)
+│   └── firebase.ts
 └── ...
 
-frontend/src/
-├── tests/                  # Unit-тести
-└── ...
+frontend/tests/              # Unit-тести
 ```
 
 ### Як писати тести
