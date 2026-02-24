@@ -25,8 +25,17 @@ const tourSchema: Schema = new Schema({
   price: { type: Number },
   images: [String],
   groupSize: {
-    min: { type: Number },
-    max: { type: Number },
+    min: { type: Number, min: 1 },
+    max: {
+      type: Number,
+      min: 1,
+      validate: {
+        validator: function (this: ITour, value: number) {
+          return value >= this.groupSize.min;
+        },
+        message: 'Max must be >= min',
+      },
+    },
   },
 });
 
