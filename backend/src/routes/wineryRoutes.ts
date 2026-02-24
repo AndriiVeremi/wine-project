@@ -3,6 +3,7 @@ import * as wineryController from '@/controllers/wineryController';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { registerWinerySchema, updateWinerySchema } from '@/schemas/winerySchemas';
+import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
 
@@ -162,7 +163,7 @@ router.get('/', wineryController.getWineries);
  *       500:
  *         description: Server error
  */
-router.get('/:id', wineryController.getWinery);
+router.get('/:id', isValidId(), wineryController.getWinery);
 
 /**
  * @swagger
@@ -233,6 +234,7 @@ router.get('/:id', wineryController.getWinery);
  */
 router.patch(
   '/:id',
+  isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   validateBody(updateWinerySchema),
@@ -268,6 +270,7 @@ router.patch(
  */
 router.delete(
   '/:id',
+  isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   wineryController.deleteWinery,
