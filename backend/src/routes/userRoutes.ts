@@ -32,8 +32,7 @@ const router = Router();
  *                 example: dashuk10@example.com
  *               password:
  *                 type: string
- *                 format: password
- *                 example: "yourSecurePassword"
+ *                 example: password123
  *             required:
  *               - firstName
  *               - lastName
@@ -41,16 +40,33 @@ const router = Router();
  *               - password
  *     responses:
  *       201:
- *         description: User registered successfully. Returns a JWT token.
+ *         description: User registered successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 token:
+ *                 message:
  *                   type: string
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     uid:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     firstName:
+ *                       type: string
+ *                     lastName:
+ *                       type: string
+ *                     role:
+ *                       type: string
  *       400:
  *         description: Invalid input or user already exists
+ *       409:
+ *         description: Email already in use
  *       500:
  *         description: Server error
  */
@@ -75,23 +91,17 @@ router.post('/register', validateBody(registerSchema), userController.registerUs
  *                 example: dashuk10@example.com
  *               password:
  *                 type: string
- *                 format: password
- *                 example: "your password"
+ *                 example: password123
  *             required:
  *               - email
  *               - password
  *     responses:
  *       200:
- *         description: User logged in successfully. Returns a JWT token.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
+ *         description: User logged in successfully
  *       400:
  *         description: Invalid credentials
+ *       401:
+ *         description: Unauthorized
  *       500:
  *         description: Server error
  */

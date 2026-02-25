@@ -24,6 +24,7 @@ const router = Router();
  *             properties:
  *               message:
  *                 type: string
+ *                 example: Привіт, допоможи вибрати вино!
  *               history:
  *                 type: array
  *                 items:
@@ -32,6 +33,7 @@ const router = Router();
  *                     role:
  *                       type: string
  *                       enum: [user, model]
+ *                       example: user
  *                     parts:
  *                       type: array
  *                       items:
@@ -39,9 +41,7 @@ const router = Router();
  *                         properties:
  *                           text:
  *                             type: string
- *             example:
- *               message: "Привіт, допоможи вибрати вино!"
- *               history: []
+ *                             example: Я рекомендую вам червоне вино
  *     responses:
  *       200:
  *         description: AI response
