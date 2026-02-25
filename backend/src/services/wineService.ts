@@ -22,9 +22,13 @@ interface WineQuery {
 }
 
 export class WineService {
-  public async getAllWines(
-    query: WineQuery,
-  ): Promise<{ wines: HydratedDocument<IWine>[]; totalCount: number }> {
+  public async getAllWines(query: WineQuery): Promise<{
+    wines: HydratedDocument<IWine>[];
+    totalCount: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }> {
     const {
       country,
       region,
@@ -45,6 +49,8 @@ export class WineService {
     const sort: Record<string, 1 | -1> = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const take = parseInt(limit);
+    const currentPage = parseInt(page);
+    const currentLimit = parseInt(limit);
 
     if (name) filter.name = { $regex: name, $options: 'i' };
 
@@ -57,7 +63,7 @@ export class WineService {
       if (wineryIds.length > 0) {
         filter.winery = { $in: wineryIds };
       } else {
-        return { wines: [], totalCount: 0 };
+        return { wines: [], totalCount: 0, page: currentPage, limit: currentLimit, totalPages: 0 };
       }
     }
 
@@ -70,7 +76,7 @@ export class WineService {
       if (foundGrape) {
         filter.grape = foundGrape._id;
       } else {
-        return { wines: [], totalCount: 0 };
+        return { wines: [], totalCount: 0, page: currentPage, limit: currentLimit, totalPages: 0 };
       }
     }
 
@@ -134,8 +140,15 @@ export class WineService {
     const wines = await Wine.aggregate(aggregationPipeline).exec();
     const totalCountResult = await Wine.aggregate(totalCountPipeline).exec();
     const totalCount = totalCountResult.length > 0 ? totalCountResult[0].total : 0;
+    const totalPages = Math.ceil(totalCount / currentLimit);
 
-    return { wines: wines as HydratedDocument<IWine>[], totalCount };
+    return {
+      wines: wines as HydratedDocument<IWine>[],
+      totalCount,
+      page: currentPage,
+      limit: currentLimit,
+      totalPages,
+    };
   }
 
   public async getWineById(wineId: string): Promise<HydratedDocument<IWine> | null> {
