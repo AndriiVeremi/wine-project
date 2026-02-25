@@ -48,7 +48,10 @@ const router = Router({ mergeParams: true });
  *       500:
  *         description: Server error
  */
+
 router.get('/', reviewController.getWineReviews);
+
+router.get('/:reviewId', reviewController.getWineReviewById);
 
 /**
  * @swagger
