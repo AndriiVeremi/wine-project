@@ -6,8 +6,8 @@ import { AuthenticatedRequest } from '@/middleware/auth';
 const wineService = new WineService();
 
 export const getAllWines = async (req: Request, res: Response, _next: NextFunction) => {
-  const wines = await wineService.getAllWines(req.query);
-  res.status(200).json(wines);
+  const { wines, totalCount, page, limit, totalPages } = await wineService.getAllWines(req.query);
+  res.status(200).json({ wines, totalCount, page, limit, totalPages });
 };
 
 export const getWineById = async (req: Request, res: Response, _next: NextFunction) => {
