@@ -481,13 +481,27 @@
 
 ### **GET** `/api/tours`
 
-- **Опис:** Отримати список доступних турів.
+- **Опис:** Отримати список всіх турів з пагінацією.
 
-- **Query Params:** `?wineryId=<winery_id>`
+- **Query Params:** `?page=<номер>&limit=<кількість>`
 
 - **Response (200 OK):** Array of tour objects.
 
 - **Errors:**
+
+  - `500`: Server error
+
+
+
+### **GET** `/api/tours/winery/:wineryId`
+
+- **Опис:** Отримати всі тури конкретної виноробні.
+
+- **Response (200 OK):** Array of tour objects.
+
+- **Errors:**
+
+  - `404`: Winery not found
 
   - `500`: Server error
 

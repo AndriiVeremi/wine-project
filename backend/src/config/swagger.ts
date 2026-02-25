@@ -22,7 +22,7 @@ const options: swaggerJsdoc.Options = {
         },
       },
       schemas: {
-        // User schema
+        // Schemas
       },
     },
     tags: [
@@ -32,6 +32,8 @@ const options: swaggerJsdoc.Options = {
       { name: 'Reviews', description: 'Wine reviews and ratings' },
       { name: 'Grapes', description: 'Grape varieties information' },
       { name: 'Locations', description: 'Countries and regions information' },
+      { name: 'Tours', description: 'Wine tours management' },
+      { name: 'AI', description: 'AI Assistant for wine recommendations' },
     ],
   },
   apis: ['./src/routes/*.ts'],

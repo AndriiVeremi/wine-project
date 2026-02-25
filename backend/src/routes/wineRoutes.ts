@@ -191,7 +191,7 @@ router.post(
  *       500:
  *         description: Server error
  */
-router.get('/:id', isValidId, wineController.getWineById);
+router.get('/:id', isValidId(), wineController.getWineById);
 
 /**
  * @swagger
@@ -237,7 +237,7 @@ router.get('/:id', isValidId, wineController.getWineById);
  */
 router.patch(
   '/:id',
-  isValidId,
+  isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   validateBody(updateWineSchema),
@@ -273,7 +273,7 @@ router.patch(
  */
 router.delete(
   '/:id',
-  isValidId,
+  isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   wineController.deleteWine,

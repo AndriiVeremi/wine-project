@@ -9,6 +9,13 @@ const router = Router();
  *   get:
  *     tags: [Grapes]
  *     summary: Retrieve a list of all grape varieties
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search by grape name
+ *         example: Cabernet
  *     responses:
  *       200:
  *         description: A list of grape varieties.
@@ -31,20 +38,25 @@ const router = Router();
  *                     example: red
  *                   description:
  *                     type: string
+ *                     example: A full-bodied red grape variety
  *                   alsoKnownAs:
  *                     type: array
  *                     items:
  *                       type: string
+ *                     example: ["Cabernet", "CS"]
  *                   characteristics:
  *                     type: array
  *                     items:
  *                       type: string
+ *                     example: ["full-bodied", "high tannins", "blackcurrant"]
  *                   foodPairing:
  *                     type: array
  *                     items:
  *                       type: string
+ *                     example: ["red meat", "aged cheese", "dark chocolate"]
  *                   imageUrl:
  *                     type: string
+ *                     example: https://example.com/grapes/cabernet.jpg
  *       500:
  *         description: Server error
  */

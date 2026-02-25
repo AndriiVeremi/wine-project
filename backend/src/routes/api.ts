@@ -6,6 +6,7 @@ import locationRoutes from '@/routes/locationRoutes';
 import grapeRoutes from '@/routes/grapeRoutes';
 import aiRoutes from '@/routes/aiRoutes';
 import tourRoutes from '@/routes/tourRoutes';
+import reviewRoutes from '@/routes/reviewRoutes';
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use('/locations', locationRoutes);
 router.use('/grapes', grapeRoutes);
 router.use('/ai', aiRoutes);
 router.use('/tours', tourRoutes);
+router.use('/review', reviewRoutes);
 
 export default router;

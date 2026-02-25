@@ -9,20 +9,29 @@ export interface PopulatedTour extends Omit<ITour, 'winery'> {
   winery: { _id: Types.ObjectId; name: string };
 }
 
-type TourFilter = { winery?: string };
+export const getAllTours = async (query: { page?: string; limit?: string }) => {
+  const page = parseInt(query.page || '1', 10);
+  const limit = parseInt(query.limit || '10', 10);
+  const skip = (page - 1) * limit;
 
-export const getAllTours = async (query: { wineryId?: string }) => {
-  const filter: TourFilter = {};
+  const tours = await Tour.find().skip(skip).limit(limit);
+  const totalCount = await Tour.countDocuments();
 
-  if (query.wineryId) {
-    filter.winery = query.wineryId;
-  }
-
-  return await Tour.find(filter);
+  return {
+    tours,
+    totalCount,
+    page,
+    limit,
+    totalPages: Math.ceil(totalCount / limit),
+  };
 };
 
 export const getTourById = async (id: string) => {
   return await Tour.findById(id);
+};
+
+export const getToursByWinery = async (wineryId: string) => {
+  return await Tour.find({ winery: wineryId });
 };
 
 export const createTour = async (data: ITour, userId: string): Promise<HydratedDocument<ITour>> => {
@@ -70,4 +79,31 @@ export const getToursByRegion = async (
   )) as unknown as HydratedDocument<PopulatedTour>[];
 
   return tours;
+};
+
+export const deleteTour = async (id: string, userId: string): Promise<void> => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new HttpError('User not found.', 404);
+  }
+
+  if (user.role !== 'WINERY_OWNER' && user.role !== 'ADMIN') {
+    throw new HttpError('Only winery owners or administrators can delete a tour.', 403);
+  }
+
+  const tour = await Tour.findById(id);
+  if (!tour) {
+    throw new HttpError('Tour not found.', 404);
+  }
+
+  const winery = await Winery.findById(tour.winery);
+  if (!winery) {
+    throw new HttpError('Winery not found.', 404);
+  }
+
+  if (user.role === 'WINERY_OWNER' && winery.owner.toString() !== userId) {
+    throw new HttpError('You are not the owner of this winery.', 403);
+  }
+
+  await Tour.findByIdAndDelete(id);
 };

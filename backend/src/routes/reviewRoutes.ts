@@ -19,7 +19,7 @@ const router = Router({ mergeParams: true });
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the wine to get reviews for
+ *         description: ID of the wine to get reviews for (from parent route)
  *     responses:
  *       200:
  *         description: A list of reviews for the specified wine.
@@ -38,11 +38,11 @@ const router = Router({ mergeParams: true });
  *                     example: 5
  *                   comment:
  *                     type: string
- *                     example: "Absolutely fantastic!"
+ *                     example: Absolutely fantastic!
  *                   user:
  *                     type: string
- *                     description: "User ID"
- *                     example: "60d21b4667d0d8992e610c88"
+ *                     description: User ID
+ *                     example: 60d21b4667d0d8992e610c88
  *       404:
  *         description: Wine not found
  *       500:
@@ -79,7 +79,7 @@ router.get('/', reviewController.getWineReviews);
  *               comment:
  *                 type: string
  *                 description: Review comment
- *                 example: "This is one of the best wines I have ever tasted."
+ *                 example: This is one of the best wines I have ever tasted.
  *             required:
  *               - rating
  *               - comment
@@ -132,7 +132,7 @@ router.post('/', authMiddleware, validateBody(createReviewSchema), reviewControl
  *               comment:
  *                 type: string
  *                 description: New review comment
- *                 example: "Still fantastic, but slightly less so."
+ *                 example: Still fantastic, but slightly less so.
  *     responses:
  *       200:
  *         description: Review updated successfully
