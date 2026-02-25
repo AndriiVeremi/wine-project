@@ -2,8 +2,8 @@ import { Router } from 'express';
 import * as reviewController from '@/controllers/reviewController';
 import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
-import { createReviewSchema, updateReviewSchema } from '@/schemas/reviewSchemas'; // Import updateReviewSchema
-import { isValidId } from '../middleware/isValidId'; // Import isValidId
+import { createReviewSchema, updateReviewSchema } from '@/schemas/reviewSchemas';
+import { isValidId } from '@/middleware/isValidId';
 
 const router = Router({ mergeParams: true });
 
