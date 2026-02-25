@@ -1,14 +1,14 @@
 const mockAuth = {
   createUser: jest.fn().mockResolvedValue({
     uid: 'test-uid-123',
-    email: 'test@example.com',
+    email: 'Dashuk10@example.com',
   }),
   getUserByEmail: jest.fn(),
   deleteUser: jest.fn(),
   setCustomUserClaims: jest.fn().mockResolvedValue(undefined),
   verifyIdToken: jest.fn().mockResolvedValue({
     uid: 'test-uid-123',
-    email: 'test@example.com',
+    email: 'Dashuk10@example.com',
   }),
 };
 
