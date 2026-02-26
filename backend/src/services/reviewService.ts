@@ -12,6 +12,11 @@ export class ReviewService {
     return reviews;
   }
 
+  public async getReviewById(reviewId: string): Promise<HydratedDocument<IReview> | null> {
+    const review = await Review.findById(reviewId).populate('userId', 'firstName lastName').exec();
+    return review;
+  }
+
   public async createReview(
     wineId: string,
     userId: string,
@@ -52,7 +57,7 @@ export class ReviewService {
       throw new HttpError('You are not authorized to update this review.', 403);
     }
 
-    if (updateData.rating) {
+    if (updateData.rating !== undefined) {
       review.rating = updateData.rating;
     }
     if (updateData.comment !== undefined) {
