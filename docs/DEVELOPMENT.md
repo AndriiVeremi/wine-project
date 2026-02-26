@@ -27,6 +27,7 @@ cd wine-project
 1.  У папці `backend` створіть копію файлу `.env.example` та назвіть її `.env`.
 2.  Встановіть `MONGO_URI=mongodb://mongodb:27017/wine-db`.
 3.  Додайте `FIREBASE_SERVICE_ACCOUNT_CREDS_JSON`. Це JSON-об'єкт з обліковими даними сервісного акаунту Firebase. Його необхідно для створення користувачів та призначення ролей на бекенді.
+4.  Налаштуйте `CORS_ORIGIN` - домен фронтенду для CORS (за замовчуванням `http://localhost:5173`).
 
 ### 3. Запуск
 
@@ -245,3 +246,34 @@ AI_ASSISTANT_ENABLED=true
 VITE_AI_ASSISTANT_ENABLED=true
 `
 Якщо `AI_ASSISTANT_ENABLED` встановлено в `false`, ендпоінт `/api/ai/chat` повертатиме помилку `503 Service Unavailable`.
+
+---
+
+## 🛡️ Безпека
+
+Проєкт включает наступні засоби захисту:
+
+### Helmet
+Автоматично додає безпечні HTTP-заголовки:
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `X-XSS-Protection: 1; mode=block`
+- та інші
+
+Підключається автоматично в `backend/src/index.ts`.
+
+### Rate Limiting
+Обмежує кількість запитів з одної IP-адреси:
+- **Ліміт:** 100 запитів за 15 хвилин
+- **При перевищенні:** повертає `429 Too Many Requests`
+
+### CORS
+Налаштовується через змінну `CORS_ORIGIN` в `.env`:
+```env
+CORS_ORIGIN=http://localhost:5173
+```
+
+Для продакшену вказуйте повний домен:
+```env
+CORS_ORIGIN=https://wine-project.com
+```
