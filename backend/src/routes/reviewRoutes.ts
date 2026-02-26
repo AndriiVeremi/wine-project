@@ -51,7 +51,7 @@ const router = Router({ mergeParams: true });
 
 router.get('/', reviewController.getWineReviews);
 
-router.get('/:reviewId', reviewController.getWineReviewById);
+router.get('/:reviewId', isValidId('reviewId'), reviewController.getWineReviewById);
 
 /**
  * @swagger
