@@ -4,12 +4,14 @@ import { useAuthStore } from './store/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase';
 import AuthModal from './components/modals/AuthModal';
+import AIAssistant from './components/common/AIAssistant/AIAssistant';
 
 const HomePage = () => <h2>Home Page</h2>;
 const WineriesPage = () => <h2>Wineries Page</h2>;
 
 function App() {
   const { user, logout, setUser, isLoading, openAuthModal } = useAuthStore();
+  const aiAssistantEnabled = import.meta.env.VITE_AI_ASSISTANT_ENABLED === 'true';
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -24,7 +26,8 @@ function App() {
 
   return (
     <div className="app-layout">
-      <AuthModal /> {/* Render the modal at the top level */}
+      <AuthModal />
+      {user && aiAssistantEnabled && <AIAssistant />}
       <header className="app-header">
         <nav className="app-nav">
           <ul>
@@ -46,11 +49,9 @@ function App() {
             ) : (
               <>
                 <li>
-                  {/* Changed from Link to button */}
                   <button onClick={() => openAuthModal('login')}>Login</button>
                 </li>
                 <li>
-                  {/* Changed from Link to button */}
                   <button onClick={() => openAuthModal('register')}>Register</button>
                 </li>
               </>

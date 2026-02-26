@@ -8,6 +8,8 @@ const user2Id = new mongoose.Types.ObjectId();
 const winery1Id = new mongoose.Types.ObjectId();
 const winery2Id = new mongoose.Types.ObjectId();
 const winery3Id = new mongoose.Types.ObjectId();
+const winery4Id = new mongoose.Types.ObjectId();
+const winery5Id = new mongoose.Types.ObjectId();
 
 const wine1Id = new mongoose.Types.ObjectId();
 const wine2Id = new mongoose.Types.ObjectId();
@@ -15,6 +17,15 @@ const wine3Id = new mongoose.Types.ObjectId();
 const wine4Id = new mongoose.Types.ObjectId();
 const wine5Id = new mongoose.Types.ObjectId();
 const wine6Id = new mongoose.Types.ObjectId();
+const wine7Id = new mongoose.Types.ObjectId();
+const wine8Id = new mongoose.Types.ObjectId();
+const wine9Id = new mongoose.Types.ObjectId();
+const wine10Id = new mongoose.Types.ObjectId();
+
+const tour1Id = new mongoose.Types.ObjectId();
+const tour2Id = new mongoose.Types.ObjectId();
+const tour3Id = new mongoose.Types.ObjectId();
+const tour4Id = new mongoose.Types.ObjectId();
 
 const kabernetSauvignonId = new mongoose.Types.ObjectId();
 const chardonnayId = new mongoose.Types.ObjectId();
@@ -22,6 +33,8 @@ const merlotId = new mongoose.Types.ObjectId();
 const kabernetFrancId = new mongoose.Types.ObjectId();
 const rieslingId = new mongoose.Types.ObjectId();
 const isabellaId = new mongoose.Types.ObjectId();
+const saperaviId = new mongoose.Types.ObjectId();
+const tsitskaTsolikouriId = new mongoose.Types.ObjectId();
 
 const ukraineId = new mongoose.Types.ObjectId();
 const odesaId = new mongoose.Types.ObjectId();
@@ -83,7 +96,7 @@ export const regions = [
   {
     _id: kakhetiId,
     name: 'Kakheti',
-    description: `Kakheti is the principal wine-producing region of Georgia, located in the eastern part of the country. It is home to the largest concentration of vineyards, wineries, and protected wine appellations. Kakheti is widely regarded as the historical and cultural heart of Georgian winemaking, with traditions dating back more than 8,000 years. The region plays a central role in shaping Georgia’s wine identity, combining ancient winemaking practices – most notably qvevri fermentation – with modern European techniques.`,
+    description: `Kakheti is the principal wine-producing region of Georgia, located in the eastern part of the country. It is home to the largest concentration of vineyards, wineries, and protected wine appellations. Kakheti is widely regarded as the historical and cultural heart of Georgian winemaking, with traditions dating back more than 8,000 years. The region plays a central role in shaping Georgia's wine identity, combining ancient winemaking practices – most notably qvevri fermentation – with modern European techniques.`,
     imageUrl:
       'https://images.unsplash.com/photo-1621213426767-c25091763137?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     country: georgiaId,
@@ -156,16 +169,85 @@ export const regions = [
         'Mukuzani — dry red wines made from Saperavi.',
         'Kindzmarauli — semi-sweet red wines.',
         'Napareuli — dry red wines with balanced structure.',
-        'Napareuli — dry red wines with balanced structure.',
       ],
     },
     importance: {
       title: 'Importance of Kakheti for Georgian winemaking',
       description: `Internationally, Kakheti largely shapes the global perception of Georgian wine.`,
       points: [
-        'the majority of the country’s vineyards are located here,',
+        "the majority of the country's vineyards are located here,",
         'the region hosts a wide range of wineries, from small family estates to large commercial producers,',
         'it is the primary destination for wine tourism in Georgia.',
+      ],
+    },
+  },
+  {
+    _id: rachaLechkhumiKvemoSvanetiId,
+    name: 'Racha-Lechkhumi and Kvemo Svaneti',
+    description: `Racha-Lechkhumi and Kvemo Svaneti is a mountainous region in northwestern Georgia, famous for its premium quality wines, particularly the semi-sweet wines from the Khvanchkara and Tkibuli micro-zones. The region combines high-altitude vineyards with traditional winemaking to produce distinctive wines.`,
+    imageUrl:
+      'https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?q=80&w=2078&auto=format&fit=crop',
+    country: georgiaId,
+    climate: {
+      title: 'Climate',
+      description: `The region has a unique microclimate influenced by high mountains. Cool temperatures and adequate rainfall create ideal conditions for producing wines with balanced acidity.`,
+      features: ['mountain climate', 'cool summers', 'cold winters', 'high altitude'],
+    },
+    soils: {
+      title: 'Soils',
+      description: `The soils are varied, from clay to limestone-rich soils, contributing to the mineral character of the wines.`,
+      mainTypes: ['clay soils', 'limestone soils', 'mountain soils'],
+      properties: ['high minerality', 'good drainage'],
+    },
+    traditions: {
+      title: 'Winemaking traditions',
+      description: `Racha is famous for its semi-sweet wines, particularly Khvanchkara, which has been loved by royalty including the Russian Tsar.`,
+      rituals: ['traditional supra', 'royal wine ceremonies'],
+    },
+    grapeVarieties: {
+      title: 'Grape varieties',
+      white: [
+        {
+          name: 'Tsolikauri',
+          description: 'semi-sweet wines, aromatic',
+        },
+        {
+          name: 'Alexandria',
+          description: 'rare variety for semi-sweet wines',
+        },
+      ],
+      red: [
+        {
+          name: 'Aleksandrouli',
+          description: 'for semi-sweet red wines',
+        },
+        {
+          name: 'Mujuretuli',
+          description: 'for semi-sweet red wines',
+        },
+      ],
+    },
+    typicalWines: {
+      title: 'Typical wines',
+      description: `Racha is world-famous for its naturally semi-sweet wines with exceptional balance.`,
+      styles: ['semi-sweet red wines', 'semi-sweet white wines', 'dry wines'],
+    },
+    pdos: {
+      title: 'PDO',
+      description: `This region has some of Georgia's most famous protected appellations.`,
+      list: [
+        'Khvanchkara — famous semi-sweet red wine',
+        'Tkibuli — semi-sweet white wine',
+        'Racha — dry wines',
+      ],
+    },
+    importance: {
+      title: 'Significance',
+      description: `Racha produces some of Georgia's most prestigious wines, known internationally for their quality.`,
+      points: [
+        'premium semi-sweet wine production',
+        'unique indigenous grape varieties',
+        'historical significance (royal wines)',
       ],
     },
   },
@@ -268,6 +350,37 @@ export const wineries = [
     contactEmail: 'contact3@example.com',
     contactPhone: '+380997778899',
   },
+  {
+    _id: winery4Id,
+    name: 'Kindzmarauli Marani',
+    owner: owner2Id,
+    history: 'One of the largest wineries in the Kindzmarauli microzone, founded in 2001.',
+    country: georgiaId,
+    region: kakhetiId,
+    address: 'Kvareli, Georgia',
+    isVip: true,
+    logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=KM_Logo',
+    galleryUrl: ['https://placehold.co/600x400/EEE/31343C?text=KM_Gallery_1'],
+    whereToBuy: [{ name: '8000 Vintages', url: 'https://8000vintages.ua' }],
+    contactEmail: 'contact4@example.com',
+    contactPhone: '+995322550000',
+  },
+  {
+    _id: winery5Id,
+    name: "Baia's Wine",
+    owner: owner2Id,
+    history:
+      'A family winery in the village of Obcha, Imereti, founded by two sisters, Baia and Gvantsa Abuladze.',
+    country: georgiaId,
+    region: imeretiId,
+    address: 'Obcha, Bagdati, Georgia',
+    isVip: false,
+    logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=BW_Logo',
+    galleryUrl: ['https://placehold.co/600x400/EEE/31343C?text=BW_Gallery_1'],
+    whereToBuy: [{ name: 'Vino&Vino', url: 'https://vinovino.ua' }],
+    contactEmail: 'contact5@example.com',
+    contactPhone: '+995555123456',
+  },
 ];
 
 export const grapes = [
@@ -342,6 +455,30 @@ export const grapes = [
     foodPairing: ['fruit desserts', 'chocolate'],
     imageUrl: 'https://placehold.co/400x300/EEE/31343C?text=Isabella',
     regions: [lvivId],
+  },
+  {
+    _id: saperaviId,
+    name: 'Saperavi',
+    description:
+      'A Georgian red grape variety that is one of the most well-known in the country. It is a teinturier grape, meaning its flesh and juice are red, which gives the wine a deep, inky color.',
+    color: 'red',
+    alsoKnownAs: [],
+    characteristics: ['deep color', 'high acidity', 'robust tannins', 'dark berries', 'spice'],
+    foodPairing: ['grilled meat', 'stews', 'aged cheeses'],
+    imageUrl: 'https://placehold.co/400x300/EEE/31343C?text=Saperavi',
+    regions: [kakhetiId],
+  },
+  {
+    _id: tsitskaTsolikouriId,
+    name: 'Tsitska-Tsolikouri',
+    description:
+      'A classic blend of two white grape varieties from Imereti, western Georgia. Tsitska provides acidity and citrus notes, while Tsolikouri adds body and floral aromas.',
+    color: 'white',
+    alsoKnownAs: [],
+    characteristics: ['aromatic', 'crisp acidity', 'green apple', 'pear', 'floral'],
+    foodPairing: ['salads', 'seafood', 'chicken'],
+    imageUrl: 'https://placehold.co/400x300/EEE/31343C?text=Tsitska-Tsolikouri',
+    regions: [imeretiId],
   },
 ];
 
@@ -608,6 +745,166 @@ export const wines = [
     foodPairing: ['Appetizers', 'Fruits', 'Desserts'],
 
     supplier: 'Mountain Vineyards Co.',
+  },
+  {
+    _id: wine7Id,
+    winery: winery4Id,
+    name: 'Saperavi Qvevri',
+    vintage: 2019,
+    grape: saperaviId,
+    description:
+      'Classic Kakhetian Saperavi, aged in qvevri. A full-bodied, tannic wine with a rich bouquet of black cherry and pomegranate.',
+    tastingNotes: ['black cherry', 'pomegranate', 'blackberry', 'spice'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Saperavi_Qvevri',
+    color: 'red',
+    sweetness: 'dry',
+    averageRating: 4.8,
+    price: 950,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: true,
+    alcohol: '14.0%',
+    decanting: true,
+    servingTemperature: '18-20°C',
+    foodPairing: ['Shashlik', 'Khachapuri', 'Aged Guda cheese'],
+    supplier: 'Georgian Wine Imports',
+  },
+  {
+    _id: wine8Id,
+    winery: winery4Id,
+    name: 'Kindzmarauli',
+    vintage: 2021,
+    grape: saperaviId,
+    description:
+      'A naturally semi-sweet red wine from the Kindzmarauli microzone. It has a harmonious taste with notes of ripe cherry and blackberry.',
+    tastingNotes: ['ripe cherry', 'blackberry', 'jam'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Kindzmarauli',
+    color: 'red',
+    sweetness: 'semi-sweet',
+    averageRating: 4.7,
+    price: 880,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: true,
+    alcohol: '11.5%',
+    decanting: false,
+    servingTemperature: '14-16°C',
+    foodPairing: ['Desserts', 'Fruits', 'Blue cheese'],
+    supplier: 'Georgian Wine Imports',
+  },
+  {
+    _id: wine9Id,
+    winery: winery5Id,
+    name: 'Tsitska-Tsolikouri',
+    vintage: 2022,
+    grape: tsitskaTsolikouriId,
+    description:
+      'A light, refreshing white wine from Imereti. It has a bright acidity and aromas of green apple, pear, and wildflowers.',
+    tastingNotes: ['green apple', 'pear', 'wildflowers', 'citrus'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Tsitska_Tsolikouri',
+    color: 'white',
+    sweetness: 'dry',
+    averageRating: 4.6,
+    price: 750,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: false,
+    alcohol: '12.0%',
+    decanting: false,
+    servingTemperature: '10-12°C',
+    foodPairing: ['Imeretian cheese', 'Pkhali', 'Grilled fish'],
+    supplier: 'Georgian Artisan Wines',
+  },
+  {
+    _id: wine10Id,
+    winery: winery5Id,
+    name: 'Otskhanuri Sapere',
+    vintage: 2020,
+    grape: saperaviId, // Assuming Otskhanuri Sapere is a type of Saperavi for simplicity
+    description:
+      'A rare red wine from Imereti, known for its high acidity and rich tannic structure. Notes of red berries, herbs, and spices.',
+    tastingNotes: ['red berries', 'herbs', 'spices', 'pomegranate'],
+    imageUrl: 'https://placehold.co/400x600/EEE/31343C?text=Otskhanuri_Sapere',
+    color: 'red',
+    sweetness: 'dry',
+    averageRating: 4.5,
+    price: 1100,
+    volume: 0.75,
+    boxQuantity: 6,
+    hasPackaging: true,
+    alcohol: '13.0%',
+    decanting: true,
+    servingTemperature: '16-18°C',
+    foodPairing: ['Game', 'Spicy meat dishes', 'Lobio'],
+    supplier: 'Georgian Artisan Wines',
+  },
+];
+
+export const tours = [
+  {
+    _id: tour1Id,
+    winery: winery1Id,
+    name: 'Sunny Valley Wine Experience',
+    description:
+      'Discover the art of winemaking at Sunny Valley. Tour our vineyards, learn about the production process, and enjoy a guided tasting of our premium wines paired with local delicacies.',
+    duration: 180,
+    price: 450,
+    images: [
+      'https://placehold.co/600x400/EEE/31343C?text=Tour_Sunny_1',
+      'https://placehold.co/600x400/EEE/31343C?text=Tour_Sunny_2',
+    ],
+    groupSize: {
+      min: 2,
+      max: 15,
+    },
+  },
+  {
+    _id: tour2Id,
+    winery: winery4Id,
+    name: 'Kakheti Qvevri Wine Tour',
+    description:
+      'Immerse yourself in ancient Georgian winemaking traditions. Visit our qvevri cellar, learn about the 8000-year-old method of fermentation in clay amphorae, and taste exceptional Saperavi and amber wines.',
+    duration: 240,
+    price: 850,
+    images: [
+      'https://placehold.co/600x400/EEE/31343C?text=Tour_Kakheti_1',
+      'https://placehold.co/600x400/EEE/31343C?text=Tour_Kakheti_2',
+    ],
+    groupSize: {
+      min: 4,
+      max: 20,
+    },
+  },
+  {
+    _id: tour3Id,
+    winery: winery4Id,
+    name: 'Kindzmarauli Cellar Tasting',
+    description:
+      'Exclusive tasting of our premium Kindzmarauli and Mukuzani wines in the historic cellar. Learn about the unique microclimate of Kakheti and what makes these wines special.',
+    duration: 120,
+    price: 650,
+    images: ['https://placehold.co/600x400/EEE/31343C?text=Tour_Cellar_1'],
+    groupSize: {
+      min: 2,
+      max: 10,
+    },
+  },
+  {
+    _id: tour4Id,
+    winery: winery5Id,
+    name: "Baia's Wine Family Experience",
+    description:
+      'Experience authentic Imeretian hospitality at Baias Wine. Meet the sisters who founded the winery, explore their qvevri cellar, and enjoy a traditional Georgian feast with their natural wines.',
+    duration: 210,
+    price: 750,
+    images: [
+      'https://placehold.co/600x400/EEE/31343C?text=Tour_Baia_1',
+      'https://placehold.co/600x400/EEE/31343C?text=Tour_Baia_2',
+    ],
+    groupSize: {
+      min: 2,
+      max: 12,
+    },
   },
 ];
 

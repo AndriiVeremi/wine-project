@@ -102,6 +102,15 @@ export const getWineryById = async (wineryId: Types.ObjectId | string) => {
   return winery;
 };
 
+export const getWineryByName = async (wineryName: string) => {
+  const winery = await Winery.findOne({ name: { $regex: wineryName, $options: 'i' } })
+    .populate('owner', 'firstName lastName email')
+    .populate('country', 'name')
+    .populate('region', 'name');
+
+  return winery;
+};
+
 export const updateWinery = async (
   wineryId: Types.ObjectId | string,
   updateData: Partial<WineryData>,
