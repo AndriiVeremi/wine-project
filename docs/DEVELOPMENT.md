@@ -35,9 +35,9 @@ cd wine-project
 **Бекенд (Docker):**
 У папці `backend` виконайте:
 ```bash
-docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up --build
 ```
-*Бекенд буде доступний на `http://localhost:5005`.*
+*Бекенд буде доступний на `http://localhost:505`.*
 
 **Фронтенд:**
 У папці `frontend` виконайте:
@@ -59,6 +59,7 @@ npm run dev
     # У папці backend/
     docker compose -f docker-compose.dev.yml up -d
     ```
+
 2.  **Завантажте дані:**
     Ця команда видалить старі дані та завантажить нові з файлу `backend/src/data/seedData.ts`. Вона виконується всередині Docker-контейнера бекенду.
     ```bash
