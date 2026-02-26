@@ -1,5 +1,8 @@
 .vscode/
 .GoIT_commit
+package-lock.json
+backend/package-lock.json
+frontend/package-lock.json
 
 # Logs
 logs
