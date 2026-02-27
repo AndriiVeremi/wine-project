@@ -5,8 +5,9 @@ import * as wineryService from '@/services/wineryService';
 import * as userService from '@/services/userService';
 import Winery from '@/models/wineryModel';
 import User from '@/models/userModel';
+import ctrlWrapper from '@/utils/ctrlWrapper';
 
-export const registerWinery = async (req: AuthenticatedRequest, res: Response) => {
+export const registerWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const ownerId = req.userId!;
   const wineryData = req.body;
 
@@ -17,9 +18,9 @@ export const registerWinery = async (req: AuthenticatedRequest, res: Response) =
     message: 'Winery registered successfully.',
     winery: newWinery,
   });
-};
+});
 
-export const getWineries = async (req: Request, res: Response) => {
+export const getWineries = ctrlWrapper(async (req: Request, res: Response) => {
   const params = req.query;
   const { wineries, totalCount, page, limit, totalPages } = await wineryService.getWineries(params);
 
@@ -30,15 +31,15 @@ export const getWineries = async (req: Request, res: Response) => {
     limit,
     totalPages,
   });
-};
+});
 
-export const getWinery = async (req: Request, res: Response) => {
+export const getWinery = ctrlWrapper(async (req: Request, res: Response) => {
   const { id } = req.params;
   const winery = await wineryService.getWineryById(id as string);
   res.status(200).json(winery);
-};
+});
 
-export const updateWinery = async (req: AuthenticatedRequest, res: Response) => {
+export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
   const updateData = req.body;
   const userId = req.userId!;
@@ -63,9 +64,9 @@ export const updateWinery = async (req: AuthenticatedRequest, res: Response) => 
     message: 'Successfully updated.',
     winery: updatedWinery,
   });
-};
+});
 
-export const deleteWinery = async (req: AuthenticatedRequest, res: Response) => {
+export const deleteWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
   const userId = req.userId!;
 
@@ -77,4 +78,4 @@ export const deleteWinery = async (req: AuthenticatedRequest, res: Response) => 
   await wineryService.deleteWineryById(id as string, user);
 
   res.status(204).send();
-};
+});
