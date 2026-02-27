@@ -24,59 +24,59 @@ beforeEach(() => {
 
 describe('userService', () => {
   describe('getUserProfileByFirebaseUid', () => {
-    it('should throw error if firebaseUid is empty', async () => {
+    it('error when firebaseUid is empty', async () => {
       await expect(userService.getUserProfileByFirebaseUid('')).rejects.toThrow(
         new HttpError('Firebase UID is required', 400),
       );
     });
 
-    it('should throw 404 if user not found', async () => {
+    it('error when user not found', async () => {
       mockFindOne.mockImplementation(() => ({
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        then: jest.fn((resolve) => resolve(null)), // Mock the final resolution of the query chain
+        then: jest.fn((resolve) => resolve(null)), 
       }));
 
-      await expect(userService.getUserProfileByFirebaseUid('nonexistent-uid')).rejects.toThrow(
+      await expect(userService.getUserProfileByFirebaseUid('bad-uid')).rejects.toThrow(
         new HttpError('User profile not found.', 404),
       );
     });
 
-    it('should return user if found', async () => {
-      const mockUser = {
+    it('get user when exist', async () => {
+      const testUser = {
         _id: 'user-id-123',
         firebaseUid: 'test-uid',
         firstName: 'Andrii',
         lastName: 'Veremii',
-        email: 'Dashuk10@example.com',
+        email: 'test@example.com',
         role: 'USER',
       };
       mockFindOne.mockImplementation(() => ({
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        then: jest.fn((resolve) => resolve(mockUser)), // Mock the final resolution of the query chain
+        then: jest.fn((resolve) => resolve(testUser)), 
       }));
 
       const result = await userService.getUserProfileByFirebaseUid('test-uid');
-      expect(result).toEqual(mockUser);
+      expect(result).toEqual(testUser);
       expect(mockFindOne).toHaveBeenCalledWith({ firebaseUid: 'test-uid' });
     });
   });
 
   describe('getUserFavorites', () => {
-    it('should throw 404 if user not found', async () => {
+    it('error when user not found', async () => {
       mockFindById.mockImplementation(() => ({
         populate: jest.fn().mockResolvedValue(null),
       }));
-      await expect(userService.getUserFavorites('nonexistent-id')).rejects.toThrow(
+      await expect(userService.getUserFavorites('bad-id')).rejects.toThrow(
         new HttpError('User not found', 404),
       );
     });
 
-    it('should return empty array if no favorites', async () => {
-      const mockUserWithNoFavorites = { favoriteWines: [] };
+    it('empty array when no favorites', async () => {
+      const testUserNoFavorites = { favoriteWines: [] };
       mockFindById.mockImplementation(() => ({
-        populate: jest.fn().mockResolvedValue(mockUserWithNoFavorites),
+        populate: jest.fn().mockResolvedValue(testUserNoFavorites),
       }));
 
       const result = await userService.getUserFavorites('user-id');
@@ -85,87 +85,87 @@ describe('userService', () => {
   });
 
   describe('addFavoriteWine', () => {
-    const userId = '65d5ec49e03f7c5558f3d6b1';
-    const wineId = '65d5ec49e03f7c5558f3d6b5';
-    const mockUser = {
+    const testUserId = '65d5ec49e03f7c5558f3d6b1';
+    const testWineId = '65d5ec49e03f7c5558f3d6b5';
+    const testUser = {
       favoriteWines: [] as Types.ObjectId[],
       save: jest.fn().mockResolvedValue(true),
     };
-    const mockWine = { _id: wineId };
+    const testWine = { _id: testWineId };
 
-    it('should throw 404 if user not found', async () => {
+    it('error when user not found', async () => {
       mockFindById.mockResolvedValue(null);
-      await expect(userService.addFavoriteWine(userId, wineId)).rejects.toThrow(
+      await expect(userService.addFavoriteWine(testUserId, testWineId)).rejects.toThrow(
         new HttpError('User not found', 404),
       );
     });
 
-    it('should throw 404 if wine not found', async () => {
-      mockFindById.mockResolvedValue(mockUser);
+    it('error when wine not found', async () => {
+      mockFindById.mockResolvedValue(testUser);
       mockWineFindById.mockResolvedValue(null);
-      await expect(userService.addFavoriteWine(userId, wineId)).rejects.toThrow(
+      await expect(userService.addFavoriteWine(testUserId, testWineId)).rejects.toThrow(
         new HttpError('Wine not found', 404),
       );
     });
 
-    it('should throw 400 if wine already in favorites', async () => {
+    it('error when wine already in favorites', async () => {
       const userWithFavorite = {
-        favoriteWines: [new Types.ObjectId(wineId)],
+        favoriteWines: [new Types.ObjectId(testWineId)],
         save: jest.fn(),
       };
       mockFindById.mockResolvedValue(userWithFavorite);
-      mockWineFindById.mockResolvedValue(mockWine);
-      await expect(userService.addFavoriteWine(userId, wineId)).rejects.toThrow(
-        new HttpError('Wine is already in favorites', 400),
+      mockWineFindById.mockResolvedValue(testWine);
+      await expect(userService.addFavoriteWine(testUserId, testWineId)).rejects.toThrow(
+        new HttpError('Wine already in favorites', 400),
       );
     });
 
-    it('should add wine to favorites successfully', async () => {
+    it('add wine to favorites good', async () => {
       const user = {
         favoriteWines: [] as Types.ObjectId[],
         save: jest.fn().mockResolvedValue(this),
       };
       mockFindById.mockResolvedValue(user);
-      mockWineFindById.mockResolvedValue({ _id: wineId });
+      mockWineFindById.mockResolvedValue({ _id: testWineId });
 
-      const result = await userService.addFavoriteWine(userId, wineId);
+      const result = await userService.addFavoriteWine(testUserId, testWineId);
 
       expect(user.favoriteWines).toHaveLength(1);
       expect(user.favoriteWines[0]).toBeInstanceOf(Types.ObjectId);
-      expect(user.favoriteWines[0].toString()).toBe(wineId);
+      expect(user.favoriteWines[0].toString()).toBe(testWineId);
       expect(user.save).toHaveBeenCalled();
       expect(result).toEqual({ message: 'Wine added to favorites' });
     });
   });
 
   describe('removeFavoriteWine', () => {
-    const userId = '65d5ec49e03f7c5558f3d6b1';
-    const wineId = '65d5ec49e03f7c5558f3d6b5';
-    const wineObjectId = new Types.ObjectId(wineId);
+    const testUserId = '65d5ec49e03f7c5558f3d6b1';
+    const testWineId = '65d5ec49e03f7c5558f3d6b5';
+    const testWineObjectId = new Types.ObjectId(testWineId);
 
-    it('should throw 404 if user not found', async () => {
+    it('error when user not found', async () => {
       mockFindById.mockResolvedValue(null);
-      await expect(userService.removeFavoriteWine(userId, wineId)).rejects.toThrow(
+      await expect(userService.removeFavoriteWine(testUserId, testWineId)).rejects.toThrow(
         new HttpError('User not found', 404),
       );
     });
 
-    it('should throw 404 if wine not in favorites', async () => {
+    it('error when wine not in favorites', async () => {
       const user = { favoriteWines: [], save: jest.fn() };
       mockFindById.mockResolvedValue(user);
-      await expect(userService.removeFavoriteWine(userId, wineId)).rejects.toThrow(
-        new HttpError('Wine not found in favorites', 404),
+      await expect(userService.removeFavoriteWine(testUserId, testWineId)).rejects.toThrow(
+        new HttpError('Wine not in favorites', 404),
       );
     });
 
-    it('should remove wine from favorites successfully', async () => {
+    it('remove wine from favorites good', async () => {
       const user = {
-        favoriteWines: [wineObjectId],
+        favoriteWines: [testWineObjectId],
         save: jest.fn().mockResolvedValue(this),
       };
       mockFindById.mockResolvedValue(user);
 
-      const result = await userService.removeFavoriteWine(userId, wineId);
+      const result = await userService.removeFavoriteWine(testUserId, testWineId);
 
       expect(user.favoriteWines).toHaveLength(0);
       expect(user.save).toHaveBeenCalled();
