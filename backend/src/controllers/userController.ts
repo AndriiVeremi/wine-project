@@ -4,11 +4,14 @@ import User from '@/models/userModel';
 import { AuthenticatedRequest } from '@/middleware/auth';
 import HttpError from '@/utils/HttpError';
 import * as userService from '@/services/userService';
+import ctrlWrapper from '@/utils/ctrlWrapper';
 
-export const getUserProfile = async (req: AuthenticatedRequest, res: express.Response) => {
-  const user = await userService.getUserProfileByFirebaseUid(req.user!.uid);
-  res.status(200).json(user);
-};
+export const getUserProfile = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
+    const user = await userService.getUserProfileByFirebaseUid(req.user!.uid);
+    res.status(200).json(user);
+  },
+);
 
 export const registerUser = async (req: express.Request, res: express.Response) => {
   const { email, password, firstName, lastName, role } = req.body;
@@ -74,23 +77,29 @@ export const registerUser = async (req: express.Request, res: express.Response) 
   }
 };
 
-export const getUserFavorites = async (req: AuthenticatedRequest, res: express.Response) => {
-  const favorites = await userService.getUserFavorites(req.userId!);
-  res.status(200).json(favorites);
-};
+export const getUserFavorites = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
+    const favorites = await userService.getUserFavorites(req.userId!);
+    res.status(200).json(favorites);
+  },
+);
 
-export const addFavoriteWine = async (req: AuthenticatedRequest, res: express.Response) => {
-  const { wineId } = req.body;
-  if (!wineId) {
-    throw new HttpError('Wine ID is required', 400);
-  }
+export const addFavoriteWine = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
+    const { wineId } = req.body;
+    if (!wineId) {
+      throw new HttpError('Wine ID is required', 400);
+    }
 
-  const result = await userService.addFavoriteWine(req.userId!, wineId);
-  res.status(200).json(result);
-};
+    const result = await userService.addFavoriteWine(req.userId!, wineId);
+    res.status(200).json(result);
+  },
+);
 
-export const removeFavoriteWine = async (req: AuthenticatedRequest, res: express.Response) => {
-  const wineId = req.params.wineId as string;
-  const result = await userService.removeFavoriteWine(req.userId!, wineId);
-  res.status(200).json(result);
-};
+export const removeFavoriteWine = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
+    const wineId = req.params.wineId as string;
+    const result = await userService.removeFavoriteWine(req.userId!, wineId);
+    res.status(200).json(result);
+  },
+);

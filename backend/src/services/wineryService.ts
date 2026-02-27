@@ -123,7 +123,7 @@ export const updateWinery = async (
   if (updateData.name && updateData.name !== winery.name) {
     const existingWinery = await Winery.findOne({ name: updateData.name });
     if (existingWinery && existingWinery._id.toString() !== wineryId.toString()) {
-    throw new HttpError('Winery with this name already exist.', 409);
+      throw new HttpError('Winery with this name already exist.', 409);
     }
   }
 
