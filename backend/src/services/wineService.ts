@@ -166,7 +166,7 @@ export class WineService {
     }
 
     if (user.role !== 'WINERY_OWNER' && user.role !== 'ADMIN') {
-      throw new HttpError('Only winery owners or administrators can create wines.', 403);
+      throw new HttpError('Only winery owners can create wines.', 403);
     }
 
     const winery = await Winery.findById(wineData.winery);
@@ -175,12 +175,12 @@ export class WineService {
     }
 
     if (user.role === 'WINERY_OWNER' && winery.owner.toString() !== userId) {
-      throw new HttpError('You are not the owner of this winery.', 403);
+      throw new HttpError('You are not owner of this winery.', 403);
     }
 
     const grapeExists = await Grape.findById(wineData.grape);
     if (!grapeExists) {
-      throw new HttpError('Grape variety not found.', 404);
+      throw new HttpError('Grape not found.', 404);
     }
 
     const newWine = await Wine.create({ ...wineData });
@@ -203,11 +203,11 @@ export class WineService {
 
     const winery = wine.winery;
     if (!winery) {
-      throw new HttpError('Winery associated with this wine not found.', 404);
+      throw new HttpError('Winery not found.', 404);
     }
 
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
-      throw new HttpError('You are not authorized to update this wine.', 403);
+      throw new HttpError('You cant update this wine.', 403);
     }
 
     delete updateData.averageRating;
@@ -217,7 +217,7 @@ export class WineService {
     if (updateData.grape) {
       const grapeExists = await Grape.findById(updateData.grape);
       if (!grapeExists) {
-        throw new HttpError('Grape variety not found.', 404);
+        throw new HttpError('Grape not found.', 404);
       }
     }
 
@@ -236,11 +236,11 @@ export class WineService {
 
     const winery = wine.winery;
     if (!winery) {
-      throw new HttpError('Winery associated with this wine not found.', 404);
+      throw new HttpError('Winery not found.', 404);
     }
 
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
-      throw new HttpError('You are not authorized to delete this wine.', 403);
+      throw new HttpError('You cant delete this wine.', 403);
     }
 
     await Wine.findByIdAndDelete(wineId);
