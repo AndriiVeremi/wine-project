@@ -62,7 +62,7 @@
   }, // Колір вина
   sweetness: { 
     type: String, 
-    enum: ['dry', 'semi-dry', 'sweet'], 
+    enum: ['dry', 'semi-dry', 'semi-sweet', 'sweet'], 
     required: true 
   }, // Сухість/солодкість
   averageRating: { type: Number, default: 0 }, // Середній рейтинг
@@ -117,8 +117,8 @@
   price: Number, // Ціна
   images: [String], // Галерея туру
   groupSize: { 
-    min: Number, 
-    max: Number 
+    min: { type: Number, required: true, min: 1 }, 
+    max: { type: Number, required: true, min: 1 } 
   } // Розмір групи
 }
 ```

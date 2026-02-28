@@ -2,7 +2,8 @@ import { Router } from 'express';
 import * as userController from '@/controllers/userController';
 import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
-import { registerSchema, loginSchema, addFavoriteSchema } from '@/schemas/userSchemas';
+import { registerSchema, addFavoriteSchema } from '@/schemas/userSchemas';
+import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
 
@@ -31,8 +32,7 @@ const router = Router();
  *                 example: dashuk10@example.com
  *               password:
  *                 type: string
- *                 format: password
- *                 example: "yourSecurePassword"
+ *                 example: password123
  *             required:
  *               - firstName
  *               - lastName
@@ -40,61 +40,37 @@ const router = Router();
  *               - password
  *     responses:
  *       201:
- *         description: User registered successfully. Returns a JWT token.
+ *         description: User registered successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 token:
+ *                 message:
  *                   type: string
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     uid:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     firstName:
+ *                       type: string
+ *                     lastName:
+ *                       type: string
+ *                     role:
+ *                       type: string
  *       400:
  *         description: Invalid input or user already exists
+ *       409:
+ *         description: Email already in use
  *       500:
  *         description: Server error
  */
 router.post('/register', validateBody(registerSchema), userController.registerUser);
-
-/**
- * @swagger
- * /users/login:
- *   post:
- *     tags: [Users]
- *     summary: User login
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: dashuk10@example.com
- *               password:
- *                 type: string
- *                 format: password
- *                 example: "your password"
- *             required:
- *               - email
- *               - password
- *     responses:
- *       200:
- *         description: User logged in successfully. Returns a JWT token.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *       400:
- *         description: Invalid credentials
- *       500:
- *         description: Server error
- */
-router.post('/login', validateBody(loginSchema));
 
 /**
  * @swagger
@@ -150,7 +126,7 @@ router.get('/me/favorites', authMiddleware, userController.getUserFavorites);
  *             type: object
  *             properties:
  *               wineId:
- *                 type: string
+ *                 type: 699dd41edd32bbaa0b2e3062
  *                 description: The ID of the wine to add to favorites
  *             required:
  *               - wineId
@@ -198,6 +174,11 @@ router.post(
  *       500:
  *         description: Server error
  */
-router.delete('/me/favorites/:wineId', authMiddleware, userController.removeFavoriteWine);
+router.delete(
+  '/me/favorites/:wineId',
+  authMiddleware,
+  isValidId('wineId'),
+  userController.removeFavoriteWine,
+);
 
 export default router;

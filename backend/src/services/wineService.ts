@@ -22,9 +22,13 @@ interface WineQuery {
 }
 
 export class WineService {
-  public async getAllWines(
-    query: WineQuery,
-  ): Promise<{ wines: HydratedDocument<IWine>[]; totalCount: number }> {
+  public async getAllWines(query: WineQuery): Promise<{
+    wines: HydratedDocument<IWine>[];
+    totalCount: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }> {
     const {
       country,
       region,
@@ -45,6 +49,8 @@ export class WineService {
     const sort: Record<string, 1 | -1> = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const take = parseInt(limit);
+    const currentPage = parseInt(page);
+    const currentLimit = parseInt(limit);
 
     if (name) filter.name = { $regex: name, $options: 'i' };
 
@@ -57,7 +63,7 @@ export class WineService {
       if (wineryIds.length > 0) {
         filter.winery = { $in: wineryIds };
       } else {
-        return { wines: [], totalCount: 0 };
+        return { wines: [], totalCount: 0, page: currentPage, limit: currentLimit, totalPages: 0 };
       }
     }
 
@@ -70,7 +76,7 @@ export class WineService {
       if (foundGrape) {
         filter.grape = foundGrape._id;
       } else {
-        return { wines: [], totalCount: 0 };
+        return { wines: [], totalCount: 0, page: currentPage, limit: currentLimit, totalPages: 0 };
       }
     }
 
@@ -134,15 +140,27 @@ export class WineService {
     const wines = await Wine.aggregate(aggregationPipeline).exec();
     const totalCountResult = await Wine.aggregate(totalCountPipeline).exec();
     const totalCount = totalCountResult.length > 0 ? totalCountResult[0].total : 0;
+    const totalPages = Math.ceil(totalCount / currentLimit);
 
-    return { wines: wines as HydratedDocument<IWine>[], totalCount };
+    return {
+      wines: wines as HydratedDocument<IWine>[],
+      totalCount,
+      page: currentPage,
+      limit: currentLimit,
+      totalPages,
+    };
   }
 
-  public async getWineById(wineId: string): Promise<HydratedDocument<IWine> | null> {
+  public async getWineById(wineId: string): Promise<HydratedDocument<IWine>> {
     const wine = await Wine.findById(wineId)
       .populate('winery', 'name isVip')
       .populate('grape', 'name')
       .exec();
+
+    if (!wine) {
+      throw new HttpError('Wine not found.', 404);
+    }
+
     return wine;
   }
 
@@ -153,7 +171,7 @@ export class WineService {
     }
 
     if (user.role !== 'WINERY_OWNER' && user.role !== 'ADMIN') {
-      throw new HttpError('Only winery owners or administrators can create wines.', 403);
+      throw new HttpError('Only winery owners can create wines.', 403);
     }
 
     const winery = await Winery.findById(wineData.winery);
@@ -162,12 +180,12 @@ export class WineService {
     }
 
     if (user.role === 'WINERY_OWNER' && winery.owner.toString() !== userId) {
-      throw new HttpError('You are not the owner of this winery.', 403);
+      throw new HttpError('You are not owner of this winery.', 403);
     }
 
     const grapeExists = await Grape.findById(wineData.grape);
     if (!grapeExists) {
-      throw new HttpError('Grape variety not found.', 404);
+      throw new HttpError('Grape not found.', 404);
     }
 
     const newWine = await Wine.create({ ...wineData });
@@ -190,11 +208,11 @@ export class WineService {
 
     const winery = wine.winery;
     if (!winery) {
-      throw new HttpError('Winery associated with this wine not found.', 404);
+      throw new HttpError('Winery not found.', 404);
     }
 
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
-      throw new HttpError('You are not authorized to update this wine.', 403);
+      throw new HttpError('You cant update this wine.', 403);
     }
 
     delete updateData.averageRating;
@@ -204,7 +222,7 @@ export class WineService {
     if (updateData.grape) {
       const grapeExists = await Grape.findById(updateData.grape);
       if (!grapeExists) {
-        throw new HttpError('Grape variety not found.', 404);
+        throw new HttpError('Grape not found.', 404);
       }
     }
 
@@ -223,11 +241,11 @@ export class WineService {
 
     const winery = wine.winery;
     if (!winery) {
-      throw new HttpError('Winery associated with this wine not found.', 404);
+      throw new HttpError('Winery not found.', 404);
     }
 
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
-      throw new HttpError('You are not authorized to delete this wine.', 403);
+      throw new HttpError('You cant delete this wine.', 403);
     }
 
     await Wine.findByIdAndDelete(wineId);

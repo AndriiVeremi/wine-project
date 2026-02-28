@@ -19,7 +19,7 @@ interface WineryData {
 export const createWinery = async (ownerId: Types.ObjectId | string, data: WineryData) => {
   const existingWinery = await Winery.findOne({ name: data.name });
   if (existingWinery) {
-    throw new HttpError('Winery with this name already exists.', 409);
+    throw new HttpError('Winery with this name already exist.', 409);
   }
 
   const newWinery = new Winery({
@@ -102,6 +102,15 @@ export const getWineryById = async (wineryId: Types.ObjectId | string) => {
   return winery;
 };
 
+export const getWineryByName = async (wineryName: string) => {
+  const winery = await Winery.findOne({ name: { $regex: wineryName, $options: 'i' } })
+    .populate('owner', 'firstName lastName email')
+    .populate('country', 'name')
+    .populate('region', 'name');
+
+  return winery;
+};
+
 export const updateWinery = async (
   wineryId: Types.ObjectId | string,
   updateData: Partial<WineryData>,
@@ -114,7 +123,7 @@ export const updateWinery = async (
   if (updateData.name && updateData.name !== winery.name) {
     const existingWinery = await Winery.findOne({ name: updateData.name });
     if (existingWinery && existingWinery._id.toString() !== wineryId.toString()) {
-      throw new HttpError('Winery with this name already exists.', 409);
+      throw new HttpError('Winery with this name already exist.', 409);
     }
   }
 
@@ -131,7 +140,7 @@ export const deleteWineryById = async (wineryId: Types.ObjectId | string, user: 
   }
 
   if (user.role !== 'ADMIN' && winery.owner.toString() !== user._id.toString()) {
-    throw new HttpError('You are not authorized to delete this winery.', 403);
+    throw new HttpError('You cant delete this winery.', 403);
   }
 
   if (winery.owner) {

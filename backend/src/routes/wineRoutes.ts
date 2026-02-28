@@ -3,7 +3,8 @@ import * as wineController from '@/controllers/wineController';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { createWineSchema, updateWineSchema } from '@/schemas/wineSchemas';
-import reviewRoutes from './reviewRoutes';
+import { isValidId } from '@/middleware/isValidId';
+import reviewRoutes from '@/routes/reviewRoutes';
 
 const router = Router();
 
@@ -12,7 +13,7 @@ const router = Router();
  * /wines:
  *   get:
  *     tags: [Wines]
- *     summary: Retrieve a list of wines with optional filters
+ *     summary: Retrieve a list of wines with optional filters and pagination
  *     parameters:
  *       - in: query
  *         name: color
@@ -41,34 +42,61 @@ const router = Router();
  *         schema:
  *           type: string
  *         description: Filter by region
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of items per page
  *     responses:
  *       200:
- *         description: A list of wines.
+ *         description: A list of wines with pagination metadata.
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     example: 60d21b4667d0d8992e610c85
- *                   name:
- *                     type: string
- *                     example: Château Margaux
- *                   vintage:
- *                     type: integer
- *                     example: 2015
- *                   color:
- *                     type: string
- *                     enum: [red, white, rose, orange]
- *                   sweetness:
- *                     type: string
- *                     enum: [dry, semi-dry, semi-sweet, sweet]
- *                   price:
- *                     type: number
- *                     example: 500
+ *               type: object
+ *               properties:
+ *                 wines:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 60d21b4667d0d8992e610c85
+ *                       name:
+ *                         type: string
+ *                         example: Château Margaux
+ *                       vintage:
+ *                         type: integer
+ *                         example: 2015
+ *                       color:
+ *                         type: string
+ *                         enum: [red, white, rose, orange]
+ *                       sweetness:
+ *                         type: string
+ *                         enum: [dry, semi-dry, semi-sweet, sweet]
+ *                       price:
+ *                         type: number
+ *                         example: 500
+ *                 totalCount:
+ *                   type: integer
+ *                   example: 100
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 limit:
+ *                   type: integer
+ *                   example: 10
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 10
  *       500:
  *         description: Server error
  */
@@ -163,7 +191,7 @@ router.post(
  *       500:
  *         description: Server error
  */
-router.get('/:id', wineController.getWineById);
+router.get('/:id', isValidId(), wineController.getWineById);
 
 /**
  * @swagger
@@ -193,7 +221,7 @@ router.get('/:id', wineController.getWineById);
  *               year:
  *                 type: integer
  *                 example: 2024
- *     responses:
+ *             responses:
  *       200:
  *         description: Wine updated successfully
  *       400:
@@ -209,6 +237,7 @@ router.get('/:id', wineController.getWineById);
  */
 router.patch(
   '/:id',
+  isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   validateBody(updateWineSchema),
@@ -244,6 +273,7 @@ router.patch(
  */
 router.delete(
   '/:id',
+  isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   wineController.deleteWine,

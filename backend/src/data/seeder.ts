@@ -7,7 +7,17 @@ import Review from '@/models/reviewModel';
 import Location from '@/models/locationModel';
 import Grape from '@/models/grapeModel';
 import Region from '@/models/regionModel';
-import { users, wineries, wines, reviews, locations, grapes, regions } from '@/data/seedData';
+import Tour from '@/models/tourModel';
+import {
+  users,
+  wineries,
+  wines,
+  reviews,
+  locations,
+  grapes,
+  regions,
+  tours,
+} from '@/data/seedData';
 
 dotenv.config();
 
@@ -37,6 +47,7 @@ const importData = async () => {
     await Location.deleteMany();
     await Grape.deleteMany();
     await Region.deleteMany();
+    await Tour.deleteMany();
     console.log('Existing data cleared.');
 
     console.log('Importing locations...');
@@ -119,6 +130,17 @@ const importData = async () => {
     }
     console.log('Wines imported.');
 
+    console.log('Importing tours...');
+    for (const item of tours) {
+      try {
+        await Tour.create(item);
+      } catch (err: unknown) {
+        const error = err as { message?: string };
+        console.error(`Error importing tour ${item.name}: ${error.message}`);
+      }
+    }
+    console.log('Tours imported.');
+
     console.log('Importing reviews...');
     for (const item of reviews) {
       try {
@@ -169,6 +191,7 @@ const destroyData = async () => {
     await Location.deleteMany();
     await Grape.deleteMany();
     await Region.deleteMany();
+    await Tour.deleteMany();
 
     console.log('Data Destroyed!');
     process.exit();

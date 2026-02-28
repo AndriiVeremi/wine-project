@@ -41,26 +41,6 @@
   - `400`: Invalid input or user already exists
   - `500`: Server error
 
-### **POST** `/api/users/login`
-- **Опис:** Вхід користувача в систему.
-- **Headers:** Not required.
-- **Body:**
-  ```json
-  {
-    "email": "user@example.com",
-    "password": "password123"
-  }
-  ```
-- **Response (200 OK):**
-  ```json
-  {
-    "token": "YOUR_JWT_TOKEN_HERE"
-  }
-  ```
-- **Errors:**
-  - `400`: Invalid credentials
-  - `500`: Server error
-
 ### **GET** `/api/users/me`
 - **Опис:** Отримати профіль поточного користувача.
 - **Headers:** `Authorization: Bearer <firebase_token>`
@@ -155,7 +135,7 @@
 
 ### **GET** `/api/locations/regions`
 - **Опис:** Отримати список регіонів для вказаної країни.
-- **Query Params:** `?countryId=<country_location_id>`
+- **Query Params:** `?country=<country_name>`
 - **Response (200 OK):**
   ```json
   [
@@ -362,8 +342,9 @@
   ```json
   {
     "name": "Каберне Совіньйон Резерв",
+    "winery": "60d21b4667d0d8992e610c90",
     "vintage": 2021,
-    "grape": "Каберне Совіньйон",
+    "grape": "60d21b4667d0d8992e610c91",
     "price": 750,
     "description": "Класичне червоне вино з насиченим смаком вишні та смородини.",
     "tastingNotes": ["вишня", "смородина", "дуб", "ваніль"],
@@ -481,13 +462,27 @@
 
 ### **GET** `/api/tours`
 
-- **Опис:** Отримати список доступних турів.
+- **Опис:** Отримати список всіх турів з пагінацією.
 
-- **Query Params:** `?wineryId=<winery_id>`
+- **Query Params:** `?page=<номер>&limit=<кількість>`
 
 - **Response (200 OK):** Array of tour objects.
 
 - **Errors:**
+
+  - `500`: Server error
+
+
+
+### **GET** `/api/tours/winery/:wineryId`
+
+- **Опис:** Отримати всі тури конкретної виноробні.
+
+- **Response (200 OK):** Array of tour objects.
+
+- **Errors:**
+
+  - `404`: Winery not found
 
   - `500`: Server error
 
@@ -516,23 +511,15 @@
 - **Body:**
 
   ```json
-
   {
-
+      "winery": "60d21b4667d0d8992e610c90",
       "name": "Дегустаційний тур 'Серце виноробні'",
-
       "description": "Екскурсія по виноградниках, відвідування виробництва та дегустація 5 видів вин.",
-
       "duration": 3,
-
       "price": 1500,
-
       "images": ["https://example.com/tour1.png", "https://example.com/tour2.png"],
-
       "groupSize": { "min": 2, "max": 10 }
-
   }
-
   ```
 
 - **Response (201 Created):** Created tour object.
@@ -540,9 +527,84 @@
 - **Errors:**
 
   - `400`: Invalid input
+  - `401`: Unauthorized
+  - `403`: Forbidden
+  - `500`: Server error
+
+### **PATCH** `/api/tours/:id`
+
+- **Опис:** Оновити інформацію про тур (тільки власник виноробні або адмін).
+
+- **Headers:** `Authorization: Bearer <firebase_token>`
+
+- **Body:**
+
+  ```json
+  {
+      "name": "Оновлена назва туру",
+      "description": "Оновлений опис туру.",
+      "duration": 4,
+      "price": 1800
+  }
+  ```
+
+- **Response (200 OK):** Updated tour object.
+
+- **Errors:**
+
+  - `400`: Invalid input
+  - `401`: Unauthorized
+  - `403`: Forbidden (user is not the owner or admin)
+  - `404`: Tour not found
+  - `500`: Server error
+
+### **DELETE** `/api/tours/:id`
+
+- **Опис:** Видалити тур (тільки власник виноробні або адмін).
+
+- **Headers:** `Authorization: Bearer <firebase_token>`
+
+- **Response (204 No Content):** No body.
+
+- **Errors:**
 
   - `401`: Unauthorized
-
-  - `403`: Forbidden
-
+  - `403`: Forbidden (user is not the owner or admin)
+  - `404`: Tour not found
   - `500`: Server error
+
+---
+
+## ШІ-помічник (`/api/ai`)
+
+### **POST** `/api/ai/chat`
+- **Опис:** Надіслати повідомлення до ШІ-помічника та отримати відповідь. Захищено.
+- **Headers:** `Authorization: Bearer <firebase_token>`
+- **Body:**
+  ```json
+  {
+    "message": "Привіт, допоможи вибрати вино!",
+    "history": [
+      {
+        "role": "user",
+        "parts": [{ "text": "Попереднє повідомлення" }]
+      },
+      {
+        "role": "model",
+        "parts": [{ "text": "Попередня відповідь" }]
+      }
+    ]
+  }
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "response": "Звісно! Яке вино ви полюбляєте: червоне, біле, рожеве?"
+  }
+  ```
+- **Errors:**
+  - `400`: Помилка валідації
+  - `401`: Неавторизований
+  - `429`: Забагато запитів
+  - `500`: Помилка сервера
+  - `503`: ШІ-помічник вимкнений адміністратором

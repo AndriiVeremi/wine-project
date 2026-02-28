@@ -1,15 +1,16 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import LocationService from '@/services/locationService';
 import Location from '@/models/locationModel';
 import HttpError from '@/utils/HttpError';
+import ctrlWrapper from '@/utils/ctrlWrapper';
 
 class LocationController {
-  public async getCountries(req: Request, res: Response, _next: NextFunction) {
+  public getCountries = ctrlWrapper(async (req: Request, res: Response) => {
     const countries = await LocationService.getCountries();
     res.json(countries);
-  }
+  });
 
-  public async getRegionsByCountry(req: Request, res: Response, _next: NextFunction) {
+  public getRegionsByCountry = ctrlWrapper(async (req: Request, res: Response) => {
     const { country } = req.query;
 
     if (!country) {
@@ -24,7 +25,7 @@ class LocationController {
 
     const regions = await LocationService.getRegionsByCountry(countryDoc._id);
     res.json(regions);
-  }
+  });
 }
 
 export default new LocationController();

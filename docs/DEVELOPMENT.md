@@ -27,6 +27,7 @@ cd wine-project
 1.  У папці `backend` створіть копію файлу `.env.example` та назвіть її `.env`.
 2.  Встановіть `MONGO_URI=mongodb://mongodb:27017/wine-db`.
 3.  Додайте `FIREBASE_SERVICE_ACCOUNT_CREDS_JSON`. Це JSON-об'єкт з обліковими даними сервісного акаунту Firebase. Його необхідно для створення користувачів та призначення ролей на бекенді.
+4.  Налаштуйте `CORS_ORIGIN` - домен фронтенду для CORS (за замовчуванням `http://localhost:5173`).
 
 ### 3. Запуск
 
@@ -35,9 +36,9 @@ cd wine-project
 **Бекенд (Docker):**
 У папці `backend` виконайте:
 ```bash
-docker compose up --build -d
+docker compose -f docker-compose.dev.yml up --build
 ```
-*Бекенд буде доступний на `http://localhost:5005`.*
+*Бекенд буде доступний на `http://localhost:505`.*
 
 **Фронтенд:**
 У папці `frontend` виконайте:
@@ -57,24 +58,25 @@ npm run dev
 1.  **Переконайтесь, що Docker-контейнери бекенду та бази даних запущено.**
     ```bash
     # У папці backend/
-    docker compose up -d
+    docker compose -f docker-compose.dev.yml up -d
     ```
+
 2.  **Завантажте дані:**
     Ця команда видалить старі дані та завантажить нові з файлу `backend/src/data/seedData.ts`. Вона виконується всередині Docker-контейнера бекенду.
     ```bash
     # У папці backend/
-    docker compose run --rm backend npm run db:seed
+    docker compose -f docker-compose.dev.yml run --rm backend npm run db:seed
     ```
 3.  **Видаліть дані:**
     Ця команда повністю очистить відповідні колекції в базі даних. Вона також виконується всередині Docker-контейнера бекенду.
     ```bash
     # У папці backend/
-    docker compose run --rm backend npm run db:destroy
+    docker compose -f docker-compose.dev.yml run --rm backend npm run db:destroy
     ```
 
 ### 5. Зупинка
 
-*   **Бекенд:** `docker compose down` у папці `backend`.
+*   **Бекенд:** `docker compose -f docker-compose.dev.yml down` у папці `backend`.
 *   **Фронтенд:** `Ctrl + C` у відповідному терміналі.
 
 
@@ -90,9 +92,12 @@ backend/src/
 ├── routes/          # Маршрути
 ├── schemas/         # Joi схеми валідації даних
 ├── services/        # Бізнес-логіка
-├── tests/           # Тести
 ├── types/           # TypeScript типи
 └── index.ts         # Головний файл сервера
+
+backend/tests/
+├── __tests__/       # Unit-тести
+└── __mocks__/       # Mоки (Firebase, MongoDB)
 ```
 
 ### Frontend
@@ -153,10 +158,122 @@ frontend/src/
 
 Для забезпечення якості коду проєкт використовує **Jest** для бекенду та **Vitest** для фронтенду.
 
-Дотримуйтесь цих правил при написанні тестів:
+### Запуск тестів
+
+**Бекенд (Jest):**
+```bash
+cd backend
+npm test              # запустити всі тести
+npm run test:watch    # запустити з автоперезагрузкою
+npm run test:coverage # показати покриття коду
+```
+
+**Фронтенд (Vitest):**
+```bash
+cd frontend
+npm test              # запустити всі тести
+npm run test:watch    # запустити з автоперезагрузкою
+npm run test:coverage # показати покриття коду
+npm run test:ui       # запустити з UI інтерфейсом
+```
+
+### Структура тестів
+
+Тести зберігаються в папці `tests/`:
+```
+backend/tests/
+├── __tests__/              # Unit-тести
+│   └── userService.test.ts
+├── __mocks__/              # Mоки (Firebase, MongoDB)
+│   └── firebase.ts
+└── ...
+
+frontend/tests/              # Unit-тести
+```
+
+### Як писати тести
+
+1. **Сервіси (backend):** Тестуємо бізнес-логіку через моки моделей Mongoose.
+2. **Контролери:** Тестуємо через моки сервісів.
+3. **Middleware:** Тестуємо окремо, мокаємо залежності.
+
+Приклад тесту сервісу:
+```typescript
+import * as userService from '@/services/userService';
+
+jest.mock('@/models/userModel', () => ({ ... }));
+
+describe('userService', () => {
+  it('should throw error if user not found', async () => {
+    // Тест
+  });
+});
+```
+
+### Правила
+
 *   Новий функціонал має бути покритий тестами.
 *   Тестуйте критично важливі шляхи (critical paths).
 *   Мінімальне покриття коду тестами: **30%**.
 *   Назви тестів мають бути описовими та зрозумілими.
 
+---
 
+## 🤖 ШІ-помічник
+
+Проєкт включає інтерактивного ШІ-помічника, який виконує роль віртуального сомельє. Цей розділ описує його архітектуру та налаштування.
+
+### Архітектура
+
+-   **Технологія:** Google Generative AI (модель `gemini-2.5-flash`).
+-   **Призначення:** Допомога користувачам у виборі вина, надання інформації про виноробні та регіони, рекомендація винних турів.
+-   **Доступ:** Функціонал доступний лише для автентифікованих користувачів.
+
+### Налаштування
+
+Для роботи ШІ-помічника необхідно додати наступні змінні до файлів `.env` у папці `backend` та `frontend`:
+
+```env backend
+# Ключ доступу до Google Generative AI API
+GEMINI_API_KEY=AIzaSy...
+# Ввімкнення/вимкнення функціоналу ШІ-помічника ('true' або 'false')
+AI_ASSISTANT_ENABLED=true
+```
+а також додати наступну змінну до файлу `.env` у папці `frontend`:
+
+```env frontend
+# Ввімкнення/вимкнення функціоналу ШІ-помічника ('true' або 'false')
+VITE_AI_ASSISTANT_ENABLED=true
+`
+Якщо `AI_ASSISTANT_ENABLED` встановлено в `false`, ендпоінт `/api/ai/chat` повертатиме помилку `503 Service Unavailable`.
+
+---
+
+## 🛡️ Безпека
+
+Проєкт включает наступні засоби захисту:
+
+### Helmet
+Автоматично додає безпечні HTTP-заголовки:
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `X-XSS-Protection: 1; mode=block`
+- та інші
+
+Підключається автоматично в `backend/src/index.ts`.
+
+### Rate Limiting
+Обмежує кількість запитів з одної IP-адреси:
+- **Ліміт:** 100 запитів за 15 хвилин
+- **При перевищенні:** повертає `429 Too Many Requests`
+
+### CORS
+Налаштовується через змінну `CORS_ORIGIN` в `.env`:
+```env
+CORS_ORIGIN=http://localhost:5173
+```
+
+Для продакшену вказуйте повний домен:
+```env
+CORS_ORIGIN=https://wine-project.com
+```
