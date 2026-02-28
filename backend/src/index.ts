@@ -3,11 +3,12 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
-import apiRouter from '@/routes/api';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import errorMiddleware from '@/middleware/errorMiddleware';
 import { swaggerSpec } from '@/config/swagger';
-
 dotenv.config();
+import apiRouter from '@/routes/api';
 
 import '@/models/userModel';
 import '@/models/wineryModel';
@@ -19,9 +20,18 @@ import '@/models/locationModel';
 import '@/models/regionModel';
 
 const app: Express = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  message: { message: 'Too many requests from this IP, please try again later.' },
+});
+app.use(limiter);
+
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

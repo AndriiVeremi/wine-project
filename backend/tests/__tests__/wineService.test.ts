@@ -25,10 +25,10 @@ const mockUserFindById = User.findById as jest.Mock;
 const mockGrapeFindOne = Grape.findOne as jest.Mock;
 const mockGrapeFindById = Grape.findById as jest.Mock;
 
-const mockWines = [
+const testWines = [
   {
     _id: 'wine-1',
-    name: 'Cabernet Sauvignon',
+    name: 'Cabernet',
     vintage: 2020,
     color: 'red',
     sweetness: 'dry',
@@ -38,7 +38,7 @@ const mockWines = [
   },
   {
     _id: 'wine-2',
-    name: 'Merlot Reserve',
+    name: 'Merlot',
     vintage: 2019,
     color: 'red',
     sweetness: 'dry',
@@ -54,10 +54,10 @@ describe('WineService', () => {
   });
 
   describe('getAllWines', () => {
-    it('should return wines with pagination metadata', async () => {
+    it('get wines with page', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue(mockWines),
+          exec: jest.fn().mockResolvedValue(testWines),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 2 }]),
@@ -66,7 +66,7 @@ describe('WineService', () => {
       const result = await wineService.getAllWines({});
 
       expect(result).toEqual({
-        wines: mockWines,
+        wines: testWines,
         totalCount: 2,
         page: 1,
         limit: 10,
@@ -74,10 +74,10 @@ describe('WineService', () => {
       });
     });
 
-    it('should use custom page and limit', async () => {
+    it('use custom page and limit', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[0]]),
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 2 }]),
@@ -90,13 +90,13 @@ describe('WineService', () => {
       expect(result.totalPages).toBe(2);
     });
 
-    it('should filter by color', async () => {
+    it('filter by color', async () => {
       mockWineAggregate.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockWines),
+        exec: jest.fn().mockResolvedValue(testWines),
       });
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue(mockWines),
+          exec: jest.fn().mockResolvedValue(testWines),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 2 }]),
@@ -107,10 +107,10 @@ describe('WineService', () => {
       expect(mockWineAggregate).toHaveBeenCalled();
     });
 
-    it('should filter by name with regex', async () => {
+    it('filter by name', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[0]]),
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 1 }]),
@@ -121,14 +121,14 @@ describe('WineService', () => {
       expect(result.wines).toHaveLength(1);
     });
 
-    it('should filter by country', async () => {
+    it('filter by country', async () => {
       mockWineryFind.mockReturnValue({
         select: jest.fn().mockResolvedValue([{ _id: 'winery-1' }]),
       });
 
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[0]]),
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 1 }]),
@@ -140,7 +140,7 @@ describe('WineService', () => {
       expect(result.wines).toHaveLength(1);
     });
 
-    it('should return empty array if no wineries found for country', async () => {
+    it('empty array when no wineries in country', async () => {
       mockWineryFind.mockReturnValue({
         select: jest.fn().mockResolvedValue([]),
       });
@@ -151,14 +151,14 @@ describe('WineService', () => {
       expect(result.totalCount).toBe(0);
     });
 
-    it('should filter by grape variety', async () => {
+    it('filter by grape', async () => {
       mockGrapeFindOne.mockReturnValue({
         select: jest.fn().mockResolvedValue({ _id: 'grape-1' }),
       });
 
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[0]]),
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 1 }]),
@@ -170,21 +170,21 @@ describe('WineService', () => {
       expect(result.wines).toHaveLength(1);
     });
 
-    it('should return empty if grape not found', async () => {
+    it('empty when grape not found', async () => {
       mockGrapeFindOne.mockReturnValue({
         select: jest.fn().mockResolvedValue(null),
       });
 
-      const result = await wineService.getAllWines({ grape: 'UnknownGrape' });
+      const result = await wineService.getAllWines({ grape: 'BadGrape' });
 
       expect(result.wines).toEqual([]);
       expect(result.totalCount).toBe(0);
     });
 
-    it('should filter by minRating', async () => {
+    it('filter by minRating', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[1]]),
+          exec: jest.fn().mockResolvedValue([testWines[1]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 1 }]),
@@ -195,10 +195,10 @@ describe('WineService', () => {
       expect(result.wines).toHaveLength(1);
     });
 
-    it('should filter by maxPrice', async () => {
+    it('filter by maxPrice', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[0]]),
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 1 }]),
@@ -209,10 +209,10 @@ describe('WineService', () => {
       expect(result.wines).toHaveLength(1);
     });
 
-    it('should filter by vintage', async () => {
+    it('filter by vintage', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[0]]),
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 1 }]),
@@ -223,10 +223,10 @@ describe('WineService', () => {
       expect(result.wines).toHaveLength(1);
     });
 
-    it('should filter by wineryId', async () => {
+    it('filter by wineryId', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue([mockWines[0]]),
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 1 }]),
@@ -237,10 +237,10 @@ describe('WineService', () => {
       expect(result.wines).toHaveLength(1);
     });
 
-    it('should filter by sweetness', async () => {
+    it('filter by sweetness', async () => {
       mockWineAggregate
         .mockReturnValueOnce({
-          exec: jest.fn().mockResolvedValue(mockWines),
+          exec: jest.fn().mockResolvedValue(testWines),
         })
         .mockReturnValueOnce({
           exec: jest.fn().mockResolvedValue([{ total: 2 }]),
@@ -253,27 +253,27 @@ describe('WineService', () => {
   });
 
   describe('getWineById', () => {
-    it('should return wine by id', async () => {
-      const mockWine = { _id: 'wine-1', name: 'Test Wine' };
+    it('get wine by id when exist', async () => {
+      const testWine = { _id: 'wine-1', name: 'Test Wine' };
 
       const createMockQuery = () => ({
         populate: jest.fn().mockReturnValue({
           populate: jest.fn().mockReturnValue({
-            exec: jest.fn().mockResolvedValue(mockWine),
+            exec: jest.fn().mockResolvedValue(testWine),
           }),
         }),
-        exec: jest.fn().mockResolvedValue(mockWine),
+        exec: jest.fn().mockResolvedValue(testWine),
       });
 
       mockWineFindById.mockReturnValue(createMockQuery());
 
       const result = await wineService.getWineById('wine-1');
 
-      expect(result).toEqual(mockWine);
+      expect(result).toEqual(testWine);
       expect(mockWineFindById).toHaveBeenCalledWith('wine-1');
     });
 
-    it('should return null if wine not found', async () => {
+    it('return null when wine not found', async () => {
       const createMockQuery = () => ({
         populate: jest.fn().mockReturnValue({
           populate: jest.fn().mockReturnValue({
@@ -285,14 +285,14 @@ describe('WineService', () => {
 
       mockWineFindById.mockReturnValue(createMockQuery());
 
-      const result = await wineService.getWineById('nonexistent-id');
+      const result = await wineService.getWineById('bad-id');
 
       expect(result).toBeNull();
     });
   });
 
   describe('createWine', () => {
-    const mockWineData = {
+    const testWineData = {
       name: 'New Wine',
       winery: 'winery-1',
       vintage: 2023,
@@ -306,85 +306,85 @@ describe('WineService', () => {
       averageRating: 0,
     } as unknown as import('@/models/wineModel').IWine;
 
-    const mockUser = {
+    const testUser = {
       _id: 'user-1',
       role: 'WINERY_OWNER',
     };
 
-    const mockWinery = {
+    const testWinery = {
       _id: 'winery-1',
       owner: 'user-1',
     };
 
-    const mockGrape = {
+    const testGrape = {
       _id: 'grape-1',
     };
 
-    it('should throw 404 if user not found', async () => {
+    it('error when user not found', async () => {
       mockUserFindById.mockResolvedValue(null);
 
-      await expect(wineService.createWine(mockWineData, 'user-1')).rejects.toThrow(
+      await expect(wineService.createWine(testWineData, 'user-1')).rejects.toThrow(
         'User not found.',
       );
     });
 
-    it('should throw 403 if user is not WINERY_OWNER or ADMIN', async () => {
+    it('error when user not WINERY_OWNER or ADMIN', async () => {
       mockUserFindById.mockResolvedValue({ _id: 'user-1', role: 'USER' });
 
-      await expect(wineService.createWine(mockWineData, 'user-1')).rejects.toThrow(
-        'Only winery owners or administrators can create wines.',
+      await expect(wineService.createWine(testWineData, 'user-1')).rejects.toThrow(
+        'Only winery owners can create wines.',
       );
     });
 
-    it('should throw 404 if winery not found', async () => {
-      mockUserFindById.mockResolvedValue(mockUser);
+    it('error when winery not found', async () => {
+      mockUserFindById.mockResolvedValue(testUser);
       mockWineryFindById.mockResolvedValue(null);
 
-      await expect(wineService.createWine(mockWineData, 'user-1')).rejects.toThrow(
+      await expect(wineService.createWine(testWineData, 'user-1')).rejects.toThrow(
         'Winery not found.',
       );
     });
 
-    it('should throw 403 if user is WINERY_OWNER but not owner of winery', async () => {
-      mockUserFindById.mockResolvedValue(mockUser);
+    it('error when user not owner of winery', async () => {
+      mockUserFindById.mockResolvedValue(testUser);
       mockWineryFindById.mockResolvedValue({ _id: 'winery-1', owner: 'other-user' });
 
-      await expect(wineService.createWine(mockWineData, 'user-1')).rejects.toThrow(
-        'You are not the owner of this winery.',
+      await expect(wineService.createWine(testWineData, 'user-1')).rejects.toThrow(
+        'You are not owner of this winery.',
       );
     });
 
-    it('should throw 404 if grape not found', async () => {
-      mockUserFindById.mockResolvedValue(mockUser);
-      mockWineryFindById.mockResolvedValue(mockWinery);
+    it('error when grape not found', async () => {
+      mockUserFindById.mockResolvedValue(testUser);
+      mockWineryFindById.mockResolvedValue(testWinery);
       mockGrapeFindById.mockResolvedValue(null);
 
-      await expect(wineService.createWine(mockWineData, 'user-1')).rejects.toThrow(
-        'Grape variety not found.',
+      await expect(wineService.createWine(testWineData, 'user-1')).rejects.toThrow(
+        'Grape not found.',
       );
     });
 
-    it('should create wine successfully', async () => {
-      mockUserFindById.mockResolvedValue(mockUser);
-      mockWineryFindById.mockResolvedValue(mockWinery);
-      mockGrapeFindById.mockResolvedValue(mockGrape);
-      mockWineCreate.mockResolvedValue({ ...mockWineData, _id: 'new-wine-id' });
+    it('create wine good', async () => {
+      mockUserFindById.mockResolvedValue(testUser);
+      mockWineryFindById.mockResolvedValue(testWinery);
+      mockGrapeFindById.mockResolvedValue(testGrape);
+      mockWineCreate.mockResolvedValue({ ...testWineData, _id: 'new-wine-id' });
 
-      const result = await wineService.createWine(mockWineData, 'user-1');
+      const result = await wineService.createWine(testWineData, 'user-1');
 
-      expect(mockWineCreate).toHaveBeenCalledWith(mockWineData);
-      expect(result).toEqual({ ...mockWineData, _id: 'new-wine-id' });
+      expect(mockWineCreate).toHaveBeenCalledWith(testWineData);
+      expect(result).toEqual({ ...testWineData, _id: 'new-wine-id' });
     });
 
-    it('should allow ADMIN to create wine for any winery', async () => {
+    it('admin can create wine for any winery', async () => {
       const adminUser = { _id: 'admin-1', role: 'ADMIN' };
 
       mockUserFindById.mockResolvedValue(adminUser);
-      mockWineryFindById.mockResolvedValue(mockWinery);
-      mockGrapeFindById.mockResolvedValue(mockGrape);
-      mockWineCreate.mockResolvedValue({ ...mockWineData, _id: 'new-wine-id' });
+      mockWineryFindById.mockResolvedValue(testWinery);
+      mockGrapeFindById.mockResolvedValue(testGrape);
+      mockWineCreate.mockResolvedValue({ ...testWineData, _id: 'new-wine-id' });
 
-      const result = await wineService.createWine(mockWineData, 'admin-1');
+      const result = await wineService.createWine(testWineData, 'admin-1');
 
       expect(mockWineCreate).toHaveBeenCalled();
       expect(result).toBeDefined();
@@ -392,7 +392,7 @@ describe('WineService', () => {
   });
 
   describe('updateWine', () => {
-    const mockWine = {
+    const testWine = {
       _id: 'wine-1',
       name: 'Old Name',
       winery: {
@@ -401,7 +401,7 @@ describe('WineService', () => {
       },
     };
 
-    it('should return null if wine not found', async () => {
+    it('return null when wine not found', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
           exec: jest.fn().mockResolvedValue(null),
@@ -413,54 +413,54 @@ describe('WineService', () => {
       expect(result).toBeNull();
     });
 
-    it('should throw 404 if winery not found', async () => {
+    it('error when winery not found', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue({ ...mockWine, winery: null }),
+          exec: jest.fn().mockResolvedValue({ ...testWine, winery: null }),
         }),
       });
 
       await expect(
         wineService.updateWine('wine-1', { name: 'New' }, 'user-1', 'ADMIN'),
-      ).rejects.toThrow('Winery associated with this wine not found.');
+      ).rejects.toThrow('Winery not found.');
     });
 
-    it('should throw 403 if user is not authorized', async () => {
+    it('error when user not authorized', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 
       await expect(
         wineService.updateWine('wine-1', { name: 'New' }, 'other-user', 'USER'),
-      ).rejects.toThrow('You are not authorized to update this wine.');
+      ).rejects.toThrow('You cant update this wine.');
     });
 
-    it('should throw 404 if grape not found', async () => {
+    it('error when grape not found', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 
       mockGrapeFindById.mockResolvedValue(null);
 
-      const grapeId = 'invalid-grape' as unknown as import('mongoose').Types.ObjectId;
+      const grapeId = 'bad-grape' as unknown as import('mongoose').Types.ObjectId;
 
       await expect(
         wineService.updateWine('wine-1', { grape: grapeId }, 'user-1', 'ADMIN'),
-      ).rejects.toThrow('Grape variety not found.');
+      ).rejects.toThrow('Grape not found.');
     });
 
-    it('should update wine successfully', async () => {
+    it('update wine good', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 
-      const updatedWine = { ...mockWine, name: 'New Name' };
+      const updatedWine = { ...testWine, name: 'New Name' };
       mockWineFindByIdAndUpdate.mockResolvedValue(updatedWine);
 
       const result = await wineService.updateWine('wine-1', { name: 'New Name' }, 'user-1', 'ADMIN');
@@ -468,19 +468,19 @@ describe('WineService', () => {
       expect(result).toEqual(updatedWine);
     });
 
-    it('should allow ADMIN to update any wine', async () => {
+    it('admin can update any wine', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 
-      const updatedWine = { ...mockWine, name: 'Updated by Admin' };
+      const updatedWine = { ...testWine, name: 'Updated' };
       mockWineFindByIdAndUpdate.mockResolvedValue(updatedWine);
 
       const result = await wineService.updateWine(
         'wine-1',
-        { name: 'Updated by Admin' },
+        { name: 'Updated' },
         'admin-user',
         'ADMIN',
       );
@@ -490,7 +490,7 @@ describe('WineService', () => {
   });
 
   describe('deleteWine', () => {
-    const mockWine = {
+    const testWine = {
       _id: 'wine-1',
       winery: {
         _id: 'winery-1',
@@ -498,7 +498,7 @@ describe('WineService', () => {
       },
     };
 
-    it('should throw 404 if wine not found', async () => {
+    it('error when wine not found', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
           exec: jest.fn().mockResolvedValue(null),
@@ -510,34 +510,34 @@ describe('WineService', () => {
       );
     });
 
-    it('should throw 404 if winery not found', async () => {
+    it('error when winery not found', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue({ ...mockWine, winery: null }),
+          exec: jest.fn().mockResolvedValue({ ...testWine, winery: null }),
         }),
       });
 
       await expect(wineService.deleteWine('wine-1', 'user-1', 'ADMIN')).rejects.toThrow(
-        'Winery associated with this wine not found.',
+        'Winery not found.',
       );
     });
 
-    it('should throw 403 if user is not authorized', async () => {
+    it('error when user not authorized', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 
       await expect(wineService.deleteWine('wine-1', 'other-user', 'USER')).rejects.toThrow(
-        'You are not authorized to delete this wine.',
+        'You cant delete this wine.',
       );
     });
 
-    it('should delete wine successfully', async () => {
+    it('delete wine good', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 
@@ -547,10 +547,10 @@ describe('WineService', () => {
       expect(mockWineFindByIdAndDelete).toHaveBeenCalledWith('wine-1');
     });
 
-    it('should allow ADMIN to delete any wine', async () => {
+    it('admin can delete any wine', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 
@@ -559,10 +559,10 @@ describe('WineService', () => {
       await expect(wineService.deleteWine('wine-1', 'any-user', 'ADMIN')).resolves.not.toThrow();
     });
 
-    it('should allow WINERY_OWNER to delete their own wine', async () => {
+    it('owner can delete own wine', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockWine),
+          exec: jest.fn().mockResolvedValue(testWine),
         }),
       });
 

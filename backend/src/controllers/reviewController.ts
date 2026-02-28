@@ -10,6 +10,15 @@ export const getWineReviews = async (req: Request, res: Response, _next: NextFun
   res.status(200).json(reviews);
 };
 
+export const getWineReviewById = async (req: Request, res: Response, _next: NextFunction) => {
+  const reviewId = req.params.reviewId as string;
+  const review = await reviewService.getReviewById(reviewId);
+  if (!review) {
+    return res.status(404).json({ message: 'Review not found' });
+  }
+  res.status(200).json(review);
+};
+
 export const createReview = async (
   req: AuthenticatedRequest,
   res: Response,

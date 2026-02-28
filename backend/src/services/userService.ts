@@ -86,7 +86,7 @@ export const addFavoriteWine = async (userId: string, wineId: string) => {
   }
 
   if (user.favoriteWines.some((id) => id.toString() === wineId)) {
-    throw new HttpError('Wine is already in favorites', 400);
+    throw new HttpError('Wine already in favorites', 400);
   }
 
   user.favoriteWines.push(new Types.ObjectId(wineId));
@@ -103,7 +103,7 @@ export const removeFavoriteWine = async (userId: string, wineId: string) => {
 
   const wineIndex = user.favoriteWines.findIndex((id) => id.toString() === wineId);
   if (wineIndex === -1) {
-    throw new HttpError('Wine not found in favorites', 404);
+    throw new HttpError('Wine not in favorites', 404);
   }
 
   user.favoriteWines.splice(wineIndex, 1);
