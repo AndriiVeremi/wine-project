@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { WineService } from '@/services/wineService';
 import HttpError from '@/utils/HttpError';
 import { AuthenticatedRequest } from '@/middleware/auth';

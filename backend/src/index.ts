@@ -5,11 +5,10 @@ import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import apiRouter from '@/routes/api';
 import errorMiddleware from '@/middleware/errorMiddleware';
 import { swaggerSpec } from '@/config/swagger';
-
 dotenv.config();
+import apiRouter from '@/routes/api';
 
 import '@/models/userModel';
 import '@/models/wineryModel';
