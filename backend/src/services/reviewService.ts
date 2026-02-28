@@ -12,8 +12,13 @@ export class ReviewService {
     return reviews;
   }
 
-  public async getReviewById(reviewId: string): Promise<HydratedDocument<IReview> | null> {
+  public async getReviewById(reviewId: string): Promise<HydratedDocument<IReview>> {
     const review = await Review.findById(reviewId).populate('userId', 'firstName lastName').exec();
+
+    if (!review) {
+      throw new HttpError('Review not found.', 404);
+    }
+
     return review;
   }
 
