@@ -127,13 +127,13 @@ router.get('/', wineryController.getWineries);
 
 /**
  * @swagger
- * /wineries/{id}:
+ * /wineries/{wineryId}:
  *   get:
  *     tags: [Wineries]
  *     summary: Get a single winery by ID
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: wineryId
  *         required: true
  *         schema:
  *           type: string
@@ -167,7 +167,7 @@ router.get('/:id', isValidId(), wineryController.getWinery);
 
 /**
  * @swagger
- * /wineries/{id}:
+ * /wineries/{wineryId}:
  *   patch:
  *     tags: [Wineries]
  *     summary: Update an existing winery by ID
@@ -243,7 +243,7 @@ router.patch(
 
 /**
  * @swagger
- * /wineries/{id}:
+ * /wineries/{wineryId}:
  *   delete:
  *     tags: [Wineries]
  *     summary: Delete a winery by ID
