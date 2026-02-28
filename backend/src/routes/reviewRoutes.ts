@@ -9,13 +9,13 @@ const router = Router({ mergeParams: true });
 
 /**
  * @swagger
- * /wines/{wineId}/reviews:
+ * /wines/{id}/reviews:
  *   get:
  *     tags: [Reviews]
  *     summary: Get all reviews for a specific wine
  *     parameters:
  *       - in: path
- *         name: wineId
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
@@ -51,11 +51,53 @@ const router = Router({ mergeParams: true });
 
 router.get('/', reviewController.getWineReviews);
 
+/**
+ * @swagger
+ * /wines/{id}/reviews/{reviewId}:
+ *   get:
+ *     tags: [Reviews]
+ *     summary: Get a single review by ID for a specific wine
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the wine the review belongs to
+ *       - in: path
+ *         name: reviewId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the review to retrieve
+ *     responses:
+ *       200:
+ *         description: Review data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 60d21b4667d0d8992e610c87
+ *                 rating:
+ *                   type: number
+ *                   example: 5
+ *                 comment:
+ *                   type: string
+ *                   example: Absolutely fantastic!
+ *       404:
+ *         description: Review or wine not found
+ *       500:
+ *         description: Server error
+ */
+
 router.get('/:reviewId', isValidId('reviewId'), reviewController.getWineReviewById);
 
 /**
  * @swagger
- * /wines/{wineId}/reviews:
+ * /wines/{id}/reviews:
  *   post:
  *     tags: [Reviews]
  *     summary: Create a new review for a specific wine
@@ -63,7 +105,7 @@ router.get('/:reviewId', isValidId('reviewId'), reviewController.getWineReviewBy
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: wineId
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
@@ -102,7 +144,7 @@ router.post('/', authMiddleware, validateBody(createReviewSchema), reviewControl
 
 /**
  * @swagger
- * /wines/{wineId}/reviews/{reviewId}:
+ * /wines/{id}/reviews/{reviewId}:
  *   patch:
  *     tags: [Reviews]
  *     summary: Update an existing review by ID
@@ -110,7 +152,7 @@ router.post('/', authMiddleware, validateBody(createReviewSchema), reviewControl
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: wineId
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
@@ -160,7 +202,7 @@ router.patch(
 
 /**
  * @swagger
- * /wines/{wineId}/reviews/{reviewId}:
+ * /wines/{id}/reviews/{reviewId}:
  *   delete:
  *     tags: [Reviews]
  *     summary: Delete a review by ID
@@ -168,7 +210,7 @@ router.patch(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: wineId
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
