@@ -29,6 +29,8 @@ jobs:
           npm install
 
       - name: Run tests
+        env:
+          VITE_FIREBASE_CONFIG: '{"apiKey":"test","authDomain":"test.firebaseapp.com","projectId":"test","storageBucket":"test.appspot.com","messagingSenderId":"123","appId":"1:123:web:test"}'
         run: |
           cd frontend
           npm test
