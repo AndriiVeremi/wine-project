@@ -38,7 +38,7 @@ cd wine-project
 ```bash
 docker compose -f docker-compose.dev.yml up --build
 ```
-*Бекенд буде доступний на `http://localhost:505`.*
+*Бекенд буде доступний на `http://localhost:5005`.*
 
 **Фронтенд:**
 У папці `frontend` виконайте:
