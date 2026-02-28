@@ -87,6 +87,7 @@
 - [x] Task: Реалізувати ендпоінт GET /tours/:id.
 - [x] Task: Реалізувати ендпоінт POST /tours.
 - [x] Task: Реалізувати ендпоінт GET /tours/winery/:wineryId.
+- [x] Task: Реалізувати ендпоінт PATCH /tours/:id.
 - [x] Task: Реалізувати ендпоінт DELETE /tours/:id.
 
 ---
