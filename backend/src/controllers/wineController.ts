@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { WineService } from '@/services/wineService';
 import HttpError from '@/utils/HttpError';
 import { AuthenticatedRequest } from '@/middleware/auth';
@@ -14,9 +14,6 @@ export const getAllWines = ctrlWrapper(async (req: Request, res: Response) => {
 export const getWineById = ctrlWrapper(async (req: Request, res: Response) => {
   const id = req.params.id as string;
   const wine = await wineService.getWineById(id);
-  if (!wine) {
-    throw new HttpError('Wine not found', 404);
-  }
   res.status(200).json(wine);
 });
 

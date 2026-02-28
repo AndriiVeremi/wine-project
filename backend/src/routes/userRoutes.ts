@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as userController from '@/controllers/userController';
 import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
-import { registerSchema, loginSchema, addFavoriteSchema } from '@/schemas/userSchemas';
+import { registerSchema, addFavoriteSchema } from '@/schemas/userSchemas';
 import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
@@ -71,41 +71,6 @@ const router = Router();
  *         description: Server error
  */
 router.post('/register', validateBody(registerSchema), userController.registerUser);
-
-/**
- * @swagger
- * /users/login:
- *   post:
- *     tags: [Users]
- *     summary: User login
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: dashuk10@example.com
- *               password:
- *                 type: string
- *                 example: password123
- *             required:
- *               - email
- *               - password
- *     responses:
- *       200:
- *         description: User logged in successfully
- *       400:
- *         description: Invalid credentials
- *       401:
- *         description: Unauthorized
- *       500:
- *         description: Server error
- */
-router.post('/login', validateBody(loginSchema));
 
 /**
  * @swagger
