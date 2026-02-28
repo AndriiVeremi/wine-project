@@ -8,6 +8,7 @@ import Winery from '@/models/wineryModel';
 import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import { WineService } from '@/services/wineService';
+import HttpError from '@/utils/HttpError';
 
 const wineService = new WineService();
 
@@ -273,7 +274,7 @@ describe('WineService', () => {
       expect(mockWineFindById).toHaveBeenCalledWith('wine-1');
     });
 
-    it('return null when wine not found', async () => {
+    it('throw 404 when wine not found', async () => {
       const createMockQuery = () => ({
         populate: jest.fn().mockReturnValue({
           populate: jest.fn().mockReturnValue({
@@ -285,9 +286,8 @@ describe('WineService', () => {
 
       mockWineFindById.mockReturnValue(createMockQuery());
 
-      const result = await wineService.getWineById('bad-id');
-
-      expect(result).toBeNull();
+      await expect(wineService.getWineById('bad-id')).rejects.toThrow(HttpError);
+      await expect(wineService.getWineById('bad-id')).rejects.toHaveProperty('statusCode', 404);
     });
   });
 
