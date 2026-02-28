@@ -151,11 +151,16 @@ export class WineService {
     };
   }
 
-  public async getWineById(wineId: string): Promise<HydratedDocument<IWine> | null> {
+  public async getWineById(wineId: string): Promise<HydratedDocument<IWine>> {
     const wine = await Wine.findById(wineId)
       .populate('winery', 'name isVip')
       .populate('grape', 'name')
       .exec();
+
+    if (!wine) {
+      throw new HttpError('Wine not found.', 404);
+    }
+
     return wine;
   }
 
