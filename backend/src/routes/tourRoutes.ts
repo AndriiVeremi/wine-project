@@ -3,7 +3,7 @@ import * as tourController from '@/controllers/tourController';
 import { isValidId } from '@/middleware/isValidId';
 import validateBody from '@/middleware/validateBody';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
-import { createTourSchema } from '@/schemas/tourSchemas';
+import { createTourSchema, updateTourSchema } from '@/schemas/tourSchemas';
 
 const router = Router();
 
@@ -139,6 +139,70 @@ router.post(
   validateBody(createTourSchema),
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   tourController.createTour,
+);
+
+/**
+ * @swagger
+ * /tours/{id}:
+ *   patch:
+ *     tags: [Tours]
+ *     summary: Update a tour by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the tour to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               duration:
+ *                 type: number
+ *               price:
+ *                 type: number
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               groupSize:
+ *                 type: object
+ *                 properties:
+ *                   min:
+ *                     type: number
+ *                   max:
+ *                     type: number
+ *     responses:
+ *       200:
+ *         description: Tour updated successfully
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (User is not the owner or ADMIN)
+ *       404:
+ *         description: Tour not found
+ *       500:
+ *         description: Server error
+ */
+router.patch(
+  '/:id',
+  isValidId(),
+  authMiddleware,
+  roleMiddleware(['WINERY_OWNER', 'ADMIN']),
+  validateBody(updateTourSchema),
+  tourController.updateTour,
 );
 
 /**
