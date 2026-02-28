@@ -172,13 +172,13 @@ router.post(
 
 /**
  * @swagger
- * /wines/{id}:
+ * /wines/{wineId}:
  *   get:
  *     tags: [Wines]
  *     summary: Get a single wine by ID
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: wineId
  *         required: true
  *         schema:
  *           type: string
@@ -195,7 +195,7 @@ router.get('/:id', isValidId(), wineController.getWineById);
 
 /**
  * @swagger
- * /wines/{id}:
+ * /wines/{wineId}:
  *   patch:
  *     tags: [Wines]
  *     summary: Update an existing wine by ID
@@ -246,7 +246,7 @@ router.patch(
 
 /**
  * @swagger
- * /wines/{id}:
+ * /wines/{wineId}:
  *   delete:
  *     tags: [Wines]
  *     summary: Delete a wine by ID

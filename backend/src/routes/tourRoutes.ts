@@ -59,13 +59,13 @@ router.get('/winery/:wineryId', isValidId('wineryId'), tourController.getToursBy
 
 /**
  * @swagger
- * /tours/{id}:
+ * /tours/{tourId}:
  *   get:
  *     tags: [Tours]
  *     summary: Get a single tour by ID
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: tourId
  *         required: true
  *         schema:
  *           type: string
@@ -143,7 +143,7 @@ router.post(
 
 /**
  * @swagger
- * /tours/{id}:
+ * /tours/{tourId}:
  *   patch:
  *     tags: [Tours]
  *     summary: Update a tour by ID
@@ -151,7 +151,7 @@ router.post(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: tourId
  *         required: true
  *         schema:
  *           type: string
@@ -205,9 +205,9 @@ router.patch(
   tourController.updateTour,
 );
 
-/**
+/** id
  * @swagger
- * /tours/{id}:
+ * /tours/{tourId}:
  *   delete:
  *     tags: [Tours]
  *     summary: Delete a tour by ID
@@ -215,7 +215,7 @@ router.patch(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: tourId
  *         required: true
  *         schema:
  *           type: string
