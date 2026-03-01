@@ -215,6 +215,6 @@ const run = async () => {
   }
 };
 
-export { importData, deleteData, connectDB };
+export { importData, destroyData, connectDB };
 
 run();
