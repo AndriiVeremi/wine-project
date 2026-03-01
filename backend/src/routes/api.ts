@@ -6,7 +6,7 @@ import locationRoutes from '@/routes/locationRoutes';
 import grapeRoutes from '@/routes/grapeRoutes';
 import aiRoutes from '@/routes/aiRoutes';
 import tourRoutes from '@/routes/tourRoutes';
-import regionRouter from '@/routes/regionRouter';
+import regionRoutes from '@/routes/regionRoutes';
 
 const router = Router();
 
@@ -18,7 +18,7 @@ router.use('/users', userRoutes);
 router.use('/wineries', wineryRoutes);
 router.use('/wines', wineRoutes);
 router.use('/locations', locationRoutes);
-router.use('/regions', regionRouter);
+router.use('/regions', regionRoutes);
 router.use('/grapes', grapeRoutes);
 router.use('/ai', aiRoutes);
 router.use('/tours', tourRoutes);
