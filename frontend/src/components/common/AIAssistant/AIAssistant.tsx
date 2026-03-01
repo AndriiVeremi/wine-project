@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './AIAssistant.css';
 import { chatWithAI, type ChatMessage } from '@/api/aiApi';
 import { useAuthStore } from '@/store/authStore';
+import {
+  Container,
+  OpenButton,
+  ChatWindow,
+  ChatHeader,
+  CloseButton,
+  MessagesContainer,
+  Message,
+  InputContainer,
+  Input,
+  SendButton,
+} from './AIAssistant.styled';
 
 const AIAssistant: React.FC = () => {
   const { user } = useAuthStore();
@@ -49,52 +60,48 @@ const AIAssistant: React.FC = () => {
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
   if (!user) return null;
 
   return (
-    <div className="ai-assistant-container">
+    <Container>
       {isOpen ? (
-        <div className="ai-chat-window">
-          <div className="ai-chat-header">
+        <ChatWindow>
+          <ChatHeader>
             <span>AI Assistant</span>
-            <button
-              onClick={() => setIsOpen(false)}
-              style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
-            >
-              ✕
-            </button>
-          </div>
-          <div className="ai-chat-messages">
+            <CloseButton onClick={() => setIsOpen(false)}>✕</CloseButton>
+          </ChatHeader>
+          <MessagesContainer>
             {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`}
-              >
+              <Message key={index} $isUser={msg.role === 'user'}>
                 {msg.text}
-              </div>
+              </Message>
             ))}
-            {isLoading && <div className="message ai-message">Thinking...</div>}
+            {isLoading && <Message $isUser={false}>Thinking...</Message>}
             <div ref={messagesEndRef} />
-          </div>
-          <div className="ai-chat-input">
-            <input
+          </MessagesContainer>
+          <InputContainer>
+            <Input
               type="text"
               placeholder="Ask something..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              onKeyPress={handleKeyPress}
             />
-            <button onClick={handleSendMessage} disabled={isLoading}>
+            <SendButton onClick={handleSendMessage} disabled={isLoading}>
               ➤
-            </button>
-          </div>
-        </div>
+            </SendButton>
+          </InputContainer>
+        </ChatWindow>
       ) : (
-        <button className="ai-assistant-button" onClick={() => setIsOpen(true)}>
-          🍷
-        </button>
+        <OpenButton onClick={() => setIsOpen(true)}>🍷</OpenButton>
       )}
-    </div>
+    </Container>
   );
 };
 

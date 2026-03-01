@@ -5,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 import AuthModal from '@/components/modals/AuthModal';
 import AIAssistant from '@/components/common/AIAssistant';
+import MainButton from '@/components/buttons/MainButton/MainButton';
 
 const HomePage = () => <h2>Home Page</h2>;
 const WineriesPage = () => <h2>Wineries Page</h2>;
@@ -49,10 +50,14 @@ function App() {
             ) : (
               <>
                 <li>
-                  <button onClick={() => openAuthModal('login')}>Login</button>
+                  <MainButton type="button" size="medium" onClick={() => openAuthModal('login')}>
+                    Login
+                  </MainButton>
                 </li>
                 <li>
-                  <button onClick={() => openAuthModal('register')}>Register</button>
+                  <MainButton type="button" size="medium" onClick={() => openAuthModal('register')}>
+                    Register
+                  </MainButton>
                 </li>
               </>
             )}
