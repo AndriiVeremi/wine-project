@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import { useAuthStore } from './store/authStore';
+import { useAuthStore } from '@/store/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './config/firebase';
-import AuthModal from './components/modals/AuthModal';
-import AIAssistant from './components/common/AIAssistant/AIAssistant';
+import { auth } from '@/config/firebase';
+import AuthModal from '@/components/modals/AuthModal';
+import AIAssistant from '@/components/common/AIAssistant';
 
 const HomePage = () => <h2>Home Page</h2>;
 const WineriesPage = () => <h2>Wineries Page</h2>;
