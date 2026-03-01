@@ -13,6 +13,6 @@
     },
     "types": ["jest"]
   },
-  "include": ["src"],
+  "include": ["src", "src/data/seeder.ts"],
   "exclude": ["node_modules", "dist"]
 }

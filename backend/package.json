@@ -13,6 +13,7 @@
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "db:seed": "ts-node -r tsconfig-paths/register src/data/seeder.ts --import",
+    "db:seed:prod": "node -r tsconfig-paths/register dist/src/data/seeder.js --import",
     "db:destroy": "ts-node -r tsconfig-paths/register src/data/seeder.ts --delete"
   },
   "keywords": [],

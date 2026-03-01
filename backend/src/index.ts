@@ -31,7 +31,31 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
+const allowedOrigins = [
+  process.env.CORS_ORIGIN,
+  'https://wine-project-three.vercel.app',
+  /\.vercel\.app$/,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      const isAllowed = allowedOrigins.some((allowed) => {
+        if (allowed instanceof RegExp) return allowed.test(origin);
+        return allowed === origin;
+      });
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.get('/health', (_req, res) => {
@@ -54,7 +78,7 @@ const startServer = async () => {
     console.log('Successfully connected to MongoDB!');
 
     app.listen(port, () => {
-      console.log(`Backend server is running at http://localhost:${port}`);
+      console.log(`Backend server is running at port:${port}`);
     });
   } catch (error) {
     console.error('Failed to connect to MongoDB or start server', error);
