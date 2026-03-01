@@ -21,7 +21,7 @@
   --error: #FF0000;
   --overlay: rgba(0, 0, 0, 0.5);
 
-  /* Typography - Based on Figma sizes */
+  /* Typography */
   --font-main: 'Montserrat', sans-serif;
   --font-accent: 'Montserrat Alternates', sans-serif;
 

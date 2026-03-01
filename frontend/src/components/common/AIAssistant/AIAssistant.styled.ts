@@ -1,16 +1,18 @@
-.ai-assistant-container {
+import styled from 'styled-components';
+
+export const Container = styled.div`
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
   font-family: 'Inter', sans-serif;
-}
+`;
 
-.ai-assistant-button {
+export const OpenButton = styled.button`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #722f37; 
+  background-color: #722f37;
   color: white;
   border: none;
   cursor: pointer;
@@ -20,13 +22,13 @@
   justify-content: center;
   font-size: 24px;
   transition: transform 0.3s ease;
-}
 
-.ai-assistant-button:hover {
-  transform: scale(1.1);
-}
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 
-.ai-chat-window {
+export const ChatWindow = styled.div`
   position: absolute;
   bottom: 80px;
   right: 0;
@@ -39,70 +41,64 @@
   flex-direction: column;
   overflow: hidden;
   border: 1px solid #eee;
-}
+`;
 
-.ai-chat-header {
+export const ChatHeader = styled.div`
   padding: 15px;
   background: #722f37;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
+`;
 
-.ai-chat-messages {
+export const CloseButton = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+`;
+
+export const MessagesContainer = styled.div`
   flex: 1;
   padding: 15px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
+`;
 
-.message {
+export const Message = styled.div<{ $isUser: boolean }>`
   padding: 10px 14px;
   border-radius: 12px;
   max-width: 80%;
   font-size: 14px;
   line-height: 1.4;
-}
+  align-self: ${({ $isUser }) => ($isUser ? 'flex-end' : 'flex-start')};
+  background: ${({ $isUser }) => ($isUser ? '#722f37' : '#f0f0f0')};
+  color: ${({ $isUser }) => ($isUser ? 'white' : '#333')};
+`;
 
-.user-message {
-  align-self: flex-end;
-  background: #722f37;
-  color: white;
-}
-
-.ai-message {
-  align-self: flex-start;
-  background: #f0f0f0;
-  color: #333;
-}
-
-.ai-chat-input {
+export const InputContainer = styled.div`
   padding: 15px;
   border-top: 1px solid #eee;
   display: flex;
   gap: 10px;
-}
+`;
 
-.ai-chat-input input {
+export const Input = styled.input`
   flex: 1;
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 20px;
   outline: none;
-}
+`;
 
-.ai-chat-input button {
-  background: #722f37;
+export const SendButton = styled.button<{ disabled?: boolean }>`
+  background: ${({ disabled }) => (disabled ? '#ccc' : '#722f37')};
   color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 15px;
-  cursor: pointer;
-}
-
-.ai-chat-input button:disabled {
-  background: #ccc;
-}
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+`;
