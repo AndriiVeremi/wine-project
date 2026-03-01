@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '../../store/authStore';
-import Modal from '../common/Modal';
-import LoginForm from '../forms/LoginForm';
-import RegisterForm from '../forms/RegisterForm';
+import { useAuthStore } from '@/store/authStore';
+import Modal from '@/components/common/Modal';
+import LoginForm from '@/components/forms/LoginForm';
+import RegisterForm from '@/components/forms/RegisterForm';
 
 const styles = {
   toggleText: {
