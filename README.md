@@ -18,11 +18,13 @@
 
 | Призначення | Технології |
 | :--- | :--- |
-| **Frontend** | React, TypeScript, Vite, React Query, Zustand, Axios, React Router |
-| **Backend** | Node.js, Express, TypeScript, Mongoose |
-| **База даних** | MongoDB (через MongoDB Atlas) |
-| **Аутентифікація**| Firebase Authentication |
-| **Інфраструктура**| Docker, Docker Compose |
+| **Frontend** | Vite, React, TypeScript, React Query, Zustand, Axios, React Router, styled-components, Firebase, react-hot-toast, react-icons, Vitest |
+| **Backend** | Node.js, Express, TypeScript, Mongoose, Swagger, Joi, Helmet, Firebase Admin, Google Generative AI, CORS, express-rate-limit, Jest |
+| **База даних** | MongoDB (MongoDB Atlas) |
+| **Аутентифікація** | Firebase Authentication |
+| **CI/CD** | GitHub Actions |
+| **Якісність коду** | ESLint, Prettier |
+| **Інфраструктура** | Docker, Docker Compose |
 
 ## 🚀 Для розробників
 
