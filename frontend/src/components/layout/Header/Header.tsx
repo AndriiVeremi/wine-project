@@ -1,33 +1,41 @@
 import { Link } from 'react-router-dom';
-import { useAuthStore } from '@/store/authStore';
-import MainButton from '@/components/buttons/MainButton/MainButton';
+import { Nav, StyledHeader, ListItem, HeaderContainer } from '@/components/layout/Header/Header.styled';
+import Container from '@/components/Container';
+import MainLogo from '@/components/MainLogo/MainLogo';
+import UserMenu from '@/components/UserMenu';
+
+// import { useAuthStore } from '@/store/authStore';
+// import MainButton from '@/components/buttons/MainButton/MainButton';
 
 const Header = () => {
-  const { user, logout, openAuthModal } = useAuthStore();
+  // const { user, logout, openAuthModal } = useAuthStore();
 
   return (
-    <header className="app-header">
-      <nav className="app-nav">
+    <StyledHeader className="app-header">
+      <Container>
+      <HeaderContainer className="header-container">
+      <MainLogo />
+      <Nav className="app-nav">
         <ul>
-          <li>
+          <ListItem>
             <Link to="/">Home</Link>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <Link to="/wineries">Wineries</Link>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <Link to="/about">About</Link>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <Link to="/wines">Wines</Link>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <Link to="/grapes">Grapes</Link>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <Link to="/wine-tours">Wine tours</Link>
-          </li>
-          {user ? (
+          </ListItem>
+          {/* {user ? (
             <>
               <li>
                 <button onClick={logout}>Logout</button>
@@ -40,19 +48,22 @@ const Header = () => {
             <>
               <li>
                 <MainButton type="button" size="medium" onClick={() => openAuthModal('login')}>
-                  Login
+                  Login-2
                 </MainButton>
               </li>
               <li>
                 <MainButton type="button" size="medium" onClick={() => openAuthModal('register')}>
-                  Register
+                  Register-2
                 </MainButton>
               </li>
             </>
-          )}
+          )} */}
         </ul>
-      </nav>
-    </header>
+      </Nav>
+        <UserMenu />
+      </HeaderContainer>
+      </Container>
+    </StyledHeader>
   );
 };
 
