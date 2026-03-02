@@ -20,6 +20,7 @@ import '@/models/locationModel';
 import '@/models/regionModel';
 
 const app: Express = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT;
 
 app.use(helmet());
