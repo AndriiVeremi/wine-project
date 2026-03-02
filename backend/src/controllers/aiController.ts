@@ -19,6 +19,10 @@ class AIController {
     const user = await User.findById(userId);
     const userName = user ? user.firstName : null;
 
+    console.log(
+      `AI chat initiated by user ${userId} (${userName}) at ${new Date().toISOString()}. Message: "${message}"`,
+    );
+
     const response = await aiService.chat(message, history, userName, userId);
     res.json({ response });
   });
