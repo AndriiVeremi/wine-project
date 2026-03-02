@@ -24,13 +24,6 @@ const port = process.env.PORT;
 
 app.use(helmet());
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 100,
-  message: { message: 'Too many requests from this IP, please try again later.' },
-});
-app.use(limiter);
-
 const allowedOrigins = [
   process.env.CORS_ORIGIN,
   'https://wine-project-three.vercel.app',
@@ -58,13 +51,20 @@ app.use(
 );
 app.use(express.json());
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  message: { message: 'Too many requests from this IP, please try again later.' },
+});
+
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api', limiter);
 app.use('/api', apiRouter);
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(errorMiddleware);
 
 const startServer = async () => {
