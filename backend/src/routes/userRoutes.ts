@@ -118,4 +118,35 @@ router.delete(
   userController.removeFavoriteWine,
 );
 
+/**
+ * @swagger
+ * /users/me/avatar:
+ *   patch:
+ *     tags: [Users]
+ *     summary: Update user avatar
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *                 description: Image file (jpeg, png, gif, webp, max 5MB)
+ *     responses:
+ *       200:
+ *         description: Avatar updated successfully
+ *       400:
+ *         description: Invalid file format or size
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+router.patch('/me/avatar', authMiddleware, userController.updateAvatar);
+
 export default router;
