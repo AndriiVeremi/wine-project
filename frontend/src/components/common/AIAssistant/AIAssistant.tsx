@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { IoClose } from 'react-icons/io5';
 import { chatWithAI, type ChatMessage } from '@/api/aiApi';
 import { useAuthStore } from '@/store/authStore';
 import {
@@ -74,7 +75,9 @@ const AIAssistant: React.FC = () => {
         <ChatWindow>
           <ChatHeader>
             <span>AI Assistant</span>
-            <CloseButton onClick={() => setIsOpen(false)}>✕</CloseButton>
+            <CloseButton onClick={() => setIsOpen(false)}>
+              <IoClose />
+            </CloseButton>
           </ChatHeader>
           <MessagesContainer>
             {messages.map((msg, index) => (

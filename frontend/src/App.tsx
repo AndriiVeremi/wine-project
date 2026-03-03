@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/config/firebase';
-import AuthModal from '@/components/modals/AuthModal';
 import SharedLayout from '@/components/SharedLayout';
 import HomePage from '@/pages/HomePage';
 import WineriesPage from '@/pages/WineriesPage';
@@ -11,6 +10,7 @@ import AboutPage from '@/pages/AboutPage';
 import WinesPage from '@/pages/WinesPage';
 import GrapesPage from '@/pages/GrapesPage';
 import WineToursPage from '@/pages/WineToursPage';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
@@ -28,7 +28,7 @@ function App() {
 
   return (
     <>
-      <AuthModal />
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />

@@ -1,28 +1,9 @@
 :root {
-  background-color: #FAF9F6;
-}
-
-body {
-  margin: 0;
-  padding: 0;
+  background-color: var(--bg-main);
 }
 
 body.no-scroll {
   overflow: hidden;
-}
-
-body::-webkit-scrollbar,
-body.no-scroll::-webkit-scrollbar {
-  width: 5px;
-  display: flex;
-}
-
-body::-webkit-scrollbar-track {
-  background: #e8e8e8;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #050505;
 }
 
 @media (min-width: 1440px) {
