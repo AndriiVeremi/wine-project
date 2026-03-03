@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Wine } from '@/types/wine';
 
 interface WineCardProps {
@@ -6,12 +7,15 @@ interface WineCardProps {
 
 const WineCard = ({ wine }: WineCardProps) => {
   return (
-    <li>
-      <img src={wine.imageUrl} alt={wine.name} />
-      <h3>{wine.name}</h3>
+    <div className="wine-card">
+      <Link to={`/wines/${wine._id}`} className="wine-card__link">
+        <img src={wine.imageUrl} alt={wine.name} />
+        <h3>{wine.name}</h3>
+      </Link>
+
       <p>{wine.color}</p>
       <p>{wine.price} £</p>
-    </li>
+    </div>
   );
 };
 
