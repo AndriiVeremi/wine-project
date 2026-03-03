@@ -1,4 +1,4 @@
-import { Button } from '@/components/buttons/MainButton/MainButton.styled';
+import { Button } from './MainButton.styled';
 
 interface MainButtonProps {
   children: React.ReactNode;
