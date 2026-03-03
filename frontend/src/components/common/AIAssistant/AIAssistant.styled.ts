@@ -57,6 +57,19 @@ export const CloseButton = styled.button`
   border: none;
   color: white;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 export const MessagesContainer = styled.div`

@@ -8,6 +8,7 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: var(--font-main), sans-serif;
   }
 
   html {
@@ -15,7 +16,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: var(--font-main);
     font-size: 16px;
     font-weight: 400;
     font-style: normal;
@@ -42,23 +42,23 @@ export const GlobalStyle = createGlobalStyle`
     transition: var(--transition);
   }
 
-  button {
+  button, input, textarea, select {
     font-family: inherit;
-    cursor: pointer;
+    font-size: inherit;
+    outline: none;
     border: none;
-    background-color: transparent;
+    background: none;
+  }
+
+  button {
+    cursor: pointer;
     transition: var(--transition);
   }
 
-  input, textarea, select {
-    font-family: inherit;
-    outline: none;
-  }
-
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-accent);
+    font-family: var(--font-accent), sans-serif !important;
     color: var(--primary-wine);
-    font-weight: 500;
+    font-weight: 600;
   }
 
   /* Scrollbar */
