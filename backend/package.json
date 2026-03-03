@@ -22,6 +22,7 @@
   "type": "commonjs",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@types/multer": "^2.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
@@ -30,6 +31,7 @@
     "helmet": "^8.1.0",
     "joi": "^18.0.2",
     "mongoose": "^9.1.5",
+    "multer": "^2.1.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "tsconfig-paths": "^4.2.0"

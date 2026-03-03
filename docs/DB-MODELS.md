@@ -17,6 +17,7 @@
     enum: ['USER', 'WINERY_OWNER', 'ADMIN'], 
     default: 'USER' 
   }, // Роль користувача в системі
+  avatarUrl: { type: String, default: '' }, // URL аватара (base64 або зовнішній URL)
   winery: { type: Schema.Types.ObjectId, ref: 'Winery' }, // ID виноробні власника (якщо є)
   favoriteWines: [{ type: Schema.Types.ObjectId, ref: 'Wine' }] // Список ID улюблених вин
 }

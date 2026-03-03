@@ -7,6 +7,9 @@ import { Types } from 'mongoose';
 
 const auth = firebaseAdmin.auth();
 
+const DEFAULT_AVATAR =
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNzU3NTc1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEyIDEwYzg5LjkzOCAwIDgtNy05OC04LTcgOC03IDh6bTAgMmMtMi42NyAwLTggMS40NC04IDR2MmgyMnYtMmMwLTIuNTYtNS4zMy00LTgtNHoiLz48cGF0aCBkPSJNOCAyMXYtMmMwLTIuNTYgNS4zMy00IDgtNHMyLjY3IDEuNDQgMiA0djJ6Ii8+PC9zdmc+';
+
 export const getUserProfileByFirebaseUid = async (firebaseUid: string) => {
   if (!firebaseUid) {
     throw new HttpError('Firebase UID is required', 400);
@@ -111,3 +114,17 @@ export const removeFavoriteWine = async (userId: string, wineId: string) => {
 
   return { message: 'Wine removed from favorites' };
 };
+
+export const updateAvatar = async (userId: string, avatarBase64: string) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new HttpError('User not found', 404);
+  }
+
+  user.avatarUrl = avatarBase64;
+  await user.save();
+
+  return { avatarUrl: user.avatarUrl };
+};
+
+export const getDefaultAvatar = () => DEFAULT_AVATAR;

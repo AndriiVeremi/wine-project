@@ -261,6 +261,8 @@ export const users = [
     lastName: 'Owner',
     email: 'ivan.owner@example.com',
     role: 'WINERY_OWNER',
+    avatarUrl:
+      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwOWYwMCI+PHBhdGggZD0iTTEyIDEwYzg5LjkzOCAwIDgtNy05OC04LTcgOC03IDh6bTAgMmMtMi42NyAwLTggMS40NC04IDR2MmgyMnYtMmMwLTIuNTYtNS4zMy00LTgtNHoiLz48cGF0aCBkPSJNOCAyMXYtMmMwLTIuNTYgNS4zMy00IDgtNHMyLjY3IDEuNDQgMiA0djJ6Ii8+PC9zdmc+',
     winery: winery1Id,
     favoriteWines: [wine3Id, wine5Id],
   },
@@ -271,6 +273,8 @@ export const users = [
     lastName: 'Founder',
     email: 'maria.founder@example.com',
     role: 'WINERY_OWNER',
+    avatarUrl:
+      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZjFhMiI+PHBhdGggZD0iTTEyIDEwYzg5LjkzOCAwIDgtNy05OC04LTcgOC03IDh6bTAgMmMtMi42NyAwLTggMS40NC04IDR2MmgyMnYtMmMwLTIuNTYtNS4zMy00LTgtNHoiLz48cGF0aCBkPSJNOCAyMXYtMmMwLTIuNTYgNS4zMy00IDgtNHMyLjY3IDEuNDQgMiA0djJ6Ii8+PC9zdmc+',
     winery: winery2Id,
     favoriteWines: [wine1Id],
   },
@@ -281,6 +285,8 @@ export const users = [
     lastName: 'User',
     email: 'alex.user@example.com',
     role: 'USER',
+    avatarUrl:
+      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzQ1NjZjOCI+PHBhdGggZD0iTTEyIDEwYzg5LjkzOCAwIDgtNy05OC04LTcgOC03IDh6bTAgMmMtMi42NyAwLTggMS40NC04IDR2MmgyMnYtMmMwLTIuNTYtNS4zMy00LTgtNHoiLz48cGF0aCBkPSJNOCAyMXYtMmMwLTIuNTYgNS4zMy00IDgtNHMyLjY3IDEuNDQgMiA0djJ6Ii8+PC9zdmc+',
     favoriteWines: [wine1Id, wine2Id, wine6Id],
   },
   {
@@ -290,6 +296,8 @@ export const users = [
     lastName: 'Explorer',
     email: 'olena.explorer@example.com',
     role: 'USER',
+    avatarUrl:
+      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzhhNzZiMyI+PHBhdGggZD0iTTEyIDEwYzg5LjkzOCAwIDgtNy05OC04LTcgOC03IDh6bTAgMmMtMi42NyAwLTggMS40NC04IDR2MmgyMnYtMmMwLTIuNTYtNS4zMy00LTgtNHoiLz48cGF0aCBkPSJNOCAyMXYtMmMwLTIuNTYgNS4zMy00IDgtNHMyLjY3IDEuNDQgMiA0djJ6Ii8+PC9zdmc+',
     favoriteWines: [wine4Id],
   },
 ];

@@ -172,4 +172,38 @@ describe('userService', () => {
       expect(result).toEqual({ message: 'Wine removed from favorites' });
     });
   });
+
+  describe('updateAvatar', () => {
+    const testUserId = '65d5ec49e03f7c5558f3d6b1';
+    const testAvatarBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANS';
+
+    it('error when user not found', async () => {
+      mockFindById.mockResolvedValue(null);
+      await expect(userService.updateAvatar(testUserId, testAvatarBase64)).rejects.toThrow(
+        new HttpError('User not found', 404),
+      );
+    });
+
+    it('update avatar successfully', async () => {
+      const mockSave = jest.fn().mockResolvedValue(true);
+      const user = {
+        avatarUrl: '',
+        save: mockSave,
+      };
+      mockFindById.mockResolvedValue(user);
+
+      const result = await userService.updateAvatar(testUserId, testAvatarBase64);
+
+      expect(user.avatarUrl).toBe(testAvatarBase64);
+      expect(mockSave).toHaveBeenCalled();
+      expect(result).toEqual({ avatarUrl: testAvatarBase64 });
+    });
+  });
+
+  describe('getDefaultAvatar', () => {
+    it('should return default avatar string', () => {
+      const defaultAvatar = userService.getDefaultAvatar();
+      expect(defaultAvatar).toContain('data:image/svg+xml;base64');
+    });
+  });
 });

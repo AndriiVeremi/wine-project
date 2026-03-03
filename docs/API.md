@@ -64,6 +64,29 @@
 
 ---
 
+## Аватар користувача (`/api/users/me/avatar`)
+
+### **PATCH** `/api/users/me/avatar`
+- **Опис:** Оновити аватар користувача. Зображення зберігається в базі даних як base64.
+- **Headers:** `Authorization: Bearer <firebase_token>`
+- **Content-Type:** `multipart/form-data`
+- **Body:**
+  ```
+  avatar: <image_file> (jpeg, png, gif, webp, max 5MB)
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "avatarUrl": "data:image/png;base64,..."
+  }
+  ```
+- **Errors:**
+  - `400`: Invalid file format or size
+  - `401`: Unauthorized
+  - `500`: Server error
+
+---
+
 ## Улюблені Вина (`/api/users/me/favorites`)
 
 ### **GET** `/api/users/me/favorites`
