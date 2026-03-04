@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
 import { FormContainer, FieldWrapper, Label, Input, Select } from '@/components/forms/Form.styled';
 import { FiPlus } from 'react-icons/fi';
+import type { WineColor, WineSweetness } from '@/types/wine';
 import {
   AddWineWrapper,
   Title,
@@ -27,8 +28,31 @@ interface Grape {
   name: string;
 }
 
+interface FormData {
+  name: string;
+  winery: string;
+  vintage: number;
+  grape: string;
+  color: WineColor;
+  sweetness: WineSweetness;
+  price: number;
+  description: string;
+  tastingNotes: string;
+  imageUrl: string;
+  alcohol: string;
+  volume: number;
+  boxQuantity: number;
+  hasPackaging: boolean;
+  decanting: boolean;
+  bottleDiameter: string;
+  servingTemperature: string;
+  foodPairing: string;
+  suffix: string;
+  supplier: string;
+}
+
 const AddWines = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     winery: '',
     vintage: new Date().getFullYear(),
