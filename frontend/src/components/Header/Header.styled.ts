@@ -15,7 +15,7 @@ export const Nav = styled("nav")`
     display: flex;
     gap: 34px;
     list-style: none;
-    margin: 0 166px;
+    margin: 0 86px;
   }`;
 
 export const ListItem = styled("li")`

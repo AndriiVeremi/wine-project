@@ -6,5 +6,5 @@ export const UserMenuContainer = styled("div")`
 
 export const ListMenu   = styled("ul")`
   display: flex;
-  gap: 40px;
+  gap: 30px;
 `
