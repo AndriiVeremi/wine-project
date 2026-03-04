@@ -10,6 +10,7 @@ import AboutPage from '@/pages/AboutPage';
 import WinesPage from '@/pages/WinesPage';
 import GrapesPage from '@/pages/GrapesPage';
 import WineToursPage from '@/pages/WineToursPage';
+import AccountPage from '@/pages/AccountPage';
 import { Toaster } from 'react-hot-toast';
 import WineDetailPage from './pages/WineDetailPage/WineDetailPage';
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="wines/:id" element={<WineDetailPage />} />
           <Route path="grapes" element={<GrapesPage />} />
           <Route path="wine-tours" element={<WineToursPage />} />
+          <Route path="account" element={<AccountPage />} />
         </Route>
       </Routes>
     </>

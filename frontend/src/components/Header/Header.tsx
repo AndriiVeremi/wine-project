@@ -3,12 +3,10 @@ import { Nav, StyledHeader, ListItem, HeaderContainer } from '@/components/Heade
 import Container from '@/components/common/Container';
 import MainLogo from '@/components/MainLogo/MainLogo';
 import UserMenu from '@/components/UserMenu';
-
-// import { useAuthStore } from '@/store/authStore';
-// import MainButton from '@/components/buttons/MainButton/MainButton';
+import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
-  // const { user, logout, openAuthModal } = useAuthStore();
+  const { user } = useAuthStore();
 
   return (
     <StyledHeader className="app-header">
@@ -35,29 +33,12 @@ const Header = () => {
               <ListItem>
                 <Link to="/wine-tours">Wine tours</Link>
               </ListItem>
-              {/* {user ? (
-            <>
-              <li>
-                <button onClick={logout}>Logout</button>
-              </li>
-              <li>
-                <span style={{ color: 'lightgreen', marginLeft: '1rem' }}>Role: {user.role}</span>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <MainButton type="button" size="medium" onClick={() => openAuthModal('login')}>
-                  Login-2
-                </MainButton>
-              </li>
-              <li>
-                <MainButton type="button" size="medium" onClick={() => openAuthModal('register')}>
-                  Register-2
-                </MainButton>
-              </li>
-            </>
-          )} */}
+
+              {user && (
+                <ListItem>
+                  <Link to="/account">Account</Link>
+                </ListItem>
+              )}
             </ul>
           </Nav>
           <UserMenu />
