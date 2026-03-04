@@ -13,7 +13,7 @@ const Header = () => {
       <Container>
         <HeaderContainer className="header-container">
           <a href="/" target="_blank" rel="noopener noreferrer">
-              <MainLogo />
+            <MainLogo />
           </a>
           <Nav className="app-nav">
             <ul>

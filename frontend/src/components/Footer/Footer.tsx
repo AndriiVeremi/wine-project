@@ -22,7 +22,7 @@ const Footer = () => {
           <FooterContainer>
             <LogoWrapper>
               <a href="/" target="_blank" rel="noopener noreferrer">
-              <MainLogo />
+                <MainLogo />
               </a>
             </LogoWrapper>
             <nav>
@@ -46,21 +46,33 @@ const Footer = () => {
             </nav>
             <SocialList>
               <li>
-                <a href="https://www.facebook.com/goitclub/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://www.facebook.com/goitclub/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <IconCircle>
                     <FacebookIcon />
                   </IconCircle>
                 </a>
               </li>
               <li>
-               <a href="https://www.instagram.com/goitclub/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://www.instagram.com/goitclub/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <IconCircle>
                     <InstagramIcon />
                   </IconCircle>
                 </a>
               </li>
               <li>
-                <a href="https://t.me/junior_developer_ua" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://t.me/junior_developer_ua"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <IconCircle>
                     <TelegramIcon />
                   </IconCircle>

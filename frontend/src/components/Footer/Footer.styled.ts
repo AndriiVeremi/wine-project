@@ -16,7 +16,7 @@ export const FooterContainer = styled('div')`
 
 export const LogoWrapper = styled('div')`
   padding: 22px 0 22px 0;
-`
+`;
 
 export const InfoList = styled('ul')`
   display: flex;
