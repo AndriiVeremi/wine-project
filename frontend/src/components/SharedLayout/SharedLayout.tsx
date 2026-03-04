@@ -3,7 +3,10 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { LayoutContainer, Content } from './SharedLayout.styled';
 
+
 const SharedLayout = () => {
+  const { isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();
+
   return (
     <LayoutContainer>
       <Header />
@@ -13,7 +16,11 @@ const SharedLayout = () => {
         </div>
       </Content>
       <Footer />
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} initialTab={authModalView} />
     </LayoutContainer>
+
+
   );
 };
 

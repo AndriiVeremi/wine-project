@@ -5,6 +5,7 @@ import { AuthenticatedRequest } from '@/middleware/auth';
 import HttpError from '@/utils/HttpError';
 import * as userService from '@/services/userService';
 import ctrlWrapper from '@/utils/ctrlWrapper';
+import upload from '@/middleware/uploadMiddleware';
 
 export const getUserProfile = ctrlWrapper(
   async (req: AuthenticatedRequest, res: express.Response) => {
@@ -34,6 +35,7 @@ export const registerUser = async (req: express.Request, res: express.Response) 
       firstName,
       lastName,
       role: assignedRole,
+      avatarUrl: userService.getDefaultAvatar(),
     });
 
     await newUser.save();
@@ -103,3 +105,16 @@ export const removeFavoriteWine = ctrlWrapper(
     res.status(200).json(result);
   },
 );
+
+export const updateAvatar = [
+  upload.single('avatar'),
+  ctrlWrapper(async (req: AuthenticatedRequest, res: express.Response) => {
+    if (!req.file) {
+      throw new HttpError('Avatar file is required', 400);
+    }
+
+    const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    const result = await userService.updateAvatar(req.userId!, base64);
+    res.status(200).json(result);
+  }),
+];

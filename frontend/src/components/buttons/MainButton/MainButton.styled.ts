@@ -27,8 +27,8 @@ export const Button = styled.button<ButtonProps>`
 
   border-radius: 200px;
   background: var(--white);
-
   color: var(--primary-wine);
+
   font-size: 19px;
   font-weight: 500;
   line-height: 24px;
@@ -38,7 +38,7 @@ export const Button = styled.button<ButtonProps>`
   cursor: pointer;
   transition: var(--transition);
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: var(--primary-wine);
     color: var(--white);
   }

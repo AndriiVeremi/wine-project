@@ -13,6 +13,8 @@
   --font-grey: #454443;
   --footer-cream: #FFEACB;
 
+  --input-gray-text: #A4A4A4;
+  --icon-gray: #A5A5A5;
 
   /* Colors - Accent/Orange */
   --star-main: #E3900A;
@@ -25,6 +27,7 @@
   --black: #000000;
   --error: #FF0000;
   --overlay: rgba(0, 0, 0, 0.5);
+  --bg-main: #FAF9F6;
 
 
    /* Icon Colors */
@@ -52,10 +55,11 @@
 
 
   /* Effects */
-  --transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
   --main-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   --modal-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
   --border-radius-sm: 8px;
   --border-radius-md: 12px;
   --border-radius-lg: 20px;
+  --border-radius-in: 32px;
 }

@@ -1,4 +1,4 @@
-import { StyledContainer } from '@/components/Container/Container.styled';
+import { StyledContainer } from './Container.styled';
 
 type Props = {
   children: React.ReactNode;
