@@ -8,8 +8,10 @@ interface WineListProps {
 const WineList = ({ wines }: WineListProps) => {
   return (
     <ul>
-      {wines.map((wine: Wine) => (
-        <WineCard key={wine._id} wine={wine} />
+      {wines.map((wine) => (
+        <li key={wine._id}>
+          <WineCard wine={wine} />
+        </li>
       ))}
     </ul>
   );
