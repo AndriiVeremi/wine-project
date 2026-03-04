@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getWines } from '@/api/wines';
+import { getWines, addWine } from '@/api/wines';
 import type { Wine, WineQueryParams } from '@/types/wine';
 
 interface WinesStore {
@@ -8,6 +8,7 @@ interface WinesStore {
   loading: boolean;
   error: string | null;
   fetchWines: (params: WineQueryParams) => Promise<void>;
+  addWine: (data: Partial<Wine>) => Promise<void>;
 }
 
 export const useWinesStore = create<WinesStore>()((set) => ({
@@ -24,6 +25,23 @@ export const useWinesStore = create<WinesStore>()((set) => ({
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       set({ error: message, loading: false });
+    }
+  },
+
+  addWine: async (data) => {
+    set({ loading: true, error: null });
+
+    try {
+      const response = await addWine(data);
+      const newWine = response.data;
+      set((state) => ({
+        wines: [newWine, ...state.wines],
+        loading: false,
+      }));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      set({ error: message, loading: false });
+      throw err;
     }
   },
 }));
