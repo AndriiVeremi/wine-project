@@ -1,10 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
+export const UserMenuContainer = styled('div')``;
 
-export const UserMenuContainer = styled("div")`
-`
-
-export const ListMenu   = styled("ul")`
+export const ListMenu = styled('ul')`
   display: flex;
   gap: 30px;
-`
+`;

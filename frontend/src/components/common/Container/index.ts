@@ -1,1 +1,1 @@
-export { default } from '@/components/Container/Container';
+export { default } from '@/components/common/Container/Container';

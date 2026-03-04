@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/config/firebase';
@@ -41,7 +41,6 @@ function App() {
           <Route path="wine-tours" element={<WineToursPage />} />
         </Route>
       </Routes>
-
     </>
   );
 }
