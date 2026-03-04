@@ -11,6 +11,7 @@ import WinesPage from '@/pages/WinesPage';
 import GrapesPage from '@/pages/GrapesPage';
 import WineToursPage from '@/pages/WineToursPage';
 import { Toaster } from 'react-hot-toast';
+import WineDetailPage from './pages/WineDetailPage/WineDetailPage';
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
@@ -35,6 +36,7 @@ function App() {
           <Route path="wineries" element={<WineriesPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="wines" element={<WinesPage />} />
+          <Route path="wines/:id" element={<WineDetailPage />} />
           <Route path="grapes" element={<GrapesPage />} />
           <Route path="wine-tours" element={<WineToursPage />} />
         </Route>
