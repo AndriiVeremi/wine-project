@@ -3,16 +3,26 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-if (!process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON) {
+if (!process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON && process.env.NODE_ENV !== 'test') {
   throw new Error('FIREBASE_SERVICE_ACCOUNT_CREDS_JSON must be set');
 }
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON);
+let serviceAccount: any = {};
+if (process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON) {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON);
+}
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: `${serviceAccount.project_id}.firebasestorage.app`,
-});
+if (process.env.NODE_ENV !== 'test') {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: `${serviceAccount.project_id}.firebasestorage.app`,
+  });
+} else {
+  // Mock initialization for tests
+  admin.initializeApp({
+    projectId: 'test-project',
+  });
+}
 
 export const firebaseAdmin = admin;
 

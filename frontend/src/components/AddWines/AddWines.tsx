@@ -177,7 +177,7 @@ const AddWines = () => {
       }
 
       toast.success('Wine added successfully!', { id: loadingToast });
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -218,7 +218,11 @@ const AddWines = () => {
           <PhotoUploadWrapper onClick={handleImageClick}>
             <PhotoUploadContainer>
               {previewUrl ? (
-                <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               ) : (
                 <>
                   <FiPlus />
