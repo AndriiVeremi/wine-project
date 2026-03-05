@@ -7,20 +7,11 @@ if (!process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON && process.env.NODE_ENV !==
   throw new Error('FIREBASE_SERVICE_ACCOUNT_CREDS_JSON must be set');
 }
 
-let serviceAccount: any = {};
-if (process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON) {
-  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON);
-}
-
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && admin.apps.length === 0) {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_CREDS_JSON!);
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     storageBucket: `${serviceAccount.project_id}.firebasestorage.app`,
-  });
-} else {
-  // Mock initialization for tests
-  admin.initializeApp({
-    projectId: 'test-project',
   });
 }
 

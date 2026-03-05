@@ -75,7 +75,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ profile, onUpdate }) 
       <ButtonWrapper>
         {isEditing ? (
           <div style={{ display: 'flex', gap: '10px' }}>
-            <MainButton onClick={() => setIsEditing(false)} variant="secondary">
+            <MainButton onClick={() => setIsEditing(false)}>
               Cancel
             </MainButton>
             <MainButton onClick={handleSubmit}>Save Changes</MainButton>
