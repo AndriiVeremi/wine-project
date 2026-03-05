@@ -14,6 +14,13 @@ export const getUserProfile = ctrlWrapper(
   },
 );
 
+export const updateUserProfile = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
+    const updatedUser = await userService.updateUserProfile(req.userId!, req.body);
+    res.status(200).json(updatedUser);
+  },
+);
+
 export const registerUser = async (req: express.Request, res: express.Response) => {
   const { email, password, firstName, lastName, role } = req.body;
   const allowedRoles = ['USER', 'WINERY_OWNER'];
@@ -71,9 +78,6 @@ export const registerUser = async (req: express.Request, res: express.Response) 
     if (err.code === 'auth/weak-password') {
       throw new HttpError('Password must be at least 6 characters long.', 400);
     }
-    if (err.code === '11000') {
-      throw new HttpError('User with this email already exists in the database.', 409);
-    }
 
     throw new HttpError('User registration error', 500);
   }
@@ -113,8 +117,9 @@ export const updateAvatar = [
       throw new HttpError('Avatar file is required', 400);
     }
 
-    const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-    const result = await userService.updateAvatar(req.userId!, base64);
+    const result = await userService.updateAvatar(req.userId!, req.file);
     res.status(200).json(result);
   }),
 ];
+
+export {};

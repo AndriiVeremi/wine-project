@@ -31,8 +31,25 @@ export const updateWine = ctrlWrapper(async (req: AuthenticatedRequest, res: Res
   res.status(200).json(updatedWine);
 });
 
+export const updateWineImage = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
+  const id = req.params.id as string;
+  const file = req.file;
+
+  if (!file) {
+    throw new HttpError('Image file is required', 400);
+  }
+
+  const updatedWine = await wineService.updateWineImage(id, file, req.userId!, req.userRole!);
+
+  if (!updatedWine) {
+    throw new HttpError('Wine not found', 404);
+  }
+
+  res.status(200).json(updatedWine);
+});
+
 export const deleteWine = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const id = req.params.id as string;
   await wineService.deleteWine(id, req.userId!, req.userRole!);
-  res.status(200).json({ message: 'Wine delete' });
+  res.status(200).json({ message: 'Wine deleted' });
 });

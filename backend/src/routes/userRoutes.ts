@@ -31,6 +31,31 @@ router.get('/me', authMiddleware, userController.getUserProfile);
 
 /**
  * @swagger
+ * /users/me:
+ *   patch:
+ *     tags: [Users]
+ *     summary: Update user profile
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ */
+router.patch('/me', authMiddleware, userController.updateUserProfile);
+
+/**
+ * @swagger
  * /users/me/favorites:
  *   get:
  *     tags: [Users]
