@@ -1,4 +1,4 @@
-import main_logo from '@/assets/main_logo.png';
+import main_logo from '@/assets/main_logo.svg';
 import { Logo } from './MainLogo.styled';
 
 const MainLogo = () => {

@@ -4,6 +4,7 @@ import Winery, { IWinery } from '@/models/wineryModel';
 import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import HttpError from '@/utils/HttpError';
+import { uploadFile } from '@/services/firebase';
 
 interface WineQuery {
   country?: string;
@@ -68,7 +69,6 @@ export class WineService {
     }
 
     if (color) filter.color = color;
-
     if (sweetness) filter.sweetness = sweetness;
 
     if (grape) {
@@ -81,15 +81,8 @@ export class WineService {
     }
 
     if (wineryId) filter.winery = wineryId;
-
-    if (minRating) {
-      filter.averageRating = { $gte: parseFloat(minRating) };
-    }
-
-    if (maxPrice) {
-      filter.price = { $lte: parseFloat(maxPrice) };
-    }
-
+    if (minRating) filter.averageRating = { $gte: parseFloat(minRating) };
+    if (maxPrice) filter.price = { $lte: parseFloat(maxPrice) };
     if (vintage) filter.vintage = parseInt(vintage);
 
     const [sortField, sortOrder] = sortBy.split('_');
@@ -202,14 +195,10 @@ export class WineService {
       .populate<{ winery: HydratedDocument<IWinery> }>('winery')
       .exec();
 
-    if (!wine) {
-      return null;
-    }
+    if (!wine) return null;
 
     const winery = wine.winery;
-    if (!winery) {
-      throw new HttpError('Winery not found.', 404);
-    }
+    if (!winery) throw new HttpError('Winery not found.', 404);
 
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
       throw new HttpError('You cant update this wine.', 403);
@@ -221,12 +210,35 @@ export class WineService {
 
     if (updateData.grape) {
       const grapeExists = await Grape.findById(updateData.grape);
-      if (!grapeExists) {
-        throw new HttpError('Grape not found.', 404);
-      }
+      if (!grapeExists) throw new HttpError('Grape not found.', 404);
     }
 
     const updatedWine = await Wine.findByIdAndUpdate(wineId, updateData, { new: true });
+    return updatedWine;
+  }
+
+  public async updateWineImage(
+    wineId: string,
+    file: Express.Multer.File,
+    userId: string,
+    userRole: string,
+  ): Promise<HydratedDocument<IWine> | null> {
+    const wine = await Wine.findById(wineId)
+      .populate<{ winery: HydratedDocument<IWinery> }>('winery')
+      .exec();
+
+    if (!wine) return null;
+
+    const winery = wine.winery;
+    if (!winery) throw new HttpError('Winery not found.', 404);
+
+    if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
+      throw new HttpError('You cant update this wine.', 403);
+    }
+
+    const imageUrl = await uploadFile(file, 'wines');
+    const updatedWine = await Wine.findByIdAndUpdate(wineId, { imageUrl }, { new: true });
+
     return updatedWine;
   }
 
@@ -235,14 +247,10 @@ export class WineService {
       .populate<{ winery: HydratedDocument<IWinery> }>('winery')
       .exec();
 
-    if (!wine) {
-      throw new HttpError('Wine not found.', 404);
-    }
+    if (!wine) throw new HttpError('Wine not found.', 404);
 
     const winery = wine.winery;
-    if (!winery) {
-      throw new HttpError('Winery not found.', 404);
-    }
+    if (!winery) throw new HttpError('Winery not found.', 404);
 
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
       throw new HttpError('You cant delete this wine.', 403);

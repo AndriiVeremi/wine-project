@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import AccountMenu from '@/components/layout/AccountMenu/AccountMenu';
-import type { AccountSection } from '@/components/layout/AccountMenu/AccountMenu';
+import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/authStore';
+import AccountSidebar from '@/components/AccountSidebar/AccountSidebar';
+import type { AccountSection } from '@/components/AccountSidebar/AccountSidebar';
 import AddWines from '@/components/AddWines/AddWines';
+import PersonalInformation from '@/components/PersonalInformation/PersonalInformation';
+import AccountSettings from '@/components/AccountSettings/AccountSettings';
 import { StyledContainer } from '@/components/common/Container/Container.styled';
+import type { UserProfile } from '@/types/auth';
+import apiClient from '@/api/axios';
+import toast from 'react-hot-toast';
 import {
   AccountPageContainer,
   ContentArea,
@@ -11,37 +18,51 @@ import {
 } from './AccountPage.styled';
 
 const AccountPage: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<AccountSection>('Personal Info');
+  const { user } = useAuthStore();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const isOwner = user?.role === 'WINERY_OWNER';
+  const defaultSection = isOwner ? 'Wines' : 'Personal Info';
+  const [activeSection, setActiveSection] = useState<AccountSection>(defaultSection);
+
+  useEffect(() => {
+    if (user) {
+      fetchProfile();
+    }
+  }, [user]);
+
+  const fetchProfile = async () => {
+    try {
+      const { data } = await apiClient.get<UserProfile>('/users/me');
+      setProfile(data);
+    } catch {
+      toast.error('Failed to load profile');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProfileUpdate = (updatedProfile: Partial<UserProfile>) => {
+    setProfile((prev) => (prev ? { ...prev, ...updatedProfile } : null));
+  };
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (loading) {
+    return (
+      <StyledContainer>
+        <PlaceholderText>Loading profile...</PlaceholderText>
+      </StyledContainer>
+    );
+  }
 
   const renderContent = () => {
     switch (activeSection) {
       case 'Wines':
         return <AddWines />;
-      case 'Personal Info':
-        return (
-          <>
-            <SectionTitle>Personal Info</SectionTitle>
-            <PlaceholderText>
-              Here you will be able to manage your profile information.
-            </PlaceholderText>
-          </>
-        );
-      case 'History':
-        return (
-          <>
-            <SectionTitle>History</SectionTitle>
-            <PlaceholderText>
-              Your purchase and activity history will be displayed here.
-            </PlaceholderText>
-          </>
-        );
-      case 'Notification Center':
-        return (
-          <>
-            <SectionTitle>Notification Center</SectionTitle>
-            <PlaceholderText>Manage your notifications and alerts.</PlaceholderText>
-          </>
-        );
       case 'Wineries':
         return (
           <>
@@ -56,13 +77,33 @@ const AccountPage: React.FC = () => {
             <PlaceholderText>Upgrade your account to VIP for exclusive benefits.</PlaceholderText>
           </>
         );
-      case 'Account Settings':
+      case 'Personal Info':
+        return <PersonalInformation profile={profile} onUpdate={handleProfileUpdate} />;
+      case 'History':
         return (
           <>
-            <SectionTitle>Account Settings</SectionTitle>
-            <PlaceholderText>General account preferences and security settings.</PlaceholderText>
+            <SectionTitle>History</SectionTitle>
+            <PlaceholderText>
+              Your purchase and activity history will be displayed here.
+            </PlaceholderText>
           </>
         );
+      case 'My Wishlist':
+        return (
+          <>
+            <SectionTitle>My Wishlist</SectionTitle>
+            <PlaceholderText>Your saved wines and favorites.</PlaceholderText>
+          </>
+        );
+      case 'My Reviews':
+        return (
+          <>
+            <SectionTitle>My Reviews</SectionTitle>
+            <PlaceholderText>Reviews you have written for wines.</PlaceholderText>
+          </>
+        );
+      case 'Account Settings':
+        return <AccountSettings profile={profile} onUpdate={handleProfileUpdate} />;
       default:
         return null;
     }
@@ -71,7 +112,7 @@ const AccountPage: React.FC = () => {
   return (
     <StyledContainer>
       <AccountPageContainer>
-        <AccountMenu activeSection={activeSection} onSectionChange={setActiveSection} />
+        <AccountSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
         <ContentArea>{renderContent()}</ContentArea>
       </AccountPageContainer>
     </StyledContainer>

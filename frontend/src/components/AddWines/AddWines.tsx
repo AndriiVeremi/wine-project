@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useWinesStore } from '@/store/wine/winesStore';
 import { getWineries } from '@/api/wineries';
 import { getGrapes } from '@/api/grapes';
+import apiClient from '@/api/axios';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
 import { FormContainer, FieldWrapper, Label, Input, Select } from '@/components/forms/Form.styled';
 import { FiPlus } from 'react-icons/fi';
-import type { WineColor, WineSweetness } from '@/types/wine';
+import type { WineColor, WineSweetness, Wine } from '@/types/wine';
 import {
   AddWineWrapper,
   Title,
@@ -77,13 +78,19 @@ const AddWines = () => {
 
   const [wineries, setWineries] = useState<Winery[]>([]);
   const [grapes, setGrapes] = useState<Grape[]>([]);
-  const { addWine, loading } = useWinesStore();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // We keep the store hook if needed for other purposes, but remove unused variables
+  useWinesStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [wineriesRes, grapesRes] = await Promise.all([getWineries(), getGrapes()]);
-        setWineries(wineriesRes.data);
+        setWineries(wineriesRes.data.wineries);
         setGrapes(grapesRes.data);
       } catch {
         toast.error('Failed to load wineries or grapes data');
@@ -93,12 +100,28 @@ const AddWines = () => {
     fetchData();
   }, []);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('File size exceeds 5MB limit');
+        return;
+      }
+      setSelectedFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { id, value } = e.target;
 
-    // Handle special boolean conversion for selects
     let finalValue: string | number | boolean = value;
     if (id === 'decanting' || id === 'hasPackaging') {
       finalValue = value === 'true';
@@ -120,6 +143,9 @@ const AddWines = () => {
       return;
     }
 
+    setIsSubmitting(true);
+    const loadingToast = toast.loading('Saving wine details...');
+
     const submissionData = {
       ...formData,
       tastingNotes: formData.tastingNotes
@@ -133,8 +159,26 @@ const AddWines = () => {
     };
 
     try {
-      await addWine(submissionData);
-      toast.success('Wine added successfully!');
+      // 1. Create the wine entry
+      const response = await apiClient.post<Wine>('/wines', submissionData);
+      const newWine = response.data;
+
+      // 2. If a file is selected, upload it
+      if (selectedFile) {
+        toast.loading('Uploading wine photo...', { id: loadingToast });
+        const imageFormData = new FormData();
+        imageFormData.append('image', selectedFile);
+
+        await apiClient.patch(`/wines/${newWine._id}/image`, imageFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+
+      toast.success('Wine added successfully!', { id: loadingToast });
+
+      // Reset form
       setFormData({
         name: '',
         winery: '',
@@ -157,8 +201,12 @@ const AddWines = () => {
         supplier: '',
         suffix: '',
       });
+      setSelectedFile(null);
+      setPreviewUrl(null);
     } catch {
-      toast.error('Failed to add wine');
+      toast.error('Failed to add wine', { id: loadingToast });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -167,11 +215,28 @@ const AddWines = () => {
       <Title>Add New Wine</Title>
       <FormContainer onSubmit={handleSubmit}>
         <FormGrid>
-          <PhotoUploadWrapper>
+          <PhotoUploadWrapper onClick={handleImageClick}>
             <PhotoUploadContainer>
-              <FiPlus />
-              <span>Add photo</span>
+              {previewUrl ? (
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              ) : (
+                <>
+                  <FiPlus />
+                  <span>Add photo</span>
+                </>
+              )}
             </PhotoUploadContainer>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              accept="image/*"
+              style={{ display: 'none' }}
+            />
           </PhotoUploadWrapper>
           <SectionTitle>Characteristics</SectionTitle>
           <FieldWrapper>
@@ -375,7 +440,7 @@ const AddWines = () => {
             CANCEL
           </MainButton>
           <MainButton type="submit" size="large">
-            {loading ? 'SAVING...' : 'SAVE WINE'}
+            {isSubmitting ? 'SAVING...' : 'SAVE WINE'}
           </MainButton>
         </ButtonWrapper>
       </FormContainer>
