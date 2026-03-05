@@ -2,14 +2,14 @@ import styled from 'styled-components';
 
 export const AccountPageContainer = styled.div`
   display: flex;
-  gap: 32px;
+  gap: 10px;
   padding: 60px 0;
   width: 100%;
   margin: 0 auto;
   align-items: flex-start;
 
   @media (max-width: 1280px) {
-    gap: 20px;
+    gap: 5px;
   }
 
   @media (max-width: 768px) {
@@ -20,10 +20,6 @@ export const AccountPageContainer = styled.div`
 
 export const ContentArea = styled.main`
   flex: 1;
-  background-color: var(--white);
-  border-radius: var(--border-radius-in);
-  padding: 30px;
-  border: 1px solid var(--secondary-gray);
   min-height: 500px;
   overflow-x: hidden;
 `;

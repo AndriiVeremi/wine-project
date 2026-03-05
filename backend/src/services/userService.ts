@@ -1,8 +1,7 @@
 import User from '@/models/userModel';
 import Wine from '@/models/wineModel';
-
 import HttpError from '@/utils/HttpError';
-import { firebaseAdmin } from '@/services/firebase';
+import { firebaseAdmin, uploadFile } from '@/services/firebase';
 import { Types } from 'mongoose';
 
 const auth = firebaseAdmin.auth();
@@ -16,7 +15,7 @@ export const getUserProfileByFirebaseUid = async (firebaseUid: string) => {
   }
 
   const user = await User.findOne({ firebaseUid })
-    .select('-password -__v')
+    .select('-__v')
     .populate('winery', 'name')
     .populate('favoriteWines', 'name imageUrl type color');
 
@@ -24,6 +23,17 @@ export const getUserProfileByFirebaseUid = async (firebaseUid: string) => {
     throw new HttpError('User profile not found.', 404);
   }
 
+  return user;
+};
+
+export const updateUserProfile = async (
+  userId: string,
+  updateData: { firstName?: string; lastName?: string },
+) => {
+  const user = await User.findByIdAndUpdate(userId, updateData, { new: true }).select('-__v');
+  if (!user) {
+    throw new HttpError('User not found', 404);
+  }
   return user;
 };
 
@@ -57,15 +67,17 @@ export const getUserFavorites = async (userId: string) => {
     throw new HttpError('User not found', 404);
   }
 
+  interface PopulatedWine {
+    _id: Types.ObjectId;
+    name: string;
+    winery?: { _id: Types.ObjectId; name: string };
+    imageUrl: string;
+    color: string;
+    sweetness: string;
+  }
+
   return user.favoriteWines.map((wine: unknown) => {
-    const w = wine as {
-      _id: unknown;
-      name: string;
-      winery?: { _id: unknown; name: string };
-      imageUrl: string;
-      color: string;
-      sweetness: string;
-    };
+    const w = wine as PopulatedWine;
     return {
       id: w._id,
       name: w.name,
@@ -115,13 +127,14 @@ export const removeFavoriteWine = async (userId: string, wineId: string) => {
   return { message: 'Wine removed from favorites' };
 };
 
-export const updateAvatar = async (userId: string, avatarBase64: string) => {
+export const updateAvatar = async (userId: string, file: Express.Multer.File) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new HttpError('User not found', 404);
   }
 
-  user.avatarUrl = avatarBase64;
+  const avatarUrl = await uploadFile(file, 'avatars');
+  user.avatarUrl = avatarUrl;
   await user.save();
 
   return { avatarUrl: user.avatarUrl };
