@@ -40,7 +40,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ profile, onUpdate }) 
       onUpdate(data);
       setIsEditing(false);
       toast.success('Profile updated successfully', { id: loadingToast });
-    } catch (error) {
+    } catch {
       toast.error('Failed to update profile', { id: loadingToast });
     }
   };

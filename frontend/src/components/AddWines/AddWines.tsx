@@ -6,7 +6,7 @@ import apiClient from '@/api/axios';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
 import { FormContainer, FieldWrapper, Label, Input, Select } from '@/components/forms/Form.styled';
-import { FiPlus, FiImage } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
 import type { WineColor, WineSweetness, Wine } from '@/types/wine';
 import {
   AddWineWrapper,
@@ -82,7 +82,8 @@ const AddWines = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { addWine, loading: storeLoading } = useWinesStore();
+  // We keep the store hook if needed for other purposes, but remove unused variables
+  useWinesStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -176,7 +177,7 @@ const AddWines = () => {
       }
 
       toast.success('Wine added successfully!', { id: loadingToast });
-
+      
       // Reset form
       setFormData({
         name: '',
@@ -202,7 +203,7 @@ const AddWines = () => {
       });
       setSelectedFile(null);
       setPreviewUrl(null);
-    } catch (error) {
+    } catch {
       toast.error('Failed to add wine', { id: loadingToast });
     } finally {
       setIsSubmitting(false);
@@ -217,11 +218,7 @@ const AddWines = () => {
           <PhotoUploadWrapper onClick={handleImageClick}>
             <PhotoUploadContainer>
               {previewUrl ? (
-                <img
-                  src={previewUrl}
-                  alt="Preview"
-                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                />
+                <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               ) : (
                 <>
                   <FiPlus />

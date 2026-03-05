@@ -55,7 +55,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ profile, onUp
       });
       onUpdate({ avatarUrl: data.avatarUrl });
       toast.success('Avatar updated successfully', { id: loadingToast });
-    } catch (error) {
+    } catch {
       toast.error('Failed to update avatar', { id: loadingToast });
     }
   };
