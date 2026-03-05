@@ -12,7 +12,9 @@ const Header = () => {
     <StyledHeader className="app-header">
       <Container>
         <HeaderContainer className="header-container">
-          <MainLogo />
+          <a href="/" target="_blank" rel="noopener noreferrer">
+            <MainLogo />
+          </a>
           <Nav className="app-nav">
             <ul>
               <ListItem>
