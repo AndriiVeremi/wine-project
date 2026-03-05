@@ -1,50 +1,50 @@
 import { Link } from 'react-router-dom';
-import { Nav, StyledHeader, ListItem, HeaderContainer } from '@/components/Header/Header.styled';
+import { Nav, StyledHeader, Item, HeaderContainer } from '@/components/Header/Header.styled';
 import Container from '@/components/common/Container';
 import MainLogo from '@/components/MainLogo/MainLogo';
 import UserMenu from '@/components/UserMenu';
-import { useAuthStore } from '@/store/authStore';
+// import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
-  const { user } = useAuthStore();
-
   return (
-    <StyledHeader className="app-header">
-      <Container>
-        <HeaderContainer className="header-container">
-          <MainLogo />
-          <Nav className="app-nav">
-            <ul>
-              <ListItem>
-                <Link to="/">Home</Link>
-              </ListItem>
-              <ListItem>
-                <Link to="/wineries">Wineries</Link>
-              </ListItem>
-              <ListItem>
-                <Link to="/about">About</Link>
-              </ListItem>
-              <ListItem>
-                <Link to="/wines">Wines</Link>
-              </ListItem>
-              <ListItem>
-                <Link to="/grapes">Grapes</Link>
-              </ListItem>
-              <ListItem>
-                <Link to="/wine-tours">Wine tours</Link>
-              </ListItem>
+    <>
+      <StyledHeader>
+        <Container>
+          <HeaderContainer>
+            <MainLogo />
+            <Nav>
+              <ul>
+                <Item>
+                  <Link to="/">Home</Link>
+                </Item>
+                <Item>
+                  <Link to="/wineries">Wineries</Link>
+                </Item>
+                <Item>
+                  <Link to="/about">About</Link>
+                </Item>
+                <Item>
+                  <Link to="/wines">Wines</Link>
+                </Item>
+                <Item>
+                  <Link to="/grapes">Grapes</Link>
+                </Item>
+                <Item>
+                  <Link to="/wine-tours">Wine tours</Link>
+                </Item>
 
-              {user && (
-                <ListItem>
-                  <Link to="/account">Account</Link>
-                </ListItem>
-              )}
-            </ul>
-          </Nav>
-          <UserMenu />
-        </HeaderContainer>
-      </Container>
-    </StyledHeader>
+                {/* {user && (
+                  <ListItem>
+                    <Link to="/account">Account</Link>
+                  </ListItem>
+                )} */}
+              </ul>
+            </Nav>
+            <UserMenu />
+          </HeaderContainer>
+        </Container>
+      </StyledHeader>
+    </>
   );
 };
 

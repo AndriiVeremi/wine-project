@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 
 export const StyledHeader = styled('header')`
-  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+
   justify-content: space-between;
   align-items: center;
   padding: 30px 0;
-  background-color: var(--bg-header);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 export const Nav = styled('nav')`
@@ -14,11 +17,11 @@ export const Nav = styled('nav')`
     display: flex;
     gap: 34px;
     list-style: none;
-    margin: 0 86px;
+    margin: 0 26px;
   }
 `;
 
-export const ListItem = styled('li')`
+export const Item = styled('li')`
   color: var(--font-grey);
   font-size: 19px;
   font-style: medium;
@@ -30,6 +33,7 @@ export const ListItem = styled('li')`
 `;
 
 export const HeaderContainer = styled('div')`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
