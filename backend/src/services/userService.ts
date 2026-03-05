@@ -67,14 +67,24 @@ export const getUserFavorites = async (userId: string) => {
     throw new HttpError('User not found', 404);
   }
 
-  return user.favoriteWines.map((wine: any) => {
+  interface PopulatedWine {
+    _id: Types.ObjectId;
+    name: string;
+    winery?: { _id: Types.ObjectId; name: string };
+    imageUrl: string;
+    color: string;
+    sweetness: string;
+  }
+
+  return user.favoriteWines.map((wine: unknown) => {
+    const w = wine as PopulatedWine;
     return {
-      id: wine._id,
-      name: wine.name,
-      winery: wine.winery ? { id: wine.winery._id, name: wine.winery.name } : null,
-      imageUrl: wine.imageUrl,
-      color: wine.color,
-      sweetness: wine.sweetness,
+      id: w._id,
+      name: w.name,
+      winery: w.winery ? { id: w.winery._id, name: w.winery.name } : null,
+      imageUrl: w.imageUrl,
+      color: w.color,
+      sweetness: w.sweetness,
     };
   });
 };
