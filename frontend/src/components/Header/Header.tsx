@@ -32,12 +32,6 @@ const Header = () => {
                 <Item>
                   <Link to="/wine-tours">Wine tours</Link>
                 </Item>
-
-                {/* {user && (
-                  <ListItem>
-                    <Link to="/account">Account</Link>
-                  </ListItem>
-                )} */}
               </ul>
             </Nav>
             <UserMenu />

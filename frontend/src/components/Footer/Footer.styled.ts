@@ -4,6 +4,7 @@ import { BiLogoInstagramAlt } from 'react-icons/bi';
 import '@/styles/vars.css';
 
 export const StyledFooter = styled('footer')`
+  width: 100%;
   height: 100%;
   margin: 0 auto;
   background-color: var(--footer-cream);

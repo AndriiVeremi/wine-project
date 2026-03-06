@@ -2,14 +2,17 @@ import styled from 'styled-components';
 
 export const StyledHeader = styled('header')`
   position: absolute;
-  top: 0;
-  left: 0;
+  // top: 0;
+  // left: 50%;
+  // transform: translateX(-50%);
+  // width: 100%;
+  // z-index: 100;
   width: 100%;
-  z-index: 100;
-
   justify-content: space-between;
   align-items: center;
   padding: 30px 0;
+  background-color: transparent;
+
 `;
 
 export const Nav = styled('nav')`

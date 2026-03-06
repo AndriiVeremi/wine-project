@@ -1,9 +1,5 @@
-// import MainButton from '@/components/buttons/MainButton';
-// import { useAuthStore } from '@/store/authStore';
-// import AIAssistant from '@/components/common/AIAssistant';
-// import { Container } from '@/components/common/AIAssistant/AIAssistant.styled';
 import Container from '@/components/common/Container';
-import { HeroSection } from './HomePage.styled';
+import { HeroSection, Span, HeroTitle, HeroTitleWrapper, HeroSubtitleWrapper, HeroSubtitle, TextWrapper } from './HomePage.styled';
 
 const HomePage = () => {
   // const { user, openAuthModal } = useAuthStore();
@@ -12,20 +8,20 @@ const HomePage = () => {
   return (
     <>
       <HeroSection>
-        {/* {user && aiAssistantEnabled && <AIAssistant />} */}
-        {/* <h2>Home Page</h2>
-      {!user && (
-        <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-          <MainButton type="button" size="medium" onClick={() => openAuthModal('login')}>
-            Login
-          </MainButton>
-          <MainButton type="button" size="medium" onClick={() => openAuthModal('register')}>
-            Register
-          </MainButton>
-        </div>
-      )} */}
         <Container>
-          <h1>Welcome to Main page</h1>
+          <HeroTitleWrapper>
+            <HeroTitle>
+              <Span>Discover</Span> Georgian Wines, Wineries and Regions
+            </HeroTitle>
+            <HeroSubtitleWrapper>
+              <HeroSubtitle>Your guide to Georgian wine culture and winemaking traditions</HeroSubtitle>
+            </HeroSubtitleWrapper>
+            <TextWrapper>
+              <p>Wine Discovery is an online catalog of Georgian wines and wineries.
+Explore wine regions of Georgia, learn about local grape varieties and discover wines by region, grape or rating.
+            </p>
+            </TextWrapper>
+          </HeroTitleWrapper>
         </Container>
       </HeroSection>
     </>
@@ -33,3 +29,7 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+
+          
