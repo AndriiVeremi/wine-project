@@ -12,7 +12,6 @@ export const StyledHeader = styled('header')`
   align-items: center;
   padding: 30px 0;
   background-color: transparent;
-
 `;
 
 export const Nav = styled('nav')`

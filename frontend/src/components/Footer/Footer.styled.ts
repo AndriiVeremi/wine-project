@@ -19,11 +19,6 @@ export const FooterContainer = styled('div')`
 export const StyledNav = styled('nav')`
   ul li {
     cursor: pointer;
-
-    &:hover {
-      color: var(--primary-wine);
-      transition: all 0.5s ease;
-    }
   }
 `;
 
@@ -46,10 +41,16 @@ export const Item = styled('li')`
   text-decoration: none;
   line-height: 26px;
   horizontal-align: center;
+  transition: all 0.3s ease;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
 
   &:hover {
     color: var(--primary-wine);
-    transition: all 0.5s ease;
   }
 `;
 
@@ -65,17 +66,20 @@ export const FacebookIcon = styled(FaFacebookF)`
   color: var(--primary-wine);
   width: 16px;
   height: 18px;
+  transition: color 0.3s ease;
 `;
 
 export const InstagramIcon = styled(BiLogoInstagramAlt)`
   color: var(--primary-wine);
   width: 32px;
   height: 22px;
+  transition: color 0.3s ease;
 `;
 export const TelegramIcon = styled(FaTelegramPlane)`
   color: var(--primary-wine);
   width: 30px;
   height: 20px;
+  transition: color 0.3s ease;
 `;
 
 export const IconCircle = styled('div')`
@@ -86,14 +90,13 @@ export const IconCircle = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 1s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
 
   &:hover {
     background-color: var(--primary-wine);
     ${FacebookIcon}, ${InstagramIcon}, ${TelegramIcon} {
       color: var(--footer-cream);
-      transition: all 0.5s ease;
     }
   }
 `;

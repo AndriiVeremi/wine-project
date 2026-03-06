@@ -4,4 +4,5 @@ export const Logo = styled('img')`
   width: 160px;
   height: 60px;
   object-fit: contain;
+  cursor: pointer;
 `;

@@ -21,9 +21,6 @@ const Header = () => {
                   <Link to="/wineries">Wineries</Link>
                 </Item>
                 <Item>
-                  <Link to="/about">About</Link>
-                </Item>
-                <Item>
                   <Link to="/wines">Wines</Link>
                 </Item>
                 <Item>
