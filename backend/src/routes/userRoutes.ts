@@ -52,7 +52,12 @@ router.get('/me', authMiddleware, userController.getUserProfile);
  *       200:
  *         description: Profile updated successfully
  */
-router.patch('/me', authMiddleware, validateBody(updateProfileSchema), userController.updateUserProfile);
+router.patch(
+  '/me',
+  authMiddleware,
+  validateBody(updateProfileSchema),
+  userController.updateUserProfile,
+);
 
 /**
  * @swagger
