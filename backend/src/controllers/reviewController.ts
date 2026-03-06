@@ -11,6 +11,20 @@ export const getWineReviews = ctrlWrapper(async (req: Request, res: Response) =>
   res.status(200).json(reviews);
 });
 
+export const getUserReviews = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 5;
+
+  const result = await reviewService.getReviewsByUser(req.userId!, page, limit);
+
+  res.status(200).json({
+    reviews: result.reviews,
+    total: result.total,
+    page,
+    totalPages: Math.ceil(result.total / limit),
+  });
+});
+
 export const getWineReviewById = ctrlWrapper(async (req: Request, res: Response) => {
   const reviewId = req.params.reviewId as string;
   const review = await reviewService.getReviewById(reviewId);

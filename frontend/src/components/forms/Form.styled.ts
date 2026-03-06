@@ -3,14 +3,14 @@ import styled from 'styled-components';
 export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   width: 100%;
 `;
 
 export const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   position: relative;
 `;
 
@@ -68,11 +68,11 @@ export const ForgotPassword = styled.button`
   background: none;
   border: none;
   font-family: var(--font-main);
-  font-size: 17px;
+  font-size: 16px;
   color: var(--primary-gray);
   cursor: pointer;
   text-align: left;
-  margin-top: 29px;
+  margin-top: 15px;
   padding: 0;
   width: fit-content;
   transition: var(--transition);
