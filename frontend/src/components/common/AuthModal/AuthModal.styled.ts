@@ -17,8 +17,8 @@ export const ModalOverlay = styled.div`
 export const ModalContainer = styled.div`
   background-color: var(--white);
   width: 100%;
-  max-width: 1033px;
-  padding: 60px 0;
+  max-width: 550px;
+  padding: 40px 0;
   border-radius: var(--border-radius-lg);
   position: relative;
   box-shadow: var(--modal-shadow);
@@ -28,7 +28,7 @@ export const ModalContainer = styled.div`
 
   @media (max-width: 1100px) {
     width: 90%;
-    padding: 40px 0;
+    padding: 30px 0;
   }
 `;
 
@@ -53,8 +53,8 @@ export const CloseButton = styled.button`
   }
 
   svg {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     fill: currentColor;
     stroke: currentColor;
     stroke-width: 2px;
@@ -75,7 +75,7 @@ export const CloseButton = styled.button`
 export const TabsContainer = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 `;
 
 export const Tab = styled.button<{ $active: boolean }>`
@@ -84,11 +84,11 @@ export const Tab = styled.button<{ $active: boolean }>`
   border: none;
   font-family: var(--font-main);
   font-weight: 600;
-  font-size: 40px;
-  line-height: 1;
+  font-size: 28px;
+  line-height: 1.2;
   color: ${(props) => (props.$active ? 'var(--primary-wine)' : 'var(--secondary-gray)')};
   cursor: pointer;
-  padding: 20px 0;
+  padding: 15px 0;
   transition: var(--transition);
   position: relative;
 

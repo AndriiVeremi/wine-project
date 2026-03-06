@@ -4,8 +4,9 @@ import { useAuthStore } from '@/store/authStore';
 import AccountSidebar from '@/components/AccountSidebar/AccountSidebar';
 import type { AccountSection } from '@/components/AccountSidebar/AccountSidebar';
 import AddWines from '@/components/AddWines/AddWines';
-import PersonalInformation from '@/components/PersonalInformation/PersonalInformation';
+import AccountInfo from '@/components/AccountInfo/AccountInfo';
 import AccountSettings from '@/components/AccountSettings/AccountSettings';
+import AccountReviews from '@/components/AccountReviews/AccountReviews';
 import { StyledContainer } from '@/components/common/Container/Container.styled';
 import type { UserProfile } from '@/types/auth';
 import apiClient from '@/api/axios';
@@ -81,7 +82,7 @@ const AccountPage: React.FC = () => {
         return (
           <>
             <SectionTitle>Personal Info</SectionTitle>
-            <PersonalInformation profile={profile} />
+            <AccountInfo profile={profile} />
           </>
         );
       case 'History':
@@ -104,7 +105,7 @@ const AccountPage: React.FC = () => {
         return (
           <>
             <SectionTitle>My Reviews</SectionTitle>
-            <PlaceholderText>Reviews you have written for wines.</PlaceholderText>
+            <AccountReviews />
           </>
         );
       case 'Account Settings':

@@ -12,6 +12,26 @@ export class ReviewService {
     return reviews;
   }
 
+  public async getReviewsByUser(
+    userId: string,
+    page: number = 1,
+    limit: number = 5,
+  ): Promise<{ reviews: HydratedDocument<IReview>[]; total: number }> {
+    const skip = (page - 1) * limit;
+
+    const [reviews, total] = await Promise.all([
+      Review.find({ userId })
+        .populate('wineId', 'name imageUrl')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+      Review.countDocuments({ userId }),
+    ]);
+
+    return { reviews, total };
+  }
+
   public async getReviewById(reviewId: string): Promise<HydratedDocument<IReview>> {
     const review = await Review.findById(reviewId).populate('userId', 'firstName lastName').exec();
 

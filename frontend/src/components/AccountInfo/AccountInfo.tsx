@@ -3,76 +3,85 @@ import { FiStar } from 'react-icons/fi';
 import type { UserProfile } from '@/types/auth';
 import UserAvatar from '@/components/UserAvatar';
 import {
-  PersonalInfoContainer,
-  LeftColumn,
+  AccountInfoContainer,
+  ProfileHeader,
   UserNameSection,
   UserName,
   VipBadge,
-  InfoSection,
-  InfoRow,
+  InfoList,
+  InfoItem,
   InfoLabel,
   InfoValue,
-} from './PersonalInformation.styled';
+} from './AccountInfo.styled';
 
-interface PersonalInformationProps {
+interface AccountInfoProps {
   profile: UserProfile | null;
 }
 
-const PersonalInformation: React.FC<PersonalInformationProps> = ({ profile }) => {
+const AccountInfo: React.FC<AccountInfoProps> = ({ profile }) => {
   const isVip = profile?.role === 'ADMIN' || profile?.role === 'WINERY_OWNER';
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '-';
-    return new Date(dateString).toLocaleDateString();
+    return new Date(dateString).toLocaleDateString('uk-UA', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+  const getRoleName = (role?: string) => {
+    switch (role) {
+      case 'ADMIN':
+        return 'Administrator';
+      case 'WINERY_OWNER':
+        return 'Winery Owner';
+      case 'USER':
+        return 'Standard User';
+      default:
+        return '-';
+    }
   };
 
   return (
-    <PersonalInfoContainer>
-      <LeftColumn>
+    <AccountInfoContainer>
+      <ProfileHeader>
         <UserAvatar avatarUrl={profile?.avatarUrl} />
         <UserNameSection>
           <UserName>
             {profile?.firstName} {profile?.lastName}
           </UserName>
           <VipBadge $isVip={isVip}>
-            <FiStar />
+            <FiStar fill={isVip ? 'var(--rating-gold)' : 'none'} />
             {isVip ? 'VIP Member' : 'Standard Member'}
           </VipBadge>
         </UserNameSection>
-      </LeftColumn>
+      </ProfileHeader>
 
-      <InfoSection>
-        <InfoRow>
-          <InfoLabel>First Name:</InfoLabel>
-          <InfoValue>{profile?.firstName}</InfoValue>
-        </InfoRow>
-        <InfoRow>
-          <InfoLabel>Last Name:</InfoLabel>
-          <InfoValue>{profile?.lastName}</InfoValue>
-        </InfoRow>
-        <InfoRow>
+      <InfoList>
+        <InfoItem>
           <InfoLabel>E-mail:</InfoLabel>
           <InfoValue>{profile?.email}</InfoValue>
-        </InfoRow>
-        <InfoRow>
-          <InfoLabel>Phone:</InfoLabel>
+        </InfoItem>
+        <InfoItem>
+          <InfoLabel>Phone Number:</InfoLabel>
           <InfoValue>{profile?.phone || '-'}</InfoValue>
-        </InfoRow>
-        <InfoRow>
+        </InfoItem>
+        <InfoItem>
           <InfoLabel>Date of Birth:</InfoLabel>
           <InfoValue>{formatDate(profile?.birthDate)}</InfoValue>
-        </InfoRow>
-        <InfoRow>
+        </InfoItem>
+        <InfoItem>
           <InfoLabel>Address:</InfoLabel>
           <InfoValue>{profile?.address || '-'}</InfoValue>
-        </InfoRow>
-        <InfoRow>
+        </InfoItem>
+        <InfoItem>
           <InfoLabel>Account Type:</InfoLabel>
-          <InfoValue>{profile?.role?.replace('_', ' ')}</InfoValue>
-        </InfoRow>
-      </InfoSection>
-    </PersonalInfoContainer>
+          <InfoValue>{getRoleName(profile?.role)}</InfoValue>
+        </InfoItem>
+      </InfoList>
+    </AccountInfoContainer>
   );
 };
 
-export default PersonalInformation;
+export default AccountInfo;

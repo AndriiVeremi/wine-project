@@ -15,7 +15,7 @@ import {
 } from '@/components/forms/Form.styled';
 
 const LoginFormButtonWrapper = styled.div`
-  margin-top: 45px;
+  margin-top: 30px;
 `;
 
 const LoginForm = () => {
@@ -57,7 +57,7 @@ const LoginForm = () => {
   return (
     <FormContainer onSubmit={handleSubmit}>
       <FieldWrapper>
-        <Label htmlFor="login-email">E-mail: *</Label>
+        <Label htmlFor="login-email">E-mail: </Label>
         <Input
           id="login-email"
           type="email"
@@ -69,7 +69,7 @@ const LoginForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="login-password">Password: *</Label>
+        <Label htmlFor="login-password">Password: </Label>
         <PasswordWrapper>
           <Input
             id="login-password"
