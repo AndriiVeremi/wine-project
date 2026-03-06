@@ -81,7 +81,7 @@ const AccountPage: React.FC = () => {
         return (
           <>
             <SectionTitle>Personal Info</SectionTitle>
-            <PersonalInformation profile={profile} onUpdate={handleProfileUpdate} />
+            <PersonalInformation profile={profile} />
           </>
         );
       case 'History':

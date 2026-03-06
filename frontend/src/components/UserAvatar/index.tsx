@@ -2,12 +2,7 @@ import React, { useRef } from 'react';
 import { FiUser, FiCamera } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import apiClient from '@/api/axios';
-import {
-  AvatarWrapper,
-  Avatar,
-  AvatarPlaceholder,
-  AvatarUploadButton,
-} from './UserAvatar.styled';
+import { AvatarWrapper, Avatar, AvatarPlaceholder, AvatarUploadButton } from './UserAvatar.styled';
 
 interface UserAvatarProps {
   avatarUrl?: string;
@@ -67,12 +62,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ avatarUrl, onUpload }) => {
       {onUpload && (
         <AvatarUploadButton onClick={handleClick}>
           <FiCamera />
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            accept="image/*"
-          />
+          <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" />
         </AvatarUploadButton>
       )}
     </AvatarWrapper>
