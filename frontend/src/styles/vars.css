@@ -31,8 +31,8 @@
 
 
    /* Icon Colors */
-   --brown-icon: #895129; /* location, user icons */
-   --black-icon: #323232; /* drop-down icon */
+   --brown-icon: #895129;
+   --black-icon: #323232; 
 
 
   /* Typography */
@@ -47,9 +47,9 @@
 
 
   /* Spacing */
-  --space-xs: 12px;
+  --space-xs: 16px;
   --space-sm: 19px;
-  --space-md: 23px;
+  --space-md: 26px;
   --space-lg: 30px;
   --space-xl: 49px;
 

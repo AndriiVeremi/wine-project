@@ -2,88 +2,29 @@ import styled from 'styled-components';
 
 export const PersonalInfoContainer = styled.div`
   display: flex;
-  gap: 32px;
-
-  @media (max-width: 900px) {
-    flex-direction: column;
-  }
-`;
-
-export const AvatarSection = styled.div`
-  display: flex;
+  gap: 60px;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
 `;
 
-export const AvatarWrapper = styled.div`
-  position: relative;
-  width: 120px;
-  height: 120px;
-`;
-
-export const Avatar = styled.img`
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--secondary-gray);
-`;
-
-export const AvatarPlaceholder = styled.div`
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: var(--secondary-gray-light);
+export const LeftColumn = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  color: var(--primary-gray-light);
-  border: 2px solid var(--secondary-gray);
-`;
-
-export const AvatarUploadButton = styled.button`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: var(--primary-wine);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition);
-  border: 2px solid var(--white);
-  padding: 0;
-  outline: none;
-
-  &:hover {
-    background-color: var(--primary-wine-dark);
-  }
-
-  input {
-    display: none;
-  }
-
-  svg {
-    font-size: 18px;
-  }
+  gap: 50px;
+  min-width: 180px;
 `;
 
 export const UserNameSection = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 4px;
+  text-align: center;
 `;
 
 export const UserName = styled.h3`
-  font-family: var(--font-main);
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 26px;
+  font-weight: 400;
   color: var(--primary-gray);
 `;
 
@@ -91,7 +32,6 @@ export const VipBadge = styled.span<{ $isVip: boolean }>`
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: var(--font-main);
   font-size: 14px;
   font-weight: 500;
   color: ${({ $isVip }) => ($isVip ? '#FFD700' : 'var(--primary-gray-light)')};
@@ -103,57 +43,26 @@ export const VipBadge = styled.span<{ $isVip: boolean }>`
   }
 `;
 
-export const FormSection = styled.div`
+export const InfoSection = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 `;
 
-export const FormGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-export const FormField = styled.div`
+export const InfoRow = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  gap: 12px;
 `;
 
-export const Label = styled.label`
-  font-family: var(--font-main);
-  font-size: 14px;
+export const InfoLabel = styled.span`
+  font-size: 16px;
   font-weight: 500;
   color: var(--primary-gray);
+  min-width: 120px;
 `;
 
-export const Input = styled.input<{ $disabled?: boolean }>`
-  padding: 10px 14px;
-  border: 1px solid var(--secondary-gray);
-  border-radius: var(--border-radius-in);
-  font-family: var(--font-main);
-  font-size: 14px;
-  color: var(--primary-gray);
-  background-color: ${({ $disabled }) =>
-    $disabled ? 'var(--secondary-gray-light)' : 'var(--white)'};
-  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'text')};
-  transition: var(--transition);
-
-  &:focus {
-    outline: none;
-    border-color: var(--primary-wine);
-  }
-`;
-
-export const Value = styled.div`
-  font-family: var(--font-main);
+export const InfoValue = styled.span`
   font-size: 16px;
   color: var(--primary-gray);
-  padding: 8px 0;
 `;

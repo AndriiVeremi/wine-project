@@ -18,6 +18,9 @@
     default: 'USER' 
   }, // Роль користувача в системі
   avatarUrl: { type: String, default: '' }, // URL аватара (base64 або зовнішній URL)
+  phone: { type: String, default: '' }, // Номер телефону
+  birthDate: { type: Date }, // Дата народження
+  address: { type: String, default: '' }, // Адреса
   winery: { type: Schema.Types.ObjectId, ref: 'Winery' }, // ID виноробні власника (якщо є)
   favoriteWines: [{ type: Schema.Types.ObjectId, ref: 'Wine' }] // Список ID улюблених вин
 }

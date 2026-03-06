@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as userController from '@/controllers/userController';
 import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
-import { registerSchema, addFavoriteSchema } from '@/schemas/userSchemas';
+import { registerSchema, addFavoriteSchema, updateProfileSchema } from '@/schemas/userSchemas';
 import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
@@ -52,7 +52,12 @@ router.get('/me', authMiddleware, userController.getUserProfile);
  *       200:
  *         description: Profile updated successfully
  */
-router.patch('/me', authMiddleware, userController.updateUserProfile);
+router.patch(
+  '/me',
+  authMiddleware,
+  validateBody(updateProfileSchema),
+  userController.updateUserProfile,
+);
 
 /**
  * @swagger
