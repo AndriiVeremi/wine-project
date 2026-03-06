@@ -3,9 +3,11 @@ import { Nav, StyledHeader, Item, HeaderContainer } from '@/components/Header/He
 import Container from '@/components/common/Container';
 import MainLogo from '@/components/MainLogo/MainLogo';
 import UserMenu from '@/components/UserMenu';
-// import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store/authStore';
+import MainButton from '../buttons/MainButton';
 
 const Header = () => {
+  const { user, logout, openAuthModal } = useAuthStore();
   return (
     <>
       <StyledHeader>
@@ -29,6 +31,39 @@ const Header = () => {
                 <Item>
                   <Link to="/wine-tours">Wine tours</Link>
                 </Item>
+                {user ? (
+                  <>
+                    <li>
+                      <button onClick={logout}>Logout</button>
+                    </li>
+                    <li>
+                      <span style={{ color: 'lightgreen', marginLeft: '1rem' }}>
+                        Role: {user.role}
+                      </span>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <MainButton
+                        type="button"
+                        size="medium"
+                        onClick={() => openAuthModal('login')}
+                      >
+                        Login
+                      </MainButton>
+                    </li>
+                    <li>
+                      <MainButton
+                        type="button"
+                        size="medium"
+                        onClick={() => openAuthModal('register')}
+                      >
+                        Register
+                      </MainButton>
+                    </li>
+                  </>
+                )}
               </ul>
             </Nav>
             <UserMenu />
