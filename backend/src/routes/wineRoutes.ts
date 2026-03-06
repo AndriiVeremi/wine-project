@@ -4,6 +4,7 @@ import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { createWineSchema, updateWineSchema } from '@/schemas/wineSchemas';
 import { isValidId } from '@/middleware/isValidId';
+import upload from '@/middleware/uploadMiddleware';
 import reviewRoutes from '@/routes/reviewRoutes';
 
 const router = Router();
@@ -13,35 +14,8 @@ const router = Router();
  * /wines:
  *   get:
  *     tags: [Wines]
- *     summary: Retrieve a list of wines with optional filters and pagination
+ *     summary: Retrieve a list of all wines
  *     parameters:
- *       - in: query
- *         name: color
- *         schema:
- *           type: string
- *           enum: [red, white, rose, orange]
- *         description: Filter by wine color
- *       - in: query
- *         name: sweetness
- *         schema:
- *           type: string
- *           enum: [dry, semi-dry, semi-sweet, sweet]
- *         description: Filter by sweetness level
- *       - in: query
- *         name: grape
- *         schema:
- *           type: string
- *         description: Filter by grape variety (ID)
- *       - in: query
- *         name: country
- *         schema:
- *           type: string
- *         description: Filter by country
- *       - in: query
- *         name: region
- *         schema:
- *           type: string
- *         description: Filter by region
  *       - in: query
  *         name: page
  *         schema:
@@ -54,6 +28,44 @@ const router = Router();
  *           type: integer
  *           default: 10
  *         description: Number of items per page
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [price, rating, year]
+ *         description: Sort field
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *         description: Sort order
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *         description: Minimum price filter
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *         description: Maximum price filter
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *           enum: [red, white, rose, sparkling, dessert]
+ *         description: Wine type filter
+ *       - in: query
+ *         name: country
+ *         schema:
+ *           type: string
+ *         description: Filter by country
+ *       - in: query
+ *         name: grape
+ *         schema:
+ *           type: string
+ *         description: Filter by grape variety
  *     responses:
  *       200:
  *         description: A list of wines with pagination metadata.
@@ -62,7 +74,7 @@ const router = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 wines:
+ *                 docs:
  *                   type: array
  *                   items:
  *                     type: object
@@ -72,31 +84,32 @@ const router = Router();
  *                         example: 60d21b4667d0d8992e610c85
  *                       name:
  *                         type: string
- *                         example: Château Margaux
- *                       vintage:
+ *                         example: Cabernet Sauvignon
+ *                       winery:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                           name:
+ *                             type: string
+ *                       year:
  *                         type: integer
- *                         example: 2015
- *                       color:
+ *                         example: 2020
+ *                       type:
  *                         type: string
- *                         enum: [red, white, rose, orange]
- *                       sweetness:
- *                         type: string
- *                         enum: [dry, semi-dry, semi-sweet, sweet]
+ *                         example: red
  *                       price:
  *                         type: number
- *                         example: 500
- *                 totalCount:
+ *                         example: 25.99
+ *                       rating:
+ *                         type: number
+ *                         example: 4.5
+ *                 total:
  *                   type: integer
- *                   example: 100
  *                 page:
  *                   type: integer
- *                   example: 1
- *                 limit:
+ *                 pages:
  *                   type: integer
- *                   example: 10
- *                 totalPages:
- *                   type: integer
- *                   example: 10
  *       500:
  *         description: Server error
  */
@@ -119,46 +132,71 @@ router.get('/', wineController.getAllWines);
  *             properties:
  *               name:
  *                 type: string
- *                 example: New Amazing Wine
+ *                 example: Reserve Cabernet Sauvignon
  *               winery:
  *                 type: string
  *                 description: ID of the winery
  *                 example: 60d21b4667d0d8992e610c85
- *               vintage:
+ *               year:
  *                 type: integer
- *                 example: 2023
- *               grape:
+ *                 example: 2019
+ *               type:
  *                 type: string
- *                 description: ID of the grape variety
- *                 example: 60d21b4667d0d8992e610c86
- *               color:
- *                 type: string
- *                 enum: [red, white, rose, orange]
+ *                 enum: [red, white, rose, sparkling, dessert]
  *                 example: red
- *               sweetness:
+ *               description:
  *                 type: string
- *                 enum: [dry, semi-dry, semi-sweet, sweet]
- *                 example: dry
+ *                 example: A rich and full-bodied red wine
  *               price:
  *                 type: number
- *                 example: 150
+ *                 example: 45.00
+ *               alcohol:
+ *                 type: number
+ *                 example: 14.5
+ *               volume:
+ *                 type: number
+ *                 example: 750
+ *               grapes:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["60d21b4667d0d8992e610c86"]
+ *               country:
+ *                 type: string
+ *                 description: ID of the country (Location)
+ *                 example: 60d21b4667d0d8992e610c80
+ *               region:
+ *                 type: string
+ *                 description: ID of the region (Location)
+ *                 example: 60d21b4667d0d8992e610c81
+ *               imageUrl:
+ *                 type: string
+ *                 example: https://example.com/wine.jpg
  *             required:
  *               - name
  *               - winery
- *               - vintage
- *               - grape
- *               - color
- *               - sweetness
- *               - price
+ *               - type
  *     responses:
  *       201:
  *         description: Wine created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 60d21b4667d0d8992e610c87
+ *                 name:
+ *                   type: string
  *       400:
  *         description: Invalid input
  *       401:
  *         description: Unauthorized
  *       403:
- *         description: Forbidden (User is not a WINERY_OWNER or ADMIN)
+ *         description: Forbidden (User is not WINERY_OWNER or ADMIN)
+ *       404:
+ *         description: Winery not found
  *       500:
  *         description: Server error
  */
@@ -186,6 +224,36 @@ router.post(
  *     responses:
  *       200:
  *         description: Wine data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 60d21b4667d0d8992e610c87
+ *                 name:
+ *                   type: string
+ *                   example: Reserve Cabernet Sauvignon
+ *                 winery:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                 year:
+ *                   type: integer
+ *                   example: 2019
+ *                 type:
+ *                   type: string
+ *                   example: red
+ *                 price:
+ *                   type: number
+ *                   example: 45.00
+ *                 rating:
+ *                   type: number
+ *                   example: 4.5
  *       404:
  *         description: Wine not found
  *       500:
@@ -203,7 +271,7 @@ router.get('/:id', isValidId(), wineController.getWineById);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: wineId
  *         required: true
  *         schema:
  *           type: string
@@ -217,19 +285,43 @@ router.get('/:id', isValidId(), wineController.getWineById);
  *             properties:
  *               name:
  *                 type: string
- *                 example: Updated Wine Name
+ *                 example: Reserve Cabernet Sauvignon
  *               year:
  *                 type: integer
- *                 example: 2024
- *             responses:
+ *                 example: 2020
+ *               type:
+ *                 type: string
+ *                 enum: [red, white, rose, sparkling, dessert]
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               alcohol:
+ *                 type: number
+ *               volume:
+ *                 type: number
+ *               grapes:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               imageUrl:
+ *                 type: string
+ *     responses:
  *       200:
  *         description: Wine updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
  *       400:
  *         description: Invalid input
  *       401:
  *         description: Unauthorized
  *       403:
- *         description: Forbidden
+ *         description: Forbidden (User is not WINERY_OWNER or ADMIN)
  *       404:
  *         description: Wine not found
  *       500:
@@ -246,6 +338,55 @@ router.patch(
 
 /**
  * @swagger
+ * /wines/{wineId}/image:
+ *   patch:
+ *     tags: [Wines]
+ *     summary: Update wine image
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: wineId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the wine to update image
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: Image file (jpeg, png, gif, webp, max 5MB)
+ *     responses:
+ *       200:
+ *         description: Wine image updated successfully
+ *       400:
+ *         description: Invalid file format or size
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (User is not WINERY_OWNER or ADMIN)
+ *       404:
+ *         description: Wine not found
+ *       500:
+ *         description: Server error
+ */
+router.patch(
+  '/:id/image',
+  isValidId(),
+  authMiddleware,
+  roleMiddleware(['WINERY_OWNER', 'ADMIN']),
+  upload.single('image'),
+  wineController.updateWineImage,
+);
+
+/**
+ * @swagger
  * /wines/{wineId}:
  *   delete:
  *     tags: [Wines]
@@ -254,7 +395,7 @@ router.patch(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: wineId
  *         required: true
  *         schema:
  *           type: string
@@ -265,7 +406,7 @@ router.patch(
  *       401:
  *         description: Unauthorized
  *       403:
- *         description: Forbidden
+ *         description: Forbidden (User is not WINERY_OWNER or ADMIN)
  *       404:
  *         description: Wine not found
  *       500:

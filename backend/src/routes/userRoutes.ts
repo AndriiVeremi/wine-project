@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as userController from '@/controllers/userController';
 import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
-import { registerSchema, addFavoriteSchema } from '@/schemas/userSchemas';
+import { registerSchema, addFavoriteSchema, updateProfileSchema } from '@/schemas/userSchemas';
 import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
@@ -28,6 +28,36 @@ router.post('/register', validateBody(registerSchema), userController.registerUs
  *         description: Server error
  */
 router.get('/me', authMiddleware, userController.getUserProfile);
+
+/**
+ * @swagger
+ * /users/me:
+ *   patch:
+ *     tags: [Users]
+ *     summary: Update user profile
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ */
+router.patch(
+  '/me',
+  authMiddleware,
+  validateBody(updateProfileSchema),
+  userController.updateUserProfile,
+);
 
 /**
  * @swagger

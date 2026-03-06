@@ -3,13 +3,10 @@ import styled from 'styled-components';
 export const MenuContainer = styled.aside`
   width: 280px;
   background-color: var(--white);
-  border-radius: var(--border-radius-in);
-  padding: 24px 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
   height: fit-content;
-  border: 1px solid var(--secondary-gray);
 `;
 
 export const MenuItem = styled.button<{ $active?: boolean; $isLogout?: boolean }>`

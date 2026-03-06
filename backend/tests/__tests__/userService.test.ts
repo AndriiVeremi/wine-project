@@ -6,6 +6,7 @@ jest.mock('@/services/firebase', () => ({
       setCustomUserClaims: jest.fn().mockResolvedValue(undefined),
     })),
   },
+  uploadFile: jest.fn().mockResolvedValue('http://mock-url.com/avatar.png'),
 }));
 
 import { Types } from 'mongoose';
@@ -13,10 +14,12 @@ import { default as UserModel } from '@/models/userModel';
 import { default as WineModel } from '@/models/wineModel';
 import * as userService from '@/services/userService';
 import HttpError from '@/utils/HttpError';
+import { uploadFile } from '@/services/firebase';
 
 const mockFindOne = UserModel.findOne as jest.Mock;
 const mockFindById = UserModel.findById as jest.Mock;
 const mockWineFindById = WineModel.findById as jest.Mock;
+const mockUploadFile = uploadFile as jest.Mock;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -175,11 +178,15 @@ describe('userService', () => {
 
   describe('updateAvatar', () => {
     const testUserId = '65d5ec49e03f7c5558f3d6b1';
-    const testAvatarBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANS';
+    const mockFile = {
+      originalname: 'test.png',
+      buffer: Buffer.from('test'),
+      mimetype: 'image/png',
+    } as any;
 
     it('error when user not found', async () => {
       mockFindById.mockResolvedValue(null);
-      await expect(userService.updateAvatar(testUserId, testAvatarBase64)).rejects.toThrow(
+      await expect(userService.updateAvatar(testUserId, mockFile)).rejects.toThrow(
         new HttpError('User not found', 404),
       );
     });
@@ -191,12 +198,14 @@ describe('userService', () => {
         save: mockSave,
       };
       mockFindById.mockResolvedValue(user);
+      mockUploadFile.mockResolvedValue('http://mock-url.com/avatar.png');
 
-      const result = await userService.updateAvatar(testUserId, testAvatarBase64);
+      const result = await userService.updateAvatar(testUserId, mockFile);
 
-      expect(user.avatarUrl).toBe(testAvatarBase64);
+      expect(user.avatarUrl).toBe('http://mock-url.com/avatar.png');
       expect(mockSave).toHaveBeenCalled();
-      expect(result).toEqual({ avatarUrl: testAvatarBase64 });
+      expect(result).toEqual({ avatarUrl: 'http://mock-url.com/avatar.png' });
+      expect(mockUploadFile).toHaveBeenCalledWith(mockFile, 'avatars');
     });
   });
 

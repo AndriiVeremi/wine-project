@@ -28,12 +28,12 @@
   --black: #000000;
   --error: #FF0000;
   --overlay: rgba(0, 0, 0, 0.5);
-  --bg-main: #FAF9F6;
+  --bg-main: #fff;
 
 
    /* Icon Colors */
-   --brown-icon: #895129; /* location, user icons */
-   --black-icon: #323232; /* drop-down icon */
+   --brown-icon: #895129;
+   --black-icon: #323232; 
 
 
   /* Typography */
@@ -48,9 +48,9 @@
 
 
   /* Spacing */
-  --space-xs: 12px;
+  --space-xs: 16px;
   --space-sm: 19px;
-  --space-md: 23px;
+  --space-md: 26px;
   --space-lg: 30px;
   --space-xl: 49px;
 
