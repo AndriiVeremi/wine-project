@@ -7,6 +7,9 @@ export interface IUser extends Document {
   email: string;
   role: 'USER' | 'WINERY_OWNER' | 'ADMIN';
   avatarUrl?: string;
+  phone?: string;
+  birthDate?: Date;
+  address?: string;
   winery?: mongoose.Types.ObjectId;
   favoriteWines: mongoose.Types.ObjectId[];
 }
@@ -22,6 +25,17 @@ const userSchema: Schema = new Schema({
     default: 'USER',
   },
   avatarUrl: {
+    type: String,
+    default: '',
+  },
+  phone: {
+    type: String,
+    default: '',
+  },
+  birthDate: {
+    type: Date,
+  },
+  address: {
     type: String,
     default: '',
   },
