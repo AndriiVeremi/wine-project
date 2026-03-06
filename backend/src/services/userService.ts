@@ -28,7 +28,13 @@ export const getUserProfileByFirebaseUid = async (firebaseUid: string) => {
 
 export const updateUserProfile = async (
   userId: string,
-  updateData: { firstName?: string; lastName?: string },
+  updateData: {
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    birthDate?: string;
+    address?: string;
+  },
 ) => {
   const user = await User.findByIdAndUpdate(userId, updateData, { new: true }).select('-__v');
   if (!user) {

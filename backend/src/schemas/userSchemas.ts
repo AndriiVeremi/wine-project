@@ -12,3 +12,11 @@ export const registerSchema = Joi.object({
 export const addFavoriteSchema = Joi.object({
   wineId: Joi.string().required(),
 });
+
+export const updateProfileSchema = Joi.object({
+  firstName: Joi.string(),
+  lastName: Joi.string(),
+  phone: Joi.string().allow('', null),
+  birthDate: Joi.date().iso().allow(null),
+  address: Joi.string().allow('', null),
+});

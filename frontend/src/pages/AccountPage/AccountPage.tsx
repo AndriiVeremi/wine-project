@@ -78,7 +78,12 @@ const AccountPage: React.FC = () => {
           </>
         );
       case 'Personal Info':
-        return <PersonalInformation profile={profile} onUpdate={handleProfileUpdate} />;
+        return (
+          <>
+            <SectionTitle>Personal Info</SectionTitle>
+            <PersonalInformation profile={profile} onUpdate={handleProfileUpdate} />
+          </>
+        );
       case 'History':
         return (
           <>
@@ -103,7 +108,12 @@ const AccountPage: React.FC = () => {
           </>
         );
       case 'Account Settings':
-        return <AccountSettings profile={profile} onUpdate={handleProfileUpdate} />;
+        return (
+          <>
+            <SectionTitle>Account Settings</SectionTitle>
+            <AccountSettings profile={profile} onUpdate={handleProfileUpdate} />
+          </>
+        );
       default:
         return null;
     }

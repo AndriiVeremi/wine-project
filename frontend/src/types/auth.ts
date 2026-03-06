@@ -14,4 +14,7 @@ export interface UserProfile {
   role: 'USER' | 'WINERY_OWNER' | 'ADMIN';
   avatarUrl?: string;
   favoriteWines?: string[];
+  phone?: string;
+  birthDate?: string;
+  address?: string;
 }

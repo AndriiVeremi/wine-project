@@ -1,92 +1,35 @@
-import React, { useRef } from 'react';
-import { FiStar, FiUser, FiCamera } from 'react-icons/fi';
-import toast from 'react-hot-toast';
-import apiClient from '@/api/axios';
+import React from 'react';
+import { FiStar } from 'react-icons/fi';
 import type { UserProfile } from '@/types/auth';
+import UserAvatar from '@/components/UserAvatar';
 import {
   PersonalInfoContainer,
-  AvatarSection,
-  AvatarWrapper,
-  Avatar,
-  AvatarPlaceholder,
-  AvatarUploadButton,
+  LeftColumn,
   UserNameSection,
   UserName,
   VipBadge,
-  FormSection,
-  FormGrid,
-  FormField,
-  Label,
-  Value,
+  InfoSection,
+  InfoRow,
+  InfoLabel,
+  InfoValue,
 } from './PersonalInformation.styled';
 
 interface PersonalInformationProps {
   profile: UserProfile | null;
-  onUpdate: (updatedProfile: Partial<UserProfile>) => void;
 }
 
-const PersonalInformation: React.FC<PersonalInformationProps> = ({ profile, onUpdate }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Validate file size (e.g., 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('File size exceeds 5MB limit');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('avatar', file);
-
-    const loadingToast = toast.loading('Updating avatar...');
-
-    try {
-      const { data } = await apiClient.patch<{ avatarUrl: string }>('/users/me/avatar', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      onUpdate({ avatarUrl: data.avatarUrl });
-      toast.success('Avatar updated successfully', { id: loadingToast });
-    } catch {
-      toast.error('Failed to update avatar', { id: loadingToast });
-    }
-  };
-
+const PersonalInformation: React.FC<PersonalInformationProps> = ({ profile }) => {
   const isVip = profile?.role === 'ADMIN' || profile?.role === 'WINERY_OWNER';
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '-';
+    return new Date(dateString).toLocaleDateString();
+  };
 
   return (
     <PersonalInfoContainer>
-      <AvatarSection>
-        <AvatarWrapper>
-          {profile?.avatarUrl ? (
-            <Avatar src={profile.avatarUrl} alt="Avatar" />
-          ) : (
-            <AvatarPlaceholder>
-              <FiUser />
-            </AvatarPlaceholder>
-          )}
-          <AvatarUploadButton onClick={handleAvatarClick}>
-            <FiCamera />
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept="image/*"
-              style={{ display: 'none' }}
-            />
-          </AvatarUploadButton>
-        </AvatarWrapper>
-      </AvatarSection>
-
-      <FormSection>
+      <LeftColumn>
+        <UserAvatar avatarUrl={profile?.avatarUrl} />
         <UserNameSection>
           <UserName>
             {profile?.firstName} {profile?.lastName}
@@ -96,26 +39,38 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ profile, onUp
             {isVip ? 'VIP Member' : 'Standard Member'}
           </VipBadge>
         </UserNameSection>
+      </LeftColumn>
 
-        <FormGrid>
-          <FormField>
-            <Label>First Name:</Label>
-            <Value>{profile?.firstName}</Value>
-          </FormField>
-          <FormField>
-            <Label>Last Name:</Label>
-            <Value>{profile?.lastName}</Value>
-          </FormField>
-          <FormField>
-            <Label>E-mail:</Label>
-            <Value>{profile?.email}</Value>
-          </FormField>
-          <FormField>
-            <Label>Account Type:</Label>
-            <Value>{profile?.role?.replace('_', ' ')}</Value>
-          </FormField>
-        </FormGrid>
-      </FormSection>
+      <InfoSection>
+        <InfoRow>
+          <InfoLabel>First Name:</InfoLabel>
+          <InfoValue>{profile?.firstName}</InfoValue>
+        </InfoRow>
+        <InfoRow>
+          <InfoLabel>Last Name:</InfoLabel>
+          <InfoValue>{profile?.lastName}</InfoValue>
+        </InfoRow>
+        <InfoRow>
+          <InfoLabel>E-mail:</InfoLabel>
+          <InfoValue>{profile?.email}</InfoValue>
+        </InfoRow>
+        <InfoRow>
+          <InfoLabel>Phone:</InfoLabel>
+          <InfoValue>{profile?.phone || '-'}</InfoValue>
+        </InfoRow>
+        <InfoRow>
+          <InfoLabel>Date of Birth:</InfoLabel>
+          <InfoValue>{formatDate(profile?.birthDate)}</InfoValue>
+        </InfoRow>
+        <InfoRow>
+          <InfoLabel>Address:</InfoLabel>
+          <InfoValue>{profile?.address || '-'}</InfoValue>
+        </InfoRow>
+        <InfoRow>
+          <InfoLabel>Account Type:</InfoLabel>
+          <InfoValue>{profile?.role?.replace('_', ' ')}</InfoValue>
+        </InfoRow>
+      </InfoSection>
     </PersonalInfoContainer>
   );
 };
