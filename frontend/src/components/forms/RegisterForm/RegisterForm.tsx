@@ -15,7 +15,7 @@ import {
 } from '@/components/forms/Form.styled';
 
 const RegisterFormButtonWrapper = styled.div`
-  margin-top: 70px;
+  margin-top: 40px;
 `;
 
 const RegisterForm = () => {
@@ -62,7 +62,7 @@ const RegisterForm = () => {
   return (
     <FormContainer onSubmit={handleSubmit}>
       <FieldWrapper>
-        <Label htmlFor="reg-firstName">First Name: *</Label>
+        <Label htmlFor="reg-firstName">First Name: </Label>
         <Input
           id="reg-firstName"
           type="text"
@@ -74,7 +74,7 @@ const RegisterForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-lastName">Last Name: *</Label>
+        <Label htmlFor="reg-lastName">Last Name: </Label>
         <Input
           id="reg-lastName"
           type="text"
@@ -86,7 +86,7 @@ const RegisterForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-role">Role: *</Label>
+        <Label htmlFor="reg-role">Role: </Label>
         <Select
           id="reg-role"
           value={role}
@@ -99,7 +99,7 @@ const RegisterForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-email">E-mail: *</Label>
+        <Label htmlFor="reg-email">E-mail: </Label>
         <Input
           id="reg-email"
           type="email"
@@ -111,7 +111,7 @@ const RegisterForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-password">Password: *</Label>
+        <Label htmlFor="reg-password">Password: </Label>
         <PasswordWrapper>
           <Input
             id="reg-password"
@@ -132,7 +132,7 @@ const RegisterForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-confirmPassword">Confirm Password: *</Label>
+        <Label htmlFor="reg-confirmPassword">Confirm Password: </Label>
         <PasswordWrapper>
           <Input
             id="reg-confirmPassword"
