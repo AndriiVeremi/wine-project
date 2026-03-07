@@ -3,12 +3,10 @@ import { useAuthStore } from '@/store/authStore';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
+import FormField from '@/components/common/FormField/FormField';
 import styled from 'styled-components';
 import {
   FormContainer,
-  FieldWrapper,
-  Label,
-  Input,
   PasswordWrapper,
   PasswordToggle,
   ForgotPassword,
@@ -44,21 +42,30 @@ const LoginForm = () => {
 
   return (
     <FormContainer onSubmit={onLogin}>
-      <FieldWrapper>
-        <Label>Email</Label>
-        <Input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </FieldWrapper>
+      <FormField
+        label="Email"
+        id="email"
+        type="email"
+        placeholder="Email address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
 
-      <FieldWrapper>
-        <Label>Password</Label>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', position: 'relative' }}>
+        <label style={{ fontSize: '16px', color: 'var(--primary-gray)' }}>Password *</label>
         <PasswordWrapper>
-          <Input
+          <input
+            style={{
+              width: '100%',
+              height: '45px',
+              padding: '0 20px',
+              border: '1px solid var(--secondary-gray)',
+              borderRadius: 'var(--border-radius-in)',
+              fontFamily: 'var(--font-main)',
+              fontSize: '14px',
+              outline: 'none',
+            }}
             type={visible ? 'text' : 'password'}
             placeholder="Your password"
             value={password}
@@ -70,7 +77,7 @@ const LoginForm = () => {
           </PasswordToggle>
         </PasswordWrapper>
         <ForgotPassword type="button">Forgot password?</ForgotPassword>
-      </FieldWrapper>
+      </div>
 
       <LoginFormButtonWrapper>
         <MainButton type="submit" size="large">

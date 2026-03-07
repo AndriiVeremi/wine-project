@@ -3,16 +3,9 @@ import { useAuthStore } from '@/store/authStore';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
+import FormField from '@/components/common/FormField/FormField';
 import styled from 'styled-components';
-import {
-  FormContainer,
-  FieldWrapper,
-  Label,
-  Input,
-  PasswordWrapper,
-  PasswordToggle,
-  Select,
-} from '@/components/forms/Form.styled';
+import { FormContainer, PasswordWrapper, PasswordToggle } from '@/components/forms/Form.styled';
 
 const RegisterFormButtonWrapper = styled.div`
   margin-top: 40px;
@@ -26,6 +19,7 @@ const RegisterForm = () => {
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [visible, setVisible] = useState(false);
+  const [visibleConfirm, setVisibleConfirm] = useState(false);
 
   const { register, isLoading, error, clearError } = useAuthStore();
 
@@ -55,53 +49,62 @@ const RegisterForm = () => {
 
   return (
     <FormContainer onSubmit={onRegister}>
-      <FieldWrapper>
-        <Label>First Name</Label>
-        <Input
-          placeholder="First Name"
-          value={fName}
-          onChange={(e) => setFName(e.target.value)}
-          required
-        />
-      </FieldWrapper>
+      <FormField
+        label="First Name"
+        id="fName"
+        placeholder="First Name"
+        value={fName}
+        onChange={(e) => setFName(e.target.value)}
+        required
+      />
 
-      <FieldWrapper>
-        <Label>Last Name</Label>
-        <Input
-          placeholder="Last Name"
-          value={lName}
-          onChange={(e) => setLName(e.target.value)}
-          required
-        />
-      </FieldWrapper>
+      <FormField
+        label="Last Name"
+        id="lName"
+        placeholder="Last Name"
+        value={lName}
+        onChange={(e) => setLName(e.target.value)}
+        required
+      />
 
-      <FieldWrapper>
-        <Label>I am a:</Label>
-        <Select
-          value={role}
-          onChange={(e) => setRole(e.target.value as 'USER' | 'WINERY_OWNER')}
-          required
-        >
-          <option value="USER">User</option>
-          <option value="WINERY_OWNER">Winery Owner</option>
-        </Select>
-      </FieldWrapper>
+      <FormField
+        label="I am a:"
+        id="role"
+        isSelect
+        value={role}
+        onChange={(e) => setRole(e.target.value as 'USER' | 'WINERY_OWNER')}
+        required
+        options={[
+          { value: 'USER', label: 'User' },
+          { value: 'WINERY_OWNER', label: 'Winery Owner' },
+        ]}
+      />
 
-      <FieldWrapper>
-        <Label>Email</Label>
-        <Input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </FieldWrapper>
+      <FormField
+        label="Email"
+        id="email"
+        type="email"
+        placeholder="Email address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
 
-      <FieldWrapper>
-        <Label>Password</Label>
+      {/* Password */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <label style={{ fontSize: '16px', color: 'var(--primary-gray)' }}>Password *</label>
         <PasswordWrapper>
-          <Input
+          <input
+            style={{
+              width: '100%',
+              height: '45px',
+              padding: '0 20px',
+              border: '1px solid var(--secondary-gray)',
+              borderRadius: 'var(--border-radius-in)',
+              fontFamily: 'var(--font-main)',
+              fontSize: '14px',
+              outline: 'none',
+            }}
             type={visible ? 'text' : 'password'}
             placeholder="Min 6 characters"
             value={pass}
@@ -112,18 +115,34 @@ const RegisterForm = () => {
             {visible ? <FiEye /> : <FiEyeOff />}
           </PasswordToggle>
         </PasswordWrapper>
-      </FieldWrapper>
+      </div>
 
-      <FieldWrapper>
-        <Label>Confirm Password</Label>
-        <Input
-          type="password"
-          placeholder="Repeat password"
-          value={confirmPass}
-          onChange={(e) => setConfirmPass(e.target.value)}
-          required
-        />
-      </FieldWrapper>
+      {/* Confirm Password */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <label style={{ fontSize: '16px', color: 'var(--primary-gray)' }}>Confirm Password *</label>
+        <PasswordWrapper>
+          <input
+            style={{
+              width: '100%',
+              height: '45px',
+              padding: '0 20px',
+              border: '1px solid var(--secondary-gray)',
+              borderRadius: 'var(--border-radius-in)',
+              fontFamily: 'var(--font-main)',
+              fontSize: '14px',
+              outline: 'none',
+            }}
+            type={visibleConfirm ? 'text' : 'password'}
+            placeholder="Repeat password"
+            value={confirmPass}
+            onChange={(e) => setConfirmPass(e.target.value)}
+            required
+          />
+          <PasswordToggle type="button" onClick={() => setVisibleConfirm(!visibleConfirm)}>
+            {visibleConfirm ? <FiEye /> : <FiEyeOff />}
+          </PasswordToggle>
+        </PasswordWrapper>
+      </div>
 
       <RegisterFormButtonWrapper>
         <MainButton type="submit" size="large">

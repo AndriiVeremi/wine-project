@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import apiClient from '@/api/axios';
 import MainButton from '@/components/buttons/MainButton';
 import UserAvatar from '@/components/UserAvatar';
+import FormField from '@/components/common/FormField/FormField';
 import type { UserProfile } from '@/types/auth';
 import {
   AccountSettingsContainer,
@@ -13,9 +14,6 @@ import {
   VipBadge,
   FormSection,
   FormGrid,
-  FormField,
-  Label,
-  Input,
 } from './AccountSettings.styled';
 
 interface AccountSettingsProps {
@@ -36,8 +34,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
 
   const isVip = info?.role === 'ADMIN' || info?.role === 'WINERY_OWNER';
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
+    // For AccountSettings, we use 'name' instead of 'id' in state mapping
     setInputs({ ...inputs, [name]: value });
   };
 
@@ -76,58 +77,51 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
 
       <FormSection>
         <FormGrid>
-          <FormField>
-            <Label>First Name:</Label>
-            <Input
-              name="firstName"
-              value={inputs.firstName}
-              onChange={handleChange}
-              disabled={!editing}
-            />
-          </FormField>
-          <FormField>
-            <Label>Last Name:</Label>
-            <Input
-              name="lastName"
-              value={inputs.lastName}
-              onChange={handleChange}
-              disabled={!editing}
-            />
-          </FormField>
-          <FormField>
-            <Label>Email:</Label>
-            <Input name="email" value={inputs.email} disabled />
-          </FormField>
-          <FormField>
-            <Label>Phone:</Label>
-            <Input
-              name="phone"
-              value={inputs.phone}
-              onChange={handleChange}
-              disabled={!editing}
-              placeholder="Your phone"
-            />
-          </FormField>
-          <FormField>
-            <Label>Birthday:</Label>
-            <Input
-              name="birthDate"
-              type="date"
-              value={inputs.birthDate}
-              onChange={handleChange}
-              disabled={!editing}
-            />
-          </FormField>
-          <FormField>
-            <Label>Address:</Label>
-            <Input
-              name="address"
-              value={inputs.address}
-              onChange={handleChange}
-              disabled={!editing}
-              placeholder="Your address"
-            />
-          </FormField>
+          <FormField
+            label="First Name"
+            id="firstName"
+            value={inputs.firstName}
+            onChange={handleChange}
+            disabled={!editing}
+          />
+          <FormField
+            label="Last Name"
+            id="lastName"
+            value={inputs.lastName}
+            onChange={handleChange}
+            disabled={!editing}
+          />
+          <FormField
+            label="Email"
+            id="email"
+            value={inputs.email}
+            onChange={handleChange}
+            disabled
+          />
+          <FormField
+            label="Phone"
+            id="phone"
+            value={inputs.phone}
+            onChange={handleChange}
+            disabled={!editing}
+            placeholder="Your phone"
+          />
+          <FormField
+            label="Birthday"
+            id="birthDate"
+            type="date"
+            value={inputs.birthDate}
+            onChange={handleChange}
+            disabled={!editing}
+          />
+          <FormField
+            label="Address"
+            id="address"
+            value={inputs.address}
+            onChange={handleChange}
+            disabled={!editing}
+            placeholder="Your address"
+          />
         </FormGrid>
 
         <div style={{ display: 'flex', gap: '10px' }}>

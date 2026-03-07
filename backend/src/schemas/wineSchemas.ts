@@ -3,7 +3,7 @@ import Joi from 'joi';
 export const createWineSchema = Joi.object({
   name: Joi.string().required(),
   winery: Joi.string().required(),
-  vintage: Joi.number().integer().min(1900).max(new Date().getFullYear()).required(),
+  vintage: Joi.number().integer().min(1900).max(new Date().getFullYear() + 10).required(),
   grape: Joi.string().required(),
   price: Joi.number().min(0).required(),
   description: Joi.string().allow('').optional(),
@@ -23,7 +23,13 @@ export const createWineSchema = Joi.object({
   suffix: Joi.string().allow('').optional(),
   isVip: Joi.boolean().optional(),
   inStock: Joi.boolean().optional(),
-});
+  buyLink: Joi.string().uri().allow('').optional(),
+  
+  // Frontend-only fields used for autofill
+  region: Joi.string().allow('').optional(),
+  country: Joi.string().allow('').optional(),
+  manufacturer: Joi.string().allow('').optional(),
+}).unknown(true);
 
 export const updateWineSchema = Joi.object({
   name: Joi.string().optional(),
@@ -46,4 +52,9 @@ export const updateWineSchema = Joi.object({
   suffix: Joi.string().allow('').optional(),
   isVip: Joi.boolean().optional(),
   inStock: Joi.boolean().optional(),
-}).min(1);
+  buyLink: Joi.string().uri().allow('').optional(),
+  
+  region: Joi.string().allow('').optional(),
+  country: Joi.string().allow('').optional(),
+  manufacturer: Joi.string().allow('').optional(),
+}).min(1).unknown(true);
