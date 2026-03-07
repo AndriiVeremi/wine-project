@@ -36,3 +36,23 @@ export interface Wine {
   supplier?: string;
   isVip?: boolean;
 }
+
+export interface Review {
+  _id: string;
+  wineId: {
+    _id: string;
+    name: string;
+    imageUrl: string;
+  };
+  userId: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
+export interface UserReviewResponse {
+  reviews: Review[];
+  total: number;
+  page: number;
+  totalPages: number;
+}

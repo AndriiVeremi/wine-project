@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as userController from '@/controllers/userController';
+import { getUserReviews } from '@/controllers/reviewController';
 import { authMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { registerSchema, addFavoriteSchema, updateProfileSchema } from '@/schemas/userSchemas';
@@ -58,6 +59,8 @@ router.patch(
   validateBody(updateProfileSchema),
   userController.updateUserProfile,
 );
+
+router.get('/me/reviews', authMiddleware, getUserReviews);
 
 /**
  * @swagger
