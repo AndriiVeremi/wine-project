@@ -1,4 +1,4 @@
-import { HydratedDocument, PipelineStage } from 'mongoose';
+import { HydratedDocument, PipelineStage, Types } from 'mongoose';
 import Wine, { IWine } from '@/models/wineModel';
 import Winery, { IWinery } from '@/models/wineryModel';
 import User from '@/models/userModel';
@@ -57,12 +57,11 @@ export class WineService {
 
     if (name) filter.name = { $regex: name, $options: 'i' };
 
-    // Filter by location through wineries
     if (country || region) {
-      const wineryFilter: Record<string, any> = {};
+      const wineryFilter: Record<string, string | Types.ObjectId> = {};
       if (country) wineryFilter.country = country;
       if (region) wineryFilter.region = region;
-      
+
       const matchingWineries = await Winery.find(wineryFilter).select('_id');
       const wineryIds = matchingWineries.map((w) => w._id);
       if (wineryIds.length > 0) {
@@ -76,7 +75,7 @@ export class WineService {
     if (sweetness) filter.sweetness = sweetness;
 
     if (grape) {
-      const foundGrape = await Grape.findOne({ name: { $regex: grape, $options: 'i' } }).select('_id');
+      const foundGrape = await Grape.findOne({ name: grape }).select('_id');
       if (foundGrape) {
         filter.grape = foundGrape._id;
       } else {
@@ -97,7 +96,6 @@ export class WineService {
 
     const aggregationPipeline: PipelineStage[] = [
       { $match: filter },
-      // Join Winery
       {
         $lookup: {
           from: 'wineries',
@@ -107,7 +105,6 @@ export class WineService {
         },
       },
       { $unwind: '$winery' },
-      // Join Country from Winery
       {
         $lookup: {
           from: 'locations',
@@ -117,7 +114,6 @@ export class WineService {
         },
       },
       { $unwind: { path: '$winery.country', preserveNullAndEmptyArrays: true } },
-      // Join Region from Winery
       {
         $lookup: {
           from: 'locations',
@@ -127,7 +123,6 @@ export class WineService {
         },
       },
       { $unwind: { path: '$winery.region', preserveNullAndEmptyArrays: true } },
-      // Join Grape
       {
         $lookup: {
           from: 'grapes',
@@ -137,7 +132,7 @@ export class WineService {
         },
       },
       { $unwind: { path: '$grape', preserveNullAndEmptyArrays: true } },
-      
+
       {
         $addFields: {
           isVip: '$winery.isVip',
@@ -148,10 +143,7 @@ export class WineService {
       { $limit: take },
     ];
 
-    const totalCountPipeline: PipelineStage[] = [
-      { $match: filter },
-      { $count: 'total' },
-    ];
+    const totalCountPipeline: PipelineStage[] = [{ $match: filter }, { $count: 'total' }];
 
     const wines = await Wine.aggregate(aggregationPipeline).exec();
     const totalCountResult = await Wine.aggregate(totalCountPipeline).exec();
@@ -159,7 +151,7 @@ export class WineService {
     const totalPages = Math.ceil(totalCount / currentLimit);
 
     return {
-      wines: wines as any,
+      wines: wines as HydratedDocument<IWine>[],
       totalCount,
       page: currentPage,
       limit: currentLimit,
@@ -202,6 +194,9 @@ export class WineService {
       throw new HttpError('You are not owner of this winery.', 403);
     }
 
+    const grapeExists = await Grape.findById(wineData.grape);
+    if (!grapeExists) throw new HttpError('Grape not found.', 404);
+
     return await Wine.create({ ...wineData });
   }
 
@@ -214,9 +209,16 @@ export class WineService {
     const wine = await Wine.findById(wineId).populate('winery').exec();
     if (!wine) return null;
 
-    const winery = wine.winery as any;
+    const winery = wine.winery as unknown as HydratedDocument<IWinery>;
+    if (!winery) throw new HttpError('Winery not found.', 404);
+
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
       throw new HttpError('You cant update this wine.', 403);
+    }
+
+    if (updateData.grape) {
+      const grapeExists = await Grape.findById(updateData.grape);
+      if (!grapeExists) throw new HttpError('Grape not found.', 404);
     }
 
     return await Wine.findByIdAndUpdate(wineId, updateData, { new: true });
@@ -231,7 +233,9 @@ export class WineService {
     const wine = await Wine.findById(wineId).populate('winery').exec();
     if (!wine) return null;
 
-    const winery = wine.winery as any;
+    const winery = wine.winery as unknown as HydratedDocument<IWinery>;
+    if (!winery) throw new HttpError('Winery not found.', 404);
+
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
       throw new HttpError('You cant update this wine.', 403);
     }
@@ -244,7 +248,9 @@ export class WineService {
     const wine = await Wine.findById(wineId).populate('winery').exec();
     if (!wine) throw new HttpError('Wine not found.', 404);
 
-    const winery = wine.winery as any;
+    const winery = wine.winery as unknown as HydratedDocument<IWinery>;
+    if (!winery) throw new HttpError('Winery not found.', 404);
+
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
       throw new HttpError('You cant delete this wine.', 403);
     }

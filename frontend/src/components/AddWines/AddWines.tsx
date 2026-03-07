@@ -134,11 +134,8 @@ const AddWines = () => {
     const tid = toast.loading('Saving wine...');
 
     try {
-      // Prepare data - remove frontend-only fields
-      const { region, country, manufacturer, ...rest } = form;
-      
       const data = {
-        ...rest,
+        ...form,
         tastingNotes: form.tastingNotes
           .split(',')
           .map((s) => s.trim())
