@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledContainer = styled.div`
+export const StyledContainer = styled('div')`
   padding: 0 20px;
   margin: 0 auto;
 
@@ -11,11 +11,11 @@ export const StyledContainer = styled.div`
   }
 
   @media (min-width: 375px) and (max-width: 1280px) {
-    max-width: 375px;
+    width: 1024px;
   }
 
   @media (min-width: 1280px) {
-    max-width: 1440px;
+    width: 1440px;
     padding: 0 64px;
   }
 `;

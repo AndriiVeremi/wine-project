@@ -6,7 +6,10 @@ vi.mock('@/store/authStore', () => ({
   useAuthStore: vi.fn(() => ({
     user: null,
     isLoading: false,
+    isAuthModalOpen: false,
+    authModalView: 'login',
     openAuthModal: vi.fn(),
+    closeAuthModal: vi.fn(),
     logout: vi.fn(),
     setUser: vi.fn(),
   })),
@@ -20,6 +23,6 @@ describe('App', () => {
       </BrowserRouter>,
     );
 
-    expect(screen.getByText('Home Page')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Discover Georgian Wines/i })).toBeInTheDocument();
   });
 });
