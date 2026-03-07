@@ -41,9 +41,12 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ currentSection, setSect
 
   const items = isOwner
     ? [
-        { name: 'Wines', icon: <FiInbox /> },
+        { name: 'Personal Info', icon: <FiUser /> },
         { name: 'Wineries', icon: <FiHome /> },
+        { name: 'Wines', icon: <FiInbox /> },
+        { name: 'Notification Center', icon: <FiInbox /> },
         { name: 'Buy VIP', icon: <FiStar /> },
+        { name: 'History', icon: <FiClock /> },
         { name: 'Account Settings', icon: <FiSettings /> },
       ]
     : [

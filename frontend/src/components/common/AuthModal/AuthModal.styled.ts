@@ -25,6 +25,7 @@ export const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: var(--font-main), sans-serif;
 
   @media (max-width: 1100px) {
     width: 90%;

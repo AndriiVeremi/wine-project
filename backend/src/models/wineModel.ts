@@ -21,6 +21,9 @@ export interface IWine extends Document {
   servingTemperature?: string;
   foodPairing?: string[];
   supplier?: string;
+  suffix?: string;
+  isVip?: boolean;
+  inStock?: boolean;
 }
 
 const wineSchema: Schema = new Schema({
@@ -56,6 +59,9 @@ const wineSchema: Schema = new Schema({
   servingTemperature: { type: String },
   foodPairing: [String],
   supplier: { type: String },
+  suffix: { type: String },
+  isVip: { type: Boolean, default: false },
+  inStock: { type: Boolean, default: true },
 });
 
 export default mongoose.model<IWine>('Wine', wineSchema);

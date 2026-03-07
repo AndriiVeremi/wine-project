@@ -43,5 +43,12 @@ export const Button = styled.button<ButtonProps>`
     color: var(--white);
   }
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: var(--tertiary-gray);
+    color: var(--secondary-gray);
+  }
+
   ${({ $size = 'medium' }) => sizes[$size]}
 `;

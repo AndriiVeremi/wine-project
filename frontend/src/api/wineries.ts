@@ -1,5 +1,5 @@
 import apiClient from './axios';
 
-export const getWineries = () => {
-  return apiClient.get('/wineries');
+export const getWineries = (params?: Record<string, unknown>) => {
+  return apiClient.get('/wineries', { params });
 };
