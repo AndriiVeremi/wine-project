@@ -100,7 +100,7 @@ export const CheckboxWrapper = styled.label`
   transition: var(--transition);
 
   &:has(input:checked) {
-    color: #28a745; /* Green color when checked */
+    color: #28a745;
     font-weight: 600;
   }
 
@@ -108,7 +108,7 @@ export const CheckboxWrapper = styled.label`
     width: 20px;
     height: 20px;
     cursor: pointer;
-    accent-color: var(--primary-wine); /* Custom checkbox color */
+    accent-color: var(--primary-wine);
   }
 `;
 

@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import App from '@/App';
 
+vi.mock('react-loader-spinner', () => ({
+  RevolvingDot: () => <div data-testid="loader" />,
+}));
+
 vi.mock('@/store/authStore', () => ({
   useAuthStore: vi.fn(() => ({
     user: null,

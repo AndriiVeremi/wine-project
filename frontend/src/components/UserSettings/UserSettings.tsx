@@ -14,7 +14,7 @@ import {
   VipBadge,
   FormSection,
   FormGrid,
-} from './AccountSettings.styled';
+} from './UserSettings.styled';
 
 interface AccountSettingsProps {
   info: UserProfile | null;
