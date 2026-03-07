@@ -7,6 +7,7 @@ import AddWines from '@/components/AddWines/AddWines';
 import AccountInfo from '@/components/AccountInfo/AccountInfo';
 import AccountSettings from '@/components/AccountSettings/AccountSettings';
 import AccountReviews from '@/components/AccountReviews/AccountReviews';
+import Wishlist from '@/components/Wishlist/Wishlist';
 import { StyledContainer } from '@/components/common/Container/Container.styled';
 import type { UserProfile } from '@/types/auth';
 import apiClient from '@/api/axios';
@@ -82,7 +83,7 @@ const AccountPage: React.FC = () => {
         return (
           <>
             <SectionTitle>Personal Info</SectionTitle>
-            <AccountInfo profile={profile} />
+            <AccountInfo data={profile} />
           </>
         );
       case 'History':
@@ -98,7 +99,7 @@ const AccountPage: React.FC = () => {
         return (
           <>
             <SectionTitle>My Wishlist</SectionTitle>
-            <PlaceholderText>Your saved wines and favorites.</PlaceholderText>
+            <Wishlist />
           </>
         );
       case 'My Reviews':
@@ -112,7 +113,7 @@ const AccountPage: React.FC = () => {
         return (
           <>
             <SectionTitle>Account Settings</SectionTitle>
-            <AccountSettings profile={profile} onUpdate={handleProfileUpdate} />
+            <AccountSettings info={profile} updateData={handleProfileUpdate} />
           </>
         );
       default:
@@ -123,7 +124,7 @@ const AccountPage: React.FC = () => {
   return (
     <StyledContainer>
       <AccountPageContainer>
-        <AccountSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+        <AccountSidebar currentSection={activeSection} setSection={setActiveSection} />
         <ContentArea>{renderContent()}</ContentArea>
       </AccountPageContainer>
     </StyledContainer>

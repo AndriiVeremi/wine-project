@@ -24,22 +24,22 @@ export type AccountSection =
   | 'Buy VIP';
 
 interface AccountSidebarProps {
-  activeSection: AccountSection;
-  onSectionChange: (section: AccountSection) => void;
+  currentSection: AccountSection;
+  setSection: (s: AccountSection) => void;
 }
 
-const AccountSidebar: React.FC<AccountSidebarProps> = ({ activeSection, onSectionChange }) => {
+const AccountSidebar: React.FC<AccountSidebarProps> = ({ currentSection, setSection }) => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleSignOut = () => {
     logout();
     navigate('/');
   };
 
   const isOwner = user?.role === 'WINERY_OWNER';
 
-  const menuItems: { name: AccountSection; icon: React.ReactNode }[] = isOwner
+  const items = isOwner
     ? [
         { name: 'Wines', icon: <FiInbox /> },
         { name: 'Wineries', icon: <FiHome /> },
@@ -48,27 +48,27 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ activeSection, onSectio
       ]
     : [
         { name: 'Personal Info', icon: <FiUser /> },
-        { name: 'History', icon: <FiClock /> },
         { name: 'My Wishlist', icon: <FiHeart /> },
         { name: 'My Reviews', icon: <FiStar /> },
+        { name: 'History', icon: <FiClock /> },
         { name: 'Account Settings', icon: <FiSettings /> },
       ];
 
   return (
     <MenuContainer>
-      {menuItems.map((item) => (
+      {items.map((item) => (
         <MenuItem
-          key={item.name}
-          $active={activeSection === item.name}
-          onClick={() => onSectionChange(item.name)}
+          key={item.name as string}
+          $active={currentSection === item.name}
+          onClick={() => setSection(item.name as AccountSection)}
         >
           {item.icon}
-          {item.name}
+          {item.name as string}
         </MenuItem>
       ))}
-      <MenuItem $isLogout onClick={handleLogout}>
+      <MenuItem $isLogout onClick={handleSignOut}>
         <FiLogOut />
-        Sign Out
+        Logout
       </MenuItem>
     </MenuContainer>
   );
