@@ -21,47 +21,34 @@ const LoginFormButtonWrapper = styled.div`
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading, error: globalError, clearError } = useAuthStore();
+  const [visible, setVisible] = useState(false);
+  const { login, isLoading, error, clearError } = useAuthStore();
 
   useEffect(() => {
-    if (globalError) {
-      toast.error(globalError);
+    if (error) {
+      toast.error(error);
       clearError();
     }
-  }, [globalError, clearError]);
+  }, [error, clearError]);
 
-  const validate = () => {
-    const errors: string[] = [];
-    if (!email) {
-      errors.push('E-mail is required');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.push('E-mail is invalid');
-    }
-    if (!password) {
-      errors.push('Password is required');
-    }
-    return errors;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const validationErrors = validate();
-    if (validationErrors.length > 0) {
-      validationErrors.forEach((err) => toast.error(err));
+
+    if (password.length < 6) {
+      toast.error('Password is too short');
       return;
     }
+
     await login(email, password);
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit}>
+    <FormContainer onSubmit={onLogin}>
       <FieldWrapper>
-        <Label htmlFor="login-email">E-mail: </Label>
+        <Label>Email</Label>
         <Input
-          id="login-email"
           type="email"
-          placeholder="Your E-mail"
+          placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -69,34 +56,25 @@ const LoginForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="login-password">Password: </Label>
+        <Label>Password</Label>
         <PasswordWrapper>
           <Input
-            id="login-password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="At least 8 characters"
+            type={visible ? 'text' : 'password'}
+            placeholder="Your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <PasswordToggle
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
-          >
-            {showPassword ? (
-              <FiEye color="var(--icon-gray)" />
-            ) : (
-              <FiEyeOff color="var(--icon-gray)" />
-            )}
+          <PasswordToggle type="button" onClick={() => setVisible(!visible)}>
+            {visible ? <FiEye /> : <FiEyeOff />}
           </PasswordToggle>
         </PasswordWrapper>
-        <ForgotPassword type="button">I forgot my password</ForgotPassword>
+        <ForgotPassword type="button">Forgot password?</ForgotPassword>
       </FieldWrapper>
 
       <LoginFormButtonWrapper>
         <MainButton type="submit" size="large">
-          {isLoading ? 'Logging in...' : 'LOG IN'}
+          {isLoading ? 'Wait...' : 'Login'}
         </MainButton>
       </LoginFormButtonWrapper>
     </FormContainer>

@@ -19,57 +19,57 @@ import {
 } from './AccountSettings.styled';
 
 interface AccountSettingsProps {
-  profile: UserProfile | null;
-  onUpdate: (updatedProfile: Partial<UserProfile>) => void;
+  info: UserProfile | null;
+  updateData: (updated: Partial<UserProfile>) => void;
 }
 
-const AccountSettings: React.FC<AccountSettingsProps> = ({ profile, onUpdate }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: profile?.firstName || '',
-    lastName: profile?.lastName || '',
-    email: profile?.email || '',
-    phone: profile?.phone || '',
-    birthDate: profile?.birthDate?.split('T')[0] || '',
-    address: profile?.address || '',
+const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) => {
+  const [editing, setEditing] = useState(false);
+  const [inputs, setInputs] = useState({
+    firstName: info?.firstName || '',
+    lastName: info?.lastName || '',
+    email: info?.email || '',
+    phone: info?.phone || '',
+    birthDate: info?.birthDate?.split('T')[0] || '',
+    address: info?.address || '',
   });
 
-  const isVip = profile?.role === 'ADMIN' || profile?.role === 'WINERY_OWNER';
+  const isVip = info?.role === 'ADMIN' || info?.role === 'WINERY_OWNER';
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setInputs({ ...inputs, [name]: value });
   };
 
-  const handleSubmit = async () => {
-    const loadingToast = toast.loading('Updating profile...');
+  const handleSave = async () => {
     try {
-      const { data } = await apiClient.patch('/users/me', {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        phone: formData.phone || null,
-        birthDate: formData.birthDate || null,
-        address: formData.address || null,
+      const response = await apiClient.patch('/users/me', {
+        firstName: inputs.firstName,
+        lastName: inputs.lastName,
+        phone: inputs.phone,
+        birthDate: inputs.birthDate,
+        address: inputs.address,
       });
-      onUpdate(data);
-      setIsEditing(false);
-      toast.success('Profile updated successfully', { id: loadingToast });
+
+      updateData(response.data);
+      setEditing(false);
+      toast.success('Successfully updated!');
     } catch {
-      toast.error('Failed to update profile', { id: loadingToast });
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
   return (
     <AccountSettingsContainer>
       <LeftColumn>
-        <UserAvatar avatarUrl={profile?.avatarUrl} onUpload={onUpdate} />
+        <UserAvatar url={info?.avatarUrl} onSave={updateData} />
         <UserNameSection>
           <UserName>
-            {profile?.firstName} {profile?.lastName}
+            {info?.firstName} {info?.lastName}
           </UserName>
           <VipBadge $isVip={isVip}>
             <FiStar />
-            {isVip ? 'VIP Member' : 'Standard Member'}
+            {isVip ? 'VIP Member' : 'Regular Member'}
           </VipBadge>
         </UserNameSection>
       </LeftColumn>
@@ -80,65 +80,64 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ profile, onUpdate }) 
             <Label>First Name:</Label>
             <Input
               name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              disabled={!isEditing}
+              value={inputs.firstName}
+              onChange={handleChange}
+              disabled={!editing}
             />
           </FormField>
           <FormField>
             <Label>Last Name:</Label>
             <Input
               name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              disabled={!isEditing}
+              value={inputs.lastName}
+              onChange={handleChange}
+              disabled={!editing}
             />
           </FormField>
           <FormField>
-            <Label>E-mail:</Label>
-            <Input name="email" value={formData.email} disabled />
+            <Label>Email:</Label>
+            <Input name="email" value={inputs.email} disabled />
           </FormField>
           <FormField>
             <Label>Phone:</Label>
             <Input
               name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-              placeholder="+000 XX XXX XXXX"
+              value={inputs.phone}
+              onChange={handleChange}
+              disabled={!editing}
+              placeholder="Your phone"
             />
           </FormField>
           <FormField>
-            <Label>Date of Birth:</Label>
+            <Label>Birthday:</Label>
             <Input
               name="birthDate"
               type="date"
-              value={formData.birthDate}
-              onChange={handleInputChange}
-              disabled={!isEditing}
+              value={inputs.birthDate}
+              onChange={handleChange}
+              disabled={!editing}
             />
           </FormField>
           <FormField>
             <Label>Address:</Label>
             <Input
               name="address"
-              value={formData.address}
-              onChange={handleInputChange}
-              disabled={!isEditing}
+              value={inputs.address}
+              onChange={handleChange}
+              disabled={!editing}
               placeholder="Your address"
             />
           </FormField>
         </FormGrid>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-          {isEditing ? (
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <MainButton onClick={() => setIsEditing(false)}>Cancel</MainButton>
-              <MainButton onClick={handleSubmit}>Save Changes</MainButton>
-            </div>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          {editing ? (
+            <>
+              <MainButton onClick={() => setEditing(false)}>Cancel</MainButton>
+              <MainButton onClick={handleSave}>Save</MainButton>
+            </>
           ) : (
-            <MainButton onClick={() => setIsEditing(true)}>Edit Information</MainButton>
+            <MainButton onClick={() => setEditing(true)}>Edit Info</MainButton>
           )}
         </div>
       </FormSection>

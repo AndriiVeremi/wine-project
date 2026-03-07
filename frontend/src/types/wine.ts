@@ -37,6 +37,15 @@ export interface Wine {
   isVip?: boolean;
 }
 
+export interface WishlistWine {
+  id: string;
+  name: string;
+  winery: { id: string; name: string } | null;
+  imageUrl: string;
+  color: string;
+  sweetness: string;
+}
+
 export interface Review {
   _id: string;
   wineId: {

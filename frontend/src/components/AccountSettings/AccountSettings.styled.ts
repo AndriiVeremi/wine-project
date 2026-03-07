@@ -23,7 +23,7 @@ export const UserNameSection = styled.div`
 `;
 
 export const UserName = styled.h3`
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 400;
   color: var(--primary-gray);
 `;
@@ -34,7 +34,7 @@ export const VipBadge = styled.span<{ $isVip: boolean }>`
   gap: 4px;
   font-size: 14px;
   font-weight: 500;
-  color: ${({ $isVip }) => ($isVip ? '#FFD700' : 'var(--primary-gray-light)')};
+  color: ${({ $isVip }) => ($isVip ? 'var(--rating-gold)' : 'var(--secondary-gray)')};
   text-transform: uppercase;
   letter-spacing: 1px;
 

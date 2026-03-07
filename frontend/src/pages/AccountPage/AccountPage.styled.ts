@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const AccountPageContainer = styled.div`
   display: flex;
   gap: 20px;
-  padding: 60px 0;
+  padding: 200px 0;
   width: 100%;
   margin: 0 auto;
   align-items: flex-start;

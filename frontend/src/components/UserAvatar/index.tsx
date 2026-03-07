@@ -5,64 +5,56 @@ import apiClient from '@/api/axios';
 import { AvatarWrapper, Avatar, AvatarPlaceholder, AvatarUploadButton } from './UserAvatar.styled';
 
 interface UserAvatarProps {
-  avatarUrl?: string;
-  onUpload?: (data: { avatarUrl: string }) => void;
+  url?: string;
+  onSave?: (res: { avatarUrl: string }) => void;
 }
 
-const UserAvatar: React.FC<UserAvatarProps> = ({ avatarUrl, onUpload }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const UserAvatar: React.FC<UserAvatarProps> = ({ url, onSave }) => {
+  const fileInput = useRef<HTMLInputElement>(null);
 
-  const handleClick = () => {
-    if (!onUpload) return;
-    fileInputRef.current?.click();
+  const openInput = () => {
+    if (onSave) fileInput.current?.click();
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!onUpload) return;
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!onSave) return;
 
-    const file = event.target.files?.[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('File size exceeds 5MB limit');
+    // Basic size check
+    if (file.size > 5000000) {
+      toast.error('Image is too big (max 5MB)');
       return;
     }
 
-    const formDataAvatar = new FormData();
-    formDataAvatar.append('avatar', file);
-
-    const loadingToast = toast.loading('Updating avatar...');
+    const body = new FormData();
+    body.append('avatar', file);
 
     try {
-      const { data } = await apiClient.patch<{ avatarUrl: string }>(
-        '/users/me/avatar',
-        formDataAvatar,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
-      onUpload({ avatarUrl: data.avatarUrl });
-      toast.success('Avatar updated successfully', { id: loadingToast });
+      const { data } = await apiClient.patch<{ avatarUrl: string }>('/users/me/avatar', body, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      onSave({ avatarUrl: data.avatarUrl });
+      toast.success('Done!');
     } catch {
-      toast.error('Failed to update avatar', { id: loadingToast });
+      toast.error('Upload failed');
     }
   };
 
   return (
     <AvatarWrapper>
-      {avatarUrl ? (
-        <Avatar src={avatarUrl} alt="Avatar" />
+      {url ? (
+        <Avatar src={url} alt="User" />
       ) : (
         <AvatarPlaceholder>
           <FiUser />
         </AvatarPlaceholder>
       )}
-      {onUpload && (
-        <AvatarUploadButton onClick={handleClick}>
+      {onSave && (
+        <AvatarUploadButton onClick={openInput}>
           <FiCamera />
-          <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" />
+          <input type="file" ref={fileInput} onChange={uploadFile} accept="image/*" />
         </AvatarUploadButton>
       )}
     </AvatarWrapper>

@@ -17,7 +17,14 @@ export const getUserProfileByFirebaseUid = async (firebaseUid: string) => {
   const user = await User.findOne({ firebaseUid })
     .select('-__v')
     .populate('winery', 'name')
-    .populate('favoriteWines', 'name imageUrl type color');
+    .populate({
+      path: 'favoriteWines',
+      select: 'name imageUrl sweetness color winery',
+      populate: {
+        path: 'winery',
+        select: 'name',
+      },
+    });
 
   if (!user) {
     throw new HttpError('User profile not found.', 404);
