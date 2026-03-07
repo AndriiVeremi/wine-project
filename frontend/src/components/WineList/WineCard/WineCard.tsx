@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Wine } from '@/types/wine';
+import { StyledWineCardDiv, WineImage, WineDescription, WineTitle } from './WineCard.styled';
 
 interface WineCardProps {
   wine: Wine;
@@ -7,15 +8,17 @@ interface WineCardProps {
 
 const WineCard = ({ wine }: WineCardProps) => {
   return (
-    <div className="wine-card">
-      <Link to={`/wines/${wine._id}`} className="wine-card__link">
-        <img src={wine.imageUrl} alt={wine.name} />
-        <h3>{wine.name}</h3>
+    <StyledWineCardDiv>
+      <Link to={`/wines/${wine._id}`}>
+        <WineImage src={wine.imageUrl} alt={wine.name} />
       </Link>
 
-      <p>{wine.color}</p>
-      <p>{wine.price} £</p>
-    </div>
+      <Link to={`/wines/${wine._id}`}>
+        <WineTitle>{wine.name}</WineTitle>
+      </Link>
+
+      <WineDescription>{wine.description}</WineDescription>
+    </StyledWineCardDiv>
   );
 };
 
