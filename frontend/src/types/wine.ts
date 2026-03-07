@@ -6,18 +6,45 @@ export interface WineQueryParams {
   color?: WineColor;
   sweetness?: WineSweetness;
   grape?: string;
+  wineryId?: string;
   country?: string;
   region?: string;
+  minRating?: number;
+  maxPrice?: number;
+  vintage?: number;
+  name?: string;
+  inStock?: boolean;
+  sortBy?: string;
   page?: number;
   limit?: number;
 }
 
+export interface WineryInfo {
+  _id: string;
+  name: string;
+  isVip?: boolean;
+  logoUrl?: string;
+  country?: {
+    _id: string;
+    name: string;
+  };
+  region?: {
+    _id: string;
+    name: string;
+  };
+}
+
+export interface GrapeInfo {
+  _id: string;
+  name: string;
+}
+
 export interface Wine {
   _id: string;
-  winery: string;
+  winery: WineryInfo;
   name: string;
   vintage: number;
-  grape: string;
+  grape: GrapeInfo;
   description: string;
   tastingNotes: string[];
   imageUrl: string;
@@ -34,7 +61,10 @@ export interface Wine {
   servingTemperature?: string;
   foodPairing?: string[];
   supplier?: string;
+  suffix?: string;
   isVip?: boolean;
+  inStock?: boolean;
+  buyLink?: string;
 }
 
 export interface WishlistWine {

@@ -4,7 +4,7 @@ import { getGrapes } from '@/api/grapes';
 import apiClient from '@/api/axios';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
-import { FormContainer, FieldWrapper, Label, Input, Select } from '@/components/forms/Form.styled';
+import FormField from '@/components/common/FormField/FormField';
 import { FiPlus } from 'react-icons/fi';
 import { getErrorMsg } from '@/api/helpers';
 import type { WineColor, WineSweetness, Wine } from '@/types/wine';
@@ -21,6 +21,7 @@ import {
   InfoSide,
   CheckboxWrapper,
 } from './AddWineWrapper.styled';
+import { FormContainer } from '@/components/forms/Form.styled';
 
 const initialValues = {
   name: '',
@@ -46,6 +47,7 @@ const initialValues = {
   region: '',
   country: '',
   manufacturer: '',
+  buyLink: '',
 };
 
 interface WineryOption {
@@ -194,26 +196,28 @@ const AddWines = () => {
           </PhotoSide>
 
           <InfoSide>
-            <FieldWrapper>
-              <Label>Wine Name *</Label>
-              <Input
-                id="name"
-                value={form.name}
-                onChange={onChange}
-                placeholder="Enter wine name"
-                required
-              />
-            </FieldWrapper>
+            <FormField
+              label="Wine Name"
+              id="name"
+              value={form.name}
+              onChange={onChange}
+              placeholder="Enter wine name"
+              required
+            />
 
             <CheckboxWrapper>
               <input id="inStock" type="checkbox" checked={form.inStock} onChange={onChange} />
               In stock
             </CheckboxWrapper>
 
-            <FieldWrapper>
-              <Label>Price (USD) *</Label>
-              <Input id="price" type="number" value={form.price} onChange={onChange} required />
-            </FieldWrapper>
+            <FormField
+              label="Price (USD)"
+              id="price"
+              type="number"
+              value={form.price}
+              onChange={onChange}
+              required
+            />
           </InfoSide>
         </TopSection>
 
@@ -221,195 +225,194 @@ const AddWines = () => {
 
         {/* GRID SECTION: 2 Columns */}
         <FormGrid>
-          {/* Row 1 */}
-          <FieldWrapper>
-            <Label>Color *</Label>
-            <Select id="color" value={form.color} onChange={onChange} required>
-              <option value="red">Red</option>
-              <option value="white">White</option>
-              <option value="rose">Rose</option>
-              <option value="orange">Orange</option>
-            </Select>
-          </FieldWrapper>
+          <FormField
+            label="Color"
+            id="color"
+            isSelect
+            value={form.color}
+            onChange={onChange}
+            required
+            options={[
+              { value: 'red', label: 'Red' },
+              { value: 'white', label: 'White' },
+              { value: 'rose', label: 'Rose' },
+              { value: 'orange', label: 'Orange' },
+            ]}
+          />
 
-          <FieldWrapper>
-            <Label>Type (Sweetness) *</Label>
-            <Select id="sweetness" value={form.sweetness} onChange={onChange} required>
-              <option value="dry">Dry</option>
-              <option value="semi-dry">Semi-Dry</option>
-              <option value="semi-sweet">Semi-Sweet</option>
-              <option value="sweet">Sweet</option>
-            </Select>
-          </FieldWrapper>
+          <FormField
+            label="Type (Sweetness)"
+            id="sweetness"
+            isSelect
+            value={form.sweetness}
+            onChange={onChange}
+            required
+            options={[
+              { value: 'dry', label: 'Dry' },
+              { value: 'semi-dry', label: 'Semi-Dry' },
+              { value: 'semi-sweet', label: 'Semi-Sweet' },
+              { value: 'sweet', label: 'Sweet' },
+            ]}
+          />
 
-          {/* Row 2 */}
-          <FieldWrapper>
-            <Label>Brand (Winery) *</Label>
-            <Select id="winery" value={form.winery} onChange={onChange} required>
-              <option value="">Select brand...</option>
-              {wineries.map((w) => (
-                <option key={w._id} value={w._id}>
-                  {w.name}
-                </option>
-              ))}
-            </Select>
-          </FieldWrapper>
+          <FormField
+            label="Brand (Winery)"
+            id="winery"
+            isSelect
+            value={form.winery}
+            onChange={onChange}
+            required
+            options={wineries.map((w) => ({ value: w._id, label: w.name }))}
+          />
 
-          <FieldWrapper>
-            <Label>Literature (Suffix)</Label>
-            <Input
-              id="suffix"
-              value={form.suffix}
-              onChange={onChange}
-              placeholder="Additional info"
-            />
-          </FieldWrapper>
+          <FormField
+            label="Literature (Suffix)"
+            id="suffix"
+            value={form.suffix}
+            onChange={onChange}
+            placeholder="Additional info"
+          />
 
-          {/* Row 3 */}
-          <FieldWrapper>
-            <Label>In a box of (Quantity)</Label>
-            <Input id="boxQuantity" type="number" value={form.boxQuantity} onChange={onChange} />
-          </FieldWrapper>
+          <FormField
+            label="In a box of (Quantity)"
+            id="boxQuantity"
+            type="number"
+            value={form.boxQuantity}
+            onChange={onChange}
+          />
 
-          <FieldWrapper>
-            <Label>Packaging?</Label>
-            <Select id="hasPackaging" value={String(form.hasPackaging)} onChange={onChange}>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </Select>
-          </FieldWrapper>
+          <FormField
+            label="Packaging?"
+            id="hasPackaging"
+            isSelect
+            value={String(form.hasPackaging)}
+            onChange={onChange}
+            options={[
+              { value: 'true', label: 'Yes' },
+              { value: 'false', label: 'No' },
+            ]}
+          />
 
-          {/* Row 4 */}
-          <FieldWrapper>
-            <Label>Alcohol Content</Label>
-            <Input id="alcohol" value={form.alcohol} onChange={onChange} placeholder="e.g. 13.5%" />
-          </FieldWrapper>
+          <FormField
+            label="Alcohol Content"
+            id="alcohol"
+            value={form.alcohol}
+            onChange={onChange}
+            placeholder="e.g. 13.5%"
+          />
 
-          <FieldWrapper>
-            <Label>Country (Auto-filled)</Label>
-            <Input
-              id="country"
-              value={form.country}
-              onChange={onChange}
-              disabled
-              placeholder="Select brand first"
-            />
-          </FieldWrapper>
+          <FormField
+            label="Country (Auto-filled)"
+            id="country"
+            value={form.country}
+            onChange={onChange}
+            disabled
+            placeholder="Select brand first"
+          />
 
-          {/* Row 5 */}
-          <FieldWrapper>
-            <Label>Region (Auto-filled)</Label>
-            <Input
-              id="region"
-              value={form.region}
-              onChange={onChange}
-              disabled
-              placeholder="Select brand first"
-            />
-          </FieldWrapper>
+          <FormField
+            label="Region (Auto-filled)"
+            id="region"
+            value={form.region}
+            onChange={onChange}
+            disabled
+            placeholder="Select brand first"
+          />
 
-          <FieldWrapper>
-            <Label>Manufacturer (Auto-filled)</Label>
-            <Input
-              id="manufacturer"
-              value={form.manufacturer}
-              onChange={onChange}
-              disabled
-              placeholder="Select brand first"
-            />
-          </FieldWrapper>
+          <FormField
+            label="Manufacturer (Auto-filled)"
+            id="manufacturer"
+            value={form.manufacturer}
+            onChange={onChange}
+            disabled
+            placeholder="Select brand first"
+          />
 
-          {/* Row 6 */}
-          <FieldWrapper>
-            <Label>Serve at temperatures</Label>
-            <Input
-              id="servingTemperature"
-              value={form.servingTemperature}
-              onChange={onChange}
-              placeholder="e.g. 16-18°C"
-            />
-          </FieldWrapper>
+          <FormField
+            label="Serve at temperatures"
+            id="servingTemperature"
+            value={form.servingTemperature}
+            onChange={onChange}
+            placeholder="e.g. 16-18°C"
+          />
 
-          <FieldWrapper>
-            <Label>Gastronomic combination</Label>
-            <Input
-              id="foodPairing"
-              value={form.foodPairing}
-              onChange={onChange}
-              placeholder="Meat, Cheese..."
-            />
-          </FieldWrapper>
+          <FormField
+            label="Gastronomic combination"
+            id="foodPairing"
+            value={form.foodPairing}
+            onChange={onChange}
+            placeholder="Meat, Cheese..."
+          />
 
-          {/* Row 7 */}
-          <FieldWrapper>
-            <Label>Grape Variety *</Label>
-            <Select id="grape" value={form.grape} onChange={onChange} required>
-              <option value="">Select grape...</option>
-              {grapes.map((g) => (
-                <option key={g._id} value={g._id}>
-                  {g.name}
-                </option>
-              ))}
-            </Select>
-          </FieldWrapper>
+          <FormField
+            label="Grape Variety"
+            id="grape"
+            isSelect
+            value={form.grape}
+            onChange={onChange}
+            required
+            options={grapes.map((g) => ({ value: g._id, label: g.name }))}
+          />
 
-          <FieldWrapper>
-            <Label>Vintage (Year) *</Label>
-            <Input id="vintage" type="number" value={form.vintage} onChange={onChange} required />
-          </FieldWrapper>
+          <FormField
+            label="Vintage (Year)"
+            id="vintage"
+            type="number"
+            value={form.vintage}
+            onChange={onChange}
+            required
+          />
 
-          {/* Row 8 */}
-          <FieldWrapper>
-            <Label>Is decanting required?</Label>
-            <Select id="decanting" value={String(form.decanting)} onChange={onChange}>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </Select>
-          </FieldWrapper>
+          <FormField
+            label="Is decanting required?"
+            id="decanting"
+            isSelect
+            value={String(form.decanting)}
+            onChange={onChange}
+            options={[
+              { value: 'true', label: 'Yes' },
+              { value: 'false', label: 'No' },
+            ]}
+          />
 
-          <FieldWrapper>
-            <Label>Bottle diameter</Label>
-            <Input
-              id="bottleDiameter"
-              value={form.bottleDiameter}
-              onChange={onChange}
-              placeholder="e.g. 75mm"
-            />
-          </FieldWrapper>
+          <FormField
+            label="Bottle diameter"
+            id="bottleDiameter"
+            value={form.bottleDiameter}
+            onChange={onChange}
+            placeholder="e.g. 75mm"
+          />
 
-          {/* Row 9 */}
-          <FieldWrapper>
-            <Label>Supplier</Label>
-            <Input id="supplier" value={form.supplier} onChange={onChange} />
-          </FieldWrapper>
+          <FormField label="Supplier" id="supplier" value={form.supplier} onChange={onChange} />
 
-          <FieldWrapper>
-            <Label>Volume (ml)</Label>
-            <Input id="volume" type="number" value={form.volume} onChange={onChange} />
-          </FieldWrapper>
+          <FormField
+            label="Volume (ml)"
+            id="volume"
+            type="number"
+            value={form.volume}
+            onChange={onChange}
+          />
 
-          {/* BOTTOM SECTION: Full Width */}
           <FullWidthWrapper>
-            <FieldWrapper>
-              <Label>Detailed Description</Label>
-              <textarea
-                id="description"
-                value={form.description}
-                onChange={onChange}
-                placeholder="Tell the story of this wine..."
-                style={{
-                  width: '100%',
-                  minHeight: '120px',
-                  padding: '12px 20px',
-                  border: '1px solid var(--secondary-gray)',
-                  borderRadius: 'var(--border-radius-in)',
-                  fontFamily: 'var(--font-main)',
-                  fontSize: '14px',
-                  outline: 'none',
-                  resize: 'vertical',
-                }}
-              />
-            </FieldWrapper>
+            <FormField
+              label="Link to Buy"
+              id="buyLink"
+              type="url"
+              value={form.buyLink}
+              onChange={onChange}
+              placeholder="https://example.com/buy-this-wine"
+            />
+          </FullWidthWrapper>
+
+          <FullWidthWrapper>
+            <FormField
+              label="Detailed Description"
+              id="description"
+              isTextarea
+              value={form.description}
+              onChange={onChange}
+              placeholder="Tell the story of this wine..."
+            />
           </FullWidthWrapper>
         </FormGrid>
 

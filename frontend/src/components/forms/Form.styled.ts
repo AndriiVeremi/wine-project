@@ -46,6 +46,32 @@ export const Input = styled.input`
   }
 `;
 
+export const Textarea = styled.textarea`
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 20px;
+  border: 1px solid var(--secondary-gray);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-main);
+  font-size: 14px;
+  color: var(--input-gray-text);
+  outline: none;
+  transition: var(--transition);
+  resize: vertical;
+
+  &::placeholder {
+    color: var(--shadow-gray);
+  }
+
+  &:hover {
+    border: 1px solid var(--primary-wine);
+  }
+
+  &:focus {
+    border: 3px solid var(--primary-wine);
+  }
+`;
+
 export const PasswordWrapper = styled.div`
   position: relative;
   display: flex;
