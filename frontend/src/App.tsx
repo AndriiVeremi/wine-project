@@ -13,6 +13,7 @@ import WineToursPage from '@/pages/WineToursPage';
 import AccountPage from '@/pages/AccountPage';
 import { Toaster } from 'react-hot-toast';
 import WineDetailPage from './pages/WineDetailPage/WineDetailPage';
+import { Loader } from '@/components/common/Loader';
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
@@ -25,7 +26,7 @@ function App() {
   }, [setUser]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (

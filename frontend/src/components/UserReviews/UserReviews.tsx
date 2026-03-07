@@ -4,6 +4,7 @@ import { FiStar, FiEdit, FiTrash2, FiMessageSquare } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getUserReviews, deleteReview } from '@/api/reviews';
 import type { Review } from '@/types/wine';
+import { Loader } from '@/components/common/Loader';
 import {
   ReviewsContainer,
   ReviewItem,
@@ -20,7 +21,7 @@ import {
   PaginationContainer,
   PaginationButton,
   EmptyState,
-} from './AccountReviews.styled';
+} from './UserReviews.styled';
 
 const AccountReviews: React.FC = () => {
   const [items, setItems] = useState<Review[]>([]);
@@ -63,7 +64,7 @@ const AccountReviews: React.FC = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader />;
 
   if (items.length === 0) {
     return (

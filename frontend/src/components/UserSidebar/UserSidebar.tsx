@@ -11,7 +11,7 @@ import {
   FiInbox,
   FiHome,
 } from 'react-icons/fi';
-import { MenuContainer, MenuItem } from './AccountSidebar.styled';
+import { MenuContainer, MenuItem } from './UserSidebar.styled';
 
 export type AccountSection =
   | 'Personal Info'

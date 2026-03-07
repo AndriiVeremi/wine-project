@@ -5,6 +5,7 @@ import type { WishlistWine } from '@/types/wine';
 import { FiHeart } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
+import { Loader } from '@/components/common/Loader';
 import { getErrorMsg } from '@/api/helpers';
 import {
   WishlistContainer,
@@ -15,7 +16,7 @@ import {
   WineryName,
   RemoveButton,
   EmptyMessage,
-} from './Wishlist.styled';
+} from './UserWishList.styled';
 
 const Wishlist: React.FC = () => {
   const [list, setList] = useState<WishlistWine[]>([]);
@@ -47,7 +48,7 @@ const Wishlist: React.FC = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
 
   return (
     <WishlistContainer>

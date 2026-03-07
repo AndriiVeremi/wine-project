@@ -12,7 +12,7 @@ import {
   InfoItem,
   InfoLabel,
   InfoValue,
-} from './AccountInfo.styled';
+} from './UserInfo.styled';
 
 interface AccountInfoProps {
   data: UserProfile | null;
