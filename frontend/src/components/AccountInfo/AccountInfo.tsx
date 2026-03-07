@@ -15,69 +15,58 @@ import {
 } from './AccountInfo.styled';
 
 interface AccountInfoProps {
-  profile: UserProfile | null;
+  data: UserProfile | null;
 }
 
-const AccountInfo: React.FC<AccountInfoProps> = ({ profile }) => {
-  const isVip = profile?.role === 'ADMIN' || profile?.role === 'WINERY_OWNER';
+const AccountInfo: React.FC<AccountInfoProps> = ({ data }) => {
+  const isVip = data?.role === 'ADMIN' || data?.role === 'WINERY_OWNER';
 
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return '-';
-    return new Date(dateString).toLocaleDateString('uk-UA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
+  // Simple date format
+  const birthday = data?.birthDate ? new Date(data.birthDate).toLocaleDateString() : '-';
 
-  const getRoleName = (role?: string) => {
-    switch (role) {
-      case 'ADMIN':
-        return 'Administrator';
-      case 'WINERY_OWNER':
-        return 'Winery Owner';
-      case 'USER':
-        return 'Standard User';
-      default:
-        return '-';
-    }
-  };
+  // Simple role mapping
+  const roleName =
+    data?.role === 'ADMIN'
+      ? 'Administrator'
+      : data?.role === 'WINERY_OWNER'
+        ? 'Winery Owner'
+        : 'User';
 
   return (
     <AccountInfoContainer>
       <ProfileHeader>
-        <UserAvatar avatarUrl={profile?.avatarUrl} />
+        <UserAvatar url={data?.avatarUrl} />
         <UserNameSection>
           <UserName>
-            {profile?.firstName} {profile?.lastName}
+            {data?.firstName} {data?.lastName}
           </UserName>
           <VipBadge $isVip={isVip}>
             <FiStar fill={isVip ? 'var(--rating-gold)' : 'none'} />
-            {isVip ? 'VIP Member' : 'Standard Member'}
+            {isVip ? 'VIP Member' : 'Regular Member'}
           </VipBadge>
         </UserNameSection>
       </ProfileHeader>
 
       <InfoList>
         <InfoItem>
-          <InfoLabel>E-mail:</InfoLabel>
-          <InfoValue>{profile?.email}</InfoValue>
+          <InfoLabel>Email:</InfoLabel>
+          <InfoValue>{data?.email}</InfoValue>
         </InfoItem>
         <InfoItem>
-          <InfoLabel>Phone Number:</InfoLabel>
-          <InfoValue>{profile?.phone || '-'}</InfoValue>
+          <InfoLabel>Phone:</InfoLabel>
+          <InfoValue>{data?.phone || 'Not provided'}</InfoValue>
         </InfoItem>
         <InfoItem>
-          <InfoLabel>Date of Birth:</InfoLabel>
-          <InfoValue>{formatDate(profile?.birthDate)}</InfoValue>
+          <InfoLabel>Birthday:</InfoLabel>
+          <InfoValue>{birthday}</InfoValue>
         </InfoItem>
         <InfoItem>
           <InfoLabel>Address:</InfoLabel>
-          <InfoValue>{profile?.address || '-'}</InfoValue>
+          <InfoValue>{data?.address || 'Not provided'}</InfoValue>
         </InfoItem>
         <InfoItem>
-          <InfoLabel>Account Type:</InfoLabel>
-          <InfoValue>{getRoleName(profile?.role)}</InfoValue>
+          <InfoLabel>Role:</InfoLabel>
+          <InfoValue>{roleName}</InfoValue>
         </InfoItem>
       </InfoList>
     </AccountInfoContainer>

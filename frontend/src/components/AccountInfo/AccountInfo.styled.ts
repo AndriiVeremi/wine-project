@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const AccountInfoContainer = styled.div`
   display: flex;
-  gap: 40px;
+  gap: 60px;
   flex-direction: column;
 `;
 
@@ -10,7 +10,7 @@ export const ProfileHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 30px;
+  gap: 50px;
   min-width: 180px;
 
   @media (max-width: 768px) {
@@ -27,9 +27,8 @@ export const UserNameSection = styled.div`
 `;
 
 export const UserName = styled.h3`
-  font-family: var(--font-main);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--primary-gray);
   margin: 0;
 `;
@@ -39,10 +38,10 @@ export const VipBadge = styled.span<{ $isVip: boolean }>`
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: ${({ $isVip }) => ($isVip ? 'var(--rating-gold)' : 'var(--secondary-gray)')};
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 
   svg {
     font-size: 16px;

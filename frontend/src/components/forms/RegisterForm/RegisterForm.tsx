@@ -19,91 +19,79 @@ const RegisterFormButtonWrapper = styled.div`
 `;
 
 const RegisterForm = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [fName, setFName] = useState('');
+  const [lName, setLName] = useState('');
   const [role, setRole] = useState<'USER' | 'WINERY_OWNER'>('USER');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [pass, setPass] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  const [visible, setVisible] = useState(false);
 
-  const { register, isLoading, error: globalError, clearError } = useAuthStore();
-
-  type BackendError = {
-    field?: string;
-    message: string;
-  };
+  const { register, isLoading, error, clearError } = useAuthStore();
 
   useEffect(() => {
-    if (globalError) {
-      if (Array.isArray(globalError)) {
-        (globalError as BackendError[]).forEach((err) =>
-          toast.error(err.message || 'Registration failed'),
-        );
-      } else {
-        toast.error(globalError);
-      }
+    if (error) {
+      toast.error(typeof error === 'string' ? error : 'Registration failed');
       clearError();
     }
-  }, [globalError, clearError]);
+  }, [error, clearError]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (pass !== confirmPass) {
       toast.error('Passwords do not match');
       return;
     }
 
-    await register({ firstName, lastName, role, email, password });
+    await register({
+      firstName: fName,
+      lastName: lName,
+      role,
+      email,
+      password: pass,
+    });
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit}>
+    <FormContainer onSubmit={onRegister}>
       <FieldWrapper>
-        <Label htmlFor="reg-firstName">First Name: </Label>
+        <Label>First Name</Label>
         <Input
-          id="reg-firstName"
-          type="text"
-          placeholder="Your First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="First Name"
+          value={fName}
+          onChange={(e) => setFName(e.target.value)}
           required
         />
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-lastName">Last Name: </Label>
+        <Label>Last Name</Label>
         <Input
-          id="reg-lastName"
-          type="text"
-          placeholder="Your Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Last Name"
+          value={lName}
+          onChange={(e) => setLName(e.target.value)}
           required
         />
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-role">Role: </Label>
+        <Label>I am a:</Label>
         <Select
-          id="reg-role"
           value={role}
           onChange={(e) => setRole(e.target.value as 'USER' | 'WINERY_OWNER')}
           required
         >
           <option value="USER">User</option>
-          <option value="WINERY_OWNER">Winery</option>
+          <option value="WINERY_OWNER">Winery Owner</option>
         </Select>
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-email">E-mail: </Label>
+        <Label>Email</Label>
         <Input
-          id="reg-email"
           type="email"
-          placeholder="Your E-mail"
+          placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -111,53 +99,35 @@ const RegisterForm = () => {
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-password">Password: </Label>
+        <Label>Password</Label>
         <PasswordWrapper>
           <Input
-            id="reg-password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="At least 8 characters"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            type={visible ? 'text' : 'password'}
+            placeholder="Min 6 characters"
+            value={pass}
+            onChange={(e) => setPass(e.target.value)}
             required
           />
-          <PasswordToggle type="button" onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? (
-              <FiEye color="var(--icon-gray)" />
-            ) : (
-              <FiEyeOff color="var(--icon-gray)" />
-            )}
+          <PasswordToggle type="button" onClick={() => setVisible(!visible)}>
+            {visible ? <FiEye /> : <FiEyeOff />}
           </PasswordToggle>
         </PasswordWrapper>
       </FieldWrapper>
 
       <FieldWrapper>
-        <Label htmlFor="reg-confirmPassword">Confirm Password: </Label>
-        <PasswordWrapper>
-          <Input
-            id="reg-confirmPassword"
-            type={showConfirmPassword ? 'text' : 'password'}
-            placeholder="At least 8 characters"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <PasswordToggle
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            {showConfirmPassword ? (
-              <FiEye color="var(--icon-gray)" />
-            ) : (
-              <FiEyeOff color="var(--icon-gray)" />
-            )}
-          </PasswordToggle>
-        </PasswordWrapper>
+        <Label>Confirm Password</Label>
+        <Input
+          type="password"
+          placeholder="Repeat password"
+          value={confirmPass}
+          onChange={(e) => setConfirmPass(e.target.value)}
+          required
+        />
       </FieldWrapper>
 
       <RegisterFormButtonWrapper>
         <MainButton type="submit" size="large">
-          {isLoading ? 'Registering...' : 'REGISTER'}
+          {isLoading ? 'Registering...' : 'Sign Up'}
         </MainButton>
       </RegisterFormButtonWrapper>
     </FormContainer>

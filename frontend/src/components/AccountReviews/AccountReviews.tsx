@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  FiStar,
-  FiEdit,
-  FiTrash2,
-  FiChevronLeft,
-  FiChevronRight,
-  FiMessageSquare,
-} from 'react-icons/fi';
+import { FiStar, FiEdit, FiTrash2, FiMessageSquare } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getUserReviews, deleteReview } from '@/api/reviews';
 import type { Review } from '@/types/wine';
@@ -30,122 +23,92 @@ import {
 } from './AccountReviews.styled';
 
 const AccountReviews: React.FC = () => {
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const [items, setItems] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagesCount, setPagesCount] = useState(1);
   const navigate = useNavigate();
 
-  const fetchReviews = async (currentPage: number) => {
+  const loadData = async (p: number) => {
     setLoading(true);
     try {
-      const { data } = await getUserReviews(currentPage);
-      setReviews(data.reviews);
-      setTotalPages(data.totalPages);
+      const { data } = await getUserReviews(p);
+      setItems(data.reviews);
+      setPagesCount(data.totalPages);
     } catch {
-      toast.error('Failed to load reviews');
+      toast.error('Could not load reviews');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchReviews(page);
-  }, [page]);
+    loadData(currentPage);
+  }, [currentPage]);
 
-  const handleDelete = async (wineId: string, reviewId: string) => {
-    if (!window.confirm('Are you sure you want to delete this review?')) return;
+  const removeReview = async (wineId: string, reviewId: string) => {
+    if (!window.confirm('Delete this review?')) return;
 
     try {
       await deleteReview(wineId, reviewId);
-      toast.success('Review deleted');
-      // If we deleted the last item on the page, go back
-      if (reviews.length === 1 && page > 1) {
-        setPage(page - 1);
+      toast.success('Deleted!');
+
+      if (items.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
       } else {
-        fetchReviews(page);
+        loadData(currentPage);
       }
     } catch {
-      toast.error('Failed to delete review');
+      toast.error('Error deleting review');
     }
   };
 
-  const handleEdit = (wineId: string) => {
-    // Navigate to wine detail page or open a modal
-    // For now, let's just show a toast or redirect to the wine
-    navigate(`/wines/${wineId}`);
-    toast('You can edit your review on the wine page', { icon: 'ℹ️' });
-  };
+  if (loading) return <div>Loading...</div>;
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('uk-UA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }).map((_, i) => (
-      <FiStar
-        key={i}
-        fill={i < rating ? 'var(--rating-gold)' : 'none'}
-        stroke={i < rating ? 'var(--rating-gold)' : 'var(--secondary-gray)'}
-      />
-    ));
-  };
-
-  if (loading) return <div>Loading reviews...</div>;
-
-  if (reviews.length === 0) {
+  if (items.length === 0) {
     return (
       <EmptyState>
-        <FiMessageSquare size={60} color="var(--secondary-gray)" />
-        <h3 style={{ marginTop: '20px', color: 'var(--primary-gray)' }}>No reviews yet</h3>
-        <p style={{ color: 'var(--secondary-gray)' }}>
-          Share your thoughts about wines you've tasted!
-        </p>
+        <FiMessageSquare size={50} />
+        <h3>No reviews found</h3>
+        <p>Tell us what you think about the wines!</p>
       </EmptyState>
     );
   }
 
   return (
     <ReviewsContainer>
-      {reviews.map((review) => (
-        <ReviewItem key={review._id}>
-          <WineImageWrapper onClick={() => navigate(`/wines/${review.wineId._id}`)}>
-            <img
-              src={review.wineId.imageUrl || '/assets/wine-placeholder.png'}
-              alt={review.wineId.name}
-            />
+      {items.map((item) => (
+        <ReviewItem key={item._id}>
+          <WineImageWrapper onClick={() => navigate(`/wines/${item.wineId._id}`)}>
+            <img src={item.wineId.imageUrl} alt={item.wineId.name} />
           </WineImageWrapper>
 
           <ReviewContent>
             <div>
               <ReviewHeader>
-                <WineTitle onClick={() => navigate(`/wines/${review.wineId._id}`)}>
-                  {review.wineId.name}
+                <WineTitle onClick={() => navigate(`/wines/${item.wineId._id}`)}>
+                  {item.wineId.name}
                 </WineTitle>
-                <StarRating>{renderStars(review.rating)}</StarRating>
+                <StarRating>
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <FiStar
+                      key={s}
+                      fill={s <= item.rating ? 'gold' : 'none'}
+                      stroke={s <= item.rating ? 'gold' : 'gray'}
+                    />
+                  ))}
+                </StarRating>
               </ReviewHeader>
-              <ReviewComment>{review.comment}</ReviewComment>
+              <ReviewComment>{item.comment}</ReviewComment>
             </div>
 
             <ReviewFooter>
-              <ReviewDate>{formatDate(review.createdAt)}</ReviewDate>
+              <ReviewDate>{new Date(item.createdAt).toLocaleDateString()}</ReviewDate>
               <ActionButtons>
-                <ActionButton
-                  $variant="edit"
-                  onClick={() => handleEdit(review.wineId._id)}
-                  title="Edit"
-                >
+                <ActionButton onClick={() => navigate(`/wines/${item.wineId._id}`)}>
                   <FiEdit />
                 </ActionButton>
-                <ActionButton
-                  $variant="delete"
-                  onClick={() => handleDelete(review.wineId._id, review._id)}
-                  title="Delete"
-                >
+                <ActionButton onClick={() => removeReview(item.wineId._id, item._id)}>
                   <FiTrash2 />
                 </ActionButton>
               </ActionButtons>
@@ -154,20 +117,22 @@ const AccountReviews: React.FC = () => {
         </ReviewItem>
       ))}
 
-      {totalPages > 1 && (
+      {pagesCount > 1 && (
         <PaginationContainer>
-          <PaginationButton onClick={() => setPage(page - 1)} disabled={page === 1}>
-            <FiChevronLeft />
+          <PaginationButton
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Back
           </PaginationButton>
-
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <PaginationButton key={i} $active={page === i + 1} onClick={() => setPage(i + 1)}>
-              {i + 1}
-            </PaginationButton>
-          ))}
-
-          <PaginationButton onClick={() => setPage(page + 1)} disabled={page === totalPages}>
-            <FiChevronRight />
+          <span>
+            Page {currentPage} of {pagesCount}
+          </span>
+          <PaginationButton
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === pagesCount}
+          >
+            Next
           </PaginationButton>
         </PaginationContainer>
       )}
