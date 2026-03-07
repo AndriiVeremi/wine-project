@@ -4,15 +4,16 @@ import {
   SocialList,
   StyledFooter,
   FooterContainer,
-  Text,
   FacebookIcon,
   IconCircle,
   InstagramIcon,
   TelegramIcon,
-  LogoWrapper,
-  Copyright,
+  CopyrightText,
+  StyledNav,
+  Item,
 } from '@/components/Footer/Footer.styled';
 import Container from '@/components/common/Container';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -20,67 +21,47 @@ const Footer = () => {
       <StyledFooter>
         <Container>
           <FooterContainer>
-            <LogoWrapper>
-              <a href="/" target="_blank" rel="noopener noreferrer">
-                <MainLogo />
-              </a>
-            </LogoWrapper>
-            <nav>
+            <MainLogo />
+            <StyledNav>
               <InfoList>
-                <li>
-                  <Text>About project</Text>
-                </li>
-                <li>
-                  <Text>Contacts</Text>
-                </li>
-                <li>
-                  <Text>Privacy policy</Text>
-                </li>
-                <li>
-                  <Text>Terms of use</Text>
-                </li>
-                <li>
-                  <Text>Cookies</Text>
-                </li>
+                <Item>
+                  <Link to="/about">About project</Link>
+                </Item>
+                <Item>
+                  <Link to="/contacts">Contacts</Link>
+                </Item>
+                <Item>
+                  <Link to="/privacy">Privacy policy</Link>
+                </Item>
+                <Item>
+                  <Link to="/terms">Terms of use</Link>
+                </Item>
+                <Item>
+                  <Link to="/cookies">Cookies</Link>
+                </Item>
               </InfoList>
-            </nav>
+            </StyledNav>
             <SocialList>
               <li>
-                <a
-                  href="https://www.facebook.com/goitclub/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <IconCircle>
-                    <FacebookIcon />
-                  </IconCircle>
-                </a>
+                <IconCircle>
+                  <FacebookIcon />
+                </IconCircle>
               </li>
               <li>
-                <a
-                  href="https://www.instagram.com/goitclub/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <IconCircle>
-                    <InstagramIcon />
-                  </IconCircle>
-                </a>
+                <IconCircle>
+                  <InstagramIcon />
+                </IconCircle>
               </li>
               <li>
-                <a
-                  href="https://t.me/junior_developer_ua"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <IconCircle>
-                    <TelegramIcon />
-                  </IconCircle>
-                </a>
+                <IconCircle>
+                  <TelegramIcon />
+                </IconCircle>
               </li>
             </SocialList>
           </FooterContainer>
-          <Copyright>Copyright © Wine Discovery, 2026</Copyright>
+          <div>
+            <CopyrightText>Copyright © Wine Discovery, 2026</CopyrightText>
+          </div>
         </Container>
       </StyledFooter>
     </>

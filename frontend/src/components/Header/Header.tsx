@@ -1,45 +1,46 @@
 import { Link } from 'react-router-dom';
-import { Nav, StyledHeader, ListItem, HeaderContainer } from '@/components/Header/Header.styled';
+import { Nav, StyledHeader, Item, HeaderContainer } from '@/components/Header/Header.styled';
 import Container from '@/components/common/Container';
 import MainLogo from '@/components/MainLogo/MainLogo';
 import UserMenu from '@/components/UserMenu';
 import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
   return (
     <StyledHeader className="app-header">
       <Container>
         <HeaderContainer className="header-container">
-          <a href="/" target="_blank" rel="noopener noreferrer">
-            <MainLogo />
-          </a>
+          <MainLogo />
           <Nav className="app-nav">
             <ul>
-              <ListItem>
+              <Item>
                 <Link to="/">Home</Link>
-              </ListItem>
-              <ListItem>
+              </Item>
+              <Item>
                 <Link to="/wineries">Wineries</Link>
-              </ListItem>
-              <ListItem>
-                <Link to="/about">About</Link>
-              </ListItem>
-              <ListItem>
+              </Item>
+              <Item>
                 <Link to="/wines">Wines</Link>
-              </ListItem>
-              <ListItem>
+              </Item>
+              <Item>
                 <Link to="/grapes">Grapes</Link>
-              </ListItem>
-              <ListItem>
+              </Item>
+              <Item>
                 <Link to="/wine-tours">Wine tours</Link>
-              </ListItem>
-
+              </Item>
               {user && (
-                <ListItem>
-                  <Link to="/account">Account</Link>
-                </ListItem>
+                <>
+                  <Item>
+                    <button onClick={logout}>Logout</button>
+                  </Item>
+                  <Item>
+                    <span style={{ color: 'lightgreen', marginLeft: '1rem' }}>
+                      Role: {user.role}
+                    </span>
+                  </Item>
+                </>
               )}
             </ul>
           </Nav>
