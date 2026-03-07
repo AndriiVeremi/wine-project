@@ -17,6 +17,7 @@ interface WineQuery {
   maxPrice?: string;
   vintage?: string;
   name?: string;
+  inStock?: string;
   sortBy?: string;
   page?: string;
   limit?: string;
@@ -41,6 +42,7 @@ export class WineService {
       maxPrice,
       vintage,
       name,
+      inStock,
       sortBy = 'name_asc',
       page = '1',
       limit = '10',
@@ -84,6 +86,7 @@ export class WineService {
     if (minRating) filter.averageRating = { $gte: parseFloat(minRating) };
     if (maxPrice) filter.price = { $lte: parseFloat(maxPrice) };
     if (vintage) filter.vintage = parseInt(vintage);
+    if (inStock) filter.inStock = inStock === 'true';
 
     const [sortField, sortOrder] = sortBy.split('_');
     if (sortField && sortOrder) {
