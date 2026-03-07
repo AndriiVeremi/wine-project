@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
+import WineOverview from '@/components/WineOverview/WineOverview';
+import { StyledWinePageDiv, StyledWraperImage, StyledWineInfo } from './WineDetailPage.styled';
 
 const WineDetailPage = () => {
   const { id } = useParams();
@@ -19,13 +21,14 @@ const WineDetailPage = () => {
   if (!wine) return <p>Wine not found</p>;
 
   return (
-    <section>
-      <h1>{wine.name}</h1>
-      <img src={wine.imageUrl} alt={wine.name} />
-      <p>Year: {wine.color}</p>
-      <p>Price: {wine.price} £</p>
-      <p>Description: {wine.description}</p>
-    </section>
+    <StyledWinePageDiv>
+      <StyledWraperImage>
+        <img src={wine.imageUrl} alt={wine.name} />
+      </StyledWraperImage>
+      <StyledWineInfo>
+        <WineOverview wine={wine} />
+      </StyledWineInfo>
+    </StyledWinePageDiv>
   );
 };
 

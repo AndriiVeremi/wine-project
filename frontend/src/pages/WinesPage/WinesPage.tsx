@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useWinesStore } from '@/store/wine/winesStore';
 import WineList from '@/components/WineList/WineList';
+import WineFilter from '@/components/WineFilter';
 
 const WinesPage = () => {
   const wines = useWinesStore((s) => s.wines);
@@ -18,7 +19,7 @@ const WinesPage = () => {
 
   return (
     <section>
-      <h1>Wines</h1>
+      <WineFilter />
       <WineList wines={wines} />
     </section>
   );

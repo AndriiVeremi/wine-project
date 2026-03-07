@@ -1,5 +1,6 @@
 import type { Wine } from '@/types/wine';
 import WineCard from './WineCard/WineCard';
+import { StyledWineList, StyledWineListItem } from './WineList.styled';
 
 interface WineListProps {
   wines: Wine[];
@@ -7,13 +8,13 @@ interface WineListProps {
 
 const WineList = ({ wines }: WineListProps) => {
   return (
-    <ul>
+    <StyledWineList>
       {wines.map((wine) => (
-        <li key={wine._id}>
+        <StyledWineListItem key={wine._id}>
           <WineCard wine={wine} />
-        </li>
+        </StyledWineListItem>
       ))}
-    </ul>
+    </StyledWineList>
   );
 };
 
