@@ -23,8 +23,6 @@ describe('App', () => {
       </BrowserRouter>,
     );
 
-    expect(
-      screen.getByRole('heading', { name: /Discover Georgian Wines/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Discover Georgian Wines/i })).toBeInTheDocument();
   });
 });
