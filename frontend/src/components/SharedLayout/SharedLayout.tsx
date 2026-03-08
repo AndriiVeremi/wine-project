@@ -5,7 +5,6 @@ import AuthModal from '@/components/common/AuthModal/AuthModal';
 import AIAssistant from '@/components/common/AIAssistant/AIAssistant';
 import { useAuthStore } from '@/store/auth/authStore';
 
-
 const SharedLayout = () => {
   const { user, isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();
   const aiAssistantEnabled = import.meta.env.VITE_AI_ASSISTANT_ENABLED === 'true';
