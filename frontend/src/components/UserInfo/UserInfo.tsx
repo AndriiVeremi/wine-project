@@ -21,10 +21,8 @@ interface AccountInfoProps {
 const AccountInfo: React.FC<AccountInfoProps> = ({ data }) => {
   const isVip = data?.role === 'ADMIN' || data?.role === 'WINERY_OWNER';
 
-  // Simple date format
   const birthday = data?.birthDate ? new Date(data.birthDate).toLocaleDateString() : '-';
 
-  // Simple role mapping
   const roleName =
     data?.role === 'ADMIN'
       ? 'Administrator'

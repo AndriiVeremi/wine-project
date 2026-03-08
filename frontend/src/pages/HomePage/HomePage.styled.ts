@@ -68,21 +68,6 @@ export const WineSection = styled('section')`
   padding-bottom: 140px;
 `;
 
-export const ImageList = styled('ul')`
-  display: flex;
-  // gap: 24px;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  list-style: none;
-`;
-
-export const WineImage = styled.img`
-  // width: 315px;
-  height: 320px;
-  object-fit: cover;
-`;
-
 export const MapSection = styled.section`
   width: 100%;
   background-image: url(${bgImg});

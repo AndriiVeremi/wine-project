@@ -1,4 +1,5 @@
 import Container from '@/components/common/Container';
+import WineColorFilters from '@/components/WineColorFilters/WineColorFilters';
 import {
   HeroSection,
   Span,
@@ -8,22 +9,13 @@ import {
   HeroSubtitle,
   TextWrapper,
   Text,
-  ImageList,
-  WineImage,
   WineSection,
   MapSection,
   ReviewSection,
   ReviewList,
 } from './HomePage.styled';
-import img1 from '@/assets/wine1_red.png';
-import img2 from '@/assets/wine2_orange.png';
-import img3 from '@/assets/wine3_rose.png';
-import img4 from '@/assets/wine4_white.png';
 
 const HomePage = () => {
-  // const { user, openAuthModal } = useAuthStore();
-  // const aiAssistantEnabled = import.meta.env.VITE_AI_ASSISTANT_ENABLED === 'true';
-
   return (
     <>
       <HeroSection>
@@ -49,22 +41,7 @@ const HomePage = () => {
       </HeroSection>
       <WineSection>
         <Container>
-          <section>
-            <ImageList>
-              <li>
-                <WineImage src={img1} alt="red wine" />
-              </li>
-              <li>
-                <WineImage src={img2} alt="orange wine" />
-              </li>
-              <li>
-                <WineImage src={img3} alt="rose wine" />
-              </li>
-              <li>
-                <WineImage src={img4} alt="white wine" />
-              </li>
-            </ImageList>
-          </section>
+          <WineColorFilters />
         </Container>
       </WineSection>
       <MapSection>
