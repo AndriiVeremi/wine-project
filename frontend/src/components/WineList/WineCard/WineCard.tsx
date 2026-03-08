@@ -8,6 +8,7 @@ import {
   StyledFavoriteButton,
 } from './WineCard.styled';
 import RatingStars from '@/components/common/RatingStars';
+import VIPBadge from '@/components/common/VIPBadge';
 
 interface WineCardProps {
   wine: Wine;
@@ -17,7 +18,8 @@ const WineCard = ({ wine }: WineCardProps) => {
   return (
     <Link to={`/wines/${wine._id}`}>
       <StyledWineCardDiv>
-        <StyledFavoriteButton wineId={wine._id} />
+        {wine.isVip && <VIPBadge size={36} style={{ position: 'absolute', top: 4, left: 4 }} />}
+        <StyledFavoriteButton wineId={wine._id} size={32} />
         <WineImage src={wine.imageUrl} alt={wine.name} />
 
         <WineTitle>{wine.name}</WineTitle>
