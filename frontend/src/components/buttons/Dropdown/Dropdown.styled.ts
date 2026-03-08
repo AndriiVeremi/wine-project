@@ -4,57 +4,53 @@ import { FiChevronDown } from 'react-icons/fi';
 export const Wrapper = styled.div`
   position: relative;
   width: 180px;
+  height: 56px;
 `;
 
 export const Button = styled.button<{ $active: boolean }>`
   width: 100%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  background: ${({ $active }) => ($active ? '#ffe8d2' : '#fff')};
+  height: 100%;
+  padding: 16px 24px;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--filter-border-color);
+  background: ${({ $active }) => ($active ? 'var(--filter-active-bg)' : 'var(--white)')};
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 15px;
-  transition: 0.2s;
+  font-size: 16px;
+  transition: var(--transition);
 
   &:hover {
-    background: #fff4e8;
+    background: var(--filter-active-bg);
   }
 `;
 
 export const ArrowIcon = styled(FiChevronDown)<{ $open: boolean }>`
-  transition: transform 0.2s ease;
+  color: var(--brown-icon);
+  transition: var(--transition);
   transform: rotate(${({ $open }) => ($open ? '180deg' : '0deg')});
 `;
 
-// export const Arrow = styled.span<{ $open: boolean }>`
-//   display: inline-block;
-//   transition: transform 0.2s;
-//   transform: rotate(${({ $open }) => ($open ? '180deg' : '0deg')});
-// `;
-
 export const List = styled.ul`
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
   left: 0;
   width: 100%;
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 8px 0;
-  list-style: none;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--filter-border-color);
+  box-shadow: var(--main-shadow);
   z-index: 10;
+  overflow: hidden;
 `;
 
 export const Item = styled.li`
-  padding: 10px 14px;
+  padding: 16px 24px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
 
   &:hover {
-    background: #f5f5f5;
+    background: var(--filter-active-bg);
   }
 `;

@@ -1,21 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Wrapper, Button, List, Item, ArrowIcon } from './Dropdown.styled';
 
 interface DropdownProps {
   label: string;
+  value: string; // ← додаємо
   options: string[];
   isOpen: boolean;
   onOpen: () => void;
   onSelect?: (value: string) => void;
 }
 
-const Dropdown = ({ label, options, isOpen, onOpen, onSelect }: DropdownProps) => {
-  const [selected, setSelected] = useState('');
+const Dropdown = ({ label, value, options, isOpen, onOpen, onSelect }: DropdownProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleSelect = (value: string) => {
-    setSelected(value);
-    onSelect?.(value);
+  const handleSelect = (val: string) => {
+    onSelect?.(val);
     onOpen();
   };
 
@@ -32,13 +31,14 @@ const Dropdown = ({ label, options, isOpen, onOpen, onSelect }: DropdownProps) =
 
   return (
     <Wrapper ref={ref}>
-      <Button onClick={onOpen} $active={isOpen || !!selected}>
-        {selected || label}
-        <ArrowIcon $open={isOpen} size={18} />
+      <Button onClick={onOpen} $active={isOpen || !!value}>
+        {value || label}
+        <ArrowIcon $open={isOpen} size={16} />
       </Button>
 
       {isOpen && (
         <List>
+          <Item onClick={() => handleSelect('')}>All</Item>
           {options.map((opt) => (
             <Item key={opt} onClick={() => handleSelect(opt)}>
               {opt}
