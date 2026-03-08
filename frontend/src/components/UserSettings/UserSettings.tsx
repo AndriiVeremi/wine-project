@@ -102,8 +102,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
 
       setEditing(false);
       toast.success('Profile updated successfully!');
-    } catch (err: any) {
-      if (err.code === 'auth/requires-recent-login') {
+    } catch (err: unknown) {
+      if (err && typeof err === 'object' && 'code' in err && err.code === 'auth/requires-recent-login') {
         toast.error('Please logout and login again to change password (security rule)');
       } else {
         toast.error('Something went wrong. Please try again.');

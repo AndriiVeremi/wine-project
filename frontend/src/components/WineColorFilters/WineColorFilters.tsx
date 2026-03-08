@@ -25,16 +25,16 @@ const WineColorFilters: React.FC = () => {
 
   return (
     <ImageList>
-      <WineImageItem onClick={() => onWineClick('red')}>
+      <WineImageItem onClick={() => onWineClick('Red')}>
         <WineImage src={img1} alt="red wine" />
       </WineImageItem>
-      <WineImageItem onClick={() => onWineClick('orange')}>
+      <WineImageItem onClick={() => onWineClick('Orange')}>
         <WineImage src={img2} alt="orange wine" />
       </WineImageItem>
-      <WineImageItem onClick={() => onWineClick('rose')}>
+      <WineImageItem onClick={() => onWineClick('Rose')}>
         <WineImage src={img3} alt="rose wine" />
       </WineImageItem>
-      <WineImageItem onClick={() => onWineClick('white')}>
+      <WineImageItem onClick={() => onWineClick('White')}>
         <WineImage src={img4} alt="white wine" />
       </WineImageItem>
     </ImageList>
