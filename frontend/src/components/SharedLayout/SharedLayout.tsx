@@ -3,7 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 // import { LayoutContainer, Content } from './SharedLayout.styled';
 import AuthModal from '@/components/common/AuthModal/AuthModal';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store/auth/authStore';
 
 const SharedLayout = () => {
   const { isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();

@@ -1,6 +1,6 @@
 import { Item, List, Text } from '@/components/Location/Location.styled';
 import { UserIcon } from './Login.styled';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store/auth/authStore';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {

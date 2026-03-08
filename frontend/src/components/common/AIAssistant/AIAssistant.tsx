@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { chatWithAI, type ChatMessage } from '@/api/aiApi';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store/auth/authStore';
 import {
   Container,
   OpenButton,

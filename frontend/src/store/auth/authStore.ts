@@ -3,7 +3,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 import { registerUserApi } from '@/api/authApi';
-import type { IRegisterData } from '@/types/auth';
+import type { IRegisterData, UserProfile } from '@/types/auth';
+import apiClient from '@/api/axios';
 
 interface AppUser {
   uid: string;
@@ -11,6 +12,7 @@ interface AppUser {
   firstName: string | null;
   lastName: string | null;
   role: string;
+  avatarUrl?: string;
 }
 
 interface AuthState {
@@ -20,6 +22,8 @@ interface AuthState {
   isAuthModalOpen: boolean;
   authModalView: 'login' | 'register';
   setUser: (user: User | null) => Promise<void>;
+  updateUser: (updatedData: Partial<AppUser>) => void;
+  fetchProfile: () => Promise<void>;
   register: (registerData: IRegisterData) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
@@ -56,32 +60,51 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setUser: async (firebaseUser: User | null) => {
     if (firebaseUser) {
       const tokenResult = await firebaseUser.getIdTokenResult();
-      console.log('Firebase ID Token:', tokenResult.token);
       const roleClaim = tokenResult.claims.role;
       const role = typeof roleClaim === 'string' ? roleClaim : 'USER';
-      let firstName: string | null = null;
-      let lastName: string | null = null;
-
-      if (firebaseUser.displayName) {
-        const displayNameParts = firebaseUser.displayName.split(' ');
-        firstName = displayNameParts[0];
-        lastName = displayNameParts.slice(1).join(' ');
-      }
 
       set({
         user: {
           uid: firebaseUser.uid,
           email: firebaseUser.email,
-          firstName: firstName,
-          lastName: lastName,
+          firstName: firebaseUser.displayName?.split(' ')[0] || null,
+          lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || null,
           role: role,
         },
         isLoading: false,
         error: null,
         isAuthModalOpen: false,
       });
+
+      // After setting firebase user, fetch real data from DB
+      await get().fetchProfile();
     } else {
       set({ user: null, isLoading: false, error: null });
+    }
+  },
+
+  updateUser: (updatedData: Partial<AppUser>) => {
+    set((state) => ({
+      user: state.user ? { ...state.user, ...updatedData } : null,
+    }));
+  },
+
+  fetchProfile: async () => {
+    try {
+      const { data } = await apiClient.get<UserProfile>('/users/me');
+      set((state) => ({
+        user: state.user
+          ? {
+              ...state.user,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              avatarUrl: data.avatarUrl,
+              role: data.role,
+            }
+          : null,
+      }));
+    } catch (err) {
+      console.error('Failed to fetch user profile from DB:', err);
     }
   },
 

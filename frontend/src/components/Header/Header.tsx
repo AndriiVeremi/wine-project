@@ -3,11 +3,8 @@ import { Nav, StyledHeader, Item, HeaderContainer } from '@/components/Header/He
 import Container from '@/components/common/Container';
 import MainLogo from '@/components/MainLogo/MainLogo';
 import UserMenu from '@/components/UserMenu';
-import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
-  const { user, logout } = useAuthStore();
-
   return (
     <StyledHeader className="app-header">
       <Container>
@@ -30,18 +27,6 @@ const Header = () => {
               <Item>
                 <Link to="/wine-tours">Wine tours</Link>
               </Item>
-              {user && (
-                <>
-                  <Item>
-                    <button onClick={logout}>Logout</button>
-                  </Item>
-                  <Item>
-                    <span style={{ color: 'lightgreen', marginLeft: '1rem' }}>
-                      Role: {user.role}
-                    </span>
-                  </Item>
-                </>
-              )}
             </ul>
           </Nav>
           <UserMenu />
