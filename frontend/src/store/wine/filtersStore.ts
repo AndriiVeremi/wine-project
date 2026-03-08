@@ -1,12 +1,13 @@
+import type { WineColor, WineSweetness } from '@/types/wine';
 import { create } from 'zustand';
 
 interface FiltersState {
   region: string;
-  type: string;
-  color: string;
+  sweetness: WineSweetness | '';
+  color: WineColor | '';
   grape: string;
-  winery: string;
-  rating: string;
+  wineryId: string;
+  minRating: string;
   vintage: string;
 
   setFilter: (key: keyof FiltersState, value: string) => void;
@@ -15,11 +16,11 @@ interface FiltersState {
 
 export const useFiltersStore = create<FiltersState>()((set) => ({
   region: '',
-  type: '',
+  sweetness: '',
   color: '',
   grape: '',
-  winery: '',
-  rating: '',
+  wineryId: '',
+  minRating: '',
   vintage: '',
 
   setFilter: (key, value) =>
@@ -30,11 +31,12 @@ export const useFiltersStore = create<FiltersState>()((set) => ({
 
   clearFilters: () =>
     set({
-      color: '',
       region: '',
+      sweetness: '',
+      color: '',
       grape: '',
-      winery: '',
-      rating: '',
+      wineryId: '',
+      minRating: '',
       vintage: '',
     }),
 }));
