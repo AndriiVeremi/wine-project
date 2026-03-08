@@ -29,10 +29,15 @@ const Dropdown = ({ label, value, options, isOpen, onOpen, onSelect }: DropdownP
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, onOpen]);
 
+  const formatDisplayValue = (val: string) => {
+    if (!val) return label;
+    return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase();
+  };
+
   return (
     <Wrapper ref={ref}>
       <Button onClick={onOpen} $active={isOpen || !!value}>
-        {value || label}
+        {formatDisplayValue(value)}
         <ArrowIcon $open={isOpen} size={16} />
       </Button>
 
