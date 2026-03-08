@@ -1,7 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFiltersStore } from '@/store/wine/filtersStore';
-import { ImageList, WineImage, WineImageItem } from '@/components/WineColorFilters/WineColorFilters.styled';
+import {
+  ImageList,
+  WineImage,
+  WineImageItem,
+} from '@/components/WineColorFilters/WineColorFilters.styled';
 
 import img1 from '@/assets/wine1_red.png';
 import img2 from '@/assets/wine2_orange.png';
