@@ -17,6 +17,10 @@
   --input-gray-text: #A4A4A4;
   --icon-gray: #A5A5A5;
 
+  /* Colors - Filter */
+  --filter-border-color: #A38861;
+  --filter-active-bg: linear-gradient(180deg, #FFFFFF 0%, #FCDFB6 100%);
+
   /* Colors - Accent/Orange */
   --star-main: #E3900A;
   --primary-orange: #E28E33;
