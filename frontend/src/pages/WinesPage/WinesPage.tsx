@@ -24,7 +24,7 @@ const WinesPage = () => {
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      {!loading && !error && wines.length === 0 && <p>No wines found</p>}
+      {!loading && !error && wines?.length === 0 && <p>No wines found</p>}
       {!loading && !error && wines.length > 0 && <WineList wines={wines} />}
     </section>
   );
