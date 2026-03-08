@@ -1,18 +1,10 @@
 import styled from 'styled-components';
-import headerImage from '@/assets/home-bg.svg';
 import bgImg from '@/assets/bg-img.png';
 import reviewImg from '@/assets/review_bg-img.png';
 
 export const HeroSection = styled('section')`
   width: 100%;
-  //   height: 100%;
-  padding-top: 120px;
-
-  background-image: url(${headerImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: var(--white);
+  padding-top: 20px;
 `;
 
 export const HeroTitle = styled('h1')`

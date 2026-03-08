@@ -1,7 +1,34 @@
 import Winery from '@/models/wineryModel';
+import Wine from '@/models/wineModel';
 import User, { IUser } from '@/models/userModel';
 import HttpError from '@/utils/HttpError';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
+
+// Simple function to get winery rating
+async function getRatingForWinery(wineryId: Types.ObjectId | string) {
+  // If id is not a valid mongo id (like in tests "1", "2"), return zeros
+  if (!mongoose.isValidObjectId(wineryId)) {
+    return { average: 0, count: 0 };
+  }
+
+  const wines = await Wine.find({ winery: wineryId });
+  if (wines.length === 0) return { average: 0, count: 0 };
+
+  let totalRating = 0;
+  let reviewsCount = 0;
+  let winesWithRating = 0;
+
+  for (const wine of wines) {
+    if (wine.averageRating > 0) {
+      totalRating += wine.averageRating;
+      winesWithRating++;
+    }
+    reviewsCount += wine.totalReviews || 0;
+  }
+
+  const average = winesWithRating > 0 ? totalRating / winesWithRating : 0;
+  return { average: Number(average.toFixed(1)), count: reviewsCount };
+}
 
 interface WineryData {
   name: string;
@@ -80,8 +107,23 @@ export const getWineries = async (params: GetWineriesParams) => {
 
   const totalCount = await Winery.countDocuments(query);
 
+  const allWineries = [...vipWineries, ...regularWineries];
+
+  // Simple loop to add rating data
+  const wineriesWithRatings = [];
+  for (const w of allWineries) {
+    const ratingData = await getRatingForWinery(w._id as Types.ObjectId);
+    const winObj = typeof w.toObject === 'function' ? w.toObject() : w;
+    const extendedWinery = {
+      ...winObj,
+      averageRating: ratingData.average,
+      totalReviews: ratingData.count,
+    };
+    wineriesWithRatings.push(extendedWinery);
+  }
+
   return {
-    wineries: [...vipWineries, ...regularWineries],
+    wineries: wineriesWithRatings,
     totalCount,
     page,
     limit,

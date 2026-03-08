@@ -63,14 +63,16 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
 
   const handleSave = async () => {
     try {
-      // 1. Update basic info in our database
-      const response = await apiClient.patch('/users/me', {
-        firstName: inputs.firstName,
-        lastName: inputs.lastName,
+      const updatePayload = {
+        firstName: inputs.firstName.trim(),
+        lastName: inputs.lastName.trim(),
         phone: inputs.phone,
-        birthDate: inputs.birthDate,
+        birthDate: inputs.birthDate || null,
         address: inputs.address,
-      });
+      };
+
+      // 2. Update basic info in our database
+      const response = await apiClient.patch('/users/me', updatePayload);
 
       // Update data in the UI
       updateData(response.data);

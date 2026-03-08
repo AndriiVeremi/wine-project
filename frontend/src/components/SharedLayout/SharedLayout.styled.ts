@@ -1,0 +1,26 @@
+import styled from 'styled-components';
+import homeBg from '@/assets/home-bg.svg';
+import innerBg from '@/assets/home-bg-alternative.png';
+
+export const LayoutWrapper = styled.div<{ $bgType: string }>`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  background-image: ${({ $bgType }) => {
+    if ($bgType === 'home') return `url(${homeBg})`;
+    if ($bgType === 'inner') return `url(${innerBg})`;
+    return 'none';
+  }};
+
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: top center;
+  background-attachment: scroll;
+`;
+
+export const MainContent = styled.main`
+  flex: 1;
+  padding-top: 100px;
+`;

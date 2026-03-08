@@ -11,7 +11,7 @@ const WineDetailPage = () => {
   const loading = useWineDetailStore((s) => s.loading);
   const error = useWineDetailStore((s) => s.error);
   const fetchWine = useWineDetailStore((s) => s.fetchWine);
-  console.log(wine);
+
   useEffect(() => {
     if (id) fetchWine(id);
   }, [id, fetchWine]);
