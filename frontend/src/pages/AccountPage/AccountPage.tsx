@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store/auth/authStore';
 import AccountSidebar from '@/components/UserSidebar/UserSidebar';
 import type { AccountSection } from '@/components/UserSidebar/UserSidebar';
 import AddWines from '@/components/AddWines/AddWines';
