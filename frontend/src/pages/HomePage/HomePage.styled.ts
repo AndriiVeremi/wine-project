@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import headerImage from '@/assets/home-bg.svg';
 import bgImg from '@/assets/bg-img.png';
 import reviewImg from '@/assets/review_bg-img.png';
 
