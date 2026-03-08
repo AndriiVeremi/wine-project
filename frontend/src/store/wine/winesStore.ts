@@ -3,6 +3,8 @@ import { create } from 'zustand';
 import { getWines, addWine } from '@/api/wines';
 import type { Wine, WineQueryParams } from '@/types/wine';
 
+let lastQueryKey: string | null = null; // ← додано
+
 interface WinesStore {
   wines: Wine[];
   loading: boolean;
@@ -17,6 +19,12 @@ export const useWinesStore = create<WinesStore>()((set) => ({
   error: null,
 
   fetchWines: async (params) => {
+    const queryKey = JSON.stringify(params);
+
+    // ← Блокуємо дублікати запитів
+    if (queryKey === lastQueryKey) return;
+    lastQueryKey = queryKey;
+
     set({ loading: true, error: null });
 
     try {
