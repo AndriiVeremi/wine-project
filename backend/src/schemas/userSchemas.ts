@@ -17,6 +17,6 @@ export const updateProfileSchema = Joi.object({
   firstName: Joi.string(),
   lastName: Joi.string(),
   phone: Joi.string().allow('', null),
-  birthDate: Joi.date().iso().allow(null),
+  birthDate: Joi.date().iso().allow('', null),
   address: Joi.string().allow('', null),
 });

@@ -7,6 +7,14 @@ export const getUserReviews = (page: number = 1, limit: number = 5) => {
   });
 };
 
+export const getWineReviews = (wineId: string) => {
+  return apiClient.get(`/wines/${wineId}/reviews`);
+};
+
+export const createReview = (wineId: string, data: { rating: number; comment: string }) => {
+  return apiClient.post(`/wines/${wineId}/reviews`, data);
+};
+
 export const deleteReview = (wineId: string, reviewId: string) => {
   return apiClient.delete(`/wines/${wineId}/reviews/${reviewId}`);
 };
