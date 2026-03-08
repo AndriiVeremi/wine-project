@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-
 import WineList from '@/components/WineList/WineList';
-import WineFilter from '@/components/WineFilter';
 import { useWinesStore } from '@/store/wine/winesStore';
 import { useWineQueryParams } from '@/hooks/useWineQueryParams';
+import { useFiltersStore } from '@/store/wine/filtersStore';
+import { useDebounce } from '@/hooks/useDebounce';
+import { StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
 
 const WinesPage = () => {
   const wines = useWinesStore((s) => s.wines);
@@ -11,22 +12,35 @@ const WinesPage = () => {
   const error = useWinesStore((s) => s.error);
   const fetchWines = useWinesStore((s) => s.fetchWines);
 
+  const nameInput = useFiltersStore((s) => s.nameInput);
+  const setNameInput = useFiltersStore((s) => s.setNameInput);
+  const applyName = useFiltersStore((s) => s.applyName);
+
+  const debouncedName = useDebounce(nameInput, 300);
+
   const query = useWineQueryParams();
 
+  useEffect(() => {}, [debouncedName]);
+
   useEffect(() => {
-    fetchWines({ page: 1, limit: 12, ...query });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+    fetchWines({ page: 1, limit: 16, ...query });
+  }, [query, fetchWines]);
 
   return (
-    <section>
-      <WineFilter />
+    <>
+      <StyledWineFilter />
+      <StyledSearchBar
+        value={nameInput}
+        onChange={setNameInput}
+        onSearch={applyName}
+        placeholder="Search wines..."
+      />
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {!loading && !error && wines?.length === 0 && <p>No wines found</p>}
       {!loading && !error && wines.length > 0 && <WineList wines={wines} />}
-    </section>
+    </>
   );
 };
 

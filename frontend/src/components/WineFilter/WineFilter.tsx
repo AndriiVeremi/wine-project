@@ -4,15 +4,19 @@ import { StyledWineFilterContainer } from './WineFilter.styled';
 import { useFiltersStore } from '@/store/wine/filtersStore';
 import FilterClearButton from '../buttons/FilterClearButton';
 
-const WineFilter = () => {
+interface PropsWineFilter {
+  className?: string;
+}
+
+const WineFilter = ({ className }: PropsWineFilter) => {
   const filters = useFiltersStore((s) => s);
   const setFilter = useFiltersStore((s) => s.setFilter);
   const clearFilters = useFiltersStore((s) => s.clearFilters);
-  console.log(filters);
+
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   return (
-    <StyledWineFilterContainer>
+    <StyledWineFilterContainer className={className}>
       <Dropdown
         label="Region"
         value={filters.region}
