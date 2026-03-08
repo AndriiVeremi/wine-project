@@ -18,6 +18,16 @@ import {
   ReviewSection,
 } from './HomePage.styled';
 
+interface Winery {
+  _id: string;
+  name: string;
+  logoUrl?: string;
+  history?: string;
+  averageRating?: number;
+  totalReviews?: number;
+  region?: { name: string };
+}
+
 const HomePage = () => {
   // Fetch wineries from API
   const { data: wineriesData, isLoading } = useQuery({
@@ -69,7 +79,7 @@ const HomePage = () => {
           ) : (
             <Slider
               items={wineries}
-              renderItem={(winery) => <SliderCardWinery winery={winery} />}
+              renderItem={(winery: Winery) => <SliderCardWinery winery={winery} />}
             />
           )}
         </Container>
