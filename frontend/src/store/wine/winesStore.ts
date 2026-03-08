@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { getWines, addWine } from '@/api/wines';
 import type { Wine, WineQueryParams } from '@/types/wine';
 
-let lastQueryKey: string | null = null; // ← додано
+let lastQueryKey: string | null = null;
 
 interface WinesStore {
   wines: Wine[];
@@ -21,7 +21,6 @@ export const useWinesStore = create<WinesStore>()((set) => ({
   fetchWines: async (params) => {
     const queryKey = JSON.stringify(params);
 
-    // ← Блокуємо дублікати запитів
     if (queryKey === lastQueryKey) return;
     lastQueryKey = queryKey;
 
