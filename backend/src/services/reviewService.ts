@@ -3,6 +3,24 @@ import Review, { IReview } from '@/models/reviewModel';
 import Wine from '@/models/wineModel';
 import HttpError from '@/utils/HttpError';
 
+async function updateWineRating(wineId: string) {
+  const reviews = await Review.find({ wineId });
+  if (!reviews || !Array.isArray(reviews)) return;
+
+  const total = reviews.length;
+  let sum = 0;
+  for (const r of reviews) {
+    sum += r.rating || 0;
+  }
+
+  const average = total > 0 ? sum / total : 0;
+
+  await Wine.findByIdAndUpdate(wineId, {
+    averageRating: average,
+    totalReviews: total,
+  });
+}
+
 export class ReviewService {
   public async getReviewsByWine(wineId: string): Promise<HydratedDocument<IReview>[]> {
     const reviews = await Review.find({ wineId })
@@ -64,6 +82,8 @@ export class ReviewService {
       comment: reviewData.comment,
     });
 
+    await updateWineRating(wineId);
+
     return review;
   }
 
@@ -105,6 +125,10 @@ export class ReviewService {
       throw new HttpError('You are not authorized to delete this review.', 403);
     }
 
+    const wineId = review.wineId?.toString();
     await Review.findByIdAndDelete(reviewId);
+    if (wineId) {
+      await updateWineRating(wineId);
+    }
   }
 }

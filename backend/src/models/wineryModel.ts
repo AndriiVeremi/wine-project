@@ -13,6 +13,8 @@ export interface IWinery extends Document {
   whereToBuy: { name: string; url: string }[];
   contactEmail: string;
   contactPhone: string;
+  averageRating?: number;
+  totalReviews?: number;
 }
 
 const winerySchema: Schema = new Schema({

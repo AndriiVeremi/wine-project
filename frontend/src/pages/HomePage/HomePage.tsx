@@ -1,5 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import Container from '@/components/common/Container';
 import WineColorFilters from '@/components/WineColorFilters/WineColorFilters';
+import Slider from '@/components/Slider/Slider';
+import SliderCardWinery from '@/components/Slider/cards/SliderCardWinery';
+import { getWineries } from '@/api/wineries';
 import {
   HeroSection,
   Span,
@@ -12,10 +16,18 @@ import {
   WineSection,
   MapSection,
   ReviewSection,
-  ReviewList,
 } from './HomePage.styled';
 
 const HomePage = () => {
+  // Fetch wineries from API
+  const { data: wineriesData, isLoading } = useQuery({
+    queryKey: ['wineries', { limit: 10 }],
+    queryFn: () => getWineries({ limit: 10 }),
+  });
+
+  // Backend returns { wineries: [], totalCount: ... } in the body
+  const wineries = wineriesData?.data?.wineries || [];
+
   return (
     <>
       <HeroSection>
@@ -48,20 +60,19 @@ const HomePage = () => {
         <div></div>
       </MapSection>
       <ReviewSection>
-        <ReviewList>
-          <li>
-            <div></div>
-          </li>
-          <li>
-            <div></div>
-          </li>
-          <li>
-            <div></div>
-          </li>
-          <li>
-            <div></div>
-          </li>
-        </ReviewList>
+        <Container>
+          <h2 style={{ textAlign: 'center', fontSize: '32px', marginBottom: '20px' }}>
+            Our Partners & Wineries
+          </h2>
+          {isLoading ? (
+            <p style={{ textAlign: 'center' }}>Loading wineries...</p>
+          ) : (
+            <Slider
+              items={wineries}
+              renderItem={(winery) => <SliderCardWinery winery={winery} />}
+            />
+          )}
+        </Container>
       </ReviewSection>
     </>
   );

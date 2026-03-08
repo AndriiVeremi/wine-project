@@ -11,6 +11,7 @@ export interface IWine extends Document {
   color: 'red' | 'white' | 'rose' | 'orange';
   sweetness: 'dry' | 'semi-dry' | 'semi-sweet' | 'sweet';
   averageRating: number;
+  totalReviews: number;
   price: number;
   volume?: number;
   boxQuantity?: number;
@@ -50,6 +51,7 @@ const wineSchema: Schema = new Schema({
     required: true,
   },
   averageRating: { type: Number, default: 0 },
+  totalReviews: { type: Number, default: 0 },
   price: { type: Number, required: true },
   volume: { type: Number },
   boxQuantity: { type: Number },
