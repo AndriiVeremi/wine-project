@@ -6,7 +6,7 @@ vi.mock('react-loader-spinner', () => ({
   RevolvingDot: () => <div data-testid="loader" />,
 }));
 
-vi.mock('@/store/authStore', () => ({
+vi.mock('@/store/auth/authStore', () => ({
   useAuthStore: vi.fn(() => ({
     user: null,
     isLoading: false,

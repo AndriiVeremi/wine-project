@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiStar } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { updatePassword } from 'firebase/auth';
+import { auth } from '@/config/firebase';
 import apiClient from '@/api/axios';
 import MainButton from '@/components/buttons/MainButton';
 import UserAvatar from '@/components/UserAvatar';
 import FormField from '@/components/common/FormField/FormField';
+import { useAuthStore } from '@/store/auth/authStore';
 import type { UserProfile } from '@/types/auth';
 import {
   AccountSettingsContainer,
@@ -22,6 +25,7 @@ interface AccountSettingsProps {
 }
 
 const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) => {
+  const { updateUser } = useAuthStore();
   const [editing, setEditing] = useState(false);
   const [inputs, setInputs] = useState({
     firstName: info?.firstName || '',
@@ -30,20 +34,36 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
     phone: info?.phone || '',
     birthDate: info?.birthDate?.split('T')[0] || '',
     address: info?.address || '',
+    newPassword: '',
+    confirmPassword: '',
   });
+
+  useEffect(() => {
+    if (info) {
+      setInputs((prev) => ({
+        ...prev,
+        firstName: info.firstName || '',
+        lastName: info.lastName || '',
+        email: info.email || '',
+        phone: info.phone || '',
+        birthDate: info.birthDate?.split('T')[0] || '',
+        address: info.address || '',
+      }));
+    }
+  }, [info]);
 
   const isVip = info?.role === 'ADMIN' || info?.role === 'WINERY_OWNER';
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
-    // For AccountSettings, we use 'name' instead of 'id' in state mapping
-    setInputs({ ...inputs, [name]: value });
+    const { id, value } = e.target;
+    setInputs({ ...inputs, [id]: value });
   };
 
   const handleSave = async () => {
     try {
+      // 1. Update basic info in our database
       const response = await apiClient.patch('/users/me', {
         firstName: inputs.firstName,
         lastName: inputs.lastName,
@@ -52,11 +72,48 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
         address: inputs.address,
       });
 
+      // Update data in the UI
       updateData(response.data);
+      updateUser({
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+      });
+
+      // 2. Check if user wants to change password
+      if (inputs.newPassword !== '') {
+        if (inputs.newPassword !== inputs.confirmPassword) {
+          toast.error('Passwords do not match!');
+          return;
+        }
+
+        if (inputs.newPassword.length < 6) {
+          toast.error('Password must be at least 6 characters');
+          return;
+        }
+
+        const user = auth.currentUser;
+        if (user) {
+          await updatePassword(user, inputs.newPassword);
+          toast.success('Password updated in Firebase!');
+          // Clear password fields after success
+          setInputs((prev) => ({ ...prev, newPassword: '', confirmPassword: '' }));
+        }
+      }
+
       setEditing(false);
-      toast.success('Successfully updated!');
-    } catch {
-      toast.error('Something went wrong. Please try again.');
+      toast.success('Profile updated successfully!');
+    } catch (err: unknown) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'code' in err &&
+        err.code === 'auth/requires-recent-login'
+      ) {
+        toast.error('Please logout and login again to change password (security rule)');
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
+      console.error(err);
     }
   };
 
@@ -121,6 +178,24 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
             onChange={handleChange}
             disabled={!editing}
             placeholder="Your address"
+          />
+          <FormField
+            label="New Password"
+            id="newPassword"
+            type="password"
+            value={inputs.newPassword}
+            onChange={handleChange}
+            disabled={!editing}
+            placeholder="Enter new password"
+          />
+          <FormField
+            label="Confirm Password"
+            id="confirmPassword"
+            type="password"
+            value={inputs.confirmPassword}
+            onChange={handleChange}
+            disabled={!editing}
+            placeholder="Confirm new password"
           />
         </FormGrid>
 

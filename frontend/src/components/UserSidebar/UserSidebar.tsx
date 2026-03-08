@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store/auth/authStore';
 import { useNavigate } from 'react-router-dom';
 import {
   FiUser,

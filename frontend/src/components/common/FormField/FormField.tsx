@@ -12,7 +12,7 @@ interface FormFieldProps {
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
-  options?: { value: string | number; label: string }[]; // For select
+  options?: { value: string | number; label: string }[];
   isTextarea?: boolean;
   isSelect?: boolean;
 }
@@ -37,7 +37,14 @@ const FormField: React.FC<FormFieldProps> = ({
       </Label>
 
       {isSelect ? (
-        <Select id={id} value={value} onChange={onChange} required={required} disabled={disabled}>
+        <Select
+          id={id}
+          name={id}
+          value={value}
+          onChange={onChange}
+          required={required}
+          disabled={disabled}
+        >
           <option value="">Select...</option>
           {options?.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -48,6 +55,7 @@ const FormField: React.FC<FormFieldProps> = ({
       ) : isTextarea ? (
         <Textarea
           id={id}
+          name={id}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
@@ -57,6 +65,7 @@ const FormField: React.FC<FormFieldProps> = ({
       ) : (
         <Input
           id={id}
+          name={id}
           type={type}
           value={value}
           onChange={onChange}
