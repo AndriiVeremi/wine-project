@@ -9,7 +9,5 @@ export const StyledWineList = styled.ul`
 
 export const StyledWineListItem = styled.li`
   flex-basis: calc(25% - 32px);
-  display: flex;
-  flex-direction: row;
   gap: 16px;
 `;

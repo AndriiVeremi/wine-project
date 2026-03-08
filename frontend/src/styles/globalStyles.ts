@@ -60,6 +60,11 @@ export const GlobalStyle = createGlobalStyle`
     color: var(--primary-wine);
     font-weight: 600;
   }
+  
+  input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  }
 
   /* Scrollbar */
   ::-webkit-scrollbar {
@@ -72,4 +77,5 @@ export const GlobalStyle = createGlobalStyle`
     background-color: var(--primary-wine);
     border-radius: 4px;
   }
+  
 `;

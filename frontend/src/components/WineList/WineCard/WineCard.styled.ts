@@ -1,15 +1,16 @@
+import FavoriteButton from '@/components/buttons/FavoriteButton';
 import styled from 'styled-components';
 
 export const StyledWineCardDiv = styled.div`
+  position: relative;
   width: 100%;
   background: var(--white);
   padding: var(--space-md);
-  //   position: relative;
   transition: var(--transition);
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: var(--main-shadow);
   }
 `;
 
@@ -20,43 +21,23 @@ export const WineImage = styled.img`
   margin-bottom: 32px;
 `;
 
-export const VipBadge = styled.div`
+export const StyledFavoriteButton = styled(FavoriteButton)`
   position: absolute;
-  top: var(--space-xs);
-  left: var(--space-xs);
-  background: var(--wine-gradient);
-  color: var(--white);
-  padding: 4px 10px;
-  border-radius: var(--border-radius-sm);
-  font-size: 12px;
-  font-weight: 600;
-  font-family: var(--font-main);
+  top: 24px;
+  right: 24px;
 `;
-
-export const FavoriteButton = styled.button`
-  position: absolute;
-  top: var(--space-xs);
-  right: var(--space-xs);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 22px;
-  color: var(--black-icon);
-  transition: var(--transition);
-
-  &:hover {
-    color: var(--primary-wine);
-  }
-`;
-
-export const Rating = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--star-main);
-`;
+// export const VipBadge = styled.div`
+//   position: absolute;
+//   top: var(--space-xs);
+//   left: var(--space-xs);
+//   background: var(--wine-gradient);
+//   color: var(--white);
+//   padding: 4px 10px;
+//   border-radius: var(--border-radius-sm);
+//   font-size: 12px;
+//   font-weight: 600;
+//   font-family: var(--font-main);
+// `;
 
 export const WineTitle = styled.h3`
   text-align: center;
@@ -76,4 +57,9 @@ export const WineDescription = styled.p`
   text-align: center;
   color: var(--font-grey);
   font-family: var(--font-main);
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;

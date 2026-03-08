@@ -3,7 +3,7 @@ import { Wrapper, Button, List, Item, ArrowIcon } from './Dropdown.styled';
 
 interface DropdownProps {
   label: string;
-  value: string; // ← додаємо
+  value: string;
   options: string[];
   isOpen: boolean;
   onOpen: () => void;
