@@ -9,7 +9,7 @@ export const CardBase = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid #eee;
-  height: 420px; /* Фіксована висота для всіх карток слайдера */
+  height: 420px;
   transition: transform 0.3s ease;
 
   &:hover {

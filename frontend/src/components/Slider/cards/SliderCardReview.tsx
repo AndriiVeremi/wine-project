@@ -21,7 +21,6 @@ const SliderCardReview: React.FC<ReviewCardProps> = ({ review }) => {
   return (
     <CardBase style={{ height: '280px' }}>
       {' '}
-      {/* Для відгуків картка може бути меншою */}
       <Content style={{ padding: '25px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
           <FiMessageSquare size={20} color="var(--primary-wine)" />

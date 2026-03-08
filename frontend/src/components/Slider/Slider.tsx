@@ -2,19 +2,22 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import { SliderWrapper } from './Slider.styled';
-
 interface SliderProps<T> {
-  items: T[]; // Масив даних (вина, виноробні тощо)
-  renderItem: (item: T) => React.ReactNode; // Функція, як малювати один елемент
+  items: T[];
+  renderItem: (item: T) => React.ReactNode;
 }
 
-const Slider = <T extends { id?: string; _id?: string }>({ items, renderItem }: SliderProps<T>) => {
+interface HasId {
+  id?: string | number;
+  _id?: string | number;
+}
+
+const Slider = <T,>({ items, renderItem }: SliderProps<T>) => {
   // Перевірка: якщо items не масив, повертаємо null або порожній блок
   if (!Array.isArray(items)) {
     return null;
@@ -35,9 +38,11 @@ const Slider = <T extends { id?: string; _id?: string }>({ items, renderItem }: 
           1200: { slidesPerView: 4 },
         }}
       >
-        {items.map((item, index) => (
-          <SwiperSlide key={item.id || item._id || index}>{renderItem(item)}</SwiperSlide>
-        ))}
+        {items.map((item, index) => {
+          const itemWithId = item as unknown as HasId;
+          const key = itemWithId.id || itemWithId._id || index;
+          return <SwiperSlide key={key}>{renderItem(item)}</SwiperSlide>;
+        })}
       </Swiper>
     </SliderWrapper>
   );
