@@ -2,7 +2,14 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
 import WineOverview from '@/components/WineOverview/WineOverview';
-import { StyledWinePageDiv, StyledWraperImage, StyledWineInfo } from './WineDetailPage.styled';
+import {
+  StyledWinePageDiv,
+  StyledWraperImage,
+  StyledWineInfo,
+  StyledWineImg,
+  WineDetailPageTabs,
+} from './WineDetailPage.styled';
+import InfoButton from '@/components/buttons/InfoButton';
 
 const WineDetailPage = () => {
   const { id } = useParams();
@@ -23,7 +30,11 @@ const WineDetailPage = () => {
   return (
     <StyledWinePageDiv>
       <StyledWraperImage>
-        <img src={wine.imageUrl} alt={wine.name} />
+        <StyledWineImg src={wine.imageUrl} alt={wine.name} />
+        <WineDetailPageTabs>
+          <InfoButton>Description</InfoButton>
+          <InfoButton>Reviews</InfoButton>
+        </WineDetailPageTabs>
       </StyledWraperImage>
       <StyledWineInfo>
         <WineOverview wine={wine} />

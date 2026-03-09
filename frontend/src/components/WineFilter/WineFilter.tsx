@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import Dropdown from '../buttons/Dropdown/Dropdown';
-import { StyledWineFilterContainer } from './WineFilter.styled';
+import { StyledDropDown, StyledWineFilterContainer } from './WineFilter.styled';
 import { useFiltersStore } from '@/store/wine/filtersStore';
 import FilterClearButton from '../buttons/FilterClearButton';
 
@@ -17,7 +16,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
 
   return (
     <StyledWineFilterContainer className={className}>
-      <Dropdown
+      <StyledDropDown
         label="Region"
         value={filters.region}
         options={['Georgia', 'France', 'Italy']}
@@ -26,7 +25,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
         onSelect={(value) => setFilter('region', value)}
       />
 
-      <Dropdown
+      <StyledDropDown
         label="Sweetness"
         value={filters.sweetness}
         options={['Dry', 'Semi-dry', 'Semi-sweet', 'Sweet']}
@@ -35,7 +34,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
         onSelect={(value) => setFilter('sweetness', value)}
       />
 
-      <Dropdown
+      <StyledDropDown
         label="Color"
         value={filters.color}
         options={['Red', 'White', 'Rose', 'Orange']}
@@ -44,7 +43,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
         onSelect={(value) => setFilter('color', value)}
       />
 
-      <Dropdown
+      <StyledDropDown
         label="Grape"
         value={filters.grape}
         options={['Saperavi', 'Rkatsiteli', 'Cabernet']}
@@ -53,7 +52,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
         onSelect={(value) => setFilter('grape', value)}
       />
 
-      <Dropdown
+      <StyledDropDown
         label="Winery"
         value={filters.wineryId}
         options={['Shumi', 'Khareba', 'Teliani']}
@@ -62,7 +61,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
         onSelect={(value) => setFilter('wineryId', value)}
       />
 
-      <Dropdown
+      <StyledDropDown
         label="Rating"
         value={filters.minRating}
         options={['5', '4', '3']}
@@ -71,7 +70,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
         onSelect={(value) => setFilter('minRating', value)}
       />
 
-      <Dropdown
+      <StyledDropDown
         label="Vintage"
         value={filters.vintage}
         options={['2023', '2022', '2021', '2020']}

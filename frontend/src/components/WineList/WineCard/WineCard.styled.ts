@@ -26,18 +26,6 @@ export const StyledFavoriteButton = styled(FavoriteButton)`
   top: 24px;
   right: 24px;
 `;
-// export const VipBadge = styled.div`
-//   position: absolute;
-//   top: var(--space-xs);
-//   left: var(--space-xs);
-//   background: var(--wine-gradient);
-//   color: var(--white);
-//   padding: 4px 10px;
-//   border-radius: var(--border-radius-sm);
-//   font-size: 12px;
-//   font-weight: 600;
-//   font-family: var(--font-main);
-// `;
 
 export const WineTitle = styled.h3`
   text-align: center;
