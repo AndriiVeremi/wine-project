@@ -4,7 +4,6 @@ import reviewImg from '@/assets/review_bg-img.png';
 
 export const HeroSection = styled('section')`
   width: 100%;
-  padding-top: 20px;
 `;
 
 export const HeroTitle = styled('h1')`
@@ -19,7 +18,7 @@ export const HeroTitle = styled('h1')`
 export const HeroWrapper = styled('div')`
   width: 800px;
   margin-top: 50px;
-  padding-left: 180px;
+  padding-left: 120px;
 `;
 
 export const HeroSubtitle = styled('h2')`
@@ -41,7 +40,7 @@ export const Span = styled('span')`
 `;
 
 export const TextWrapper = styled('div')`
-  width: 600px;
+  width: 650px;
   margin-top: 20px;
 `;
 
@@ -70,15 +69,14 @@ export const MapSection = styled.section`
 `;
 
 export const ReviewSection = styled.section`
-  margin-top: 100px;
   width: 100%;
+  min-height: 800px;
+  margin-top: 100px;
   background-color: var(--white);
-  min-height: 600px;
   background-image: url(${reviewImg});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 1060px;
 `;
 
 export const ReviewList = styled('ul')`
