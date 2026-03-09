@@ -20,7 +20,7 @@ const SharedLayout = () => {
     <LayoutWrapper $bgType={getBgType()}>
       <Header />
 
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, paddingTop: pathname === '/' ? '100px' : '300px' }}>
         <Outlet />
       </main>
 
