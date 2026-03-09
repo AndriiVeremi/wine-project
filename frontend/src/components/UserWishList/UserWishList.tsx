@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserFavorites, removeWineFromFavorites } from '@/api/userApi';
-import type { WishlistWine } from '@/types/wine';
+import { useFavoritesStore } from '@/store/user/useFavoritesStore';
 import { FiHeart } from 'react-icons/fi';
-import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
 import { Loader } from '@/components/common/Loader';
-import { getErrorMsg } from '@/api/helpers';
+import FavoriteButton from '@/components/buttons/FavoriteButton';
 import {
   WishlistContainer,
   WineGrid,
@@ -19,40 +17,22 @@ import {
 } from './UserWishList.styled';
 
 const Wishlist: React.FC = () => {
-  const [list, setList] = useState<WishlistWine[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { favorites, isLoading, fetchFavorites } = useFavoritesStore();
   const navigate = useNavigate();
 
-  const getData = async () => {
-    try {
-      const { data } = await getUserFavorites();
-      setList(data);
-    } catch (err) {
-      toast.error(getErrorMsg(err));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getData();
-  }, []);
-
-  const onDelete = async (id: string) => {
-    try {
-      await removeWineFromFavorites(id);
-      setList(list.filter((item) => item.id !== id));
-      toast.success('Removed!');
-    } catch (err) {
-      toast.error(getErrorMsg(err));
+    // If favorites are empty, try to fetch them from server
+    // (though they might be pre-loaded by SharedLayout or similar)
+    if (favorites.length === 0) {
+      fetchFavorites();
     }
-  };
+  }, [fetchFavorites, favorites.length]);
 
-  if (loading) return <Loader />;
+  if (isLoading && favorites.length === 0) return <Loader />;
 
   return (
     <WishlistContainer>
-      {list.length === 0 ? (
+      {favorites.length === 0 ? (
         <EmptyMessage>
           <FiHeart size={80} />
           <h3>Your wishlist is empty</h3>
@@ -61,13 +41,20 @@ const Wishlist: React.FC = () => {
         </EmptyMessage>
       ) : (
         <WineGrid>
-          {list.map((item) => (
+          {favorites.map((item) => (
             <WineCard key={item.id}>
-              <RemoveButton onClick={() => onDelete(item.id)}>
-                <FiHeart style={{ fill: '#ff4d4f' }} />
+              <RemoveButton>
+                <FavoriteButton wine={item} size={32} />
               </RemoveButton>
-              <WineImage src={item.imageUrl} alt={item.name} />
-              <WineName>{item.name}</WineName>
+              <WineImage
+                src={item.imageUrl}
+                alt={item.name}
+                onClick={() => navigate(`/wines/${item.id}`)}
+                style={{ cursor: 'pointer' }}
+              />
+              <WineName onClick={() => navigate(`/wines/${item.id}`)} style={{ cursor: 'pointer' }}>
+                {item.name}
+              </WineName>
               {item.winery && <WineryName>{item.winery.name}</WineryName>}
               <p style={{ fontSize: '14px', color: '#888' }}>
                 {item.color} - {item.sweetness}
