@@ -5,7 +5,6 @@ import AuthModal from '@/components/common/AuthModal/AuthModal';
 import AIAssistant from '@/components/common/AIAssistant/AIAssistant';
 import { useAuthStore } from '@/store/auth/authStore';
 import { LayoutWrapper } from './SharedLayout.styled';
-import Container from '../common/Container';
 
 const SharedLayout = () => {
   const { pathname } = useLocation();
