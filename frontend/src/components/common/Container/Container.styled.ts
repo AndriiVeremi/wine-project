@@ -1,21 +1,29 @@
 import styled from 'styled-components';
 
-export const StyledContainer = styled('div')`
-  padding: 0 20px;
+export const StyledContainer = styled.div`
   margin: 0 auto;
+  padding: 0 20px;
 
-  @media (max-width: 375px) {
-    width: 100%;
-    padding-left: 16px;
-    padding-right: 16px;
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 0 16px;
   }
 
-  @media (min-width: 375px) and (max-width: 1280px) {
-    width: 1024px;
+  /* Tablet */
+  @media (min-width: 768px) and (max-width: 1279px) {
+    max-width: 768px;
+    padding: 0 24px;
   }
 
-  @media (min-width: 1280px) {
-    width: 1440px;
+  /* Desktop */
+  @media (min-width: 1280px) and (max-width: 1439px) {
+    max-width: 1280px;
+    padding: 0 48px;
+  }
+
+  /* Large Desktop */
+  @media (min-width: 1440px) {
+    max-width: 1440px;
     padding: 0 64px;
   }
 `;

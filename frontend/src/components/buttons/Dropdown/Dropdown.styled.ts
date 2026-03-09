@@ -3,8 +3,6 @@ import { FiChevronDown } from 'react-icons/fi';
 
 export const Wrapper = styled.div`
   position: relative;
-  width: 180px;
-  height: 56px;
 `;
 
 export const Button = styled.button<{ $active: boolean }>`

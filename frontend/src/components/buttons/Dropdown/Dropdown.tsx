@@ -6,11 +6,20 @@ interface DropdownProps {
   value: string;
   options: string[];
   isOpen: boolean;
+  className?: string;
   onOpen: () => void;
   onSelect?: (value: string) => void;
 }
 
-const Dropdown = ({ label, value, options, isOpen, onOpen, onSelect }: DropdownProps) => {
+const Dropdown = ({
+  label,
+  value,
+  options,
+  isOpen,
+  className,
+  onOpen,
+  onSelect,
+}: DropdownProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleSelect = (val: string) => {
@@ -30,7 +39,7 @@ const Dropdown = ({ label, value, options, isOpen, onOpen, onSelect }: DropdownP
   }, [isOpen, onOpen]);
 
   return (
-    <Wrapper ref={ref}>
+    <Wrapper ref={ref} className={className}>
       <Button onClick={onOpen} $active={isOpen || !!value}>
         {value || label}
         <ArrowIcon $open={isOpen} size={16} />
