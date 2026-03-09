@@ -14,7 +14,6 @@ const SharedLayout = () => {
 
   const getBgType = () => {
     if (pathname === '/') return 'home';
-    if (pathname === '/account') return 'none';
     return 'inner';
   };
 
@@ -22,9 +21,9 @@ const SharedLayout = () => {
     <LayoutWrapper $bgType={getBgType()}>
       <Header />
 
-      <Container>
+      <main style={{ flex: 1, paddingTop: '300px' }}>
         <Outlet />
-      </Container>
+      </main>
 
       <Footer />
 
