@@ -1,6 +1,16 @@
 import type { Wine } from '@/types/wine';
-import { Characteristics, CharacteristicItem } from './WineOverview.styled';
+import {
+  Characteristics,
+  CharacteristicItem,
+  WineOverviewTitle,
+  WineInStock,
+  StockReviewRow,
+  WriteReviewButton,
+  StyledWinePrice,
+  BuyFavRow,
+} from './WineOverview.styled';
 import MainButton from '../buttons/MainButton';
+import FavoriteButton from '../buttons/FavoriteButton';
 
 interface Props {
   wine: Wine;
@@ -9,10 +19,23 @@ interface Props {
 const WineOverview = ({ wine }: Props) => {
   return (
     <div>
-      <h2>{wine.name}</h2>
-      <p>{wine.price}</p>
-      <MainButton>Buy</MainButton>
-      <h3>Characteristics</h3>
+      <WineOverviewTitle>{wine.name}</WineOverviewTitle>
+      <StockReviewRow>
+        <WineInStock $inStock={wine.inStock}>
+          {wine.inStock ? 'In stock' : 'Out of stock'}
+        </WineInStock>
+
+        <WriteReviewButton>Write a review</WriteReviewButton>
+      </StockReviewRow>
+
+      <StyledWinePrice>{wine.price} ₾</StyledWinePrice>
+      <BuyFavRow>
+        <MainButton size="small">Buy</MainButton>
+
+        <FavoriteButton size={50} wineId={wine._id} />
+      </BuyFavRow>
+
+      <WineOverviewTitle>Characteristics</WineOverviewTitle>
       <Characteristics>
         <CharacteristicItem>
           <span>Color:</span>
@@ -26,7 +49,7 @@ const WineOverview = ({ wine }: Props) => {
 
         <CharacteristicItem>
           <span>Brand:</span>
-          <span>{typeof wine.winery === 'string' ? wine.winery : wine.winery.name}</span>
+          <span>{wine.winery.name}</span>
         </CharacteristicItem>
 
         <CharacteristicItem>
@@ -56,7 +79,7 @@ const WineOverview = ({ wine }: Props) => {
 
         <CharacteristicItem>
           <span>Manufacturer:</span>
-          <span>{typeof wine.winery === 'string' ? wine.winery : wine.winery.name}</span>
+          <span>{wine.winery.name}</span>
         </CharacteristicItem>
 
         <CharacteristicItem>
@@ -66,7 +89,7 @@ const WineOverview = ({ wine }: Props) => {
 
         <CharacteristicItem>
           <span>Grape:</span>
-          <span>{typeof wine.grape === 'string' ? wine.grape : wine.grape.name}</span>
+          <span>{wine.grape.name}</span>
         </CharacteristicItem>
 
         <CharacteristicItem>

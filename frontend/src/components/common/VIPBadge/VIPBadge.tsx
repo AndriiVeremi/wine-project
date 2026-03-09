@@ -18,7 +18,7 @@ const VIPBadge = ({
   style,
 }: VIPBadgeProps) => {
   return (
-    <BadgeWrapper size={size} bg={bgColor} color={textColor} className={className} style={style}>
+    <BadgeWrapper $size={size} $bg={bgColor} $color={textColor} className={className} style={style}>
       {label}
     </BadgeWrapper>
   );

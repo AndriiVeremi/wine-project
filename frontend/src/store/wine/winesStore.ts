@@ -9,6 +9,12 @@ interface WinesStore {
   wines: Wine[];
   loading: boolean;
   error: string | null;
+
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+
   fetchWines: (params: WineQueryParams) => Promise<void>;
   addWine: (data: Partial<Wine>) => Promise<void>;
 }
@@ -17,6 +23,11 @@ export const useWinesStore = create<WinesStore>()((set) => ({
   wines: [],
   loading: false,
   error: null,
+
+  page: 1,
+  limit: 10,
+  total: 0,
+  totalPages: 1,
 
   fetchWines: async (params) => {
     const queryKey = JSON.stringify(params);
@@ -28,7 +39,14 @@ export const useWinesStore = create<WinesStore>()((set) => ({
 
     try {
       const response = await getWines(params);
-      set({ wines: response.data.wines, loading: false });
+      set({
+        wines: response.data.wines,
+        page: response.data.page,
+        limit: response.data.limit,
+        total: response.data.totalCount,
+        totalPages: response.data.totalPages,
+        loading: false,
+      });
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       set({ error: message, loading: false });

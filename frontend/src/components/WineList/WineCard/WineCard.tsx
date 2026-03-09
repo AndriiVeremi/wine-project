@@ -18,7 +18,7 @@ const WineCard = ({ wine }: WineCardProps) => {
   return (
     <Link to={`/wines/${wine._id}`}>
       <StyledWineCardDiv>
-        {wine.isVip && <VIPBadge size={36} style={{ position: 'absolute', top: 4, left: 4 }} />}
+        {wine.isVip && <VIPBadge size={60} style={{ position: 'absolute', top: 0, left: 0 }} />}
         <StyledFavoriteButton wineId={wine._id} size={32} />
         <WineImage src={wine.imageUrl} alt={wine.name} />
 
