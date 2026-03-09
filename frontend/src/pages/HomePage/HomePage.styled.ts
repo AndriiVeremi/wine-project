@@ -4,7 +4,6 @@ import reviewImg from '@/assets/review_bg-img.png';
 
 export const HeroSection = styled('section')`
   width: 100%;
-  padding-top: 20px;
 `;
 
 export const HeroTitle = styled('h1')`
@@ -18,8 +17,8 @@ export const HeroTitle = styled('h1')`
 
 export const HeroWrapper = styled('div')`
   width: 800px;
-  margin-top: 50px;
   padding-left: 180px;
+  margin-bottom: 80px;
 `;
 
 export const HeroSubtitle = styled('h2')`
