@@ -19,8 +19,3 @@ export const LayoutWrapper = styled.div<{ $bgType: string }>`
   background-position: top center;
   background-attachment: scroll;
 `;
-
-export const MainContent = styled.main`
-  flex: 1;
-  padding-top: 100px;
-`;

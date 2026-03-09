@@ -8,5 +8,5 @@ export const StyledWineFilterContainer = styled.div`
 
 export const StyledDropDown = styled(Dropdown)`
   width: calc((100% - 96px) / 7);
-  height: 56px;
+  height: 48px;
 `;

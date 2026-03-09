@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledHeader = styled('header')`
-  position: absolute;
+  position: relative;
   width: 100%;
   justify-content: space-between;
   align-items: center;
@@ -27,7 +27,7 @@ export const Item = styled('li')`
   font-family: var(--font-main);
   text-decoration: none;
   line-height: 26px;
-  horizontal-align: center;
+  text-align: center;
 `;
 
 export const HeaderContainer = styled('div')`

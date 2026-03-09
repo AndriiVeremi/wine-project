@@ -1,6 +1,6 @@
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { StyledFavoriteButton } from './FavoriteButton.styled';
-import { useFavoritesStore } from '@/store/wine/useFavoritesStore';
+import { useFavoritesStore } from '@/store/user/useFavoritesStore';
 
 interface Props {
   wineId: string;
