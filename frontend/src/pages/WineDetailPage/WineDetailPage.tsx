@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
 import WineOverview from '@/components/WineOverview/WineOverview';
+import Container from '@/components/common/Container';
 import {
   StyledWinePageDiv,
   StyledWraperImage,
@@ -28,18 +29,20 @@ const WineDetailPage = () => {
   if (!wine) return <p>Wine not found</p>;
 
   return (
-    <StyledWinePageDiv>
-      <StyledWraperImage>
-        <StyledWineImg src={wine.imageUrl} alt={wine.name} />
-        <WineDetailPageTabs>
-          <InfoButton>Description</InfoButton>
-          <InfoButton>Reviews</InfoButton>
-        </WineDetailPageTabs>
-      </StyledWraperImage>
-      <StyledWineInfo>
-        <WineOverview wine={wine} />
-      </StyledWineInfo>
-    </StyledWinePageDiv>
+    <Container>
+      <StyledWinePageDiv>
+        <StyledWraperImage>
+          <StyledWineImg src={wine.imageUrl} alt={wine.name} />
+          <WineDetailPageTabs>
+            <InfoButton>Description</InfoButton>
+            <InfoButton>Reviews</InfoButton>
+          </WineDetailPageTabs>
+        </StyledWraperImage>
+        <StyledWineInfo>
+          <WineOverview wine={wine} />
+        </StyledWineInfo>
+      </StyledWinePageDiv>
+    </Container>
   );
 };
 

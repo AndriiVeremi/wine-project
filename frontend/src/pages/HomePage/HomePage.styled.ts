@@ -53,7 +53,7 @@ export const Text = styled('p')`
   line-height: 34px;
 `;
 
-export const WineSection = styled('section')`
+export const WineSection = styled.section`
   width: 100%;
   background-color: var(--white);
   padding-top: 100px;
@@ -70,6 +70,7 @@ export const MapSection = styled.section`
 `;
 
 export const ReviewSection = styled.section`
+  margin-top: 100px;
   width: 100%;
   background-color: var(--white);
   min-height: 600px;
