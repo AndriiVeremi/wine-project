@@ -29,13 +29,11 @@ interface Winery {
 }
 
 const HomePage = () => {
-  // Fetch wineries from API
   const { data: wineriesData, isLoading } = useQuery({
     queryKey: ['wineries', { limit: 10 }],
     queryFn: () => getWineries({ limit: 10 }),
   });
 
-  // Backend returns { wineries: [], totalCount: ... } in the body
   const wineries = wineriesData?.data?.wineries || [];
 
   return (

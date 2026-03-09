@@ -5,7 +5,6 @@ import AuthModal from '@/components/common/AuthModal/AuthModal';
 import AIAssistant from '@/components/common/AIAssistant/AIAssistant';
 import { useAuthStore } from '@/store/auth/authStore';
 import { LayoutWrapper } from './SharedLayout.styled';
-import Container from '../common/Container';
 
 const SharedLayout = () => {
   const { pathname } = useLocation();
@@ -14,7 +13,6 @@ const SharedLayout = () => {
 
   const getBgType = () => {
     if (pathname === '/') return 'home';
-    if (pathname === '/account') return 'none';
     return 'inner';
   };
 
@@ -22,9 +20,9 @@ const SharedLayout = () => {
     <LayoutWrapper $bgType={getBgType()}>
       <Header />
 
-      <Container>
+      <main style={{ flex: 1, paddingTop: '300px' }}>
         <Outlet />
-      </Container>
+      </main>
 
       <Footer />
 

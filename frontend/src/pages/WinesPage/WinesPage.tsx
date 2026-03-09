@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 
 import WineList from '@/components/WineList/WineList';
+import Container from '@/components/common/Container';
 
 import { useWinesStore } from '@/store/wine/winesStore';
 import { useFiltersStore } from '@/store/wine/filtersStore';
@@ -35,7 +36,7 @@ const WinesPage = () => {
   }, [error]);
 
   return (
-    <>
+    <Container>
       <StyledWineFilter />
       <StyledSearchBar
         value={nameInput}
@@ -64,7 +65,7 @@ const WinesPage = () => {
         totalPages={totalPages}
         onChange={(p) => fetchWines({ page: p, limit: 16, ...query })}
       />
-    </>
+    </Container>
   );
 };
 

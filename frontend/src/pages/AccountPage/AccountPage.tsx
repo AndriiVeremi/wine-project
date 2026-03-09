@@ -8,7 +8,7 @@ import AccountInfo from '@/components/UserInfo/UserInfo';
 import AccountSettings from '@/components/UserSettings/UserSettings';
 import AccountReviews from '@/components/UserReviews/UserReviews';
 import Wishlist from '@/components/UserWishList/UserWishList';
-import { StyledContainer } from '@/components/common/Container/Container.styled';
+import Container from '@/components/common/Container';
 import type { UserProfile } from '@/types/auth';
 import apiClient from '@/api/axios';
 import toast from 'react-hot-toast';
@@ -54,11 +54,7 @@ const AccountPage: React.FC = () => {
   }
 
   if (loading) {
-    return (
-      <StyledContainer>
-        <PlaceholderText>Loading profile...</PlaceholderText>
-      </StyledContainer>
-    );
+    return <PlaceholderText>Loading profile...</PlaceholderText>;
   }
 
   const renderContent = () => {
@@ -122,12 +118,12 @@ const AccountPage: React.FC = () => {
   };
 
   return (
-    <StyledContainer>
+    <Container>
       <AccountPageContainer>
         <AccountSidebar currentSection={activeSection} setSection={setActiveSection} />
         <ContentArea>{renderContent()}</ContentArea>
       </AccountPageContainer>
-    </StyledContainer>
+    </Container>
   );
 };
 
