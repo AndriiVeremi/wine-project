@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiStar, FiEdit, FiTrash2, FiMessageSquare } from 'react-icons/fi';
+import { FiEdit, FiTrash2, FiMessageSquare } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getUserReviews, deleteReview } from '@/api/reviews';
 import type { Review } from '@/types/wine';
 import { Loader } from '@/components/common/Loader';
+import RatingStars from '@/components/common/RatingStars';
 import {
   ReviewsContainer,
   ReviewItem,
@@ -12,7 +13,6 @@ import {
   ReviewContent,
   ReviewHeader,
   WineTitle,
-  StarRating,
   ReviewComment,
   ReviewFooter,
   ReviewDate,
@@ -90,15 +90,7 @@ const AccountReviews: React.FC = () => {
                 <WineTitle onClick={() => navigate(`/wines/${item.wineId._id}`)}>
                   {item.wineId.name}
                 </WineTitle>
-                <StarRating>
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <FiStar
-                      key={s}
-                      fill={s <= item.rating ? 'gold' : 'none'}
-                      stroke={s <= item.rating ? 'gold' : 'gray'}
-                    />
-                  ))}
-                </StarRating>
+                <RatingStars value={item.rating} size={18} />
               </ReviewHeader>
               <ReviewComment>{item.comment}</ReviewComment>
             </div>

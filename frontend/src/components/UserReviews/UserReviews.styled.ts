@@ -76,13 +76,6 @@ export const WineTitle = styled.h3`
   }
 `;
 
-export const StarRating = styled.div`
-  display: flex;
-  gap: 4px;
-  color: var(--rating-gold);
-  font-size: 18px;
-`;
-
 export const ReviewComment = styled.p`
   font-family: var(--font-main);
   font-size: 16px;

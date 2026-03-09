@@ -32,7 +32,7 @@ const WineOverview = ({ wine }: Props) => {
       <BuyFavRow>
         <MainButton size="small">Buy</MainButton>
 
-        <FavoriteButton size={50} wineId={wine._id} />
+        <FavoriteButton size={50} wine={wine} />
       </BuyFavRow>
 
       <WineOverviewTitle>Characteristics</WineOverviewTitle>
