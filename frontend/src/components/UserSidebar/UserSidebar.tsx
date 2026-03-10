@@ -11,6 +11,7 @@ import {
   FiInbox,
   FiHome,
 } from 'react-icons/fi';
+import { FaWineBottle, FaLeaf } from 'react-icons/fa';
 import { MenuContainer, MenuItem } from './UserSidebar.styled';
 
 export type AccountSection =
@@ -21,6 +22,7 @@ export type AccountSection =
   | 'Account Settings'
   | 'Wines'
   | 'Wineries'
+  | 'Grapes'
   | 'Buy VIP';
 
 interface AccountSidebarProps {
@@ -37,13 +39,14 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ currentSection, setSect
     navigate('/');
   };
 
-  const isOwner = user?.role === 'WINERY_OWNER';
+  const isOwnerOrAdmin = user?.role === 'WINERY_OWNER' || user?.role === 'ADMIN';
 
-  const items = isOwner
+  const items = isOwnerOrAdmin
     ? [
         { name: 'Personal Info', icon: <FiUser /> },
         { name: 'Wineries', icon: <FiHome /> },
-        { name: 'Wines', icon: <FiInbox /> },
+        { name: 'Wines', icon: <FaWineBottle /> },
+        { name: 'Grapes', icon: <FaLeaf /> },
         { name: 'Notification Center', icon: <FiInbox /> },
         { name: 'Buy VIP', icon: <FiStar /> },
         { name: 'History', icon: <FiClock /> },

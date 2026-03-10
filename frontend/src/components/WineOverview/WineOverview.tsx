@@ -11,6 +11,7 @@ import {
 } from './WineOverview.styled';
 import MainButton from '../buttons/MainButton';
 import FavoriteButton from '../buttons/FavoriteButton';
+import RatingStars from '../common/RatingStars';
 
 interface Props {
   wine: Wine;
@@ -20,6 +21,11 @@ const WineOverview = ({ wine }: Props) => {
   return (
     <div>
       <WineOverviewTitle>{wine.name}</WineOverviewTitle>
+
+      <div style={{ marginBottom: '40px' }}>
+        <RatingStars value={wine.averageRating ?? 0} showLeftValue={true} size={24} />
+      </div>
+
       <StockReviewRow>
         <WineInStock $inStock={wine.inStock}>
           {wine.inStock ? 'In stock' : 'Out of stock'}

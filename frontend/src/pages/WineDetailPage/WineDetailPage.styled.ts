@@ -27,3 +27,12 @@ export const WineDetailPageTabs = styled.div`
   display: flex;
   gap: 24px;
 `;
+
+export const WineDescriptionContent = styled.div`
+  margin-top: 40px;
+  font-family: var(--font-main);
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--primary-gray);
+  max-width: 100%;
+`;

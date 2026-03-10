@@ -1,5 +1,80 @@
+import { useState, useEffect } from 'react';
+import { Oval } from 'react-loader-spinner';
+
+import Container from '@/components/common/Container';
+import GrapeList from '@/components/GrapeList/GrapeList';
+import AppPagination from '@/components/common/AppPagination';
+import GrapeFilter from '@/components/GrapeFilter/GrapeFilter';
+import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
+import { useGrapesStore } from '@/store/grape/grapesStore';
+
+import { StyledSearchBar } from './GrapesPage.styled';
+
 const GrapesPage = () => {
-  return <h2>Grapes Page</h2>;
+  const grapes = useGrapesStore((s) => s.grapes);
+  const loading = useGrapesStore((s) => s.loading);
+  const page = useGrapesStore((s) => s.page);
+  const totalPages = useGrapesStore((s) => s.totalPages);
+  const fetchGrapes = useGrapesStore((s) => s.fetchGrapes);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { nameInput, setNameInput, applyName, name, type, region, body, acidity } =
+    useGrapeFiltersStore();
+
+  useEffect(() => {
+    fetchGrapes({
+      search: name || undefined,
+      type: type || undefined,
+      region: region || undefined,
+      body: body || undefined,
+      acidity: acidity || undefined,
+      page: currentPage,
+      limit: 16,
+    });
+  }, [name, type, region, body, acidity, currentPage, fetchGrapes]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [name, type, region, body, acidity]);
+
+  return (
+    <Container>
+      <div style={{ marginBottom: '48px' }}>
+        <GrapeFilter />
+      </div>
+
+      <StyledSearchBar
+        value={nameInput}
+        onChange={setNameInput}
+        onSearch={applyName}
+        placeholder="Search grape varieties..."
+      />
+
+      {loading && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+          <Oval
+            height={80}
+            width={80}
+            color="#841013"
+            secondaryColor="#c27a7c"
+            strokeWidth={4}
+            strokeWidthSecondary={4}
+          />
+        </div>
+      )}
+
+      {!loading && grapes.length === 0 && (
+        <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
+      )}
+
+      {!loading && grapes.length > 0 && <GrapeList grapes={grapes} />}
+
+      <div style={{ marginTop: '40px' }}>
+        <AppPagination page={page} totalPages={totalPages} onChange={(p) => setCurrentPage(p)} />
+      </div>
+    </Container>
+  );
 };
 
 export default GrapesPage;
