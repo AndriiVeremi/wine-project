@@ -82,8 +82,13 @@ export interface Review {
     _id: string;
     name: string;
     imageUrl: string;
-  };
-  userId: string;
+  } | string;
+  userId: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl?: string;
+  } | string;
   rating: number;
   comment: string;
   createdAt: string;
