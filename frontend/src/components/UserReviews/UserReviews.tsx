@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiEdit, FiTrash2, FiMessageSquare } from 'react-icons/fi';
+import { FiEdit, FiTrash2, FiMessageSquare, FiArrowRight } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getUserReviews, deleteReview } from '@/api/reviews';
 import type { Review } from '@/types/wine';
@@ -126,6 +126,7 @@ const AccountReviews: React.FC = () => {
             </ReviewFooter>
           </ReviewContent>
         </ReviewItem>
+      ))}
 
       {pagesCount > 1 && (
         <PaginationContainer>
