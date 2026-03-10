@@ -16,9 +16,15 @@ export class RegionService {
   }
 
   public async getRegionsByCountryName(countryName: string) {
-    const country = await Location.findOne({ name: countryName, type: 'country' });
+    if (!countryName) {
+      return await Region.find().populate('country', 'name');
+    }
+    const country = await Location.findOne({
+      name: { $regex: new RegExp(`^${countryName}$`, 'i') },
+      type: 'country',
+    });
     if (!country) {
-      throw new HttpError(`Country with name ${countryName} not found`, 404);
+      return []; // Return empty array instead of throwing 404 to avoid frontend errors
     }
 
     const regions = await Region.find({ country: country._id }).populate('country', 'name');

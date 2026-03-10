@@ -7,8 +7,13 @@ export interface IGrape extends Document {
   alsoKnownAs: string[];
   characteristics: string[];
   foodPairing: string[];
-  imageUrl: string;
+  imageUrls: string[];
   regions: mongoose.Types.ObjectId[];
+  acidity: string;
+  body: string;
+  tannins?: string;
+  aromas: string[];
+  agingPotential: string;
 }
 
 const grapeSchema: Schema = new Schema({
@@ -18,8 +23,13 @@ const grapeSchema: Schema = new Schema({
   alsoKnownAs: [String],
   characteristics: [String],
   foodPairing: [String],
-  imageUrl: { type: String },
+  imageUrls: [String],
   regions: [{ type: Schema.Types.ObjectId, ref: 'Location' }],
+  acidity: { type: String },
+  body: { type: String },
+  tannins: { type: String },
+  aromas: [String],
+  agingPotential: { type: String },
 });
 
 export default mongoose.model<IGrape>('Grape', grapeSchema);
