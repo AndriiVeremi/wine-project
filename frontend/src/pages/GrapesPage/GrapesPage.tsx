@@ -19,11 +19,9 @@ const GrapesPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Using filters from the dedicated grape store
   const { nameInput, setNameInput, applyName, name, type, region, body, acidity } =
     useGrapeFiltersStore();
 
-  // Fetch data when filters or page change
   useEffect(() => {
     fetchGrapes({
       search: name || undefined,
@@ -36,7 +34,6 @@ const GrapesPage = () => {
     });
   }, [name, type, region, body, acidity, currentPage, fetchGrapes]);
 
-  // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [name, type, region, body, acidity]);

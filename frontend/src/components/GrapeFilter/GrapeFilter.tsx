@@ -26,7 +26,6 @@ const GrapeFilter = () => {
       try {
         const res = await getRegions(country);
         setRegions(res.data || []);
-        // Скидаємо вибраний регіон при зміні країни
         filters.setFilter('region', '');
       } catch (error) {
         console.error('Failed to fetch regions', error);
