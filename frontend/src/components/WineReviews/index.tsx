@@ -55,19 +55,18 @@ const WineReviews: React.FC<WineReviewsProps> = ({ wineId }) => {
     <WineReviewsContainer>
       <AvatarList>
         {reviews.map((review) => {
-          const user = review.userId as {
-            _id: string;
-            firstName: string;
-            lastName: string;
-            avatarUrl?: string;
-          };
+          const isPopulated = typeof review.userId === 'object';
+          const user = isPopulated 
+            ? (review.userId as { firstName: string; lastName: string; avatarUrl?: string })
+            : null;
+            
           return (
             <AvatarWrapper
               key={review._id}
               $active={activeReview?._id === review._id}
               onClick={() => setActiveReview(review)}
             >
-              {user.avatarUrl ? (
+              {user?.avatarUrl ? (
                 <img src={user.avatarUrl} alt={`${user.firstName} ${user.lastName}`} />
               ) : (
                 <FiUser />
@@ -82,8 +81,9 @@ const WineReviews: React.FC<WineReviewsProps> = ({ wineId }) => {
           <ReviewText>{activeReview.comment}</ReviewText>
           <ReviewAuthorInfo>
             <AuthorName>
-              {(activeReview.userId as { firstName: string; lastName: string }).firstName}{' '}
-              {(activeReview.userId as { firstName: string; lastName: string }).lastName}
+              {typeof activeReview.userId === 'object' 
+                ? `${(activeReview.userId as any).firstName} ${(activeReview.userId as any).lastName}`
+                : 'Anonymous'}
             </AuthorName>
             <RatingStars value={activeReview.rating} size={18} />
           </ReviewAuthorInfo>

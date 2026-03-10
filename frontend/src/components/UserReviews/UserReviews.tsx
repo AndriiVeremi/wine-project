@@ -80,16 +80,22 @@ const AccountReviews: React.FC = () => {
     <ReviewsContainer>
       {items.map((item) => (
         <ReviewItem key={item._id}>
-          <WineImageWrapper onClick={() => navigate(`/wines/${item.wineId._id}`)}>
-            <img src={item.wineId.imageUrl} alt={item.wineId.name} />
-          </WineImageWrapper>
+          {typeof item.wineId === 'object' && (
+            <WineImageWrapper onClick={() => navigate(`/wines/${(item.wineId as any)._id}`)}>
+              <img src={(item.wineId as any).imageUrl} alt={(item.wineId as any).name} />
+            </WineImageWrapper>
+          )}
 
           <ReviewContent>
             <div>
               <ReviewHeader>
-                <WineTitle onClick={() => navigate(`/wines/${item.wineId._id}`)}>
-                  {item.wineId.name}
-                </WineTitle>
+                {typeof item.wineId === 'object' ? (
+                  <WineTitle onClick={() => navigate(`/wines/${(item.wineId as any)._id}`)}>
+                    {(item.wineId as any).name}
+                  </WineTitle>
+                ) : (
+                  <WineTitle>Wine #{String(item.wineId)}</WineTitle>
+                )}
                 <RatingStars value={item.rating} size={18} />
               </ReviewHeader>
               <ReviewComment>{item.comment}</ReviewComment>
@@ -97,18 +103,29 @@ const AccountReviews: React.FC = () => {
 
             <ReviewFooter>
               <ReviewDate>{new Date(item.createdAt).toLocaleDateString()}</ReviewDate>
+
               <ActionButtons>
-                <ActionButton onClick={() => navigate(`/wines/${item.wineId._id}`)}>
-                  <FiEdit />
-                </ActionButton>
-                <ActionButton onClick={() => removeReview(item.wineId._id, item._id)}>
+                {typeof item.wineId === 'object' && (
+                  <ActionButton onClick={() => navigate(`/wines/${(item.wineId as any)._id}`)}>
+                    <FiArrowRight />
+                  </ActionButton>
+                )}
+
+                <ActionButton
+                  $variant="delete"
+                  onClick={() =>
+                    removeReview(
+                      typeof item.wineId === 'object' ? (item.wineId as any)._id : item.wineId,
+                      item._id,
+                    )
+                  }
+                >
                   <FiTrash2 />
                 </ActionButton>
               </ActionButtons>
             </ReviewFooter>
           </ReviewContent>
         </ReviewItem>
-      ))}
 
       {pagesCount > 1 && (
         <PaginationContainer>
