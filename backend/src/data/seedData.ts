@@ -10,6 +10,9 @@ const winery2Id = new mongoose.Types.ObjectId();
 const winery3Id = new mongoose.Types.ObjectId();
 const winery4Id = new mongoose.Types.ObjectId();
 const winery5Id = new mongoose.Types.ObjectId();
+const winery6Id = new mongoose.Types.ObjectId();
+const winery7Id = new mongoose.Types.ObjectId();
+const winery8Id = new mongoose.Types.ObjectId();
 
 const wine1Id = new mongoose.Types.ObjectId();
 const wine2Id = new mongoose.Types.ObjectId();
@@ -43,6 +46,11 @@ const rieslingId = new mongoose.Types.ObjectId();
 const isabellaId = new mongoose.Types.ObjectId();
 const saperaviId = new mongoose.Types.ObjectId();
 const tsitskaTsolikouriId = new mongoose.Types.ObjectId();
+const mtsvaneId = new mongoose.Types.ObjectId();
+const ojaleshiId = new mongoose.Types.ObjectId();
+const usakhelouriId = new mongoose.Types.ObjectId();
+const alexandrouliId = new mongoose.Types.ObjectId();
+const mujuretuliId = new mongoose.Types.ObjectId();
 
 const ukraineId = new mongoose.Types.ObjectId();
 const odesaId = new mongoose.Types.ObjectId();
@@ -104,20 +112,62 @@ export const regions = [
   {
     _id: kakhetiId,
     name: 'Kakheti',
-    description: `Kakheti is the principal wine-producing region of Georgia...`,
+    description: `Kakheti is the principal wine-producing region of Georgia, located in the eastern part of the country.`,
     imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Kakheti',
   },
   {
     _id: imeretiId,
     name: 'Imereti',
-    description: `Imereti is located in western Georgia...`,
+    description: `Imereti is located in western Georgia, known for its unique winemaking traditions and cool climate.`,
     imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Imereti',
   },
   {
     _id: rachaLechkhumiKvemoSvanetiId,
     name: 'Racha-Lechkhumi',
-    description: `Racha-Lechkhumi is a high-mountain region...`,
+    description: `Racha-Lechkhumi is a high-mountain region famous for its naturally semi-sweet wines.`,
     imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Racha',
+  },
+  {
+    _id: adjaraId,
+    name: 'Adjara',
+    description: `Adjara is a coastal region on the Black Sea, producing fresh and aromatic wines.`,
+    imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Adjara',
+  },
+  {
+    _id: guriaId,
+    name: 'Guria',
+    description: `Guria is located in western Georgia, known for its subtropical climate and unique grape varieties.`,
+    imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Guria',
+  },
+  {
+    _id: samegreloZemoSvanetiId,
+    name: 'Samegrelo',
+    description: `Samegrelo is a region in western Georgia with a rich history of viticulture.`,
+    imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Samegrelo',
+  },
+  {
+    _id: kvemoKartliId,
+    name: 'Kvemo Kartli',
+    description: `Kvemo Kartli is a historic region in southeastern Georgia with diverse terroir.`,
+    imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Kvemo_Kartli',
+  },
+  {
+    _id: shidaKartliId,
+    name: 'Shida Kartli',
+    description: `Shida Kartli is located in the heart of Georgia, producing both sparkling and still wines.`,
+    imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Shida_Kartli',
+  },
+  {
+    _id: mtskhetaMtianetiId,
+    name: 'Mtskheta-Mtianeti',
+    description: `This region surrounds the ancient capital Mtskheta and features high-altitude vineyards.`,
+    imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Mtskheta',
+  },
+  {
+    _id: samtskheJavakhetiId,
+    name: 'Samtskhe-Javakheti',
+    description: `A high-altitude region known for its unique volcanic soil and ancient terrace vineyards.`,
+    imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Samtskhe',
   },
 ];
 
@@ -226,17 +276,177 @@ export const wineries = [
     contactEmail: 'baia@baiaswine.ge',
     contactPhone: '+995 32 233 4455',
   },
+  {
+    _id: winery6Id,
+    name: 'Khareba Winery',
+    owner: owner2Id,
+    history: 'Famous for its massive wine tunnel in Kvareli...',
+    country: georgiaId,
+    region: kakhetiId,
+    address: 'Kvareli, Georgia',
+    isVip: true,
+    logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=Khareba_Logo',
+    contactEmail: 'info@khareba.com',
+    contactPhone: '+995 32 249 7770',
+  },
+  {
+    _id: winery7Id,
+    name: 'Teliani Valley',
+    owner: owner1Id,
+    history: 'A leader in modern Georgian winemaking combining tradition with technology.',
+    country: georgiaId,
+    region: kakhetiId,
+    address: 'Telavi, Georgia',
+    isVip: false,
+    logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=Teliani_Logo',
+    contactEmail: 'office@telianivalley.com',
+    contactPhone: '+995 32 231 3131',
+  },
+  {
+    _id: winery8Id,
+    name: 'Shumi Winery',
+    owner: owner2Id,
+    history: 'Located in Tsinandali, Shumi is known for its extensive wine museum and research.',
+    country: georgiaId,
+    region: kakhetiId,
+    address: 'Tsinandali, Georgia',
+    isVip: true,
+    logoUrl: 'https://placehold.co/200x200/EEE/31343C?text=Shumi_Logo',
+    contactEmail: 'shumi@shumi.ge',
+    contactPhone: '+995 32 214 4455',
+  },
 ];
 
 export const grapes = [
-  { _id: kabernetSauvignonId, name: 'Cabernet Sauvignon', color: 'red', regions: [kakhetiId] },
-  { _id: chardonnayId, name: 'Chardonnay', color: 'white', regions: [kakhetiId] },
-  { _id: merlotId, name: 'Merlot', color: 'red', regions: [kakhetiId] },
-  { _id: saperaviId, name: 'Saperavi', color: 'red', regions: [kakhetiId, imeretiId] },
-  { _id: tsitskaTsolikouriId, name: 'Tsitska-Tsolikouri', color: 'white', regions: [imeretiId] },
-  { _id: kabernetFrancId, name: 'Cabernet Franc', color: 'red', regions: [kakhetiId] },
-  { _id: rieslingId, name: 'Riesling', color: 'white', regions: [rachaLechkhumiKvemoSvanetiId] },
-  { _id: isabellaId, name: 'Isabella', color: 'red', regions: [imeretiId] },
+  {
+    _id: kabernetSauvignonId,
+    name: 'Cabernet Sauvignon',
+    type: 'red',
+    regions: [kakhetiId],
+    description: 'A full-bodied red grape variety known for its deep color and high tannins.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Cabernet_Sauvignon'],
+    acidity: 'High',
+    body: 'Full-bodied',
+    tannins: 'High',
+    aromas: ['Blackcurrant', 'Cedar', 'Baking spices'],
+    agingPotential: '10-20 years',
+  },
+  {
+    _id: chardonnayId,
+    name: 'Chardonnay',
+    type: 'white',
+    regions: [kakhetiId],
+    description: 'A versatile white grape that can range from crisp and mineral to rich and oaky.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Chardonnay'],
+    acidity: 'Medium to High',
+    body: 'Medium to Full',
+    aromas: ['Apple', 'Lemon', 'Vanilla', 'Butter'],
+    agingPotential: '3-10 years',
+  },
+  {
+    _id: merlotId,
+    name: 'Merlot',
+    type: 'red',
+    regions: [kakhetiId],
+    description: 'A popular red grape known for being soft, ripe and elegant.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Merlot'],
+    acidity: 'Medium',
+    body: 'Medium to Full',
+    tannins: 'Medium',
+    aromas: ['Plum', 'Cherry', 'Chocolate'],
+    agingPotential: '5-15 years',
+  },
+  {
+    _id: saperaviId,
+    name: 'Saperavi',
+    type: 'red',
+    regions: [kakhetiId, imeretiId],
+    description: "Georgia's most famous red grape, producing deep, dark, and powerful wines.",
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Saperavi'],
+    acidity: 'High',
+    body: 'Full-bodied',
+    tannins: 'High',
+    aromas: ['Blackberry', 'Pomegranate', 'Smoke', 'Tobacco'],
+    agingPotential: '10-30 years',
+  },
+  {
+    _id: tsitskaTsolikouriId,
+    name: 'Tsitska-Tsolikouri',
+    type: 'white',
+    regions: [imeretiId],
+    description: 'A classic Georgian white blend offering freshness and floral notes.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Tsitska_Tsolikouri'],
+    acidity: 'High',
+    body: 'Light to Medium',
+    aromas: ['Pear', 'Melon', 'Wildflowers', 'Citrus'],
+    agingPotential: '2-5 years',
+  },
+  {
+    _id: mtsvaneId,
+    name: 'Mtsvane Kakhuri',
+    type: 'white',
+    regions: [kakhetiId],
+    description:
+      'A primary white grape variety of Kakheti, known for its citrus and floral profile.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Mtsvane'],
+    acidity: 'Medium to High',
+    body: 'Medium',
+    aromas: ['Peach', 'Apricot', 'Wildflowers'],
+    agingPotential: '3-7 years',
+  },
+  {
+    _id: ojaleshiId,
+    name: 'Ojaleshi',
+    type: 'red',
+    regions: [samegreloZemoSvanetiId],
+    description: 'One of the oldest red grapes from Samegrelo, often used for semi-sweet wines.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Ojaleshi'],
+    acidity: 'Medium',
+    body: 'Medium',
+    tannins: 'Medium',
+    aromas: ['Rose', 'Cherry', 'Spice'],
+    agingPotential: '5-10 years',
+  },
+  {
+    _id: usakhelouriId,
+    name: 'Usakhelouri',
+    type: 'red',
+    regions: [rachaLechkhumiKvemoSvanetiId],
+    description: 'A rare and prestigious red grape from Lechkhumi, known for its unique sweetness.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Usakhelouri'],
+    acidity: 'Medium',
+    body: 'Medium to Full',
+    tannins: 'Low to Medium',
+    aromas: ['Berry jam', 'Violets', 'Pepper'],
+    agingPotential: '5-15 years',
+  },
+  {
+    _id: alexandrouliId,
+    name: 'Alexandrouli',
+    type: 'red',
+    regions: [rachaLechkhumiKvemoSvanetiId],
+    description:
+      'A key grape for the famous Khvanchkara wine, offering soft and complex fruit notes.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Alexandrouli'],
+    acidity: 'Medium',
+    body: 'Medium',
+    tannins: 'Medium',
+    aromas: ['Raspberry', 'Strawberry', 'Herbs'],
+    agingPotential: '5-12 years',
+  },
+  {
+    _id: mujuretuliId,
+    name: 'Mujuretuli',
+    type: 'red',
+    regions: [rachaLechkhumiKvemoSvanetiId],
+    description: 'Usually blended with Alexandrouli, it adds structure and deep color.',
+    imageUrls: ['https://placehold.co/400x600/EEE/31343C?text=Mujuretuli'],
+    acidity: 'Medium to High',
+    body: 'Medium',
+    tannins: 'High',
+    aromas: ['Dark cherry', 'Pomegranate', 'Earth'],
+    agingPotential: '5-10 years',
+  },
 ];
 
 export const wines = [

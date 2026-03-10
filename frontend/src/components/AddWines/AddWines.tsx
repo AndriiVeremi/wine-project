@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getWineries } from '@/api/wineries';
 import { getGrapes } from '@/api/grapes';
-import apiClient from '@/api/axios';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
 import FormField from '@/components/common/FormField/FormField';
 import { FiPlus } from 'react-icons/fi';
 import { getErrorMsg } from '@/api/helpers';
-import type { WineColor, WineSweetness, Wine } from '@/types/wine';
+import type { Wine, WineColor, WineSweetness } from '@/types/wine';
 import {
   AddWineWrapper,
   Title,
@@ -62,6 +61,8 @@ interface GrapeOption {
   name: string;
 }
 
+import { useWinesStore } from '@/store/wine/winesStore';
+
 const AddWines = () => {
   const [form, setForm] = useState(initialValues);
   const [wineries, setWineries] = useState<WineryOption[]>([]);
@@ -69,14 +70,15 @@ const AddWines = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const addWineToStore = useWinesStore((s) => s.addWine);
   const fileInput = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     const loadOptions = async () => {
       try {
-        const [wRes, gRes] = await Promise.all([getWineries({ limit: 100 }), getGrapes()]);
+        const [wRes, gRes] = await Promise.all([getWineries({ limit: 100 }), getGrapes({})]);
         setWineries(wRes.data.wineries);
-        setGrapes(gRes.data);
+
+        setGrapes(gRes.data.grapes || []);
       } catch {
         toast.error('Could not load options');
       }
@@ -144,15 +146,9 @@ const AddWines = () => {
           .split(',')
           .map((s) => s.trim())
           .filter(Boolean),
-      };
+      } as unknown as Partial<Wine> & { winery?: string; grape?: string };
 
-      const res = await apiClient.post<Wine>('/wines', data);
-
-      if (file) {
-        const body = new FormData();
-        body.append('image', file);
-        await apiClient.patch(`/wines/${res.data._id}/image`, body);
-      }
+      await addWineToStore(data, file);
 
       toast.success('Wine added successfully!', { id: tid });
       setForm(initialValues);
@@ -169,7 +165,6 @@ const AddWines = () => {
     <AddWineWrapper>
       <Title>Add New Wine</Title>
       <FormContainer onSubmit={onSave}>
-        {/* TOP SECTION: Photo + Basic Info */}
         <TopSection>
           <PhotoSide>
             <PhotoUploadContainer onClick={() => fileInput.current?.click()}>
@@ -223,7 +218,6 @@ const AddWines = () => {
 
         <SectionTitle>Characteristics</SectionTitle>
 
-        {/* GRID SECTION: 2 Columns */}
         <FormGrid>
           <FormField
             label="Color"

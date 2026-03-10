@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/auth/authStore';
 import AccountSidebar from '@/components/UserSidebar/UserSidebar';
 import type { AccountSection } from '@/components/UserSidebar/UserSidebar';
 import AddWines from '@/components/AddWines/AddWines';
+import AddGrapeForm from '@/components/AddGrapeForm/AddGrapeForm';
 import AccountInfo from '@/components/UserInfo/UserInfo';
 import AccountSettings from '@/components/UserSettings/UserSettings';
 import AccountReviews from '@/components/UserReviews/UserReviews';
@@ -61,6 +62,8 @@ const AccountPage: React.FC = () => {
     switch (activeSection) {
       case 'Wines':
         return <AddWines />;
+      case 'Grapes':
+        return <AddGrapeForm />;
       case 'Wineries':
         return (
           <>

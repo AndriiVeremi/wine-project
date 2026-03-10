@@ -71,17 +71,14 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
         address: inputs.address,
       };
 
-      // 2. Update basic info in our database
       const response = await apiClient.patch('/users/me', updatePayload);
 
-      // Update data in the UI
       updateData(response.data);
       updateUser({
         firstName: response.data.firstName,
         lastName: response.data.lastName,
       });
 
-      // 2. Check if user wants to change password
       if (inputs.newPassword !== '') {
         if (inputs.newPassword !== inputs.confirmPassword) {
           toast.error('Passwords do not match!');
@@ -97,7 +94,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
         if (user) {
           await updatePassword(user, inputs.newPassword);
           toast.success('Password updated in Firebase!');
-          // Clear password fields after success
           setInputs((prev) => ({ ...prev, newPassword: '', confirmPassword: '' }));
         }
       }
