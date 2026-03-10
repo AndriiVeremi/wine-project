@@ -24,7 +24,7 @@ async function updateWineRating(wineId: string) {
 export class ReviewService {
   public async getReviewsByWine(wineId: string): Promise<HydratedDocument<IReview>[]> {
     const reviews = await Review.find({ wineId })
-      .populate('userId', 'firstName lastName')
+      .populate('userId', 'firstName lastName avatarUrl')
       .sort({ createdAt: -1 })
       .exec();
     return reviews;
@@ -51,7 +51,9 @@ export class ReviewService {
   }
 
   public async getReviewById(reviewId: string): Promise<HydratedDocument<IReview>> {
-    const review = await Review.findById(reviewId).populate('userId', 'firstName lastName').exec();
+    const review = await Review.findById(reviewId)
+      .populate('userId', 'firstName lastName avatarUrl')
+      .exec();
 
     if (!review) {
       throw new HttpError('Review not found.', 404);

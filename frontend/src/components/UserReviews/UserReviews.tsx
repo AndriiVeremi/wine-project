@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiEdit, FiTrash2, FiMessageSquare } from 'react-icons/fi';
+import { FiTrash2, FiMessageSquare, FiArrowRight } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getUserReviews, deleteReview } from '@/api/reviews';
 import type { Review } from '@/types/wine';
@@ -78,37 +78,59 @@ const AccountReviews: React.FC = () => {
 
   return (
     <ReviewsContainer>
-      {items.map((item) => (
-        <ReviewItem key={item._id}>
-          <WineImageWrapper onClick={() => navigate(`/wines/${item.wineId._id}`)}>
-            <img src={item.wineId.imageUrl} alt={item.wineId.name} />
-          </WineImageWrapper>
+      {items.map((item) => {
+        const isWineObject = typeof item.wineId === 'object' && item.wineId !== null;
+        const wineInfo = isWineObject
+          ? (item.wineId as { _id: string; name: string; imageUrl: string })
+          : null;
 
-          <ReviewContent>
-            <div>
-              <ReviewHeader>
-                <WineTitle onClick={() => navigate(`/wines/${item.wineId._id}`)}>
-                  {item.wineId.name}
-                </WineTitle>
-                <RatingStars value={item.rating} size={18} />
-              </ReviewHeader>
-              <ReviewComment>{item.comment}</ReviewComment>
-            </div>
+        return (
+          <ReviewItem key={item._id}>
+            {wineInfo && (
+              <WineImageWrapper onClick={() => navigate(`/wines/${wineInfo._id}`)}>
+                <img src={wineInfo.imageUrl} alt={wineInfo.name} />
+              </WineImageWrapper>
+            )}
 
-            <ReviewFooter>
-              <ReviewDate>{new Date(item.createdAt).toLocaleDateString()}</ReviewDate>
-              <ActionButtons>
-                <ActionButton onClick={() => navigate(`/wines/${item.wineId._id}`)}>
-                  <FiEdit />
-                </ActionButton>
-                <ActionButton onClick={() => removeReview(item.wineId._id, item._id)}>
-                  <FiTrash2 />
-                </ActionButton>
-              </ActionButtons>
-            </ReviewFooter>
-          </ReviewContent>
-        </ReviewItem>
-      ))}
+            <ReviewContent>
+              <div>
+                <ReviewHeader>
+                  {wineInfo ? (
+                    <WineTitle onClick={() => navigate(`/wines/${wineInfo._id}`)}>
+                      {wineInfo.name}
+                    </WineTitle>
+                  ) : (
+                    <WineTitle>Wine #{String(item.wineId)}</WineTitle>
+                  )}
+                  <RatingStars value={item.rating} size={18} />
+                </ReviewHeader>
+                <ReviewComment>{item.comment}</ReviewComment>
+              </div>
+
+              <ReviewFooter>
+                <ReviewDate>{new Date(item.createdAt).toLocaleDateString()}</ReviewDate>
+
+                <ActionButtons>
+                  {wineInfo && (
+                    <ActionButton onClick={() => navigate(`/wines/${wineInfo._id}`)}>
+                      <FiArrowRight />
+                    </ActionButton>
+                  )}
+
+                  <ActionButton
+                    $variant="delete"
+                    onClick={() =>
+                      removeReview(wineInfo ? wineInfo._id : (item.wineId as string), item._id)
+                    }
+                  >
+                    <FiTrash2 />
+                  </ActionButton>
+                </ActionButtons>
+              </ReviewFooter>
+            </ReviewContent>
+          </ReviewItem>
+        );
+      })}
 
       {pagesCount > 1 && (
         <PaginationContainer>

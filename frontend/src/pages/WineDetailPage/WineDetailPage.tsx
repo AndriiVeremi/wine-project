@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
 import WineOverview from '@/components/WineOverview/WineOverview';
+import WineReviews from '@/components/WineReviews';
 import Container from '@/components/common/Container';
 import {
   StyledWinePageDiv,
@@ -9,11 +10,13 @@ import {
   StyledWineInfo,
   StyledWineImg,
   WineDetailPageTabs,
+  WineDescriptionContent,
 } from './WineDetailPage.styled';
 import InfoButton from '@/components/buttons/InfoButton';
 
 const WineDetailPage = () => {
   const { id } = useParams();
+  const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
 
   const wine = useWineDetailStore((s) => s.wine);
   const loading = useWineDetailStore((s) => s.loading);
@@ -34,10 +37,19 @@ const WineDetailPage = () => {
         <StyledWraperImage>
           <StyledWineImg src={wine.imageUrl} alt={wine.name} />
           <WineDetailPageTabs>
-            <InfoButton>Description</InfoButton>
-            <InfoButton>Reviews</InfoButton>
+            <InfoButton onClick={() => setActiveTab('description')}>Description</InfoButton>
+            <InfoButton onClick={() => setActiveTab('reviews')}>Reviews</InfoButton>
           </WineDetailPageTabs>
+
+          <WineDescriptionContent>
+            {activeTab === 'description' ? (
+              <p>{wine.description}</p>
+            ) : (
+              <WineReviews wineId={wine._id} />
+            )}
+          </WineDescriptionContent>
         </StyledWraperImage>
+
         <StyledWineInfo>
           <WineOverview wine={wine} />
         </StyledWineInfo>
