@@ -40,7 +40,7 @@ const WineDetailPage = () => {
             <InfoButton onClick={() => setActiveTab('description')}>Description</InfoButton>
             <InfoButton onClick={() => setActiveTab('reviews')}>Reviews</InfoButton>
           </WineDetailPageTabs>
-          
+
           <WineDescriptionContent>
             {activeTab === 'description' ? (
               <p>{wine.description}</p>
@@ -49,7 +49,7 @@ const WineDetailPage = () => {
             )}
           </WineDescriptionContent>
         </StyledWraperImage>
-        
+
         <StyledWineInfo>
           <WineOverview wine={wine} />
         </StyledWineInfo>

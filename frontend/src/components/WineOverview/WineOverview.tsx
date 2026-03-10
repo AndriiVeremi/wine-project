@@ -21,13 +21,9 @@ const WineOverview = ({ wine }: Props) => {
   return (
     <div>
       <WineOverviewTitle>{wine.name}</WineOverviewTitle>
-      
+
       <div style={{ marginBottom: '40px' }}>
-        <RatingStars 
-          value={wine.averageRating ?? 0} 
-          showLeftValue={true} 
-          size={24}
-        />
+        <RatingStars value={wine.averageRating ?? 0} showLeftValue={true} size={24} />
       </div>
 
       <StockReviewRow>

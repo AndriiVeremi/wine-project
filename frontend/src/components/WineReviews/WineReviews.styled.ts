@@ -13,7 +13,7 @@ export const AvatarList = styled.div`
   gap: 20px;
   overflow-x: auto;
   padding: 10px 0;
-  
+
   &::-webkit-scrollbar {
     height: 4px;
   }
@@ -29,7 +29,7 @@ export const AvatarWrapper = styled.div<{ $active?: boolean }>`
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
-  border: 3px solid ${props => props.$active ? 'var(--primary-wine)' : 'transparent'};
+  border: 3px solid ${(props) => (props.$active ? 'var(--primary-wine)' : 'transparent')};
   transition: var(--transition);
   flex-shrink: 0;
   background-color: var(--soft-gray);
@@ -39,7 +39,7 @@ export const AvatarWrapper = styled.div<{ $active?: boolean }>`
 
   &:hover {
     transform: scale(1.05);
-    border-color: ${props => props.$active ? 'var(--primary-wine)' : 'var(--secondary-gray)'};
+    border-color: ${(props) => (props.$active ? 'var(--primary-wine)' : 'var(--secondary-gray)')};
   }
 
   img {
@@ -72,8 +72,9 @@ export const ReviewText = styled.p`
   color: var(--primary-gray);
   margin-bottom: 24px;
   font-style: italic;
-  
-  &::before, &::after {
+
+  &::before,
+  &::after {
     content: '"';
   }
 `;

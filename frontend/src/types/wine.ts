@@ -78,17 +78,21 @@ export interface WishlistWine {
 
 export interface Review {
   _id: string;
-  wineId: {
-    _id: string;
-    name: string;
-    imageUrl: string;
-  } | string;
-  userId: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    avatarUrl?: string;
-  } | string;
+  wineId:
+    | {
+        _id: string;
+        name: string;
+        imageUrl: string;
+      }
+    | string;
+  userId:
+    | {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        avatarUrl?: string;
+      }
+    | string;
   rating: number;
   comment: string;
   createdAt: string;

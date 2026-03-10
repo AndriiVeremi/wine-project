@@ -11,7 +11,7 @@ import {
   ReviewText,
   ReviewAuthorInfo,
   AuthorName,
-  NoReviewsMessage
+  NoReviewsMessage,
 } from './WineReviews.styled';
 
 interface WineReviewsProps {
@@ -44,19 +44,26 @@ const WineReviews: React.FC<WineReviewsProps> = ({ wineId }) => {
   }, [wineId]);
 
   if (loading) return <p>Loading reviews...</p>;
-  
+
   if (reviews.length === 0) {
-    return <NoReviewsMessage>No reviews yet. Be the first to share your experience!</NoReviewsMessage>;
+    return (
+      <NoReviewsMessage>No reviews yet. Be the first to share your experience!</NoReviewsMessage>
+    );
   }
 
   return (
     <WineReviewsContainer>
       <AvatarList>
         {reviews.map((review) => {
-          const user = review.userId as { _id: string; firstName: string; lastName: string; avatarUrl?: string };
+          const user = review.userId as {
+            _id: string;
+            firstName: string;
+            lastName: string;
+            avatarUrl?: string;
+          };
           return (
-            <AvatarWrapper 
-              key={review._id} 
+            <AvatarWrapper
+              key={review._id}
               $active={activeReview?._id === review._id}
               onClick={() => setActiveReview(review)}
             >
