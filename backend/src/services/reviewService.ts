@@ -51,7 +51,9 @@ export class ReviewService {
   }
 
   public async getReviewById(reviewId: string): Promise<HydratedDocument<IReview>> {
-    const review = await Review.findById(reviewId).populate('userId', 'firstName lastName avatarUrl').exec();
+    const review = await Review.findById(reviewId)
+      .populate('userId', 'firstName lastName avatarUrl')
+      .exec();
 
     if (!review) {
       throw new HttpError('Review not found.', 404);
