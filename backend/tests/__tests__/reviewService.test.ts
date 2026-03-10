@@ -33,7 +33,7 @@ describe('ReviewService', () => {
       const result = await reviewService.getReviewsByWine(wineId);
 
       expect(Review.find).toHaveBeenCalledWith({ wineId });
-      expect(populate).toHaveBeenCalledWith('userId', 'firstName lastName');
+      expect(populate).toHaveBeenCalledWith('userId', 'firstName lastName avatarUrl');
       expect(sort).toHaveBeenCalledWith({ createdAt: -1 });
       expect(exec).toHaveBeenCalled();
       expect(result).toEqual(reviews);
