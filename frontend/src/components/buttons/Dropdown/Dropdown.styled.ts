@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { FiChevronDown } from 'react-icons/fi';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ $disabled?: boolean }>`
   position: relative;
+  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
+  pointer-events: ${({ $disabled }) => ($disabled ? 'none' : 'auto')};
 `;
 
-export const Button = styled.button<{ $active: boolean }>`
+export const Button = styled.button<{ $active: boolean; $disabled?: boolean }>`
   width: 100%;
   height: 100%;
   padding: 16px 24px;

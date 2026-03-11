@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { StyledDropDown, StyledWineFilterContainer } from './WineFilter.styled';
 import { useFiltersStore } from '@/store/wine/filtersStore';
+import { useLocationStore } from '@/store/location/locationStore';
 import FilterClearButton from '../buttons/FilterClearButton';
+import type { WineColor, WineSweetness } from '@/types/wine';
 
 interface PropsWineFilter {
   className?: string;
 }
 
 const WineFilter = ({ className }: PropsWineFilter) => {
-  const filters = useFiltersStore((s) => s);
-  const setFilter = useFiltersStore((s) => s.setFilter);
-  const clearFilters = useFiltersStore((s) => s.clearFilters);
+  const { region, sweetness, color, grape, minRating, vintage, setFilter, clearFilters } =
+    useFiltersStore();
+  const { regions, loading: regionsLoading } = useLocationStore();
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -18,52 +20,48 @@ const WineFilter = ({ className }: PropsWineFilter) => {
     <StyledWineFilterContainer className={className}>
       <StyledDropDown
         label="Region"
-        value={filters.region}
-        options={['Georgia', 'France', 'Italy']}
+        value={regions.find((r) => r._id === region)?.name || ''}
+        options={regions.map((r) => r.name)}
         isOpen={openDropdown === 'region'}
         onOpen={() => setOpenDropdown(openDropdown === 'region' ? null : 'region')}
-        onSelect={(value) => setFilter('region', value)}
+        onSelect={(value) => {
+          const selectedRegion = regions.find((r) => r.name === value);
+          setFilter('region', selectedRegion?._id || '');
+        }}
+        disabled={regionsLoading || regions.length === 0}
       />
 
       <StyledDropDown
         label="Sweetness"
-        value={filters.sweetness}
-        options={['Dry', 'Semi-dry', 'Semi-sweet', 'Sweet']}
+        value={sweetness}
+        options={['dry', 'semi-dry', 'semi-sweet', 'sweet']}
         isOpen={openDropdown === 'sweetness'}
         onOpen={() => setOpenDropdown(openDropdown === 'sweetness' ? null : 'sweetness')}
-        onSelect={(value) => setFilter('sweetness', value)}
+        onSelect={(value) => setFilter('sweetness', value as WineSweetness)}
       />
 
       <StyledDropDown
         label="Color"
-        value={filters.color}
-        options={['Red', 'White', 'Rose', 'Orange']}
+        value={color}
+        options={['red', 'white', 'rose', 'orange']}
         isOpen={openDropdown === 'color'}
         onOpen={() => setOpenDropdown(openDropdown === 'color' ? null : 'color')}
-        onSelect={(value) => setFilter('color', value)}
+        onSelect={(value) => setFilter('color', value as WineColor)}
       />
 
+      {/* Поки що залишимо ці списки як є, але в ідеалі їх теж треба завантажувати */}
       <StyledDropDown
         label="Grape"
-        value={filters.grape}
-        options={['Saperavi', 'Rkatsiteli', 'Cabernet']}
+        value={grape}
+        options={['Saperavi', 'Rkatsiteli', 'Kisi']}
         isOpen={openDropdown === 'grape'}
         onOpen={() => setOpenDropdown(openDropdown === 'grape' ? null : 'grape')}
         onSelect={(value) => setFilter('grape', value)}
       />
 
       <StyledDropDown
-        label="Winery"
-        value={filters.wineryId}
-        options={['Shumi', 'Khareba', 'Teliani']}
-        isOpen={openDropdown === 'wineryId'}
-        onOpen={() => setOpenDropdown(openDropdown === 'wineryId' ? null : 'wineryId')}
-        onSelect={(value) => setFilter('wineryId', value)}
-      />
-
-      <StyledDropDown
         label="Rating"
-        value={filters.minRating}
+        value={minRating}
         options={['5', '4', '3']}
         isOpen={openDropdown === 'minRating'}
         onOpen={() => setOpenDropdown(openDropdown === 'minRating' ? null : 'minRating')}
@@ -72,8 +70,8 @@ const WineFilter = ({ className }: PropsWineFilter) => {
 
       <StyledDropDown
         label="Vintage"
-        value={filters.vintage}
-        options={['2023', '2022', '2021', '2020']}
+        value={vintage}
+        options={['2023', '2022', '2021', '2020', '2019', '2018']}
         isOpen={openDropdown === 'vintage'}
         onOpen={() => setOpenDropdown(openDropdown === 'vintage' ? null : 'vintage')}
         onSelect={(value) => setFilter('vintage', value)}

@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useLocationStore } from '@/store/location/locationStore';
-import { getRegions } from '@/api/regions';
 import FilterClearButton from '../buttons/FilterClearButton';
 import { StyledDropDown, StyledWineFilterContainer } from '../WineFilter/WineFilter.styled';
 
@@ -9,31 +8,10 @@ const ACITIDY_OPTIONS = ['Low', 'Medium', 'High', 'Very High'];
 const BODY_OPTIONS = ['Light', 'Medium', 'Full-bodied'];
 const GRAPE_TYPES = ['Red', 'White', 'Rose'];
 
-interface RegionOption {
-  _id: string;
-  name: string;
-}
-
 const GrapeFilter = () => {
   const filters = useGrapeFiltersStore();
-  const { country } = useLocationStore();
+  const { regions, loading: regionsLoading } = useLocationStore();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [regions, setRegions] = useState<RegionOption[]>([]);
-
-  useEffect(() => {
-    const fetchRegions = async () => {
-      if (!country) return;
-      try {
-        const res = await getRegions(country);
-        setRegions(res.data || []);
-        filters.setFilter('region', '');
-      } catch (error) {
-        console.error('Failed to fetch regions', error);
-        setRegions([]);
-      }
-    };
-    fetchRegions();
-  }, [country]);
 
   return (
     <StyledWineFilterContainer>
@@ -53,9 +31,10 @@ const GrapeFilter = () => {
         isOpen={openDropdown === 'region'}
         onOpen={() => setOpenDropdown(openDropdown === 'region' ? null : 'region')}
         onSelect={(val) => {
-          const id = regions.find((r) => r.name === val)?._id || '';
-          filters.setFilter('region', id);
+          const selectedRegion = regions.find((r) => r.name === val);
+          filters.setFilter('region', selectedRegion?._id || '');
         }}
+        disabled={regionsLoading || regions.length === 0}
       />
 
       <StyledDropDown
