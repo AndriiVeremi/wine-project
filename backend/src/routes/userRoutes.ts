@@ -8,6 +8,39 @@ import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
 
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     tags: [Users]
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: [USER, WINERY_OWNER]
+ *             required:
+ *               - firstName
+ *               - lastName
+ *               - email
+ *               - password
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ */
 router.post('/register', validateBody(registerSchema), userController.registerUser);
 
 /**
@@ -60,6 +93,18 @@ router.patch(
   userController.updateUserProfile,
 );
 
+/**
+ * @swagger
+ * /users/me/reviews:
+ *   get:
+ *     tags: [Users]
+ *     summary: Get all reviews written by the current user
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of user reviews.
+ */
 router.get('/me/reviews', authMiddleware, getUserReviews);
 
 /**

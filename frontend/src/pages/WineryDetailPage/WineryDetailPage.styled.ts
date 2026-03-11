@@ -51,7 +51,7 @@ export const ThumbnailsGrid = styled.div`
 `;
 
 export const Thumbnail = styled.div<{ $active?: boolean }>`
-  height: 120px; /* Трохи зменшимо висоту для кращого балансу */
+  height: 120px;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -85,7 +85,6 @@ export const WineryNameTitle = styled.h1`
   margin: 0;
 `;
 
-// Новий контейнер для логотипу та контактів
 export const WineryHeaderRow = styled.div`
   display: flex;
   align-items: flex-start;
