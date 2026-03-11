@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
 import WineOverview from '@/components/WineOverview/WineOverview';
 import WineReviews from '@/components/WineReviews';
+import AddReviewForm from '@/components/AddReviewForm/AddReviewForm';
 import Container from '@/components/common/Container';
 import {
   StyledWinePageDiv,
@@ -17,6 +18,7 @@ import InfoButton from '@/components/buttons/InfoButton';
 const WineDetailPage = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
+  const [refreshReviews, setRefreshReviews] = useState(0);
 
   const wine = useWineDetailStore((s) => s.wine);
   const loading = useWineDetailStore((s) => s.loading);
@@ -45,9 +47,19 @@ const WineDetailPage = () => {
             {activeTab === 'description' ? (
               <p>{wine.description}</p>
             ) : (
-              <WineReviews wineId={wine._id} />
+              <WineReviews key={refreshReviews} wineId={wine._id} />
             )}
           </WineDescriptionContent>
+
+          <AddReviewForm
+            wineId={wine._id}
+            onReviewAdded={() => {
+              setRefreshReviews((prev) => prev + 1);
+              setActiveTab('reviews');
+              // Optionally re-fetch wine to update average rating
+              if (id) fetchWine(id);
+            }}
+          />
         </StyledWraperImage>
 
         <StyledWineInfo>

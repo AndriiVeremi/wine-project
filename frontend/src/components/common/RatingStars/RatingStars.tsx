@@ -30,13 +30,15 @@ const RatingStars = ({
     <StarsWrapper>
       {showLeftValue && <RatingTextLeft>{value.toFixed(1)}</RatingTextLeft>}
 
-      {stars.map((type, i) => {
-        if (type === 'full') return <FaStar key={i} size={size} color={color} />;
+      <div style={{ display: 'flex', gap: '4px' }}>
+        {stars.map((type, i) => {
+          if (type === 'full') return <FaStar key={i} size={size} color={color} />;
 
-        if (type === 'half') return <FaStarHalfAlt key={i} size={size} color={color} />;
+          if (type === 'half') return <FaStarHalfAlt key={i} size={size} color={color} />;
 
-        return <FaRegStar key={i} size={size} color={color} />;
-      })}
+          return <FaRegStar key={i} size={size} color={color} />;
+        })}
+      </div>
 
       {showRightReviews && reviews !== undefined && <RatingTextRight>({reviews})</RatingTextRight>}
     </StarsWrapper>

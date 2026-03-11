@@ -5,12 +5,12 @@ export const StyledWineryFilterContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-wrap: wrap; /* Дозволяємо перенос, якщо не влазить, щоб не ховати контент */
+  flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 32px;
   width: 100%;
   position: relative;
-  z-index: 100; /* Піднімаємо весь блок фільтрів вище за список карток */
+  z-index: 100;
 `;
 
 export const StyledDropDown = styled(Dropdown)<{ $isOpen?: boolean }>`
@@ -23,5 +23,5 @@ export const StyledDropDown = styled(Dropdown)<{ $isOpen?: boolean }>`
 export const SearchFieldWrapper = styled.div`
   flex-grow: 1;
   min-width: 200px;
-  z-index: 1; /* Пошук нижче за випадаючі списки */
+  z-index: 1;
 `;

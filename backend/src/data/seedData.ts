@@ -2,6 +2,9 @@ import mongoose from 'mongoose';
 
 const user1Id = new mongoose.Types.ObjectId();
 const user2Id = new mongoose.Types.ObjectId();
+const user3Id = new mongoose.Types.ObjectId();
+const user4Id = new mongoose.Types.ObjectId();
+const user5Id = new mongoose.Types.ObjectId();
 const owner1Id = new mongoose.Types.ObjectId();
 
 const georgiaId = new mongoose.Types.ObjectId();
@@ -211,6 +214,33 @@ export const users = [
     lastName: 'Gvazava',
     email: 'owner@test.com',
     role: 'WINERY_OWNER',
+  },
+  {
+    _id: user3Id,
+    firebaseUid: 'user3-uid',
+    firstName: 'Tamta',
+    lastName: 'Lashkhi',
+    email: 'user3@example.com',
+    role: 'USER',
+    favoriteWines: [wine5Id, wine7Id],
+  },
+  {
+    _id: user4Id,
+    firebaseUid: 'user4-uid',
+    firstName: 'Zaza',
+    lastName: 'Pachulia',
+    email: 'user4@example.com',
+    role: 'USER',
+    favoriteWines: [wine11Id, wine12Id],
+  },
+  {
+    _id: user5Id,
+    firebaseUid: 'user5-uid',
+    firstName: 'Lali',
+    lastName: 'Kapanadze',
+    email: 'user5@example.com',
+    role: 'USER',
+    favoriteWines: [wine15Id, wine19Id],
   },
 ];
 

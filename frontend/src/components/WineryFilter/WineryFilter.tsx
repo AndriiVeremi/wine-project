@@ -22,7 +22,6 @@ const WineryFilter = () => {
 
   return (
     <StyledWineryFilterContainer>
-      {/* 1. Регіон (Беремо з глобального стора) */}
       <StyledDropDown
         label="Region"
         value={regions.find((r) => r._id === region)?.name || ''}
@@ -38,7 +37,6 @@ const WineryFilter = () => {
         disabled={regionsLoading || regions.length === 0}
       />
 
-      {/* 2. Пошук */}
       <SearchFieldWrapper>
         <SearchBar
           value={nameInput}
@@ -48,7 +46,6 @@ const WineryFilter = () => {
         />
       </SearchFieldWrapper>
 
-      {/* 3. Очистка */}
       <FilterClearButton onClick={clearFilters}>Clear</FilterClearButton>
     </StyledWineryFilterContainer>
   );
