@@ -26,7 +26,6 @@ import {
   VideoWrapper,
   InfoRow,
   TabButtonsWrapper,
-  TabButton,
   DescriptionText,
   SectionHeaderTitle,
   MapSection,

@@ -83,6 +83,7 @@ export const WineryNameTitle = styled.h1`
   font-weight: 600;
   color: var(--accent-color, #841013);
   margin: 0;
+  line-height: 1.1;
 `;
 
 export const WineryHeaderRow = styled.div`
@@ -143,22 +144,9 @@ export const InfoRow = styled.div`
 
 export const TabButtonsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 24px;
   margin-bottom: 40px;
-`;
-
-export const TabButton = styled.button<{ $active?: boolean }>`
-  background: ${(props) =>
-    props.$active ? 'rgba(132, 16, 19, 0.05)' : 'rgba(255, 255, 255, 0.54)'};
-  border: 1px dashed ${(props) => (props.$active ? 'var(--accent-color, #841013)' : '#454443')};
-  border-radius: 44px;
-  padding: 16px 55px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  text-transform: uppercase;
-  color: ${(props) => (props.$active ? 'var(--accent-color, #841013)' : '#3f3f3f')};
-  cursor: pointer;
-  transition: all 0.2s;
 `;
 
 export const DescriptionText = styled.div`
@@ -185,6 +173,7 @@ export const MapSection = styled.section`
   border-radius: 20px;
   overflow: hidden;
   margin-top: 80px;
+
   img {
     width: 100%;
     height: 100%;
