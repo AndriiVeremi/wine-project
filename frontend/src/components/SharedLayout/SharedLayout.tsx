@@ -5,11 +5,18 @@ import AuthModal from '@/components/common/AuthModal/AuthModal';
 import AIAssistant from '@/components/common/AIAssistant/AIAssistant';
 import { useAuthStore } from '@/store/auth/authStore';
 import { LayoutWrapper } from './SharedLayout.styled';
+import { useFavoritesStore } from '@/store/user/useFavoritesStore';
+import { useEffect } from 'react';
 
 const SharedLayout = () => {
   const { pathname } = useLocation();
   const { user, isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();
   const aiAssistantEnabled = import.meta.env.VITE_AI_ASSISTANT_ENABLED === 'true';
+  const fetchFavorites = useFavoritesStore((s) => s.fetchFavorites);
+
+  useEffect(() => {
+    if (user) fetchFavorites();
+  }, [user, fetchFavorites]);
 
   const getBgType = () => {
     if (pathname === '/') return 'home';
