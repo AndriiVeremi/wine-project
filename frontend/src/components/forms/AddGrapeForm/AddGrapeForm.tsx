@@ -17,7 +17,7 @@ import {
   FullWidthWrapper,
   ButtonWrapper,
 } from './AddGrapeForm.styled';
-import { FormContainer } from '@/components/forms/Form.styled';
+import { FormContainer } from '@/components/forms/AuthForm/Form.styled';
 
 const ACITIDY_OPTIONS = [
   { value: 'Low', label: 'Low' },
@@ -85,7 +85,7 @@ const AddGrapeForm = () => {
       notifyError('Some files are too big (max 5MB)');
     }
 
-    const newFiles = [...files, ...validFiles].slice(0, 5); // Limit to 5
+    const newFiles = [...files, ...validFiles].slice(0, 5);
     setFiles(newFiles);
     setPreviews(newFiles.map((f) => URL.createObjectURL(f)));
   };

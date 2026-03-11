@@ -19,8 +19,8 @@ import {
   PhotoSide,
   InfoSide,
   CheckboxWrapper,
-} from './AddWineWrapper.styled';
-import { FormContainer } from '@/components/forms/Form.styled';
+} from './AddWinesForm.styled';
+import { FormContainer } from '@/components/forms/AuthForm/Form.styled';
 
 const initialValues = {
   name: '',

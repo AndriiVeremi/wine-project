@@ -5,7 +5,11 @@ import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
 import FormField from '@/components/common/FormField/FormField';
 import styled from 'styled-components';
-import { FormContainer, PasswordWrapper, PasswordToggle } from '@/components/forms/Form.styled';
+import {
+  FormContainer,
+  PasswordWrapper,
+  PasswordToggle,
+} from '@/components/forms/AuthForm/Form.styled';
 
 const RegisterFormButtonWrapper = styled.div`
   margin-top: 40px;

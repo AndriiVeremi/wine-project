@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
-import LoginForm from '@/components/forms/LoginForm';
-import RegisterForm from '@/components/forms/RegisterForm';
+import LoginForm from '@/components/forms/AuthForm/LoginForm';
+import RegisterForm from '@/components/forms/AuthForm/RegisterForm';
 import {
   ModalOverlay,
   ModalContainer,
