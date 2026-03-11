@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { subscribeWithSelector } from 'zustand/middleware';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { auth } from '@/config/firebase';
@@ -50,112 +51,114 @@ const getErrorMessage = (error: unknown): string => {
   return 'An unknown error occurred.';
 };
 
-export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
-  isLoading: true,
-  error: null,
-  isAuthModalOpen: false,
-  authModalView: 'login',
+export const useAuthStore = create<AuthState>()(
+  subscribeWithSelector((set, get) => ({
+    user: null,
+    isLoading: true,
+    error: null,
+    isAuthModalOpen: false,
+    authModalView: 'login',
 
-  setUser: async (firebaseUser: User | null) => {
-    if (firebaseUser) {
-      // If user is already set and UID matches, don't trigger everything again
-      if (get().user?.uid === firebaseUser.uid && !get().isLoading) return;
+    setUser: async (firebaseUser: User | null) => {
+      if (firebaseUser) {
+        // If user is already set and UID matches, don't trigger everything again
+        if (get().user?.uid === firebaseUser.uid && !get().isLoading) return;
 
-      const tokenResult = await firebaseUser.getIdTokenResult();
-      const roleClaim = tokenResult.claims.role;
-      const role = typeof roleClaim === 'string' ? roleClaim : 'USER';
+        const tokenResult = await firebaseUser.getIdTokenResult();
+        const roleClaim = tokenResult.claims.role;
+        const role = typeof roleClaim === 'string' ? roleClaim : 'USER';
 
-      set({
-        user: {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          firstName: firebaseUser.displayName?.split(' ')[0] || null,
-          lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || null,
-          role: role,
-        },
-        isLoading: false,
-        error: null,
-        isAuthModalOpen: false,
-      });
+        set({
+          user: {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            firstName: firebaseUser.displayName?.split(' ')[0] || null,
+            lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || null,
+            role: role,
+          },
+          isLoading: false,
+          error: null,
+          isAuthModalOpen: false,
+        });
 
-      // After setting firebase user, fetch real data from DB
-      await get().fetchProfile();
-    } else {
-      if (get().user === null && !get().isLoading) return;
-      set({ user: null, isLoading: false, error: null });
-    }
-  },
+        // After setting firebase user, fetch real data from DB
+        await get().fetchProfile();
+      } else {
+        if (get().user === null && !get().isLoading) return;
+        set({ user: null, isLoading: false, error: null });
+      }
+    },
 
-  updateUser: (updatedData: Partial<AppUser>) => {
-    set((state) => ({
-      user: state.user ? { ...state.user, ...updatedData } : null,
-    }));
-  },
-
-  fetchProfile: async () => {
-    try {
-      const { data } = await apiClient.get<UserProfile>('/users/me');
+    updateUser: (updatedData: Partial<AppUser>) => {
       set((state) => ({
-        user: state.user
-          ? {
-              ...state.user,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              avatarUrl: data.avatarUrl,
-              role: data.role,
-            }
-          : null,
+        user: state.user ? { ...state.user, ...updatedData } : null,
       }));
-    } catch (err) {
-      console.error('Failed to fetch user profile from DB:', err);
-    }
-  },
+    },
 
-  register: async (registerData: IRegisterData) => {
-    set({ isLoading: true, error: null });
+    fetchProfile: async () => {
+      try {
+        const { data } = await apiClient.get<UserProfile>('/users/me');
+        set((state) => ({
+          user: state.user
+            ? {
+                ...state.user,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                avatarUrl: data.avatarUrl,
+                role: data.role,
+              }
+            : null,
+        }));
+      } catch (err) {
+        console.error('Failed to fetch user profile from DB:', err);
+      }
+    },
 
-    try {
-      await registerUserApi(registerData);
-      return await get().login(registerData.email, registerData.password);
-    } catch (err: unknown) {
-      const errorMessage = getErrorMessage(err);
-      set({ error: errorMessage, isLoading: false });
-      return false;
-    }
-  },
+    register: async (registerData: IRegisterData) => {
+      set({ isLoading: true, error: null });
 
-  login: async (email, password) => {
-    set({ isLoading: true, error: null });
+      try {
+        await registerUserApi(registerData);
+        return await get().login(registerData.email, registerData.password);
+      } catch (err: unknown) {
+        const errorMessage = getErrorMessage(err);
+        set({ error: errorMessage, isLoading: false });
+        return false;
+      }
+    },
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      await get().setUser(userCredential.user);
-      return true;
-    } catch (err: unknown) {
-      const errorMessage = getErrorMessage(err);
+    login: async (email, password) => {
+      set({ isLoading: true, error: null });
 
-      set({ error: errorMessage, isLoading: false });
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        await get().setUser(userCredential.user);
+        return true;
+      } catch (err: unknown) {
+        const errorMessage = getErrorMessage(err);
 
-      return false;
-    }
-  },
+        set({ error: errorMessage, isLoading: false });
 
-  logout: () => {
-    auth.signOut();
+        return false;
+      }
+    },
 
-    set({ user: null, error: null });
-  },
+    logout: () => {
+      auth.signOut();
 
-  clearError: () => {
-    set({ error: null });
-  },
+      set({ user: null, error: null });
+    },
 
-  openAuthModal: (view) => {
-    set({ isAuthModalOpen: true, authModalView: view, error: null });
-  },
+    clearError: () => {
+      set({ error: null });
+    },
 
-  closeAuthModal: () => {
-    set({ isAuthModalOpen: false });
-  },
-}));
+    openAuthModal: (view) => {
+      set({ isAuthModalOpen: true, authModalView: view, error: null });
+    },
+
+    closeAuthModal: () => {
+      set({ isAuthModalOpen: false });
+    },
+  })),
+);

@@ -8,6 +8,7 @@ interface RatingStarsProps {
   showRightReviews?: boolean;
   size?: number;
   color?: string;
+  className?: string;
 }
 
 const RatingStars = ({
@@ -17,6 +18,7 @@ const RatingStars = ({
   showRightReviews = false,
   size = 20,
   color = 'var(--star-main)',
+  className,
 }: RatingStarsProps) => {
   const stars = Array.from({ length: 5 }, (_, i) => {
     const diff = value - i;
@@ -27,7 +29,7 @@ const RatingStars = ({
   });
 
   return (
-    <StarsWrapper>
+    <StarsWrapper className={className}>
       {showLeftValue && <RatingTextLeft>{value.toFixed(1)}</RatingTextLeft>}
 
       <div style={{ display: 'flex', gap: '4px' }}>
