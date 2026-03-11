@@ -9,12 +9,7 @@ import WineryMap from '@/components/Location/WineryMap';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import InfoButton from '@/components/buttons/InfoButton/InfoButton';
-import { 
-  HiMapPin, 
-  HiGlobeAlt, 
-  HiEnvelope, 
-  HiPhone 
-} from 'react-icons/hi2';
+import { HiMapPin, HiGlobeAlt, HiEnvelope, HiPhone } from 'react-icons/hi2';
 
 import {
   DetailPageContainer,
@@ -176,16 +171,13 @@ const WineryDetailPage = () => {
       </HeroSection>
 
       <TabButtonsWrapper>
-        <InfoButton 
-          active={activeTab === 'description'} 
+        <InfoButton
+          active={activeTab === 'description'}
           onClick={() => setActiveTab('description')}
         >
           Description
         </InfoButton>
-        <InfoButton 
-          active={activeTab === 'reviews'} 
-          onClick={() => setActiveTab('reviews')}
-        >
+        <InfoButton active={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')}>
           Reviews
         </InfoButton>
       </TabButtonsWrapper>
