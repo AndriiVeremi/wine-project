@@ -4,6 +4,9 @@ const owner1Id = new mongoose.Types.ObjectId();
 const owner2Id = new mongoose.Types.ObjectId();
 const user1Id = new mongoose.Types.ObjectId();
 const user2Id = new mongoose.Types.ObjectId();
+const user3Id = new mongoose.Types.ObjectId();
+const user4Id = new mongoose.Types.ObjectId();
+const user5Id = new mongoose.Types.ObjectId();
 
 const winery1Id = new mongoose.Types.ObjectId();
 const winery2Id = new mongoose.Types.ObjectId();
@@ -207,6 +210,33 @@ export const users = [
     email: 'user2@example.com',
     role: 'USER',
     favoriteWines: [wine3Id, wine4Id],
+  },
+  {
+    _id: user3Id,
+    firebaseUid: 'user3-uid',
+    firstName: 'Tamta',
+    lastName: 'Lashkhi',
+    email: 'user3@example.com',
+    role: 'USER',
+    favoriteWines: [wine5Id, wine7Id],
+  },
+  {
+    _id: user4Id,
+    firebaseUid: 'user4-uid',
+    firstName: 'Zaza',
+    lastName: 'Pachulia',
+    email: 'user4@example.com',
+    role: 'USER',
+    favoriteWines: [wine11Id, wine12Id],
+  },
+  {
+    _id: user5Id,
+    firebaseUid: 'user5-uid',
+    firstName: 'Lali',
+    lastName: 'Kapanadze',
+    email: 'user5@example.com',
+    role: 'USER',
+    favoriteWines: [wine15Id, wine19Id],
   },
 ];
 
@@ -982,6 +1012,73 @@ export const tours = [
 ];
 
 export const reviews = [
+  // Wine 1
   { wineId: wine1Id, userId: user1Id, rating: 5, comment: 'Great wine!' },
+  { wineId: wine1Id, userId: user2Id, rating: 5, comment: 'A truly premium Cabernet Sauvignon.' },
+  { wineId: wine1Id, userId: user3Id, rating: 4, comment: 'Excellent depth and structure.' },
+  // Wine 2
   { wineId: wine2Id, userId: user1Id, rating: 4, comment: 'Nice and fresh.' },
+  { wineId: wine2Id, userId: user2Id, rating: 4, comment: 'Crisp and clean Chardonnay.' },
+  { wineId: wine2Id, userId: user4Id, rating: 5, comment: 'My favorite white wine for summer.' },
+  // Wine 3
+  { wineId: wine3Id, userId: user1Id, rating: 5, comment: 'Excellent Merlot, very smooth.' },
+  { wineId: wine3Id, userId: user3Id, rating: 4, comment: 'Very velvety texture, loved it.' },
+  // Wine 4
+  { wineId: wine4Id, userId: user2Id, rating: 4, comment: 'Refreshing rose, perfect for summer.' },
+  { wineId: wine4Id, userId: user5Id, rating: 5, comment: 'Beautiful strawberry notes.' },
+  // Wine 5
+  { wineId: wine5Id, userId: user1Id, rating: 3, comment: 'A bit too sweet for my taste, but good quality.' },
+  { wineId: wine5Id, userId: user4Id, rating: 4, comment: 'Great balance of acidity and sweetness.' },
+  { wineId: wine5Id, userId: user2Id, rating: 4, comment: 'Very aromatic and pleasant.' },
+  // Wine 6
+  { wineId: wine6Id, userId: user1Id, rating: 4, comment: 'Fun sparkling wine, great for parties.' },
+  { wineId: wine6Id, userId: user3Id, rating: 4, comment: 'Very lively bubbles and berry aroma.' },
+  // Wine 7
+  { wineId: wine7Id, userId: user2Id, rating: 5, comment: 'Authentic Saperavi, the qvevri aging really shows.' },
+  { wineId: wine7Id, userId: user5Id, rating: 5, comment: 'A masterpiece of Georgian winemaking.' },
+  { wineId: wine7Id, userId: user1Id, rating: 4, comment: 'Deep and complex, needs decanting.' },
+  // Wine 8
+  { wineId: wine8Id, userId: user1Id, rating: 4, comment: 'Love the semi-sweetness of this Kindzmarauli.' },
+  { wineId: wine8Id, userId: user4Id, rating: 5, comment: 'Perfect dessert wine.' },
+  // Wine 9
+  { wineId: wine9Id, userId: user2Id, rating: 5, comment: 'Very fresh and floral, highly recommended.' },
+  { wineId: wine9Id, userId: user3Id, rating: 4, comment: 'Clean and crisp with nice acidity.' },
+  // Wine 10
+  { wineId: wine10Id, userId: user1Id, rating: 4, comment: 'Interesting rare grape, worth trying.' },
+  { wineId: wine10Id, userId: user5Id, rating: 5, comment: 'Unique character, very impressive.' },
+  { wineId: wine10Id, userId: user2Id, rating: 4, comment: 'Robust and full of flavor.' },
+  // Wine 11
+  { wineId: wine11Id, userId: user2Id, rating: 5, comment: 'Incredible orange wine, very complex aromas.' },
+  { wineId: wine11Id, userId: user4Id, rating: 5, comment: 'A true representation of Qvevri tradition.' },
+  { wineId: wine11Id, userId: user3Id, rating: 4, comment: 'Interesting tannins for a white wine.' },
+  // Wine 12
+  { wineId: wine12Id, userId: user1Id, rating: 5, comment: 'One of the best Saperavis I have ever tasted.' },
+  { wineId: wine12Id, userId: user2Id, rating: 5, comment: 'Outstanding quality and depth.' },
+  // Wine 13
+  { wineId: wine13Id, userId: user2Id, rating: 3, comment: 'Average rose, but good for the price.' },
+  { wineId: wine13Id, userId: user5Id, rating: 4, comment: 'Light and easy to drink.' },
+  { wineId: wine13Id, userId: user1Id, rating: 4, comment: 'Perfect for a picnic.' },
+  // Wine 14
+  { wineId: wine14Id, userId: user3Id, rating: 4, comment: 'Solid Chardonnay with nice oak influence.' },
+  { wineId: wine14Id, userId: user4Id, rating: 4, comment: 'Creamy and well-balanced.' },
+  // Wine 15
+  { wineId: wine15Id, userId: user2Id, rating: 4, comment: 'Bold and expressive, definitely a unique experience.' },
+  { wineId: wine15Id, userId: user5Id, rating: 5, comment: 'Love the skin contact notes.' },
+  // Wine 16
+  { wineId: wine16Id, userId: user1Id, rating: 4, comment: 'Great value Merlot for everyday drinking.' },
+  { wineId: wine16Id, userId: user3Id, rating: 4, comment: 'Smooth and easygoing.' },
+  { wineId: wine16Id, userId: user4Id, rating: 3, comment: 'A bit simple, but decent.' },
+  // Wine 17
+  { wineId: wine17Id, userId: user2Id, rating: 4, comment: 'Crisp Riesling with great minerality.' },
+  { wineId: wine17Id, userId: user5Id, rating: 5, comment: 'One of my favorites for spicy food.' },
+  // Wine 18
+  { wineId: wine18Id, userId: user1Id, rating: 4, comment: 'Very sweet and grapey, just as expected.' },
+  { wineId: wine18Id, userId: user4Id, rating: 3, comment: 'A bit too sweet for me, but others might like it.' },
+  // Wine 19
+  { wineId: wine19Id, userId: user1Id, rating: 5, comment: 'Stunning Cabernet Franc, very elegant.' },
+  { wineId: wine19Id, userId: user2Id, rating: 5, comment: 'Sophisticated and well-structured.' },
+  { wineId: wine19Id, userId: user3Id, rating: 4, comment: 'Great spice on the finish.' },
+  // Wine 20
+  { wineId: wine20Id, userId: user4Id, rating: 4, comment: 'Classic Imeretian blend, very refreshing.' },
+  { wineId: wine20Id, userId: user5Id, rating: 4, comment: 'Good acidity and fruit balance.' },
 ];
