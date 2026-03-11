@@ -3,8 +3,6 @@ import { create } from 'zustand';
 import { getWines, addWine, updateWineImage } from '@/api/wines';
 import type { Wine, WineQueryParams } from '@/types/wine';
 
-let lastQueryKey: string | null = null;
-
 interface WinesStore {
   wines: Wine[];
   loading: boolean;
@@ -33,11 +31,6 @@ export const useWinesStore = create<WinesStore>()((set) => ({
   totalPages: 1,
 
   fetchWines: async (params) => {
-    const queryKey = JSON.stringify(params);
-
-    if (queryKey === lastQueryKey) return;
-    lastQueryKey = queryKey;
-
     set({ loading: true, error: null });
 
     try {

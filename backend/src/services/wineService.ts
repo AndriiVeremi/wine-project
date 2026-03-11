@@ -83,7 +83,9 @@ export class WineService {
       }
     }
 
-    if (wineryId) filter.winery = wineryId;
+    if (wineryId) {
+      filter.winery = wineryId;
+    }
     if (minRating) filter.averageRating = { $gte: parseFloat(minRating) };
     if (maxPrice) filter.price = { $lte: parseFloat(maxPrice) };
     if (vintage) filter.vintage = parseInt(vintage);
