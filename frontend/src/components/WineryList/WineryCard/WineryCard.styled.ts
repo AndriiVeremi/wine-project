@@ -8,7 +8,7 @@ export const StyledWineryCardDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: 100%; /* Картка займає всю доступну висоту в сітці */
+  height: 100%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
@@ -32,7 +32,6 @@ export const WineryTitle = styled.h3`
   font-weight: 700;
   color: var(--black-color, #000000);
   margin: 0;
-  /* Обмеження назви одним рядком, щоб не ламалася верстка */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -55,7 +54,6 @@ export const WineryInfo = styled.p`
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.5;
-  /* Встановлюємо мінімальну висоту для 5 рядків: 14px * 1.5 * 5 = 105px */
   min-height: 105px;
 `;
 
