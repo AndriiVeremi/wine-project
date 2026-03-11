@@ -20,7 +20,8 @@ class LocationController {
     const countryDoc = await Location.findOne({ name: country as string, type: 'country' });
 
     if (!countryDoc) {
-      throw new HttpError('Country not found', 404);
+      res.json([]);
+      return;
     }
 
     const regions = await LocationService.getRegionsByCountry(countryDoc._id);

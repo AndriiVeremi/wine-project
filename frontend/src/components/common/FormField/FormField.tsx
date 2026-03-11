@@ -1,5 +1,11 @@
 import React from 'react';
-import { FieldWrapper, Label, Input, Select, Textarea } from '@/components/forms/Form.styled';
+import {
+  FieldWrapper,
+  Label,
+  Input,
+  Select,
+  Textarea,
+} from '@/components/forms/AuthForm/Form.styled';
 
 interface FormFieldProps {
   label: string;

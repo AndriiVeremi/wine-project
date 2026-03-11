@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocationStore } from '@/store/location/locationStore';
+import { getCountries } from '@/api/regions';
 import {
   List,
   Text,
@@ -11,11 +12,29 @@ import {
   CountryItem,
 } from './Location.styled';
 
-const COUNTRIES = ['Georgia', 'Ukraine', 'France', 'Italy'];
+interface Country {
+  _id: string;
+  name: string;
+}
 
 const Location = () => {
   const { country, setCountry } = useLocationStore();
   const [isOpen, setIsOpen] = useState(false);
+  const [countries, setCountries] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const res = await getCountries();
+        // Витягуємо тільки імена країн, якщо прийшли об'єкти
+        const names = res.data.map((c: Country) => (typeof c === 'string' ? c : c.name));
+        setCountries(names);
+      } catch (err) {
+        console.error('Failed to fetch countries', err);
+      }
+    };
+    fetchCountries();
+  }, []);
 
   const handleSelect = (c: string) => {
     setCountry(c);
@@ -36,9 +55,9 @@ const Location = () => {
         </Item>
       </List>
 
-      {isOpen && (
+      {isOpen && countries.length > 0 && (
         <CountryDropdown>
-          {COUNTRIES.map((c) => (
+          {countries.map((c) => (
             <CountryItem key={c} onClick={() => handleSelect(c)}>
               {c}
             </CountryItem>

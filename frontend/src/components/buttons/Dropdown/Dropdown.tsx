@@ -7,6 +7,7 @@ interface DropdownProps {
   options: string[];
   isOpen: boolean;
   className?: string;
+  disabled?: boolean;
   onOpen: () => void;
   onSelect?: (value: string) => void;
 }
@@ -17,6 +18,7 @@ const Dropdown = ({
   options,
   isOpen,
   className,
+  disabled,
   onOpen,
   onSelect,
 }: DropdownProps) => {
@@ -39,8 +41,12 @@ const Dropdown = ({
   }, [isOpen, onOpen]);
 
   return (
-    <Wrapper ref={ref} className={className}>
-      <Button onClick={onOpen} $active={isOpen || !!value}>
+    <Wrapper ref={ref} className={className} $disabled={disabled}>
+      <Button
+        onClick={disabled ? undefined : onOpen}
+        $active={isOpen || !!value}
+        $disabled={disabled}
+      >
         {value || label}
         <ArrowIcon $open={isOpen} size={16} />
       </Button>

@@ -10,7 +10,7 @@ import {
   PasswordWrapper,
   PasswordToggle,
   ForgotPassword,
-} from '@/components/forms/Form.styled';
+} from '@/components/forms/AuthForm/Form.styled';
 
 const LoginFormButtonWrapper = styled.div`
   margin-top: 30px;
