@@ -17,4 +17,8 @@ export interface UserProfile {
   phone?: string;
   birthDate?: string;
   address?: string;
+  winery?: {
+    _id: string;
+    name: string;
+  };
 }

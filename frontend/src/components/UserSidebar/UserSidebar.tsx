@@ -20,9 +20,9 @@ export type AccountSection =
   | 'My Wishlist'
   | 'My Reviews'
   | 'Account Settings'
-  | 'Wines'
-  | 'Wineries'
-  | 'Grapes'
+  | 'Add Wine'
+  | 'Add Winery'
+  | 'Add Grape'
   | 'Buy VIP';
 
 interface AccountSidebarProps {
@@ -44,9 +44,9 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ currentSection, setSect
   const items = isOwnerOrAdmin
     ? [
         { name: 'Personal Info', icon: <FiUser /> },
-        { name: 'Wineries', icon: <FiHome /> },
-        { name: 'Wines', icon: <FaWineBottle /> },
-        { name: 'Grapes', icon: <FaLeaf /> },
+        { name: 'Add Winery', icon: <FiHome /> },
+        { name: 'Add Wine', icon: <FaWineBottle /> },
+        { name: 'Add Grape', icon: <FaLeaf /> },
         { name: 'Notification Center', icon: <FiInbox /> },
         { name: 'Buy VIP', icon: <FiStar /> },
         { name: 'History', icon: <FiClock /> },

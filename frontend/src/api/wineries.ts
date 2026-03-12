@@ -9,11 +9,11 @@ export const getWineryById = (id: string) => {
   return apiClient.get(`/wineries/${id}`);
 };
 
-export const addWinery = (data: Partial<Winery>) => {
+export const addWinery = (data: FormData | Partial<Winery>) => {
   return apiClient.post('/wineries', data);
 };
 
-export const updateWinery = (id: string, data: Partial<Winery>) => {
+export const updateWinery = (id: string, data: FormData | Partial<Winery>) => {
   return apiClient.patch(`/wineries/${id}`, data);
 };
 

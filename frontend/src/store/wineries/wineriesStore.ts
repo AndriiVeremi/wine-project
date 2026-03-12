@@ -11,7 +11,7 @@ interface WineriesStore {
   totalPages: number;
 
   fetchWineries: (params?: WineriesQueryParams) => Promise<void>;
-  addWinery: (data: Partial<Winery>) => Promise<void>;
+  addWinery: (data: FormData | Partial<Winery>) => Promise<void>;
 }
 
 export const useWineriesStore = create<WineriesStore>((set) => ({
