@@ -83,12 +83,14 @@ export const useFavoritesStore = create<FavoritesState>()(
   ),
 );
 
-useAuthStore.subscribe(
-  (state) => state.user,
-  (user) => {
-    if (!user) {
-      useFavoritesStore.getState().reset();
-    }
-  },
-  { fireImmediately: true },
-);
+export const bindFavoritesToAuth = () => {
+  useAuthStore.subscribe(
+    (state) => state.user,
+    (user) => {
+      if (!user) {
+        useFavoritesStore.getState().reset();
+      }
+    },
+    { fireImmediately: true },
+  );
+};
