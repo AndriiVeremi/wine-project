@@ -56,7 +56,6 @@ const WineDetailPage = () => {
             onReviewAdded={() => {
               setRefreshReviews((prev) => prev + 1);
               setActiveTab('reviews');
-              // Optionally re-fetch wine to update average rating
               if (id) fetchWine(id);
             }}
           />

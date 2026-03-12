@@ -10,6 +10,7 @@ import {
 interface FormFieldProps {
   label: string;
   id: string;
+  name?: string;
   type?: string;
   value: string | number;
   onChange: (
