@@ -58,7 +58,6 @@ export const ReviewContent = styled.div`
   background: var(--white);
   padding: 24px;
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--main-shadow);
   min-height: 150px;
   display: flex;
   flex-direction: column;
