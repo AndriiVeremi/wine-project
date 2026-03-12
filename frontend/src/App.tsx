@@ -16,7 +16,6 @@ import { Toaster } from 'react-hot-toast';
 import WineDetailPage from './pages/WineDetailPage/WineDetailPage';
 import WineryDetailPage from './pages/WineryDetailPage/WineryDetailPage';
 import { Loader } from '@/components/common/Loader';
-import { bindFavoritesToAuth } from './store/user/useFavoritesStore';
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
@@ -32,10 +31,6 @@ function App() {
     });
     return () => unsubscribe();
   }, [setUser]);
-
-  useEffect(() => {
-    bindFavoritesToAuth();
-  }, []);
 
   if (isLoading) {
     return <Loader />;
