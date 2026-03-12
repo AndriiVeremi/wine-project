@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/auth/authStore';
 import AccountSidebar from '@/components/UserSidebar/UserSidebar';
 import type { AccountSection } from '@/components/UserSidebar/UserSidebar';
 import AddWines from '@/components/forms/AddWinesForm/AddWinesForm';
+import AddWineryForm from '@/components/forms/AddWineryForm/AddWineryForm';
 import AddGrapeForm from '@/components/forms/AddGrapeForm/AddGrapeForm';
 import AccountInfo from '@/components/UserInfo/UserInfo';
 import AccountSettings from '@/components/UserSettings/UserSettings';
@@ -26,16 +27,12 @@ const AccountPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const isOwner = user?.role === 'WINERY_OWNER';
-  const defaultSection = isOwner ? 'Wines' : 'Personal Info';
+  const defaultSection = isOwner ? 'Add Wine' : 'Personal Info';
   const [activeSection, setActiveSection] = useState<AccountSection>(defaultSection);
 
-  useEffect(() => {
-    if (user) {
-      fetchProfile();
-    }
-  }, [user]);
-
   const fetchProfile = async () => {
+    if (profile && !loading) return;
+
     try {
       const { data } = await apiClient.get<UserProfile>('/users/me');
       setProfile(data);
@@ -45,6 +42,13 @@ const AccountPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user?.uid) {
+      fetchProfile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid]);
 
   const handleProfileUpdate = (updatedProfile: Partial<UserProfile>) => {
     setProfile((prev) => (prev ? { ...prev, ...updatedProfile } : null));
@@ -60,15 +64,21 @@ const AccountPage: React.FC = () => {
 
   const renderContent = () => {
     switch (activeSection) {
-      case 'Wines':
+      case 'Add Wine':
         return <AddWines />;
-      case 'Grapes':
+      case 'Add Grape':
         return <AddGrapeForm />;
-      case 'Wineries':
+      case 'Add Winery':
         return (
           <>
             <SectionTitle>Wineries</SectionTitle>
-            <PlaceholderText>Manage your followed wineries and regions.</PlaceholderText>
+            {profile?.winery ? (
+              <PlaceholderText>
+                You have already registered your winery! You can manage it here soon.
+              </PlaceholderText>
+            ) : (
+              <AddWineryForm />
+            )}
           </>
         );
       case 'Buy VIP':

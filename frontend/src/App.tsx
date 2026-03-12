@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth/authStore';
-import { useLocationStore } from '@/store/location/locationStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 import SharedLayout from '@/components/SharedLayout';
@@ -19,11 +18,6 @@ import { Loader } from '@/components/common/Loader';
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
-  const { country, fetchRegions } = useLocationStore();
-
-  useEffect(() => {
-    fetchRegions(country);
-  }, [country, fetchRegions]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {

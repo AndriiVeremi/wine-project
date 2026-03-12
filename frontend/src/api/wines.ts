@@ -10,8 +10,12 @@ export const getWineById = (id: string) => {
   return apiClient.get(`/wines/${id}`);
 };
 
-export const addWine = (data: Partial<Wine>) => {
+export const addWine = (data: FormData | Partial<Wine>) => {
   return apiClient.post('/wines', data);
+};
+
+export const updateWine = (id: string, data: FormData | Partial<Wine>) => {
+  return apiClient.patch(`/wines/${id}`, data);
 };
 
 export const updateWineImage = (id: string, file: File) => {

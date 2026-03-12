@@ -204,6 +204,7 @@ router.post(
   '/',
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
+  upload.fields([{ name: 'image', maxCount: 1 }]),
   validateBody(createWineSchema),
   wineController.createWine,
 );
@@ -332,6 +333,7 @@ router.patch(
   isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
+  upload.fields([{ name: 'image', maxCount: 1 }]),
   validateBody(updateWineSchema),
   wineController.updateWine,
 );

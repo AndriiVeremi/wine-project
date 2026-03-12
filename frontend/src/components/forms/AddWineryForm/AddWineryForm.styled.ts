@@ -5,21 +5,30 @@ export const StyledAddWineryForm = styled.form`
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 32px;
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 `;
 
-export const FormTitle = styled.h2`
-  font-family: 'Montserrat Alternates', sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--accent-color, #841013);
-  margin-bottom: 8px;
-  text-align: center;
+export const TopSection = styled.div`
+  display: flex;
+  gap: 40px;
+  margin-bottom: 30px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+export const PhotoSide = styled.div`
+  width: 400px;
+  flex-shrink: 0;
+`;
+
+export const InfoSide = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 export const FieldsGrid = styled.div`
@@ -29,6 +38,12 @@ export const FieldsGrid = styled.div`
 
   @media screen and (min-width: 768px) {
     grid-template-columns: 1fr 1fr;
+  }
+`;
+
+export const FullWidthWrapper = styled.div`
+  @media screen and (min-width: 768px) {
+    grid-column: 1 / -1;
   }
 `;
 
@@ -48,27 +63,4 @@ export const MapFieldWrapper = styled.div`
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #ddd;
-`;
-
-export const SubmitButton = styled.button`
-  background-color: var(--accent-color, #841013);
-  color: white;
-  border: none;
-  border-radius: 35px;
-  padding: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 12px;
-
-  &:hover {
-    background-color: #690c0f;
-    transform: translateY(-2px);
-  }
-
-  &:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
 `;

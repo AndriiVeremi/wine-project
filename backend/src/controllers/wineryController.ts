@@ -6,10 +6,32 @@ import * as userService from '@/services/userService';
 import Winery from '@/models/wineryModel';
 import User from '@/models/userModel';
 import ctrlWrapper from '@/utils/ctrlWrapper';
+import { uploadFile } from '@/services/firebase';
 
 export const registerWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const ownerId = req.userId!;
-  const wineryData = req.body;
+  const wineryData = { ...req.body };
+
+  // Parse JSON fields if they are strings (common in multipart/form-data)
+  if (typeof wineryData.whereToBuy === 'string') {
+    wineryData.whereToBuy = JSON.parse(wineryData.whereToBuy);
+  }
+  if (typeof wineryData.coordinates === 'string') {
+    wineryData.coordinates = JSON.parse(wineryData.coordinates);
+  }
+
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+  if (files?.logo && files.logo[0]) {
+    wineryData.logoUrl = await uploadFile(files.logo[0], 'wineries/logos');
+  }
+
+  if (files?.images) {
+    const imageUrls = await Promise.all(
+      files.images.map((file) => uploadFile(file, 'wineries/gallery')),
+    );
+    wineryData.galleryUrl = imageUrls;
+  }
 
   const newWinery = await wineryService.createWinery(ownerId, wineryData);
   await userService.updateUserRole(ownerId, 'WINERY_OWNER');
@@ -41,7 +63,7 @@ export const getWinery = ctrlWrapper(async (req: Request, res: Response) => {
 
 export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
-  const updateData = req.body;
+  const updateData = { ...req.body };
   const userId = req.userId!;
   const userRole = req.userRole!;
 
@@ -56,6 +78,30 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
 
   if (!isOwner && !isAdmin) {
     throw new HttpError('You do not have permission to update this winery.', 403);
+  }
+
+  // Parse JSON fields if they are strings
+  if (typeof updateData.whereToBuy === 'string') {
+    updateData.whereToBuy = JSON.parse(updateData.whereToBuy);
+  }
+  if (typeof updateData.coordinates === 'string') {
+    updateData.coordinates = JSON.parse(updateData.coordinates);
+  }
+
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+  if (files?.logo && files.logo[0]) {
+    updateData.logoUrl = await uploadFile(files.logo[0], 'wineries/logos');
+  }
+
+  if (files?.images) {
+    const imageUrls = await Promise.all(
+      files.images.map((file) => uploadFile(file, 'wineries/gallery')),
+    );
+    // Append or replace? Usually for gallery we might want to append or specify which ones to replace.
+    // For now, let's replace for simplicity or just append if needed.
+    // Let's assume we replace the whole gallery if new images are provided.
+    updateData.galleryUrl = imageUrls;
   }
 
   const updatedWinery = await wineryService.updateWinery(id as string, updateData);
