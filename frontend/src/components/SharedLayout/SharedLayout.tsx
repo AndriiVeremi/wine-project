@@ -13,10 +13,15 @@ const SharedLayout = () => {
   const { user, isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();
   const aiAssistantEnabled = import.meta.env.VITE_AI_ASSISTANT_ENABLED === 'true';
   const fetchFavorites = useFavoritesStore((s) => s.fetchFavorites);
+  const resetFavorites = useFavoritesStore((s) => s.reset);
 
   useEffect(() => {
-    if (user) fetchFavorites();
-  }, [user, fetchFavorites]);
+    if (user) {
+      fetchFavorites();
+    } else {
+      resetFavorites();
+    }
+  }, [user, fetchFavorites, resetFavorites]);
 
   const getBgType = () => {
     if (pathname === '/') return 'home';
