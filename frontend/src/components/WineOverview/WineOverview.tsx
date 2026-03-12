@@ -5,7 +5,6 @@ import {
   WineOverviewTitle,
   WineInStock,
   StockReviewRow,
-  WriteReviewButton,
   StyledWinePrice,
   BuyFavRow,
 } from './WineOverview.styled';
