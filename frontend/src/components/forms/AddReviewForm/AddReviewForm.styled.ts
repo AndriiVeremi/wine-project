@@ -17,17 +17,19 @@ export const FormTitle = styled.h3`
 
 export const TextArea = styled.textarea`
   width: 100%;
+  height: 150px;
   padding: 16px;
   border: 1px solid var(--secondary-gray);
   border-radius: var(--border-radius-md);
   font-family: var(--font-main);
   font-size: 16px;
-  resize: vertical;
+  resize: none;
   outline: none;
   transition: var(--transition);
 
   &:focus {
     border-color: var(--primary-wine);
+    background-color: rgba(132, 16, 19, 0.05);
   }
 `;
 

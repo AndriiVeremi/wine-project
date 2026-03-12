@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
 import WineOverview from '@/components/WineOverview/WineOverview';
 import WineReviews from '@/components/WineReviews';
-import AddReviewForm from '@/components/AddReviewForm/AddReviewForm';
+import AddReviewForm from '@/components/forms/AddReviewForm/AddReviewForm';
 import Container from '@/components/common/Container';
 import {
   StyledWinePageDiv,
@@ -39,27 +39,56 @@ const WineDetailPage = () => {
         <StyledWraperImage>
           <StyledWineImg src={wine.imageUrl} alt={wine.name} />
           <WineDetailPageTabs>
-            <InfoButton onClick={() => setActiveTab('description')}>Description</InfoButton>
-            <InfoButton onClick={() => setActiveTab('reviews')}>Reviews</InfoButton>
+            <InfoButton
+              active={activeTab === 'description'}
+              onClick={() => setActiveTab('description')}
+            >
+              Description
+            </InfoButton>
+            <InfoButton active={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')}>
+              Reviews
+            </InfoButton>
           </WineDetailPageTabs>
 
           <WineDescriptionContent>
             {activeTab === 'description' ? (
-              <p>{wine.description}</p>
+              <>
+                <p>
+                  <span className="description-label">Taste:</span>
+                  {wine.tastingNotes?.[0] || '—'}
+                </p>
+                <p>
+                  <span className="description-label">Color:</span>
+                  {wine.color || '—'}
+                </p>
+                <p>
+                  <span className="description-label">Aroma:</span>
+                  {wine.tastingNotes?.[1] || '—'}
+                </p>
+                <p>
+                  <span className="description-label">Gastronomy:</span>
+                  {wine.foodPairing?.join(', ') || '—'}
+                </p>
+
+                <p className="description-title">
+                  Why is it worth buying? {wine.description || '—'}
+                </p>
+              </>
             ) : (
-              <WineReviews key={refreshReviews} wineId={wine._id} />
+              <>
+                <WineReviews key={refreshReviews} wineId={wine._id} />
+                <AddReviewForm
+                  wineId={wine._id}
+                  onReviewAdded={() => {
+                    setRefreshReviews((prev) => prev + 1);
+                    setActiveTab('reviews');
+                    // Optionally re-fetch wine to update average rating
+                    if (id) fetchWine(id);
+                  }}
+                />
+              </>
             )}
           </WineDescriptionContent>
-
-          <AddReviewForm
-            wineId={wine._id}
-            onReviewAdded={() => {
-              setRefreshReviews((prev) => prev + 1);
-              setActiveTab('reviews');
-              // Optionally re-fetch wine to update average rating
-              if (id) fetchWine(id);
-            }}
-          />
         </StyledWraperImage>
 
         <StyledWineInfo>

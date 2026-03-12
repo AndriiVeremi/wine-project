@@ -22,16 +22,18 @@ const WineOverview = ({ wine }: Props) => {
     <div>
       <WineOverviewTitle>{wine.name}</WineOverviewTitle>
 
-      <div style={{ marginBottom: '40px' }}>
-        <RatingStars value={wine.averageRating ?? 0} showLeftValue={true} size={24} />
-      </div>
-
       <StockReviewRow>
         <WineInStock $inStock={wine.inStock}>
           {wine.inStock ? 'In stock' : 'Out of stock'}
         </WineInStock>
 
-        <WriteReviewButton>Write a review</WriteReviewButton>
+        <RatingStars
+          value={wine.averageRating ?? 0}
+          reviews={wine.totalReviews ?? 0}
+          showLeftValue={true}
+          showRightReviews={true}
+          size={24}
+        />
       </StockReviewRow>
 
       <StyledWinePrice>{wine.price} ₾</StyledWinePrice>
@@ -80,7 +82,7 @@ const WineOverview = ({ wine }: Props) => {
 
         <CharacteristicItem>
           <span>Region:</span>
-          <span>{wine.name ?? '—'}</span>
+          <span>{wine.winery.region?.name ?? '—'}</span>
         </CharacteristicItem>
 
         <CharacteristicItem>
