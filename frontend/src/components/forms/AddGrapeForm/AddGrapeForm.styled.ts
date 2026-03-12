@@ -27,26 +27,30 @@ export const TopSection = styled.div`
 `;
 
 export const PhotoSide = styled.div`
+  width: 400px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 export const PhotoGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   margin-top: 10px;
 `;
 
 export const MiniPhotoPreview = styled.div`
-  width: 145px;
-  height: 100px;
-  border-radius: 4px;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
   overflow: hidden;
   position: relative;
-  border: 1px solid var(--border-color);
+  border: 1px solid #eee;
 
   img {
     width: 100%;
@@ -74,32 +78,32 @@ export const FormGrid = styled.div`
 `;
 
 export const PhotoUploadContainer = styled.div`
-  width: 300px;
-  height: 350px;
-  border: 2px dashed var(--secondary-gray);
-  border-radius: var(--border-radius-md);
+  width: 100%;
+  height: 320px;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: var(--tertiary-gray);
-  transition: var(--transition);
+  background-color: #fff;
+  transition: all 0.3s ease;
   gap: 12px;
   overflow: hidden;
 
   &:hover {
-    border-color: var(--primary-wine);
+    border-color: var(--accent-color, #841013);
   }
 
   svg {
     font-size: 40px;
-    color: var(--primary-wine);
+    color: #aaa;
   }
 
   span {
     font-size: 14px;
-    color: #666;
+    color: #aaa;
   }
 `;
 

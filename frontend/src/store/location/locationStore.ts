@@ -18,15 +18,13 @@ interface LocationState {
 
 export const useLocationStore = create<LocationState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       country: 'Georgia',
       regions: [],
       loading: false,
 
       setCountry: (country) => {
         set({ country });
-        // Автоматично завантажуємо регіони при зміні країни
-        get().fetchRegions(country);
       },
 
       fetchRegions: async (countryName) => {

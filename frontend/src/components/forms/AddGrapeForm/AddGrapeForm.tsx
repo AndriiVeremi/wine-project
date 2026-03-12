@@ -1,16 +1,13 @@
-import React, { useState, useRef } from 'react';
-import { notifySuccess, notifyError } from '@/utils/toast';
+import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import FormField from '@/components/common/FormField/FormField';
-import { FiPlus } from 'react-icons/fi';
+import ImageUpload from '@/components/common/ImageUpload/ImageUpload';
 import MainButton from '@/components/buttons/MainButton';
 import {
   AddGrapeWrapper,
   Title,
   TopSection,
   PhotoSide,
-  PhotoUploadContainer,
-  PhotoGrid,
-  MiniPhotoPreview,
   InfoSide,
   FormGrid,
   SectionTitle,
@@ -18,34 +15,35 @@ import {
   ButtonWrapper,
 } from './AddGrapeForm.styled';
 import { FormContainer } from '@/components/forms/AuthForm/Form.styled';
+import { useGrapesStore } from '@/store/grape/grapesStore';
 
-const ACITIDY_OPTIONS = [
+const acidityOpts = [
   { value: 'Low', label: 'Low' },
   { value: 'Medium', label: 'Medium' },
   { value: 'High', label: 'High' },
   { value: 'Very High', label: 'Very High' },
 ];
 
-const BODY_OPTIONS = [
+const bodyOpts = [
   { value: 'Light', label: 'Light' },
   { value: 'Medium', label: 'Medium' },
   { value: 'Full-bodied', label: 'Full-bodied' },
 ];
 
-const TANNIN_OPTIONS = [
+const tanninOpts = [
   { value: 'Low', label: 'Low' },
   { value: 'Medium', label: 'Medium' },
   { value: 'High', label: 'High' },
   { value: 'None', label: 'None' },
 ];
 
-const GRAPE_TYPES = [
+const grapeTypes = [
   { value: 'red', label: 'Red' },
   { value: 'white', label: 'White' },
   { value: 'rose', label: 'Rose' },
 ];
 
-const initialValues: {
+const init: {
   name: string;
   type: 'red' | 'white' | 'rose';
   description: string;
@@ -67,39 +65,30 @@ const initialValues: {
   foodPairing: '',
 };
 
-import { useGrapesStore } from '@/store/grape/grapesStore';
-
-const AddGrapeForm = () => {
-  const [form, setForm] = useState(initialValues);
+const AddGrape = () => {
+  const [form, setForm] = useState(init);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const addGrapeToStore = useGrapesStore((s) => s.addGrape);
-  const fileInput = useRef<HTMLInputElement>(null);
+  const add = useGrapesStore((s) => s.addGrape);
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
-    const validFiles = selectedFiles.filter((f) => f.size <= 5000000);
-
-    if (validFiles.length < selectedFiles.length) {
-      notifyError('Some files are too big (max 5MB)');
+  const onFile = (newFiles: File[]) => {
+    if (newFiles.length > 0) {
+      setFiles([newFiles[0]]);
+      setPreviews([URL.createObjectURL(newFiles[0])]);
     }
-
-    const newFiles = [...files, ...validFiles].slice(0, 5);
-    setFiles(newFiles);
-    setPreviews(newFiles.map((f) => URL.createObjectURL(f)));
   };
 
-  const onChange = (
+  const onInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { id, value } = e.target;
     setForm((prev) => ({ ...prev, [id]: value }));
   };
 
-  const onSave = async (e: React.FormEvent) => {
+  const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name) return notifyError('Name is required!');
+    if (!form.name) return toast.error('Name is required');
 
     setLoading(true);
 
@@ -116,15 +105,15 @@ const AddGrapeForm = () => {
           .filter(Boolean),
       };
 
-      await addGrapeToStore(data, files);
+      await add(data, files);
 
-      notifySuccess('Grape variety added successfully!');
-      setForm(initialValues);
+      toast.success('Done!');
+      setForm(init);
       setFiles([]);
       setPreviews([]);
-    } catch (error) {
-      notifyError('Failed to add grape variety');
-      console.error(error);
+    } catch (err) {
+      console.log(err);
+      toast.error('Fail');
     } finally {
       setLoading(false);
     }
@@ -132,29 +121,11 @@ const AddGrapeForm = () => {
 
   return (
     <AddGrapeWrapper>
-      <Title>Add New Grape Variety</Title>
-      <FormContainer onSubmit={onSave}>
+      <Title>Add Grape</Title>
+      <FormContainer onSubmit={save}>
         <TopSection>
           <PhotoSide>
-            <PhotoUploadContainer onClick={() => fileInput.current?.click()}>
-              <FiPlus />
-              <span>Add up to 5 photos</span>
-            </PhotoUploadContainer>
-            <input
-              type="file"
-              ref={fileInput}
-              onChange={onFileChange}
-              accept="image/*"
-              multiple
-              style={{ display: 'none' }}
-            />
-            <PhotoGrid>
-              {previews.map((src, idx) => (
-                <MiniPhotoPreview key={idx}>
-                  <img src={src} alt={`Preview ${idx}`} />
-                </MiniPhotoPreview>
-              ))}
-            </PhotoGrid>
+            <ImageUpload previews={previews} onFilesChange={onFile} maxFiles={1} />
           </PhotoSide>
 
           <InfoSide>
@@ -162,7 +133,7 @@ const AddGrapeForm = () => {
               label="Grape Name"
               id="name"
               value={form.name}
-              onChange={onChange}
+              onChange={onInput}
               placeholder="Enter grape name"
               required
             />
@@ -172,9 +143,9 @@ const AddGrapeForm = () => {
               id="type"
               isSelect
               value={form.type}
-              onChange={onChange}
+              onChange={onInput}
               required
-              options={GRAPE_TYPES}
+              options={grapeTypes}
             />
           </InfoSide>
         </TopSection>
@@ -187,9 +158,9 @@ const AddGrapeForm = () => {
             id="acidity"
             isSelect
             value={form.acidity}
-            onChange={onChange}
+            onChange={onInput}
             required
-            options={ACITIDY_OPTIONS}
+            options={acidityOpts}
           />
 
           <FormField
@@ -197,9 +168,9 @@ const AddGrapeForm = () => {
             id="body"
             isSelect
             value={form.body}
-            onChange={onChange}
+            onChange={onInput}
             required
-            options={BODY_OPTIONS}
+            options={bodyOpts}
           />
 
           <FormField
@@ -207,15 +178,15 @@ const AddGrapeForm = () => {
             id="tannins"
             isSelect
             value={form.tannins}
-            onChange={onChange}
-            options={TANNIN_OPTIONS}
+            onChange={onInput}
+            options={tanninOpts}
           />
 
           <FormField
             label="Aging Potential"
             id="agingPotential"
             value={form.agingPotential}
-            onChange={onChange}
+            onChange={onInput}
             placeholder="e.g. 10-30 years"
           />
 
@@ -224,7 +195,7 @@ const AddGrapeForm = () => {
               label="Characteristics (comma separated)"
               id="characteristics"
               value={form.characteristics}
-              onChange={onChange}
+              onChange={onInput}
               placeholder="Full-bodied, Spicy, Oak..."
             />
           </FullWidthWrapper>
@@ -234,7 +205,7 @@ const AddGrapeForm = () => {
               label="Food Pairing (comma separated)"
               id="foodPairing"
               value={form.foodPairing}
-              onChange={onChange}
+              onChange={onInput}
               placeholder="Red meat, Aged cheese..."
             />
           </FullWidthWrapper>
@@ -245,7 +216,7 @@ const AddGrapeForm = () => {
               id="description"
               isTextarea
               value={form.description}
-              onChange={onChange}
+              onChange={onInput}
               placeholder="Describe the grape variety..."
             />
           </FullWidthWrapper>
@@ -255,7 +226,7 @@ const AddGrapeForm = () => {
           <MainButton
             type="button"
             onClick={() => {
-              setForm(initialValues);
+              setForm(init);
               setFiles([]);
               setPreviews([]);
             }}
@@ -263,7 +234,7 @@ const AddGrapeForm = () => {
             RESET
           </MainButton>
           <MainButton type="submit" disabled={loading}>
-            {loading ? 'SAVING...' : 'SAVE GRAPE'}
+            {loading ? 'WAIT...' : 'SAVE'}
           </MainButton>
         </ButtonWrapper>
       </FormContainer>
@@ -271,4 +242,4 @@ const AddGrapeForm = () => {
   );
 };
 
-export default AddGrapeForm;
+export default AddGrape;

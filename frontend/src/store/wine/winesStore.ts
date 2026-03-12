@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getWines, addWine, updateWineImage } from '@/api/wines';
+import { getWines, addWine } from '@/api/wines';
 import type { Wine, WineQueryParams } from '@/types/wine';
 
 interface WinesStore {
@@ -14,10 +14,7 @@ interface WinesStore {
   totalPages: number;
 
   fetchWines: (params: WineQueryParams) => Promise<void>;
-  addWine: (
-    data: Partial<Wine> & { winery?: string; grape?: string },
-    file?: File | null,
-  ) => Promise<void>;
+  addWine: (data: FormData) => Promise<void>;
 }
 
 export const useWinesStore = create<WinesStore>()((set) => ({
@@ -49,17 +46,12 @@ export const useWinesStore = create<WinesStore>()((set) => ({
     }
   },
 
-  addWine: async (data, file) => {
+  addWine: async (data) => {
     set({ loading: true, error: null });
 
     try {
       const response = await addWine(data);
-      let newWine = response.data;
-
-      if (file) {
-        const imgRes = await updateWineImage(newWine._id, file);
-        newWine = imgRes.data;
-      }
+      const newWine = response.data;
 
       set((state) => ({
         wines: [newWine, ...state.wines],

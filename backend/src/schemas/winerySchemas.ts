@@ -9,16 +9,24 @@ export const registerWinerySchema = Joi.object({
   country: Joi.string().required(),
   region: Joi.string().required(),
   address: Joi.string().required().min(5),
-  logoUrl: Joi.string().uri(),
-  galleryUrl: Joi.array().items(Joi.string().uri()),
-  whereToBuy: Joi.array().items(
-    Joi.object({
-      name: Joi.string().required(),
-      url: Joi.string().uri().required(),
-    }),
-  ),
+  logoUrl: Joi.string().uri().allow('', null),
+  galleryUrl: Joi.array().items(Joi.string().uri()).allow(null),
+  whereToBuy: Joi.array()
+    .items(
+      Joi.object({
+        name: Joi.string().required(),
+        url: Joi.string().uri().required(),
+      }),
+    )
+    .allow(null),
   contactEmail: Joi.string().pattern(emailRegexp).required(),
   contactPhone: Joi.string().pattern(phoneRegexp).required(),
+  coordinates: Joi.object({
+    lat: Joi.number().required(),
+    lng: Joi.number().required(),
+  }).optional(),
+  websiteUrl: Joi.string().uri().allow('', null),
+  videoUrl: Joi.string().uri().allow('', null),
 });
 
 export const updateWinerySchema = Joi.object({
@@ -27,14 +35,22 @@ export const updateWinerySchema = Joi.object({
   country: Joi.string(),
   region: Joi.string(),
   address: Joi.string().min(5),
-  logoUrl: Joi.string().uri(),
-  galleryUrl: Joi.array().items(Joi.string().uri()),
-  whereToBuy: Joi.array().items(
-    Joi.object({
-      name: Joi.string().required(),
-      url: Joi.string().uri().required(),
-    }),
-  ),
+  logoUrl: Joi.string().uri().allow('', null),
+  galleryUrl: Joi.array().items(Joi.string().uri()).allow(null),
+  whereToBuy: Joi.array()
+    .items(
+      Joi.object({
+        name: Joi.string().required(),
+        url: Joi.string().uri().required(),
+      }),
+    )
+    .allow(null),
   contactEmail: Joi.string().pattern(emailRegexp),
   contactPhone: Joi.string().pattern(phoneRegexp),
+  coordinates: Joi.object({
+    lat: Joi.number().required(),
+    lng: Joi.number().required(),
+  }).optional(),
+  websiteUrl: Joi.string().uri().allow('', null),
+  videoUrl: Joi.string().uri().allow('', null),
 }).min(1);

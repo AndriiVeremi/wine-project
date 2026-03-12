@@ -59,6 +59,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   setUser: async (firebaseUser: User | null) => {
     if (firebaseUser) {
+      // If user is already set and UID matches, don't trigger everything again
+      if (get().user?.uid === firebaseUser.uid && !get().isLoading) return;
+
       const tokenResult = await firebaseUser.getIdTokenResult();
       const roleClaim = tokenResult.claims.role;
       const role = typeof roleClaim === 'string' ? roleClaim : 'USER';
@@ -79,6 +82,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       // After setting firebase user, fetch real data from DB
       await get().fetchProfile();
     } else {
+      if (get().user === null && !get().isLoading) return;
       set({ user: null, isLoading: false, error: null });
     }
   },
