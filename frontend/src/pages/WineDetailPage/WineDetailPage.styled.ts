@@ -38,7 +38,7 @@ export const WineDescriptionContent = styled.div`
   max-width: 100%;
 
   p {
-    margin-bottom: 8px;
+    margin-bottom: 20px;
   }
 
   .description-title {
