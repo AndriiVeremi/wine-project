@@ -8,7 +8,7 @@ import GalleryUpload from '@/components/common/GalleryUpload/GalleryUpload';
 import WineryLogoUpload from '@/components/common/WineryLogoUpload/WineryLogoUpload';
 import MainButton from '@/components/buttons/MainButton';
 import { toast } from 'react-hot-toast';
-import type { WineryInfo } from '@/types/wine';
+import type { Winery } from '@/types/wineries';
 import {
   StyledAddWineryForm,
   FieldsGrid,
@@ -34,7 +34,7 @@ const init = {
 };
 
 interface Props {
-  wineryData?: WineryInfo | null;
+  wineryData?: Winery | null;
   onSuccess?: () => void;
 }
 
@@ -60,8 +60,8 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         websiteUrl: wineryData.websiteUrl || '',
         videoUrl: wineryData.videoUrl || '',
         history: wineryData.history || '',
-        country: wineryData.country?._id || wineryData.country || '',
-        region: wineryData.region?._id || wineryData.region || '',
+        country: typeof wineryData.country === 'object' ? (wineryData.country as unknown as { _id: string })._id : wineryData.country || '',
+        region: typeof wineryData.region === 'object' ? (wineryData.region as unknown as { _id: string })._id : wineryData.region || '',
       });
       if (wineryData.logoUrl) setLogoPreview(wineryData.logoUrl);
       if (wineryData.galleryUrl) setGalleryPreviews(wineryData.galleryUrl);
