@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import MainButton from '@/components/buttons/MainButton';
 import FormField from '@/components/common/FormField/FormField';
 import ImageUpload from '@/components/common/ImageUpload/ImageUpload';
-import type { WineColor, WineSweetness } from '@/types/wine';
+import type { Wine, WineColor, WineSweetness } from '@/types/wine';
 import {
   AddWineWrapper,
   Title,
@@ -62,50 +62,77 @@ interface Grape {
 
 interface Props {
   wineryId?: string;
+  wineData?: Wine | null;
   onSuccess?: () => void;
 }
 
-const AddWine: React.FC<Props> = ({ wineryId, onSuccess }) => {
+const AddWine: React.FC<Props> = ({ wineryId, wineData, onSuccess }) => {
   const [form, setForm] = useState(init);
   const [wineries, setWineries] = useState<Winery[]>([]);
   const [grapes, setGrapes] = useState<Grape[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const add = useWinesStore((s) => s.addWine);
+  const { add, update } = useWinesStore();
 
   useEffect(() => {
+    if (wineData) {
+      setForm({
+        ...init,
+        ...wineData,
+        winery: wineData.winery?._id || wineData.winery,
+        grape: wineData.grape?._id || wineData.grape,
+        tastingNotes: Array.isArray(wineData.tastingNotes)
+          ? wineData.tastingNotes.join(', ')
+          : wineData.tastingNotes,
+        foodPairing: Array.isArray(wineData.foodPairing)
+          ? wineData.foodPairing.join(', ')
+          : wineData.foodPairing,
+      });
+      if (wineData.imageUrl) setPreview(wineData.imageUrl);
+    }
+  }, [wineData]);
+
+  useEffect(() => {
+    let active = true;
     const load = async () => {
+      if (wineries.length > 0 && grapes.length > 0) return;
       try {
         const [wRes, gRes] = await Promise.all([getWineries({ limit: 100 }), getGrapes({})]);
-        const data = wRes.data.wineries;
-        setWineries(data);
-        setGrapes(gRes.data.grapes || []);
+        if (active) {
+          setWineries(wRes.data.wineries);
+          setGrapes(gRes.data.grapes || []);
+        }
       } catch (err) {
         console.log(err);
-        toast.error('Load failed');
       }
     };
     load();
-  }, []);
+    return () => {
+      active = false;
+    };
+  }, [wineries.length, grapes.length]);
 
   useEffect(() => {
-    if (wineryId && wineries.length > 0) {
+    if (wineryId && !wineData) {
+      setForm((prev) => {
+        if (prev.winery === wineryId) return prev;
+        return { ...prev, winery: wineryId };
+      });
+    }
+
+    if (wineryId && wineries.length > 0 && !wineData) {
       const item = wineries.find((w: Winery) => w._id === wineryId);
       if (item) {
-        setForm((prev) => {
-          if (prev.winery === wineryId) return prev;
-          return {
-            ...prev,
-            winery: wineryId,
-            country: item.country?.name || '',
-            region: item.region?.name || '',
-            manufacturer: item.name || '',
-          };
-        });
+        setForm((prev) => ({
+          ...prev,
+          country: item.country?.name || prev.country,
+          region: item.region?.name || prev.region,
+          manufacturer: item.name || prev.manufacturer,
+        }));
       }
     }
-  }, [wineryId, wineries]);
+  }, [wineryId, wineries, wineData]);
 
   const onFile = (files: File[]) => {
     if (files.length > 0) {
@@ -154,34 +181,44 @@ const AddWine: React.FC<Props> = ({ wineryId, onSuccess }) => {
     try {
       const data = new FormData();
 
-      Object.entries(form).forEach(([key, value]) => {
+      Object.entries(form).forEach(([key, val]) => {
+        if (val === null || val === undefined || val === '') {
+          // Skip empty optional fields, but winery and grape must have values
+          if (['winery', 'grape', 'name', 'color', 'sweetness'].includes(key)) {
+            data.append(key, String(val));
+          }
+          return;
+        }
+
         if (key === 'tastingNotes' || key === 'foodPairing') {
-          const arr = String(value)
+          const arr = String(val)
             .split(',')
             .map((s) => s.trim())
             .filter(Boolean);
           data.append(key, JSON.stringify(arr));
         } else {
-          data.append(key, String(value));
+          data.append(key, String(val));
         }
       });
 
-      if (file) {
-        data.append('image', file);
+      if (file) data.append('image', file);
+
+      if (wineData?._id) {
+        await update(wineData._id, data);
+        toast.success('Wine updated!', { id: tid });
+      } else {
+        await add(data);
+        toast.success('Wine added!', { id: tid });
       }
 
-      await add(data);
-
-      toast.success('Saved!', { id: tid });
       setForm(init);
       setFile(null);
       setPreview(null);
-      if (onSuccess) {
-        onSuccess();
-      }
-    } catch (err) {
+      if (onSuccess) onSuccess();
+    } catch (err: unknown) {
       console.log(err);
-      toast.error('Save failed', { id: tid });
+      const message = err instanceof Error ? err.message : 'Save failed';
+      toast.error(message, { id: tid });
     } finally {
       setLoading(false);
     }
@@ -189,7 +226,7 @@ const AddWine: React.FC<Props> = ({ wineryId, onSuccess }) => {
 
   return (
     <AddWineWrapper>
-      <Title>Add Wine</Title>
+      <Title>{wineData?._id ? 'Edit Wine' : 'Add Wine'}</Title>
       <FormContainer onSubmit={save}>
         <TopSection>
           <PhotoSide>
@@ -421,7 +458,7 @@ const AddWine: React.FC<Props> = ({ wineryId, onSuccess }) => {
             RESET
           </MainButton>
           <MainButton type="submit" disabled={loading}>
-            {loading ? 'WAIT...' : 'SAVE'}
+            {loading ? 'WAIT...' : wineData?._id ? 'UPDATE' : 'SAVE'}
           </MainButton>
         </ButtonWrapper>
       </FormContainer>

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as wineController from '@/controllers/wineController';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
+import parseFormData from '@/middleware/parseFormData';
 import { createWineSchema, updateWineSchema } from '@/schemas/wineSchemas';
 import { isValidId } from '@/middleware/isValidId';
 import upload from '@/middleware/uploadMiddleware';
@@ -205,6 +206,7 @@ router.post(
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   upload.fields([{ name: 'image', maxCount: 1 }]),
+  parseFormData,
   validateBody(createWineSchema),
   wineController.createWine,
 );
@@ -334,6 +336,7 @@ router.patch(
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
   upload.fields([{ name: 'image', maxCount: 1 }]),
+  parseFormData,
   validateBody(updateWineSchema),
   wineController.updateWine,
 );

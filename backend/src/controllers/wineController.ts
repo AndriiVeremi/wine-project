@@ -22,13 +22,6 @@ export const createWine = ctrlWrapper(async (req: AuthenticatedRequest, res: Res
   const wineData = { ...req.body };
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-  if (typeof wineData.tastingNotes === 'string') {
-    wineData.tastingNotes = JSON.parse(wineData.tastingNotes);
-  }
-  if (typeof wineData.foodPairing === 'string') {
-    wineData.foodPairing = JSON.parse(wineData.foodPairing);
-  }
-
   if (files?.image && files.image[0]) {
     wineData.imageUrl = await uploadFile(files.image[0], 'wines/main');
   }
@@ -41,13 +34,6 @@ export const updateWine = ctrlWrapper(async (req: AuthenticatedRequest, res: Res
   const id = req.params.id as string;
   const wineData = { ...req.body };
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-
-  if (typeof wineData.tastingNotes === 'string') {
-    wineData.tastingNotes = JSON.parse(wineData.tastingNotes);
-  }
-  if (typeof wineData.foodPairing === 'string') {
-    wineData.foodPairing = JSON.parse(wineData.foodPairing);
-  }
 
   if (files?.image && files.image[0]) {
     wineData.imageUrl = await uploadFile(files.image[0], 'wines/main');

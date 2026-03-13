@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiStar } from 'react-icons/fi';
+import { FiStar, FiMail, FiPhone, FiCalendar, FiMapPin, FiUser } from 'react-icons/fi';
 import type { UserProfile } from '@/types/auth';
 import UserAvatar from '@/components/UserAvatar';
 import {
@@ -8,27 +8,31 @@ import {
   UserNameSection,
   UserName,
   VipBadge,
-  InfoList,
-  InfoItem,
-  InfoLabel,
-  InfoValue,
+  InfoGrid,
+  InfoCard,
+  IconBox,
+  CardContent,
+  Label,
+  Value,
 } from './UserInfo.styled';
 
-interface AccountInfoProps {
+interface Props {
   data: UserProfile | null;
 }
 
-const AccountInfo: React.FC<AccountInfoProps> = ({ data }) => {
+const AccountInfo = ({ data }: Props) => {
   const isVip = data?.role === 'ADMIN' || data?.role === 'WINERY_OWNER';
+  const bday = data?.birthDate ? new Date(data.birthDate).toLocaleDateString() : '-';
+  const role =
+    data?.role === 'ADMIN' ? 'Admin' : data?.role === 'WINERY_OWNER' ? 'Winery Owner' : 'Member';
 
-  const birthday = data?.birthDate ? new Date(data.birthDate).toLocaleDateString() : '-';
-
-  const roleName =
-    data?.role === 'ADMIN'
-      ? 'Administrator'
-      : data?.role === 'WINERY_OWNER'
-        ? 'Winery Owner'
-        : 'User';
+  const items = [
+    { label: 'Email', value: data?.email, icon: <FiMail /> },
+    { label: 'Phone', value: data?.phone || 'Not set', icon: <FiPhone /> },
+    { label: 'Birthday', value: bday, icon: <FiCalendar /> },
+    { label: 'Address', value: data?.address || 'Not set', icon: <FiMapPin /> },
+    { label: 'Role', value: role, icon: <FiUser /> },
+  ];
 
   return (
     <AccountInfoContainer>
@@ -39,34 +43,23 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ data }) => {
             {data?.firstName} {data?.lastName}
           </UserName>
           <VipBadge $isVip={isVip}>
-            <FiStar fill={isVip ? 'var(--rating-gold)' : 'none'} />
+            <FiStar fill={isVip ? '#ffb400' : 'none'} />
             {isVip ? 'VIP Member' : 'Regular Member'}
           </VipBadge>
         </UserNameSection>
       </ProfileHeader>
 
-      <InfoList>
-        <InfoItem>
-          <InfoLabel>Email:</InfoLabel>
-          <InfoValue>{data?.email}</InfoValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoLabel>Phone:</InfoLabel>
-          <InfoValue>{data?.phone || 'Not provided'}</InfoValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoLabel>Birthday:</InfoLabel>
-          <InfoValue>{birthday}</InfoValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoLabel>Address:</InfoLabel>
-          <InfoValue>{data?.address || 'Not provided'}</InfoValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoLabel>Role:</InfoLabel>
-          <InfoValue>{roleName}</InfoValue>
-        </InfoItem>
-      </InfoList>
+      <InfoGrid>
+        {items.map((item, idx) => (
+          <InfoCard key={idx}>
+            <IconBox>{item.icon}</IconBox>
+            <CardContent>
+              <Label>{item.label}</Label>
+              <Value>{item.value}</Value>
+            </CardContent>
+          </InfoCard>
+        ))}
+      </InfoGrid>
     </AccountInfoContainer>
   );
 };

@@ -20,5 +20,10 @@ export interface UserProfile {
   winery?: {
     _id: string;
     name: string;
+    logoUrl?: string;
+    address?: string;
+    contactEmail?: string;
+    contactPhone?: string;
+    websiteUrl?: string;
   };
 }

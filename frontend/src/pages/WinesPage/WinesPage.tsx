@@ -19,7 +19,7 @@ const WinesPage = () => {
   const totalPages = useWinesStore((s) => s.totalPages);
   const loading = useWinesStore((s) => s.loading);
   const error = useWinesStore((s) => s.error);
-  const fetchWines = useWinesStore((s) => s.fetchWines);
+  const fetch = useWinesStore((s) => s.fetch);
 
   const nameInput = useFiltersStore((s) => s.nameInput);
   const setNameInput = useFiltersStore((s) => s.setNameInput);
@@ -28,8 +28,8 @@ const WinesPage = () => {
   const query = useWineQueryParams();
 
   useEffect(() => {
-    fetchWines({ page: 1, limit: 16, ...query });
-  }, [query, fetchWines]);
+    fetch({ page: 1, limit: 16, ...query });
+  }, [query, fetch]);
 
   useEffect(() => {
     if (error) notifyError(error);
@@ -63,7 +63,7 @@ const WinesPage = () => {
       <AppPagination
         page={page}
         totalPages={totalPages}
-        onChange={(p) => fetchWines({ page: p, limit: 16, ...query })}
+        onChange={(p) => fetch({ page: p, limit: 16, ...query })}
       />
     </Container>
   );

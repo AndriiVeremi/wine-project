@@ -25,3 +25,7 @@ export const updateWineImage = (id: string, file: File) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+
+export const deleteWine = (id: string) => {
+  return apiClient.delete(`/wines/${id}`);
+};

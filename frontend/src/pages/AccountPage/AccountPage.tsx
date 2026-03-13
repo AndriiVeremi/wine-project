@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth/authStore';
 import AccountSidebar from '@/components/UserSidebar/UserSidebar';
 import type { AccountSection } from '@/components/UserSidebar/UserSidebar';
-import AddWines from '@/components/forms/AddWinesForm/AddWinesForm';
-import AddWineryForm from '@/components/forms/AddWineryForm/AddWineryForm';
+import WineManager from '@/components/WineManager/WineManager';
+import AddWinery from '@/components/forms/AddWineryForm/AddWineryForm';
 import AddGrapeForm from '@/components/forms/AddGrapeForm/AddGrapeForm';
 import AccountInfo from '@/components/UserInfo/UserInfo';
 import AccountSettings from '@/components/UserSettings/UserSettings';
@@ -27,28 +27,30 @@ const AccountPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const isOwner = user?.role === 'WINERY_OWNER';
-  const defaultSection = isOwner ? 'Add Wine' : 'Personal Info';
+  const defaultSection = isOwner ? 'My Wines' : 'Personal Info';
   const [activeSection, setActiveSection] = useState<AccountSection>(defaultSection);
 
-  const fetchProfile = async () => {
-    if (profile && !loading) return;
+  const fetchProfile = React.useCallback(
+    async (force = false) => {
+      if (!force && profile && !loading) return;
 
-    try {
-      const { data } = await apiClient.get<UserProfile>('/users/me');
-      setProfile(data);
-    } catch {
-      toast.error('Failed to load profile');
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        const { data } = await apiClient.get<UserProfile>('/users/me');
+        setProfile(data);
+      } catch {
+        toast.error('Failed to load profile');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [profile, loading],
+  );
 
   useEffect(() => {
     if (user?.uid) {
       fetchProfile();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.uid]);
+  }, [user?.uid, fetchProfile]);
 
   const handleProfileUpdate = (updatedProfile: Partial<UserProfile>) => {
     setProfile((prev) => (prev ? { ...prev, ...updatedProfile } : null));
@@ -63,22 +65,23 @@ const AccountPage: React.FC = () => {
   }
 
   const renderContent = () => {
+    const wineryId = profile?.winery?._id;
+
     switch (activeSection) {
-      case 'Add Wine':
-        return <AddWines />;
-      case 'Add Grape':
+      case 'My Wines':
+        return <WineManager wineryId={wineryId} />;
+      case 'Grapes':
         return <AddGrapeForm />;
-      case 'Add Winery':
+      case 'My Winery':
         return (
           <>
-            <SectionTitle>Wineries</SectionTitle>
-            {profile?.winery ? (
-              <PlaceholderText>
-                You have already registered your winery! You can manage it here soon.
-              </PlaceholderText>
-            ) : (
-              <AddWineryForm />
-            )}
+            <SectionTitle>My Winery</SectionTitle>
+            <AddWinery
+              wineryData={
+                profile?.winery && typeof profile.winery === 'object' ? profile.winery : null
+              }
+              onSuccess={() => fetchProfile(true)}
+            />
           </>
         );
       case 'Buy VIP':
