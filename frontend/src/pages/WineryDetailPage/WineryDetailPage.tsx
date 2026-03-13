@@ -47,9 +47,8 @@ const WineryDetailPage = () => {
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
-  const { wines, fetchWines, loading: winesLoading } = useWinesStore();
+  const { wines, fetch, loading: winesLoading } = useWinesStore();
 
-  // Фільтруємо вина за поточною виноробнею
   const wineryWines = wines;
 
   useEffect(() => {
@@ -59,7 +58,7 @@ const WineryDetailPage = () => {
         setLoading(true);
         const response = await getWineryById(id);
         setWinery(response.data);
-        await fetchWines({ wineryId: id, limit: 10 });
+        await fetch({ wineryId: id, limit: 10 });
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Failed to load winery details';
         setError(message);
@@ -69,7 +68,7 @@ const WineryDetailPage = () => {
     };
 
     loadData();
-  }, [id, fetchWines]);
+  }, [id, fetch]);
 
   if (loading) return <Loader />;
   if (error) return <DetailPageContainer>Error: {error}</DetailPageContainer>;

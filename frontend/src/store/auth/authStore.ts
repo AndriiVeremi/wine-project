@@ -50,7 +50,7 @@ const getErrorMessage = (error: unknown): string => {
   return 'An unknown error occurred.';
 };
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>()((set, get) => ({
   user: null,
   isLoading: true,
   error: null,

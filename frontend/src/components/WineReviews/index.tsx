@@ -87,7 +87,7 @@ const WineReviews: React.FC<WineReviewsProps> = ({ wineId }) => {
                   }`
                 : 'Anonymous'}
             </AuthorName>
-            <RatingStars value={activeReview.rating} size={18} />
+            <RatingStars value={activeReview.rating} size={18} showLeftValue={true} />
           </ReviewAuthorInfo>
         </ReviewContent>
       )}

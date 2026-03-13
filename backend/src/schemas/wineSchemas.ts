@@ -1,15 +1,21 @@
 import Joi from 'joi';
 
+const objectIdRegex = /^[0-9a-fA-F]{24}$/;
+
 export const createWineSchema = Joi.object({
-  name: Joi.string().required(),
-  winery: Joi.string().required(),
+  name: Joi.string().min(2).required(),
+  winery: Joi.string().pattern(objectIdRegex).required().messages({
+    'string.pattern.base': 'Invalid winery ID format',
+  }),
   vintage: Joi.number()
     .integer()
     .min(1900)
     .max(new Date().getFullYear() + 10)
     .required(),
-  grape: Joi.string().required(),
-  price: Joi.number().min(0).required(),
+  grape: Joi.string().pattern(objectIdRegex).required().messages({
+    'string.pattern.base': 'Invalid grape ID format',
+  }),
+  price: Joi.number().min(0.01).required(),
   description: Joi.string().allow('').optional(),
   tastingNotes: Joi.array().items(Joi.string()).optional(),
   imageUrl: Joi.string().uri().allow('').optional(),
@@ -37,8 +43,9 @@ export const createWineSchema = Joi.object({
 }).unknown(true);
 
 export const updateWineSchema = Joi.object({
-  name: Joi.string().optional(),
-  grape: Joi.string().optional(),
+  name: Joi.string().min(2).optional(),
+  winery: Joi.string().pattern(objectIdRegex).optional(),
+  grape: Joi.string().pattern(objectIdRegex).optional(),
   price: Joi.number().min(0).optional(),
   description: Joi.string().allow('').optional(),
   tastingNotes: Joi.array().items(Joi.string()).optional(),

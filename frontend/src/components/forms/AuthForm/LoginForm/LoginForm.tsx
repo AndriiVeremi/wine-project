@@ -10,6 +10,9 @@ import {
   PasswordWrapper,
   PasswordToggle,
   ForgotPassword,
+  FieldWrapper,
+  Label,
+  Input,
 } from '@/components/forms/AuthForm/Form.styled';
 
 const LoginFormButtonWrapper = styled.div`
@@ -52,20 +55,11 @@ const LoginForm = () => {
         required
       />
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', position: 'relative' }}>
-        <label style={{ fontSize: '16px', color: 'var(--primary-gray)' }}>Password *</label>
+      <FieldWrapper>
+        <Label htmlFor="password">Password *</Label>
         <PasswordWrapper>
-          <input
-            style={{
-              width: '100%',
-              height: '45px',
-              padding: '0 20px',
-              border: '1px solid var(--secondary-gray)',
-              borderRadius: 'var(--border-radius-in)',
-              fontFamily: 'var(--font-main)',
-              fontSize: '14px',
-              outline: 'none',
-            }}
+          <Input
+            id="password"
             type={visible ? 'text' : 'password'}
             placeholder="Your password"
             value={password}
@@ -77,7 +71,7 @@ const LoginForm = () => {
           </PasswordToggle>
         </PasswordWrapper>
         <ForgotPassword type="button">Forgot password?</ForgotPassword>
-      </div>
+      </FieldWrapper>
 
       <LoginFormButtonWrapper>
         <MainButton type="submit" size="large">

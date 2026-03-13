@@ -12,6 +12,7 @@ const mockWineryFind = Winery.find as jest.Mock;
 const mockWineryFindByIdAndDelete = Winery.findByIdAndDelete as jest.Mock;
 const mockWineryCountDocuments = Winery.countDocuments as jest.Mock;
 const mockUserFindByIdAndUpdate = User.findByIdAndUpdate as jest.Mock;
+const mockUserFindById = User.findById as jest.Mock;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -37,6 +38,7 @@ describe('wineryService', () => {
 
     it('create new winery good', async () => {
       mockWineryFindOne.mockResolvedValue(null);
+      mockUserFindById.mockResolvedValue({ _id: 'user-id' }); // Mock user without winery
       
       const mockSave = jest.fn().mockResolvedValue({ ...testWineryData, _id: 'new-winery-id', owner: 'user-id' });
       (Winery as any).mockImplementation(() => ({
@@ -49,7 +51,11 @@ describe('wineryService', () => {
       const result = await wineryService.createWinery('user-id', testWineryData);
 
       expect(mockWineryFindOne).toHaveBeenCalledWith({ name: 'Test Winery' });
-      expect(mockUserFindByIdAndUpdate).toHaveBeenCalledWith('user-id', { winery: 'new-winery-id' });
+      expect(mockUserFindByIdAndUpdate).toHaveBeenCalledWith(
+        'user-id', 
+        { winery: 'new-winery-id' },
+        { new: true }
+      );
       expect(result).toHaveProperty('_id', 'new-winery-id');
     });
   });

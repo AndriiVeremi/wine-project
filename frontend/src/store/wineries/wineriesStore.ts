@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getWineries, addWinery } from '@/api/wineries';
+import { getWineries, addWinery, updateWinery } from '@/api/wineries';
 import type { Winery, WineriesQueryParams } from '@/types/wineries';
 
 interface WineriesStore {
@@ -11,7 +11,18 @@ interface WineriesStore {
   totalPages: number;
 
   fetchWineries: (params?: WineriesQueryParams) => Promise<void>;
-  addWinery: (data: FormData | Partial<Winery>) => Promise<void>;
+  add: (data: FormData | Partial<Winery>) => Promise<void>;
+  update: (id: string, data: FormData | Partial<Winery>) => Promise<void>;
+}
+
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+      errors?: { message: string }[];
+    };
+  };
+  message?: string;
 }
 
 export const useWineriesStore = create<WineriesStore>((set) => ({
@@ -25,32 +36,55 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
   fetchWineries: async (params) => {
     set({ loading: true, error: null });
     try {
-      const response = await getWineries(params);
+      const res = await getWineries(params);
       set({
-        wineries: response.data.wineries || response.data,
-        page: response.data.page || 1,
-        total: response.data.totalCount || response.data.length,
-        totalPages: response.data.totalPages || 1,
+        wineries: res.data.wineries || res.data,
+        page: res.data.page || 1,
+        total: res.data.totalCount || res.data.length,
+        totalPages: res.data.totalPages || 1,
         loading: false,
       });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Error fetching wineries';
+      const message = err instanceof Error ? err.message : 'Unknown error';
       set({ error: message, loading: false });
     }
   },
 
-  addWinery: async (data) => {
+  add: async (data) => {
     set({ loading: true, error: null });
     try {
-      const response = await addWinery(data);
+      const res = await addWinery(data);
       set((state) => ({
-        wineries: [response.data, ...state.wineries],
+        wineries: [res.data, ...state.wineries],
         loading: false,
       }));
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Error adding winery';
-      set({ error: message, loading: false });
-      throw err;
+      const axiosError = err as ApiError;
+      let msg = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      if (axiosError.response?.data?.errors && axiosError.response.data.errors.length > 0) {
+        msg = axiosError.response.data.errors[0].message;
+      }
+      set({ error: msg, loading: false });
+      throw new Error(msg);
+    }
+  },
+
+  update: async (id, data) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await updateWinery(id, data);
+      set((state) => ({
+        wineries: state.wineries.map((w) => (w._id === id ? res.data : w)),
+        loading: false,
+      }));
+    } catch (err: unknown) {
+      const axiosError = err as ApiError;
+      let msg = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      if (axiosError.response?.data?.errors && axiosError.response.data.errors.length > 0) {
+        msg = axiosError.response.data.errors[0].message;
+      }
+      set({ error: msg, loading: false });
+      throw new Error(msg);
     }
   },
 }));

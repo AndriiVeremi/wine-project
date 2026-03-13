@@ -4,6 +4,7 @@ export const StyledWinePageDiv = styled.div`
   width: 100%;
   display: flex;
   gap: 80px;
+  padding-bottom: 500px;
 `;
 
 export const StyledWraperImage = styled.div`
@@ -35,4 +36,18 @@ export const WineDescriptionContent = styled.div`
   line-height: 1.8;
   color: var(--primary-gray);
   max-width: 100%;
+
+  p {
+    margin-bottom: 8px;
+  }
+
+  .description-title {
+    margin-top: 32px;
+  }
+
+  .description-label {
+    font-weight: 700;
+    color: var(--black);
+    margin-right: 8px;
+  }
 `;

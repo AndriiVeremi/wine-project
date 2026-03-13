@@ -44,6 +44,11 @@ interface WineryData {
 }
 
 export const createWinery = async (ownerId: Types.ObjectId | string, data: WineryData) => {
+  const user = await User.findById(ownerId);
+  if (user?.winery) {
+    throw new HttpError('You already have a winery registered.', 400);
+  }
+
   const existingWinery = await Winery.findOne({ name: data.name });
   if (existingWinery) {
     throw new HttpError('Winery with this name already exist.', 409);
@@ -56,7 +61,7 @@ export const createWinery = async (ownerId: Types.ObjectId | string, data: Winer
 
   await newWinery.save();
 
-  await User.findByIdAndUpdate(ownerId, { winery: newWinery._id });
+  await User.findByIdAndUpdate(ownerId, { winery: newWinery._id }, { new: true });
 
   return newWinery;
 };

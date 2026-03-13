@@ -51,6 +51,7 @@ export interface Wine {
   color: WineColor;
   sweetness: WineSweetness;
   averageRating: number;
+  totalReviews?: number;
   price: number;
   volume?: number;
   boxQuantity?: number;

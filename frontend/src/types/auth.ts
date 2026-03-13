@@ -1,3 +1,5 @@
+import type { Winery } from './wineries';
+
 export interface IRegisterData {
   firstName: string;
   lastName: string;
@@ -17,8 +19,5 @@ export interface UserProfile {
   phone?: string;
   birthDate?: string;
   address?: string;
-  winery?: {
-    _id: string;
-    name: string;
-  };
+  winery?: Winery;
 }

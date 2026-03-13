@@ -6,6 +6,7 @@ interface MainButtonProps {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 const MainButton: React.FC<MainButtonProps> = ({
@@ -14,9 +15,10 @@ const MainButton: React.FC<MainButtonProps> = ({
   type = 'button',
   disabled = false,
   onClick,
+  style,
 }) => {
   return (
-    <Button type={type} $size={size} onClick={onClick} disabled={disabled}>
+    <Button type={type} $size={size} onClick={onClick} disabled={disabled} style={style}>
       {children}
     </Button>
   );

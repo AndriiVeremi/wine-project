@@ -9,6 +9,9 @@ import {
   FormContainer,
   PasswordWrapper,
   PasswordToggle,
+  FieldWrapper,
+  Label,
+  Input,
 } from '@/components/forms/AuthForm/Form.styled';
 
 const RegisterFormButtonWrapper = styled.div`
@@ -95,20 +98,11 @@ const RegisterForm = () => {
       />
 
       {/* Password */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <label style={{ fontSize: '16px', color: 'var(--primary-gray)' }}>Password *</label>
+      <FieldWrapper>
+        <Label htmlFor="pass">Password *</Label>
         <PasswordWrapper>
-          <input
-            style={{
-              width: '100%',
-              height: '45px',
-              padding: '0 20px',
-              border: '1px solid var(--secondary-gray)',
-              borderRadius: 'var(--border-radius-in)',
-              fontFamily: 'var(--font-main)',
-              fontSize: '14px',
-              outline: 'none',
-            }}
+          <Input
+            id="pass"
             type={visible ? 'text' : 'password'}
             placeholder="Min 6 characters"
             value={pass}
@@ -119,23 +113,14 @@ const RegisterForm = () => {
             {visible ? <FiEye /> : <FiEyeOff />}
           </PasswordToggle>
         </PasswordWrapper>
-      </div>
+      </FieldWrapper>
 
       {/* Confirm Password */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <label style={{ fontSize: '16px', color: 'var(--primary-gray)' }}>Confirm Password *</label>
+      <FieldWrapper>
+        <Label htmlFor="confirmPass">Confirm Password *</Label>
         <PasswordWrapper>
-          <input
-            style={{
-              width: '100%',
-              height: '45px',
-              padding: '0 20px',
-              border: '1px solid var(--secondary-gray)',
-              borderRadius: 'var(--border-radius-in)',
-              fontFamily: 'var(--font-main)',
-              fontSize: '14px',
-              outline: 'none',
-            }}
+          <Input
+            id="confirmPass"
             type={visibleConfirm ? 'text' : 'password'}
             placeholder="Repeat password"
             value={confirmPass}
@@ -146,7 +131,7 @@ const RegisterForm = () => {
             {visibleConfirm ? <FiEye /> : <FiEyeOff />}
           </PasswordToggle>
         </PasswordWrapper>
-      </div>
+      </FieldWrapper>
 
       <RegisterFormButtonWrapper>
         <MainButton type="submit" size="large">

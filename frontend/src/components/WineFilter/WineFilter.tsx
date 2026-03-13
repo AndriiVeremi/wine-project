@@ -34,7 +34,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
       <StyledDropDown
         label="Sweetness"
         value={sweetness}
-        options={['dry', 'semi-dry', 'semi-sweet', 'sweet']}
+        options={['Dry', 'Semi-dry', 'Semi-sweet', 'Sweet']}
         isOpen={openDropdown === 'sweetness'}
         onOpen={() => setOpenDropdown(openDropdown === 'sweetness' ? null : 'sweetness')}
         onSelect={(value) => setFilter('sweetness', value as WineSweetness)}
@@ -43,7 +43,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
       <StyledDropDown
         label="Color"
         value={color}
-        options={['red', 'white', 'rose', 'orange']}
+        options={['Red', 'White', 'Rose', 'Orange']}
         isOpen={openDropdown === 'color'}
         onOpen={() => setOpenDropdown(openDropdown === 'color' ? null : 'color')}
         onSelect={(value) => setFilter('color', value as WineColor)}

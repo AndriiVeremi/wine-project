@@ -84,7 +84,11 @@ export class WineService {
     }
 
     if (wineryId) {
-      filter.winery = wineryId;
+      if (Types.ObjectId.isValid(wineryId)) {
+        filter.winery = new Types.ObjectId(wineryId);
+      } else {
+        filter.winery = wineryId;
+      }
     }
     if (minRating) filter.averageRating = { $gte: parseFloat(minRating) };
     if (maxPrice) filter.price = { $lte: parseFloat(maxPrice) };
@@ -106,7 +110,7 @@ export class WineService {
           as: 'winery',
         },
       },
-      { $unwind: '$winery' },
+      { $unwind: { path: '$winery', preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
           from: 'locations',
