@@ -30,7 +30,7 @@ export const WineDetailPageTabs = styled.div`
 `;
 
 export const WineDescriptionContent = styled.div`
-  margin-top: 40px;
+  margin-top: 80px;
   font-family: var(--font-main);
   font-size: 18px;
   line-height: 1.8;

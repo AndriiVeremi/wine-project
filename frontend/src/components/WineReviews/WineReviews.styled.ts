@@ -3,16 +3,14 @@ import styled from 'styled-components';
 export const WineReviewsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 50px;
   width: 100%;
-  margin-top: 40px;
 `;
 
 export const AvatarList = styled.div`
   display: flex;
   gap: 20px;
   overflow-x: auto;
-  padding: 10px 0;
 
   &::-webkit-scrollbar {
     height: 4px;
@@ -67,9 +65,10 @@ export const ReviewContent = styled.div`
 export const ReviewText = styled.p`
   font-family: var(--font-main);
   font-size: 18px;
-  line-height: 1.6;
+  font-weight: 400;
+  line-height: 29px;
   color: var(--primary-gray);
-  margin-bottom: 24px;
+  padding-bottom: 30px;
   font-style: italic;
 
   &::before,
