@@ -80,14 +80,15 @@ const AddWine: React.FC<Props> = ({ wineryId, wineData, onSuccess }) => {
       setForm({
         ...init,
         ...wineData,
-        winery: wineData.winery?._id || wineData.winery,
-        grape: wineData.grape?._id || wineData.grape,
+        winery: typeof wineData.winery === 'object' ? wineData.winery._id : wineData.winery,
+        grape: typeof wineData.grape === 'object' ? wineData.grape._id : wineData.grape,
         tastingNotes: Array.isArray(wineData.tastingNotes)
           ? wineData.tastingNotes.join(', ')
-          : wineData.tastingNotes,
+          : wineData.tastingNotes || '',
         foodPairing: Array.isArray(wineData.foodPairing)
           ? wineData.foodPairing.join(', ')
-          : wineData.foodPairing,
+          : wineData.foodPairing || '',
+        imageUrl: wineData.imageUrl || '',
       });
       if (wineData.imageUrl) setPreview(wineData.imageUrl);
     }

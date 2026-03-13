@@ -1,4 +1,3 @@
-import React from 'react';
 import { FiStar, FiMail, FiPhone, FiCalendar, FiMapPin, FiUser } from 'react-icons/fi';
 import type { UserProfile } from '@/types/auth';
 import UserAvatar from '@/components/UserAvatar';
