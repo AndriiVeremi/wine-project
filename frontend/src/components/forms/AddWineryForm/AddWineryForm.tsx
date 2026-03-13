@@ -8,6 +8,7 @@ import GalleryUpload from '@/components/common/GalleryUpload/GalleryUpload';
 import WineryLogoUpload from '@/components/common/WineryLogoUpload/WineryLogoUpload';
 import MainButton from '@/components/buttons/MainButton';
 import { toast } from 'react-hot-toast';
+import type { WineryInfo } from '@/types/wine';
 import {
   StyledAddWineryForm,
   FieldsGrid,
@@ -33,7 +34,7 @@ const init = {
 };
 
 interface Props {
-  wineryData?: any;
+  wineryData?: WineryInfo | null;
   onSuccess?: () => void;
 }
 
@@ -85,11 +86,13 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
       const item = countries.find((c) => c._id === form.country);
       if (item) fetchRegions(item.name);
     }
-  }, [form.country, countries]);
+  }, [form.country, countries, fetchRegions]);
 
-  const onInput = (e: any) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name || e.target.id]: value }));
+  const onInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value, id } = e.target;
+    setForm((prev) => ({ ...prev, [name || id]: value }));
   };
 
   const onLoc = (lat: number, lng: number) => {

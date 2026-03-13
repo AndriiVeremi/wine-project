@@ -34,8 +34,9 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
         totalPages: res.data.totalPages || 1,
         loading: false,
       });
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      set({ error: message, loading: false });
     }
   },
 
@@ -47,10 +48,11 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
         wineries: [res.data, ...state.wineries],
         loading: false,
       }));
-    } catch (err: any) {
-      let msg = err.response?.data?.message || err.message;
-      if (err.response?.data?.errors?.length > 0) {
-        msg = err.response.data.errors[0].message;
+    } catch (err: unknown) {
+      const axiosError = err as any;
+      let msg = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      if (axiosError.response?.data?.errors?.length > 0) {
+        msg = axiosError.response.data.errors[0].message;
       }
       set({ error: msg, loading: false });
       throw new Error(msg);
@@ -65,10 +67,11 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
         wineries: state.wineries.map((w) => (w._id === id ? res.data : w)),
         loading: false,
       }));
-    } catch (err: any) {
-      let msg = err.response?.data?.message || err.message;
-      if (err.response?.data?.errors?.length > 0) {
-        msg = err.response.data.errors[0].message;
+    } catch (err: unknown) {
+      const axiosError = err as any;
+      let msg = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      if (axiosError.response?.data?.errors?.length > 0) {
+        msg = axiosError.response.data.errors[0].message;
       }
       set({ error: msg, loading: false });
       throw new Error(msg);

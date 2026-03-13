@@ -42,11 +42,11 @@ const WineManager = ({ wineryId }: Props) => {
 
   useEffect(() => {
     if (user?.uid) {
-      fetch({ 
-        limit, 
-        page: currentPage, 
+      fetch({
+        limit,
+        page: currentPage,
         wineryId,
-        name: debouncedSearch 
+        name: debouncedSearch,
       });
     }
   }, [user?.uid, currentPage, wineryId, debouncedSearch, fetch]);
@@ -59,7 +59,6 @@ const WineManager = ({ wineryId }: Props) => {
     setEditingWine(wine);
     setView('edit');
   };
-
 
   const onRemove = async (id: string) => {
     if (window.confirm('Delete this wine?')) {

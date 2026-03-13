@@ -39,8 +39,10 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         totalPages: res.data.totalPages,
         loading: false,
       });
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
+    } catch (err: unknown) {
+      const axiosError = err as any;
+      const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      set({ error: message, loading: false });
     }
   },
 
@@ -52,8 +54,10 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         wines: [res.data, ...state.wines],
         loading: false,
       }));
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
+    } catch (err: unknown) {
+      const axiosError = err as any;
+      const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      set({ error: message, loading: false });
       throw err;
     }
   },
@@ -66,8 +70,10 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         wines: state.wines.map((w) => (w._id === id ? res.data : w)),
         loading: false,
       }));
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
+    } catch (err: unknown) {
+      const axiosError = err as any;
+      const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      set({ error: message, loading: false });
       throw err;
     }
   },
@@ -80,8 +86,10 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         wines: state.wines.filter((w) => w._id !== id),
         loading: false,
       }));
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
+    } catch (err: unknown) {
+      const axiosError = err as any;
+      const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      set({ error: message, loading: false });
       throw err;
     }
   },
