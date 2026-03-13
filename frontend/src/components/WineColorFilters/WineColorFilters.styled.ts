@@ -16,11 +16,11 @@ export const WineImageItem = styled.li`
   transition: transform var(--transition);
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
   }
 `;
 
 export const WineImage = styled.img`
-  height: 220px;
+  height: 280px;
   object-fit: cover;
 `;
