@@ -17,6 +17,15 @@ interface WinesStore {
   remove: (id: string) => Promise<void>;
 }
 
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
+}
+
 export const useWinesStore = create<WinesStore>()((set) => ({
   wines: [],
   loading: false,
@@ -40,7 +49,7 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         loading: false,
       });
     } catch (err: unknown) {
-      const axiosError = err as any;
+      const axiosError = err as ApiError;
       const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
       set({ error: message, loading: false });
     }
@@ -55,7 +64,7 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         loading: false,
       }));
     } catch (err: unknown) {
-      const axiosError = err as any;
+      const axiosError = err as ApiError;
       const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
       set({ error: message, loading: false });
       throw err;
@@ -71,7 +80,7 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         loading: false,
       }));
     } catch (err: unknown) {
-      const axiosError = err as any;
+      const axiosError = err as ApiError;
       const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
       set({ error: message, loading: false });
       throw err;
@@ -87,7 +96,7 @@ export const useWinesStore = create<WinesStore>()((set) => ({
         loading: false,
       }));
     } catch (err: unknown) {
-      const axiosError = err as any;
+      const axiosError = err as ApiError;
       const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
       set({ error: message, loading: false });
       throw err;

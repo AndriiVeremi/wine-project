@@ -15,6 +15,16 @@ interface WineriesStore {
   update: (id: string, data: FormData | Partial<Winery>) => Promise<void>;
 }
 
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+      errors?: { message: string }[];
+    };
+  };
+  message?: string;
+}
+
 export const useWineriesStore = create<WineriesStore>((set) => ({
   wineries: [],
   loading: false,
@@ -49,9 +59,9 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
         loading: false,
       }));
     } catch (err: unknown) {
-      const axiosError = err as any;
+      const axiosError = err as ApiError;
       let msg = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
-      if (axiosError.response?.data?.errors?.length > 0) {
+      if (axiosError.response?.data?.errors && axiosError.response.data.errors.length > 0) {
         msg = axiosError.response.data.errors[0].message;
       }
       set({ error: msg, loading: false });
@@ -68,9 +78,9 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
         loading: false,
       }));
     } catch (err: unknown) {
-      const axiosError = err as any;
+      const axiosError = err as ApiError;
       let msg = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
-      if (axiosError.response?.data?.errors?.length > 0) {
+      if (axiosError.response?.data?.errors && axiosError.response.data.errors.length > 0) {
         msg = axiosError.response.data.errors[0].message;
       }
       set({ error: msg, loading: false });

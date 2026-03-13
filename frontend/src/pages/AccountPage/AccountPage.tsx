@@ -12,6 +12,7 @@ import AccountReviews from '@/components/UserReviews/UserReviews';
 import Wishlist from '@/components/UserWishList/UserWishList';
 import Container from '@/components/common/Container';
 import type { UserProfile } from '@/types/auth';
+import type { Winery } from '@/types/wineries';
 import apiClient from '@/api/axios';
 import toast from 'react-hot-toast';
 import {
@@ -77,9 +78,7 @@ const AccountPage: React.FC = () => {
           <>
             <SectionTitle>My Winery</SectionTitle>
             <AddWinery
-              wineryData={
-                profile?.winery && typeof profile.winery === 'object' ? profile.winery : null
-              }
+              wineryData={profile?.winery as unknown as Winery}
               onSuccess={() => fetchProfile(true)}
             />
           </>

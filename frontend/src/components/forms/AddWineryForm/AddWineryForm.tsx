@@ -60,8 +60,14 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         websiteUrl: wineryData.websiteUrl || '',
         videoUrl: wineryData.videoUrl || '',
         history: wineryData.history || '',
-        country: typeof wineryData.country === 'object' ? (wineryData.country as unknown as { _id: string })._id : wineryData.country || '',
-        region: typeof wineryData.region === 'object' ? (wineryData.region as unknown as { _id: string })._id : wineryData.region || '',
+        country:
+          typeof wineryData.country === 'object'
+            ? (wineryData.country as unknown as { _id: string })._id
+            : wineryData.country || '',
+        region:
+          typeof wineryData.region === 'object'
+            ? (wineryData.region as unknown as { _id: string })._id
+            : wineryData.region || '',
       });
       if (wineryData.logoUrl) setLogoPreview(wineryData.logoUrl);
       if (wineryData.galleryUrl) setGalleryPreviews(wineryData.galleryUrl);
