@@ -5,7 +5,6 @@ import {
   LogoUploadWrapper,
   UploadTrigger,
   AvatarCircle,
-  CameraBadge,
   UploadText,
   HiddenInput,
 } from './WineryLogoUpload.styled';
@@ -34,16 +33,7 @@ const WineryLogoUpload: React.FC<Props> = ({ preview, onFileChange, label = 'Win
     <LogoUploadWrapper>
       <UploadTrigger onClick={() => input.current?.click()}>
         <AvatarCircle>
-          {preview ? (
-            <>
-              <img src={preview} alt="Logo" />
-              <CameraBadge>
-                <HiCamera size={10} color="#fff" />
-              </CameraBadge>
-            </>
-          ) : (
-            <HiCamera size={24} color="#aaa" />
-          )}
+          {preview ? <img src={preview} alt="Logo" /> : <HiCamera size={24} color="#aaa" />}
         </AvatarCircle>
         <UploadText>{preview ? 'Change Logo' : `Add ${label}`}</UploadText>
       </UploadTrigger>

@@ -8,6 +8,7 @@ import GalleryUpload from '@/components/common/GalleryUpload/GalleryUpload';
 import WineryLogoUpload from '@/components/common/WineryLogoUpload/WineryLogoUpload';
 import MainButton from '@/components/buttons/MainButton';
 import { toast } from 'react-hot-toast';
+import type { Winery } from '@/types/wineries';
 import {
   StyledAddWineryForm,
   FieldsGrid,
@@ -20,28 +21,59 @@ import {
 } from './AddWineryForm.styled';
 import { ButtonWrapper } from '../AddWinesForm/AddWinesForm.styled';
 
-const AddWinery = () => {
-  const { addWinery, loading } = useWineriesStore();
-  const { regions, fetchRegions } = useLocationStore();
+const init = {
+  name: '',
+  contactEmail: '',
+  contactPhone: '',
+  address: '',
+  websiteUrl: '',
+  videoUrl: '',
+  history: '',
+  country: '',
+  region: '',
+};
 
-  const [form, setForm] = useState({
-    name: '',
-    contactEmail: '',
-    contactPhone: '',
-    address: '',
-    websiteUrl: '',
-    videoUrl: '',
-    history: '',
-    country: '',
-    region: '',
-  });
+interface Props {
+  wineryData?: Winery | null;
+  onSuccess?: () => void;
+}
 
+const AddWinery = ({ wineryData, onSuccess }: Props) => {
+  const { add, update, loading } = useWineriesStore();
+  const { fetchRegions, regions } = useLocationStore();
+
+  const [form, setForm] = useState(init);
   const [countries, setCountries] = useState<{ _id: string; name: string }[]>([]);
   const [logo, setLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [gallery, setGallery] = useState<File[]>([]);
   const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+
+  useEffect(() => {
+    if (wineryData) {
+      setForm({
+        name: wineryData.name || '',
+        contactEmail: wineryData.contactEmail || '',
+        contactPhone: wineryData.contactPhone || '',
+        address: wineryData.address || '',
+        websiteUrl: wineryData.websiteUrl || '',
+        videoUrl: wineryData.videoUrl || '',
+        history: wineryData.history || '',
+        country:
+          typeof wineryData.country === 'object'
+            ? (wineryData.country as unknown as { _id: string })._id
+            : wineryData.country || '',
+        region:
+          typeof wineryData.region === 'object'
+            ? (wineryData.region as unknown as { _id: string })._id
+            : wineryData.region || '',
+      });
+      if (wineryData.logoUrl) setLogoPreview(wineryData.logoUrl);
+      if (wineryData.galleryUrl) setGalleryPreviews(wineryData.galleryUrl);
+      if (wineryData.coordinates) setCoords(wineryData.coordinates);
+    }
+  }, [wineryData]);
 
   useEffect(() => {
     const load = async () => {
@@ -55,23 +87,18 @@ const AddWinery = () => {
     load();
   }, []);
 
+  useEffect(() => {
+    if (form.country && countries.length > 0) {
+      const item = countries.find((c) => c._id === form.country);
+      if (item) fetchRegions(item.name);
+    }
+  }, [form.country, countries, fetchRegions]);
+
   const onInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name || e.target.id]: value }));
-
-    if (name === 'country' || e.target.id === 'country') {
-      const item = countries.find((c) => c._id === value);
-      if (item) {
-        fetchRegions(item.name);
-      }
-    }
-  };
-
-  const onGallery = (files: File[]) => {
-    setGallery(files);
-    setGalleryPreviews(files.map((f) => URL.createObjectURL(f)));
+    const { name, value, id } = e.target;
+    setForm((prev) => ({ ...prev, [name || id]: value }));
   };
 
   const onLoc = (lat: number, lng: number) => {
@@ -80,49 +107,37 @@ const AddWinery = () => {
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!coords) {
-      toast.error('Select location on map');
-      return;
-    }
+    if (!coords) return toast.error('Select location on map');
+    if (form.history && form.history.length < 10) return toast.error('History: min 10 chars');
+    if (form.address.length < 5) return toast.error('Address: min 5 chars');
 
     const data = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      data.append(key, value);
+    Object.entries(form).forEach(([key, val]) => {
+      if ((key === 'websiteUrl' || key === 'videoUrl') && !val) return;
+
+      let sendVal = String(val);
+      if (key === 'contactPhone') {
+        sendVal = sendVal.replace(/\s+/g, ''); // прибираємо пробіли
+      }
+      data.append(key, sendVal);
     });
 
     data.append('coordinates', JSON.stringify(coords));
-
-    if (logo) {
-      data.append('logo', logo);
-    }
-
-    gallery.forEach((f) => {
-      data.append('images', f);
-    });
+    if (logo) data.append('logo', logo);
+    gallery.forEach((f) => data.append('images', f));
 
     try {
-      await addWinery(data);
-      toast.success('Done!');
-      setForm({
-        name: '',
-        contactEmail: '',
-        contactPhone: '',
-        address: '',
-        websiteUrl: '',
-        videoUrl: '',
-        history: '',
-        country: '',
-        region: '',
-      });
-      setLogo(null);
-      setLogoPreview(null);
-      setGallery([]);
-      setGalleryPreviews([]);
-      setCoords(null);
+      if (wineryData?._id) {
+        await update(wineryData._id, data);
+        toast.success('Updated!');
+      } else {
+        await add(data);
+        toast.success('Registered!');
+      }
+      if (onSuccess) onSuccess();
     } catch (err) {
       console.log(err);
-      toast.error('Error adding winery');
+      toast.error('Save failed');
     }
   };
 
@@ -131,25 +146,31 @@ const AddWinery = () => {
       <TopSection>
         <PhotoSide>
           <GalleryUpload
-            mainPreview={logoPreview}
-            galleryPreviews={galleryPreviews}
+            mainPreview={galleryPreviews[0] || null}
+            galleryPreviews={galleryPreviews.slice(1)}
             onMainFileChange={(f) => {
-              setLogo(f);
-              setLogoPreview(URL.createObjectURL(f));
+              const next = [f, ...gallery.slice(1)];
+              setGallery(next);
+              setGalleryPreviews(next.map((file) => URL.createObjectURL(file)));
             }}
-            onGalleryFilesChange={onGallery}
+            onGalleryFilesChange={(files) => {
+              const next = [gallery[0], ...files].filter(Boolean).slice(0, 5);
+              setGallery(next);
+              setGalleryPreviews(next.map((f) => URL.createObjectURL(f)));
+            }}
           />
+          <div style={{ marginTop: '20px' }}>
+            <WineryLogoUpload
+              preview={logoPreview}
+              onFileChange={(f) => {
+                setLogo(f);
+                setLogoPreview(URL.createObjectURL(f));
+              }}
+            />
+          </div>
         </PhotoSide>
 
         <InfoSide>
-          <WineryLogoUpload
-            preview={logoPreview}
-            onFileChange={(f) => {
-              setLogo(f);
-              setLogoPreview(URL.createObjectURL(f));
-            }}
-          />
-
           <FormField
             label="Winery Name"
             id="name"
@@ -157,60 +178,55 @@ const AddWinery = () => {
             value={form.name}
             onChange={onInput}
             required
-            placeholder="Enter winery name"
           />
+
           <FormField
-            label="Contact Email"
+            label="Email"
             id="contactEmail"
             name="contactEmail"
             type="email"
             value={form.contactEmail}
             onChange={onInput}
             required
-            placeholder="example@winery.com"
+            placeholder="email@example.com"
           />
           <FormField
-            label="Contact Phone"
+            label="Phone"
             id="contactPhone"
             name="contactPhone"
             value={form.contactPhone}
             onChange={onInput}
             required
-            placeholder="+995 5xx xxx xxx"
+            placeholder="+1234567890 (start with +)"
           />
           <FormField
-            label="Website URL"
+            label="Website"
             id="websiteUrl"
             name="websiteUrl"
             value={form.websiteUrl}
             onChange={onInput}
-            placeholder="https://www.yourwinery.com"
+            placeholder="https://..."
           />
           <FormField
-            label="YouTube Video URL"
+            label="Video"
             id="videoUrl"
             name="videoUrl"
             value={form.videoUrl}
             onChange={onInput}
-            placeholder="https://www.youtube.com/watch?v=..."
+            placeholder="https://..."
           />
         </InfoSide>
       </TopSection>
 
       <FieldsGrid>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '14px', fontWeight: '500' }}>Country</label>
+          <label>Country</label>
           <select
             name="country"
             value={form.country}
             onChange={onInput}
             required
-            style={{
-              padding: '10px',
-              borderRadius: '8px',
-              border: '1px solid #ddd',
-              outline: 'none',
-            }}
+            style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
           >
             <option value="">Select Country</option>
             {countries.map((c) => (
@@ -220,21 +236,15 @@ const AddWinery = () => {
             ))}
           </select>
         </div>
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '14px', fontWeight: '500' }}>Region</label>
+          <label>Region</label>
           <select
             name="region"
             value={form.region}
             onChange={onInput}
             required
-            style={{
-              padding: '10px',
-              borderRadius: '8px',
-              border: '1px solid #ddd',
-              outline: 'none',
-            }}
             disabled={!form.country}
+            style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
           >
             <option value="">Select Region</option>
             {regions.map((r) => (
@@ -244,71 +254,74 @@ const AddWinery = () => {
             ))}
           </select>
         </div>
-
         <FullWidthWrapper>
           <FormField
-            label="Full Address"
+            label="Address"
             id="address"
             name="address"
             value={form.address}
             onChange={onInput}
             required
-            placeholder="Street, City, Region, Country"
           />
         </FullWidthWrapper>
       </FieldsGrid>
 
       <FormField
-        label="Our History"
+        label="History"
         id="history"
         name="history"
         value={form.history}
         onChange={onInput}
         isTextarea
-        placeholder="Tell the world about your winery..."
+        placeholder="Min 10 characters..."
+        required
       />
 
       <div>
-        <MapInstruction>
-          Click on the map to mark your <span>exact location</span>:
-        </MapInstruction>
+        <MapInstruction>Mark location:</MapInstruction>
         <MapFieldWrapper>
-          <WineryMap isEditable={true} onLocationSelect={onLoc} />
+          <WineryMap
+            isEditable={true}
+            onLocationSelect={onLoc}
+            lat={coords?.lat}
+            lng={coords?.lng}
+          />
         </MapFieldWrapper>
-        {coords && (
-          <p style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
-            Selected: {coords.lat.toFixed(4)}, {coords.lng.toFixed(4)}
-          </p>
-        )}
       </div>
 
       <ButtonWrapper>
-        <MainButton
-          type="button"
-          onClick={() => {
-            setForm({
-              name: '',
-              contactEmail: '',
-              contactPhone: '',
-              address: '',
-              websiteUrl: '',
-              videoUrl: '',
-              history: '',
-              country: '',
-              region: '',
-            });
-            setLogo(null);
-            setLogoPreview(null);
-            setGallery([]);
-            setGalleryPreviews([]);
-            setCoords(null);
-          }}
-        >
-          RESET
-        </MainButton>
-        <MainButton type="submit" disabled={loading}>
-          {loading ? 'WAIT...' : 'REGISTER'}
-        </MainButton>
+        {wineryData ? (
+          <>
+            <MainButton
+              type="button"
+              onClick={() => window.open(`/wineries/${wineryData._id}`, '_blank')}
+            >
+              VIEW PUBLIC PAGE
+            </MainButton>
+            <MainButton type="submit" disabled={loading}>
+              {loading ? 'WAIT...' : 'UPDATE WINERY'}
+            </MainButton>
+          </>
+        ) : (
+          <>
+            <MainButton
+              type="button"
+              onClick={() => {
+                setForm(init);
+                setLogo(null);
+                setLogoPreview(null);
+                setGallery([]);
+                setGalleryPreviews([]);
+                setCoords(null);
+              }}
+            >
+              RESET
+            </MainButton>
+            <MainButton type="submit" disabled={loading}>
+              {loading ? 'WAIT...' : 'REGISTER'}
+            </MainButton>
+          </>
+        )}
       </ButtonWrapper>
     </StyledAddWineryForm>
   );

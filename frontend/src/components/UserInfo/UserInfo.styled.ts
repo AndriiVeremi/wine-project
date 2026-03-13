@@ -2,34 +2,37 @@ import styled from 'styled-components';
 
 export const AccountInfoContainer = styled.div`
   display: flex;
-  gap: 60px;
   flex-direction: column;
+  gap: 40px;
+  width: 100%;
 `;
 
 export const ProfileHeader = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 50px;
-  min-width: 180px;
+  gap: 30px;
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 
   @media (max-width: 768px) {
     flex-direction: column;
     text-align: center;
-    gap: 15px;
   }
 `;
 
 export const UserNameSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 `;
 
 export const UserName = styled.h3`
-  font-size: 28px;
-  font-weight: 400;
-  color: var(--primary-gray);
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
   margin: 0;
 `;
 
@@ -37,55 +40,71 @@ export const VipBadge = styled.span<{ $isVip: boolean }>`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: ${({ $isVip }) => ($isVip ? 'var(--rating-gold)' : 'var(--secondary-gray)')};
+  font-size: 13px;
+  font-weight: 600;
+  color: ${({ $isVip }) => ($isVip ? 'var(--rating-gold, #ffb400)' : '#aaa')};
   text-transform: uppercase;
-  letter-spacing: 1px;
-
-  svg {
-    font-size: 16px;
-  }
+  letter-spacing: 0.5px;
 `;
 
-export const InfoList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 600px;
-`;
-
-export const InfoItem = styled.li`
-  display: flex;
-  align-items: flex-start;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--soft-gray);
+export const InfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 
-  &:last-child {
-    border-bottom: none;
-  }
-
-  @media (max-width: 480px) {
-    flex-direction: column;
-    gap: 4px;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 `;
 
-export const InfoLabel = styled.span`
-  font-family: var(--font-main);
-  font-size: 16px;
+export const InfoCard = styled.div`
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-color: #eee;
+  }
+`;
+
+export const IconBox = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-color, #841013);
+  font-size: 20px;
+  flex-shrink: 0;
+`;
+
+export const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const Label = styled.span`
+  font-size: 12px;
   font-weight: 600;
-  color: var(--primary-gray);
-  min-width: 160px;
+  color: #aaa;
+  text-transform: uppercase;
 `;
 
-export const InfoValue = styled.span`
-  font-family: var(--font-main);
-  font-size: 16px;
-  color: var(--input-gray-text);
+export const Value = styled.span`
+  font-size: 15px;
+  color: #444;
+  font-weight: 500;
   word-break: break-all;
 `;

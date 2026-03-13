@@ -16,7 +16,7 @@ export const getUserProfileByFirebaseUid = async (firebaseUid: string) => {
 
   const user = await User.findOne({ firebaseUid })
     .select('-__v')
-    .populate('winery', 'name')
+    .populate('winery')
     .populate({
       path: 'favoriteWines',
       select: 'name imageUrl sweetness color winery',
