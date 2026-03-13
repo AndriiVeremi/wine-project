@@ -88,7 +88,6 @@ const AddWine: React.FC<Props> = ({ wineryId, wineData, onSuccess }) => {
         foodPairing: Array.isArray(wineData.foodPairing)
           ? wineData.foodPairing.join(', ')
           : wineData.foodPairing || '',
-        imageUrl: wineData.imageUrl || '',
       });
       if (wineData.imageUrl) setPreview(wineData.imageUrl);
     }
