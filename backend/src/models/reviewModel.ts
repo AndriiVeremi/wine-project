@@ -1,7 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IReview extends Document {
-  wineId: mongoose.Types.ObjectId;
+  wineId?: mongoose.Types.ObjectId;
+  wineryId?: mongoose.Types.ObjectId;
+  tourId?: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   rating: number;
   comment: string;
@@ -12,7 +14,14 @@ const reviewSchema: Schema = new Schema({
   wineId: {
     type: Schema.Types.ObjectId,
     ref: 'Wine',
-    required: true,
+  },
+  wineryId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Winery',
+  },
+  tourId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Tour',
   },
   userId: {
     type: Schema.Types.ObjectId,

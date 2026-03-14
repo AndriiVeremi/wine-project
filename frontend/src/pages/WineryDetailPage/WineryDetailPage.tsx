@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { getWineryById } from '@/api/wineries';
 import type { Winery } from '@/types/wineries';
@@ -9,6 +9,8 @@ import WineryMap from '@/components/Location/WineryMap';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import InfoButton from '@/components/buttons/InfoButton/InfoButton';
+import ItemReviews from '@/components/WineReviews';
+import AddReviewForm from '@/components/forms/AddReviewForm/AddReviewForm';
 import { HiMapPin, HiGlobeAlt, HiEnvelope, HiPhone } from 'react-icons/hi2';
 
 import {
@@ -31,7 +33,6 @@ import {
   MapSection,
 } from './WineryDetailPage.styled';
 
-// Допоміжна функція для YouTube (на самому верху для уникнення помилок)
 function getYouTubeEmbedUrl(url?: string) {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -46,40 +47,41 @@ const WineryDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [refresh, setRefresh] = useState(0);
 
   const { wines, fetch, loading: winesLoading } = useWinesStore();
 
-  const wineryWines = wines;
+  const loadWinery = useCallback(async () => {
+    if (!id) return;
+    try {
+      const response = await getWineryById(id);
+      setWinery(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [id]);
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadAll = async () => {
       if (!id) return;
       try {
         setLoading(true);
-        const response = await getWineryById(id);
-        setWinery(response.data);
+        await loadWinery();
         await fetch({ wineryId: id, limit: 10 });
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : 'Failed to load winery details';
-        setError(message);
+      } catch {
+        setError('Failed to load data');
       } finally {
         setLoading(false);
       }
     };
-
-    loadData();
-  }, [id, fetch]);
+    loadAll();
+  }, [id, fetch, loadWinery]);
 
   if (loading) return <Loader />;
-  if (error) return <DetailPageContainer>Error: {error}</DetailPageContainer>;
-  if (!winery) return <DetailPageContainer>Winery not found.</DetailPageContainer>;
+  if (error || !winery) return <DetailPageContainer>Winery not found.</DetailPageContainer>;
 
   const galleryImages = [...(winery.logoUrl ? [winery.logoUrl] : []), ...(winery.galleryUrl || [])];
-
-  if (galleryImages.length === 0) {
-    galleryImages.push('/assets/winery-placeholder.png');
-  }
-
+  if (galleryImages.length === 0) galleryImages.push('/assets/winery-placeholder.png');
   const thumbnails = galleryImages.slice(0, 4);
 
   return (
@@ -89,7 +91,6 @@ const WineryDetailPage = () => {
           <MainBanner>
             <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={winery.name} />
           </MainBanner>
-
           <ThumbnailsGrid>
             {thumbnails.map((url, index) => (
               <Thumbnail
@@ -97,7 +98,7 @@ const WineryDetailPage = () => {
                 $active={activeImageIdx === index}
                 onClick={() => setActiveImageIdx(index)}
               >
-                <img src={url} alt={`Thumbnail ${index}`} />
+                <img src={url} alt="Thumbnail" />
               </Thumbnail>
             ))}
           </ThumbnailsGrid>
@@ -105,12 +106,10 @@ const WineryDetailPage = () => {
 
         <WineryInfoBlock>
           <WineryNameTitle>{winery.name}</WineryNameTitle>
-
           <WineryHeaderRow>
             <WineryLogoInHeader>
-              <img src={winery.logoUrl || '/assets/winery-placeholder.png'} alt="Winery Logo" />
+              <img src={winery.logoUrl || '/assets/winery-placeholder.png'} alt="Logo" />
             </WineryLogoInHeader>
-
             <ContactsList>
               <InfoRow>
                 <RatingStars
@@ -123,12 +122,10 @@ const WineryDetailPage = () => {
                   ({winery.totalReviews || 0})
                 </span>
               </InfoRow>
-
               <InfoRow>
                 <HiMapPin size={20} />
                 {winery.address || 'Georgia'}
               </InfoRow>
-
               <InfoRow>
                 <HiGlobeAlt size={20} />
                 <a
@@ -142,27 +139,19 @@ const WineryDetailPage = () => {
                     : 'winery-website.com'}
                 </a>
               </InfoRow>
-
               <InfoRow>
                 <HiEnvelope size={20} />
                 {winery.contactEmail}
               </InfoRow>
-
               <InfoRow>
                 <HiPhone size={20} />
                 {winery.contactPhone}
               </InfoRow>
             </ContactsList>
           </WineryHeaderRow>
-
           {getYouTubeEmbedUrl(winery.videoUrl) && (
             <VideoWrapper>
-              <iframe
-                src={getYouTubeEmbedUrl(winery.videoUrl)!}
-                title="Winery Presentation Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              <iframe src={getYouTubeEmbedUrl(winery.videoUrl)!} title="Video" allowFullScreen />
             </VideoWrapper>
           )}
         </WineryInfoBlock>
@@ -181,12 +170,17 @@ const WineryDetailPage = () => {
       </TabButtonsWrapper>
 
       {activeTab === 'description' ? (
-        <DescriptionText>
-          {winery.history || 'No detailed description available for this winery yet.'}
-        </DescriptionText>
+        <DescriptionText>{winery.history || 'No description available.'}</DescriptionText>
       ) : (
         <div style={{ marginBottom: '80px' }}>
-          <p>Reviews will be displayed here...</p>
+          <ItemReviews key={refresh} wineryId={winery._id} />
+          <AddReviewForm
+            wineryId={winery._id}
+            onReviewAdded={() => {
+              setRefresh((prev) => prev + 1);
+              loadWinery();
+            }}
+          />
         </div>
       )}
 
@@ -207,7 +201,7 @@ const WineryDetailPage = () => {
               background: '#f0f0f0',
             }}
           >
-            Map location not available
+            Map not available
           </div>
         )}
       </MapSection>
@@ -215,10 +209,10 @@ const WineryDetailPage = () => {
       {winesLoading ? (
         <p style={{ textAlign: 'center' }}>Loading bestsellers...</p>
       ) : (
-        wineryWines.length > 0 && (
+        wines.length > 0 && (
           <section style={{ marginBottom: '40px' }}>
             <SectionHeaderTitle>Bestsellers</SectionHeaderTitle>
-            <Slider items={wineryWines} renderItem={(wine) => <SliderCardWine wine={wine} />} />
+            <Slider items={wines} renderItem={(wine) => <SliderCardWine wine={wine} />} />
           </section>
         )
       )}
