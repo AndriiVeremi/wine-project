@@ -4,6 +4,9 @@ import type { Grape } from '@/types/grape';
 export const getGrapes = (params: {
   search?: string;
   type?: string;
+  region?: string;
+  body?: string;
+  acidity?: string;
   page?: number;
   limit?: number;
   wineryId?: string;

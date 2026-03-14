@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth/authStore';
 import AccountSidebar from '@/components/UserSidebar/UserSidebar';
@@ -61,7 +61,14 @@ const AccountPage = () => {
       case 'My Reviews':
         return <AccountReviews />;
       case 'Account Settings':
-        return <AccountSettings />;
+        return (
+          <AccountSettings
+            info={profile}
+            updateData={(updated) =>
+              useAuthStore.setState({ profile: { ...profile!, ...updated } })
+            }
+          />
+        );
       default:
         return <PlaceholderText>Coming soon...</PlaceholderText>;
     }

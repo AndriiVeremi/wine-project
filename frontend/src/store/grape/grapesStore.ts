@@ -13,13 +13,16 @@ interface GrapesStore {
   fetchGrapes: (params: {
     search?: string;
     type?: string;
+    region?: string;
+    body?: string;
+    acidity?: string;
     page: number;
     limit: number;
     wineryId?: string;
   }) => Promise<void>;
   add: (data: Partial<Grape>, files?: File[]) => Promise<void>;
   update: (id: string, data: Partial<Grape>, files?: File[]) => Promise<void>;
-  remove: (id: string) => Promise<void>;
+  removeGrape: (id: string) => Promise<void>;
 }
 
 interface ApiError {
@@ -93,7 +96,7 @@ export const useGrapesStore = create<GrapesStore>()((set) => ({
     }
   },
 
-  remove: async (id) => {
+  removeGrape: async (id) => {
     set({ loading: true, error: null });
     try {
       await deleteGrape(id);
