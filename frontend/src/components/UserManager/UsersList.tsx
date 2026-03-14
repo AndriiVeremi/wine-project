@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getAllUsers, toggleUserBan, deleteUser } from '@/api/adminApi';
 import { FiUsers, FiSlash, FiCheckCircle } from 'react-icons/fi';
 import { useDebounce } from '@/hooks/useDebounce';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import { ItemImg, ManagerWrapper } from '@/components/common/TableManager/TableManager.styled';
 import toast from 'react-hot-toast';
 

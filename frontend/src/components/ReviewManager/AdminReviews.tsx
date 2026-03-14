@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getAllReviews, deleteReview } from '@/api/adminApi';
 import { FiMessageSquare, FiStar } from 'react-icons/fi';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import { ItemImg, ManagerWrapper } from '@/components/common/TableManager/TableManager.styled';
 import toast from 'react-hot-toast';
 

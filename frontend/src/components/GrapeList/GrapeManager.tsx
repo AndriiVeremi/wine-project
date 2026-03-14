@@ -6,7 +6,7 @@ import MainButton from '@/components/buttons/MainButton';
 import AddGrape from '@/components/forms/AddGrapeForm/AddGrapeForm';
 import { useDebounce } from '@/hooks/useDebounce';
 import type { Grape } from '@/types/grape';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import {
   ItemImg,
   ManagerWrapper,

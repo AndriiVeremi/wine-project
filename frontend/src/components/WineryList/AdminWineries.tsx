@@ -3,7 +3,7 @@ import { getWineries, deleteWinery, toggleWineryVip } from '@/api/wineries';
 import { FiHome, FiStar } from 'react-icons/fi';
 import { useDebounce } from '@/hooks/useDebounce';
 import type { Winery } from '@/types/wineries';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import {
   ItemImg,
   ManagerWrapper,

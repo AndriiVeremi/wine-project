@@ -84,7 +84,12 @@ function TableManager<T>({
       {loading ? (
         <p>Loading...</p>
       ) : total === 0 && !search ? (
-        <EmptyState icon={emptyIcon} title={emptyTitle} text={emptyText} onAction={onAdd} />
+        <EmptyState 
+          icon={emptyIcon} 
+          title={emptyTitle} 
+          text={emptyText} 
+          onAction={onAdd} 
+        />
       ) : (
         <>
           <TableContainer>

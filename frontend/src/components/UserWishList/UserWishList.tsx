@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFavoritesStore } from '@/store/user/useFavoritesStore';
 import { FiHeart } from 'react-icons/fi';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import { ItemImg } from '@/components/common/TableManager/TableManager.styled';
 import type { WishlistWine } from '@/types/wine';
 

@@ -6,7 +6,7 @@ import MainButton from '@/components/buttons/MainButton';
 import AddTour from '@/components/forms/AddTourForm/AddTourForm';
 import { useDebounce } from '@/hooks/useDebounce';
 import type { Tour } from '@/types/tours';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import {
   ItemImg,
   ManagerWrapper,

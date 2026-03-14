@@ -6,7 +6,7 @@ import MainButton from '@/components/buttons/MainButton';
 import AddWine from '@/components/forms/AddWinesForm/AddWinesForm';
 import { useDebounce } from '@/hooks/useDebounce';
 import type { Wine } from '@/types/wine';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import {
   ItemImg,
   ManagerWrapper,

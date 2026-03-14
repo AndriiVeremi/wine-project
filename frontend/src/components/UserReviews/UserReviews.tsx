@@ -4,7 +4,7 @@ import { FiMessageSquare, FiStar } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getUserReviews, deleteReview } from '@/api/reviews';
 import type { Review } from '@/types/wine';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import { ItemImg } from '@/components/common/TableManager/TableManager.styled';
 
 const AccountReviews = () => {
