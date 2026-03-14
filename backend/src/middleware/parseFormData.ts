@@ -3,31 +3,34 @@ import { Request, Response, NextFunction } from 'express';
 export const parseFormData = (req: Request, res: Response, next: NextFunction) => {
   if (!req.body) return next();
 
-  const numFields = ['vintage', 'price', 'volume', 'boxQuantity'];
-  const boolFields = ['hasPackaging', 'decanting', 'inStock', 'isVip'];
-  const jsonFields = ['tastingNotes', 'foodPairing', 'galleryUrl'];
+  const numbers = ['vintage', 'price', 'volume', 'boxQuantity', 'duration'];
+  const booleans = ['hasPackaging', 'decanting', 'inStock', 'isVip'];
+  const objects = ['tastingNotes', 'foodPairing', 'galleryUrl', 'groupSize', 'images'];
 
-  numFields.forEach((f) => {
-    if (req.body[f] !== undefined && req.body[f] !== '') {
-      req.body[f] = Number(req.body[f]);
+  for (const key of numbers) {
+    if (req.body[key] !== undefined && req.body[key] !== '') {
+      req.body[key] = Number(req.body[key]);
     }
-  });
+  }
 
-  boolFields.forEach((f) => {
-    if (req.body[f] !== undefined) {
-      req.body[f] = req.body[f] === 'true' || req.body[f] === true;
+  for (const key of booleans) {
+    if (req.body[key] !== undefined) {
+      req.body[key] = req.body[key] === 'true' || req.body[key] === true;
     }
-  });
+  }
 
-  jsonFields.forEach((f) => {
-    if (typeof req.body[f] === 'string' && req.body[f].trim().startsWith('[')) {
-      try {
-        req.body[f] = JSON.parse(req.body[f]);
-      } catch {
-        // Not a valid JSON string, keep as is
+  for (const key of objects) {
+    if (typeof req.body[key] === 'string') {
+      const value = req.body[key].trim();
+      if (value.startsWith('[') || value.startsWith('{')) {
+        try {
+          req.body[key] = JSON.parse(value);
+        } catch {
+          continue;
+        }
       }
     }
-  });
+  }
 
   next();
 };

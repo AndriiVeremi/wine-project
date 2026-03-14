@@ -5,20 +5,29 @@ import { AuthenticatedRequest } from '@/middleware/auth';
 
 class GrapeController {
   public getGrapes = ctrlWrapper(async (req: Request, res: Response) => {
-    const grapesData = await GrapeService.getGrapes(req.query);
-    res.json(grapesData);
+    const data = await GrapeService.getGrapes(req.query);
+    res.json(data);
   });
 
   public addGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
-    const newGrape = await GrapeService.createGrape(req.body);
-    res.status(201).json(newGrape);
+    const data = await GrapeService.createGrape(req.body, req.userId!);
+    res.status(201).json(data);
+  });
+
+  public updateGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
+    const data = await GrapeService.updateGrape(req.params.id as string, req.body, req.userId!);
+    res.json(data);
+  });
+
+  public deleteGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
+    await GrapeService.deleteGrape(req.params.id as string, req.userId!);
+    res.status(204).send();
   });
 
   public updateGrapeImages = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
-    const id = String(req.params.id);
     const files = req.files as Express.Multer.File[];
-    const updatedGrape = await GrapeService.updateGrapeImages(id, files);
-    res.json(updatedGrape);
+    const data = await GrapeService.updateGrapeImages(req.params.id as string, files);
+    res.json(data);
   });
 }
 

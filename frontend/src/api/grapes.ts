@@ -6,12 +6,21 @@ export const getGrapes = (params: {
   type?: string;
   page?: number;
   limit?: number;
+  wineryId?: string;
 }) => {
   return apiClient.get('/grapes', { params });
 };
 
 export const addGrape = (data: Partial<Grape>) => {
   return apiClient.post('/grapes', data);
+};
+
+export const updateGrape = (id: string, data: Partial<Grape>) => {
+  return apiClient.patch(`/grapes/${id}`, data);
+};
+
+export const deleteGrape = (id: string) => {
+  return apiClient.delete(`/grapes/${id}`);
 };
 
 export const updateGrapeImages = (id: string, files: File[]) => {

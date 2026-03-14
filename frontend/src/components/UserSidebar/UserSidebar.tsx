@@ -10,6 +10,7 @@ import {
   FiLogOut,
   FiInbox,
   FiHome,
+  FiMap,
 } from 'react-icons/fi';
 import { FaWineBottle, FaLeaf } from 'react-icons/fa';
 import { MenuContainer, MenuItem } from './UserSidebar.styled';
@@ -21,58 +22,64 @@ export type AccountSection =
   | 'My Reviews'
   | 'Account Settings'
   | 'My Wines'
+  | 'My Tours'
   | 'My Winery'
   | 'Grapes'
-  | 'Buy VIP';
+  | 'Buy VIP'
+  | 'Notification Center';
 
-interface AccountSidebarProps {
+interface Props {
   currentSection: AccountSection;
-  setSection: (s: AccountSection) => void;
+  setSection: (section: AccountSection) => void;
 }
 
-const AccountSidebar: React.FC<AccountSidebarProps> = ({ currentSection, setSection }) => {
-  const { user, logout } = useAuthStore();
+const AccountSidebar = ({ currentSection, setSection }: Props) => {
+  const { profile, logout } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    logout();
+  const isOwner = profile?.role === 'WINERY_OWNER';
+  const isAdmin = profile?.role === 'ADMIN';
+
+  const items =
+    isOwner || isAdmin
+      ? [
+          { name: 'Personal Info', icon: <FiUser /> },
+          { name: 'My Winery', icon: <FiHome /> },
+          { name: 'My Wines', icon: <FaWineBottle /> },
+          { name: 'My Tours', icon: <FiMap /> },
+          { name: 'Grapes', icon: <FaLeaf /> },
+          { name: 'Notification Center', icon: <FiInbox /> },
+          { name: 'Buy VIP', icon: <FiStar /> },
+          { name: 'History', icon: <FiClock /> },
+          { name: 'Account Settings', icon: <FiSettings /> },
+        ]
+      : [
+          { name: 'Personal Info', icon: <FiUser /> },
+          { name: 'My Wishlist', icon: <FiHeart /> },
+          { name: 'My Reviews', icon: <FiStar /> },
+          { name: 'Buy VIP', icon: <FiStar /> },
+          { name: 'History', icon: <FiClock /> },
+          { name: 'Account Settings', icon: <FiSettings /> },
+        ];
+
+  const handleLogout = async () => {
+    await logout();
     navigate('/');
   };
-
-  const isOwnerOrAdmin = user?.role === 'WINERY_OWNER' || user?.role === 'ADMIN';
-
-  const items = isOwnerOrAdmin
-    ? [
-        { name: 'Personal Info', icon: <FiUser /> },
-        { name: 'My Winery', icon: <FiHome /> },
-        { name: 'My Wines', icon: <FaWineBottle /> },
-        { name: 'Grapes', icon: <FaLeaf /> },
-        { name: 'Notification Center', icon: <FiInbox /> },
-        { name: 'Buy VIP', icon: <FiStar /> },
-        { name: 'History', icon: <FiClock /> },
-        { name: 'Account Settings', icon: <FiSettings /> },
-      ]
-    : [
-        { name: 'Personal Info', icon: <FiUser /> },
-        { name: 'My Wishlist', icon: <FiHeart /> },
-        { name: 'My Reviews', icon: <FiStar /> },
-        { name: 'History', icon: <FiClock /> },
-        { name: 'Account Settings', icon: <FiSettings /> },
-      ];
 
   return (
     <MenuContainer>
       {items.map((item) => (
         <MenuItem
-          key={item.name as string}
+          key={item.name}
           $active={currentSection === item.name}
           onClick={() => setSection(item.name as AccountSection)}
         >
           {item.icon}
-          {item.name as string}
+          {item.name}
         </MenuItem>
       ))}
-      <MenuItem $isLogout onClick={handleSignOut}>
+      <MenuItem $isLogout onClick={handleLogout}>
         <FiLogOut />
         Logout
       </MenuItem>

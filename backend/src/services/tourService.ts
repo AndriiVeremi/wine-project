@@ -9,13 +9,21 @@ export interface PopulatedTour extends Omit<ITour, 'winery'> {
   winery: { _id: Types.ObjectId; name: string };
 }
 
-export const getAllTours = async (query: { page?: string; limit?: string }) => {
+export const getAllTours = async (query: { page?: string; limit?: string; wineryId?: string }) => {
   const page = parseInt(query.page || '1', 10);
   const limit = parseInt(query.limit || '10', 10);
   const skip = (page - 1) * limit;
+  const { wineryId } = query;
 
-  const tours = await Tour.find().skip(skip).limit(limit);
-  const totalCount = await Tour.countDocuments();
+  const filter: any = {};
+  if (wineryId && Types.ObjectId.isValid(wineryId)) {
+    filter.winery = new Types.ObjectId(wineryId);
+  } else if (wineryId) {
+    filter.winery = wineryId;
+  }
+
+  const tours = await Tour.find(filter).skip(skip).limit(limit);
+  const totalCount = await Tour.countDocuments(filter);
 
   return {
     tours,
