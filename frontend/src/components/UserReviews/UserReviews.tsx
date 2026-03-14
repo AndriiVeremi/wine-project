@@ -94,10 +94,7 @@ const AccountReviews = () => {
                 style={{ width: '35px', height: '35px', cursor: 'pointer' }}
               />
             )}
-            <span
-              onClick={() => navigate(path)}
-              style={{ cursor: 'pointer', fontWeight: 500 }}
-            >
+            <span onClick={() => navigate(path)} style={{ cursor: 'pointer', fontWeight: 500 }}>
               {name}
             </span>
           </div>
