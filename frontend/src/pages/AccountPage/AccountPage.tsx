@@ -4,8 +4,9 @@ import { useAuthStore } from '@/store/auth/authStore';
 import AccountSidebar from '@/components/UserSidebar/UserSidebar';
 import type { AccountSection } from '@/components/UserSidebar/UserSidebar';
 import WineManager from '@/components/WineManager/WineManager';
+import TourManager from '@/components/TourManager/TourManager';
+import GrapeManager from '@/components/GrapeList/GrapeManager';
 import AddWinery from '@/components/forms/AddWineryForm/AddWineryForm';
-import AddGrapeForm from '@/components/forms/AddGrapeForm/AddGrapeForm';
 import AccountInfo from '@/components/UserInfo/UserInfo';
 import AccountSettings from '@/components/UserSettings/UserSettings';
 import AccountReviews from '@/components/UserReviews/UserReviews';
@@ -13,122 +14,56 @@ import Wishlist from '@/components/UserWishList/UserWishList';
 import Container from '@/components/common/Container';
 import type { UserProfile } from '@/types/auth';
 import type { Winery } from '@/types/wineries';
-import apiClient from '@/api/axios';
-import toast from 'react-hot-toast';
 import {
   AccountPageContainer,
   ContentArea,
-  SectionTitle,
   PlaceholderText,
+  SectionTitle,
 } from './AccountPage.styled';
 
-const AccountPage: React.FC = () => {
-  const { user } = useAuthStore();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const isOwner = user?.role === 'WINERY_OWNER';
-  const defaultSection = isOwner ? 'My Wines' : 'Personal Info';
-  const [activeSection, setActiveSection] = useState<AccountSection>(defaultSection);
-
-  const fetchProfile = React.useCallback(
-    async (force = false) => {
-      if (!force && profile && !loading) return;
-
-      try {
-        const { data } = await apiClient.get<UserProfile>('/users/me');
-        setProfile(data);
-      } catch {
-        toast.error('Failed to load profile');
-      } finally {
-        setLoading(false);
-      }
-    },
-    [profile, loading],
-  );
+const AccountPage = () => {
+  const { user, profile, fetchProfile, isLoading } = useAuthStore();
+  const [activeSection, setActiveSection] = useState<AccountSection>('Personal Info');
 
   useEffect(() => {
-    if (user?.uid) {
+    if (user?.uid && !profile) {
       fetchProfile();
     }
-  }, [user?.uid, fetchProfile]);
+  }, [user?.uid, profile, fetchProfile]);
 
-  const handleProfileUpdate = (updatedProfile: Partial<UserProfile>) => {
-    setProfile((prev) => (prev ? { ...prev, ...updatedProfile } : null));
-  };
-
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
-
-  if (loading) {
-    return <PlaceholderText>Loading profile...</PlaceholderText>;
-  }
+  if (!user) return <Navigate to="/" replace />;
+  if (isLoading) return <PlaceholderText>Loading...</PlaceholderText>;
 
   const renderContent = () => {
     const wineryId = profile?.winery?._id;
 
     switch (activeSection) {
-      case 'My Wines':
-        return <WineManager wineryId={wineryId} />;
-      case 'Grapes':
-        return <AddGrapeForm />;
+      case 'Personal Info':
+        return <AccountInfo data={profile as UserProfile} />;
       case 'My Winery':
         return (
           <>
             <SectionTitle>My Winery</SectionTitle>
             <AddWinery
               wineryData={profile?.winery as unknown as Winery}
-              onSuccess={() => fetchProfile(true)}
+              onSuccess={() => fetchProfile()}
             />
           </>
         );
-      case 'Buy VIP':
-        return (
-          <>
-            <SectionTitle>Buy VIP Status</SectionTitle>
-            <PlaceholderText>Upgrade your account to VIP for exclusive benefits.</PlaceholderText>
-          </>
-        );
-      case 'Personal Info':
-        return (
-          <>
-            <SectionTitle>Personal Info</SectionTitle>
-            <AccountInfo data={profile} />
-          </>
-        );
-      case 'History':
-        return (
-          <>
-            <SectionTitle>History</SectionTitle>
-            <PlaceholderText>
-              Your purchase and activity history will be displayed here.
-            </PlaceholderText>
-          </>
-        );
+      case 'My Wines':
+        return <WineManager wineryId={wineryId} />;
+      case 'My Tours':
+        return <TourManager wineryId={wineryId} />;
+      case 'Grapes':
+        return <GrapeManager wineryId={wineryId} />;
       case 'My Wishlist':
-        return (
-          <>
-            <SectionTitle>My Wishlist</SectionTitle>
-            <Wishlist />
-          </>
-        );
+        return <Wishlist />;
       case 'My Reviews':
-        return (
-          <>
-            <SectionTitle>My Reviews</SectionTitle>
-            <AccountReviews />
-          </>
-        );
+        return <AccountReviews />;
       case 'Account Settings':
-        return (
-          <>
-            <SectionTitle>Account Settings</SectionTitle>
-            <AccountSettings info={profile} updateData={handleProfileUpdate} />
-          </>
-        );
+        return <AccountSettings />;
       default:
-        return null;
+        return <PlaceholderText>Coming soon...</PlaceholderText>;
     }
   };
 

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import FormField from '@/components/common/FormField/FormField';
 import ImageUpload from '@/components/common/ImageUpload/ImageUpload';
 import MainButton from '@/components/buttons/MainButton';
+import type { Grape } from '@/types/grape';
 import {
   AddGrapeWrapper,
-  Title,
   TopSection,
   PhotoSide,
   InfoSide,
@@ -37,25 +37,15 @@ const tanninOpts = [
   { value: 'None', label: 'None' },
 ];
 
-const grapeTypes = [
+const types = [
   { value: 'red', label: 'Red' },
   { value: 'white', label: 'White' },
   { value: 'rose', label: 'Rose' },
 ];
 
-const init: {
-  name: string;
-  type: 'red' | 'white' | 'rose';
-  description: string;
-  acidity: string;
-  body: string;
-  tannins: string;
-  agingPotential: string;
-  characteristics: string;
-  foodPairing: string;
-} = {
+const init = {
   name: '',
-  type: 'red',
+  type: 'red' as 'red' | 'white' | 'rose',
   description: '',
   acidity: 'Medium',
   body: 'Medium',
@@ -65,36 +55,71 @@ const init: {
   foodPairing: '',
 };
 
-const AddGrape = () => {
+interface Props {
+  wineryId?: string;
+  grapeData?: Grape | null;
+  onSuccess?: () => void;
+}
+
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
+}
+
+const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
   const [form, setForm] = useState(init);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const add = useGrapesStore((s) => s.addGrape);
+  const { add, update } = useGrapesStore();
 
-  const onFile = (newFiles: File[]) => {
-    if (newFiles.length > 0) {
-      setFiles([newFiles[0]]);
-      setPreviews([URL.createObjectURL(newFiles[0])]);
+  useEffect(() => {
+    if (grapeData) {
+      setForm({
+        name: grapeData.name,
+        type: grapeData.type,
+        description: grapeData.description || '',
+        acidity: grapeData.acidity || 'Medium',
+        body: grapeData.body || 'Medium',
+        tannins: grapeData.tannins || 'Medium',
+        agingPotential: grapeData.agingPotential || '',
+        characteristics: grapeData.characteristics?.join(', ') || '',
+        foodPairing: grapeData.foodPairing?.join(', ') || '',
+      });
+      if (grapeData.imageUrls?.[0]) setPreviews([grapeData.imageUrls[0]]);
+    }
+  }, [grapeData]);
+
+  const onFile = (f: File[]) => {
+    if (f.length > 0) {
+      setFiles([f[0]]);
+      setPreviews([URL.createObjectURL(f[0])]);
     }
   };
 
-  const onInput = (
+  const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
-    const { id, value } = e.target;
-    setForm((prev) => ({ ...prev, [id]: value }));
+    setForm((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const save = async (e: React.FormEvent) => {
+  const onSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name) return toast.error('Name is required');
-
     setLoading(true);
+    const tid = toast.loading('Saving...');
 
     try {
-      const data = {
+      const gWinery =
+        typeof grapeData?.winery === 'object'
+          ? (grapeData.winery as unknown as { _id: string })?._id
+          : grapeData?.winery;
+      const payload = {
         ...form,
+        winery: wineryId || gWinery,
         characteristics: form.characteristics
           .split(',')
           .map((s) => s.trim())
@@ -105,15 +130,18 @@ const AddGrape = () => {
           .filter(Boolean),
       };
 
-      await add(data, files);
+      if (grapeData?._id) {
+        await update(grapeData._id, payload, files);
+        toast.success('Updated', { id: tid });
+      } else {
+        await add(payload, files);
+        toast.success('Added', { id: tid });
+      }
 
-      toast.success('Done!');
-      setForm(init);
-      setFiles([]);
-      setPreviews([]);
-    } catch (err) {
-      console.log(err);
-      toast.error('Fail');
+      if (onSuccess) onSuccess();
+    } catch (err: unknown) {
+      const e = err as ApiError;
+      toast.error(e.response?.data?.message || 'Error', { id: tid });
     } finally {
       setLoading(false);
     }
@@ -121,118 +149,83 @@ const AddGrape = () => {
 
   return (
     <AddGrapeWrapper>
-      <Title>Add Grape</Title>
-      <FormContainer onSubmit={save}>
+      <FormContainer onSubmit={onSave}>
         <TopSection>
           <PhotoSide>
             <ImageUpload previews={previews} onFilesChange={onFile} maxFiles={1} />
           </PhotoSide>
-
           <InfoSide>
-            <FormField
-              label="Grape Name"
-              id="name"
-              value={form.name}
-              onChange={onInput}
-              placeholder="Enter grape name"
-              required
-            />
-
+            <FormField label="Name" id="name" value={form.name} onChange={handleInput} required />
             <FormField
               label="Type"
               id="type"
               isSelect
               value={form.type}
-              onChange={onInput}
+              onChange={handleInput}
               required
-              options={grapeTypes}
+              options={types}
             />
           </InfoSide>
         </TopSection>
 
-        <SectionTitle>Characteristics</SectionTitle>
-
+        <SectionTitle>Details</SectionTitle>
         <FormGrid>
           <FormField
             label="Acidity"
             id="acidity"
             isSelect
             value={form.acidity}
-            onChange={onInput}
+            onChange={handleInput}
             required
             options={acidityOpts}
           />
-
           <FormField
             label="Body"
             id="body"
             isSelect
             value={form.body}
-            onChange={onInput}
+            onChange={handleInput}
             required
             options={bodyOpts}
           />
-
           <FormField
             label="Tannins"
             id="tannins"
             isSelect
             value={form.tannins}
-            onChange={onInput}
+            onChange={handleInput}
             options={tanninOpts}
           />
-
           <FormField
-            label="Aging Potential"
+            label="Aging"
             id="agingPotential"
             value={form.agingPotential}
-            onChange={onInput}
-            placeholder="e.g. 10-30 years"
+            onChange={handleInput}
           />
-
           <FullWidthWrapper>
             <FormField
-              label="Characteristics (comma separated)"
+              label="Characteristics"
               id="characteristics"
               value={form.characteristics}
-              onChange={onInput}
-              placeholder="Full-bodied, Spicy, Oak..."
+              onChange={handleInput}
             />
-          </FullWidthWrapper>
-
-          <FullWidthWrapper>
             <FormField
-              label="Food Pairing (comma separated)"
+              label="Food Pairing"
               id="foodPairing"
               value={form.foodPairing}
-              onChange={onInput}
-              placeholder="Red meat, Aged cheese..."
+              onChange={handleInput}
             />
-          </FullWidthWrapper>
-
-          <FullWidthWrapper>
             <FormField
-              label="Detailed Description"
+              label="Description"
               id="description"
               isTextarea
               value={form.description}
-              onChange={onInput}
-              placeholder="Describe the grape variety..."
+              onChange={handleInput}
             />
           </FullWidthWrapper>
         </FormGrid>
 
         <ButtonWrapper>
-          <MainButton
-            type="button"
-            onClick={() => {
-              setForm(init);
-              setFiles([]);
-              setPreviews([]);
-            }}
-          >
-            RESET
-          </MainButton>
           <MainButton type="submit" disabled={loading}>
             {loading ? 'WAIT...' : 'SAVE'}
           </MainButton>

@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IGrape extends Document {
+  winery?: mongoose.Types.ObjectId;
   name: string;
   description: string;
   type: 'red' | 'white' | 'rose';
@@ -17,7 +18,8 @@ export interface IGrape extends Document {
 }
 
 const grapeSchema: Schema = new Schema({
-  name: { type: String, required: true, unique: true },
+  winery: { type: Schema.Types.ObjectId, ref: 'Winery' },
+  name: { type: String, required: true },
   description: { type: String },
   type: { type: String, enum: ['red', 'white', 'rose'] },
   alsoKnownAs: [String],

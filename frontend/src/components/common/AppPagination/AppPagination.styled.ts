@@ -2,41 +2,54 @@ import styled from 'styled-components';
 
 export const PaginationWrapper = styled.div`
   display: flex;
-  gap: 8px;
-  margin-top: 40px;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+  margin-top: 30px;
 `;
 
 export const PaginationButton = styled.button`
-  padding: 8px 14px;
+  background: white;
+  color: var(--primary-gray, #333);
+  border: 1px solid #ddd;
   border-radius: 8px;
-  color: var(--primary-gray);
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
-  transition: var(--transition);
+  justify-content: center;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary-wine, #841013);
+    color: var(--primary-wine, #841013);
+    background-color: #fdfdfd;
+  }
 
   &:disabled {
+    cursor: not-allowed;
     opacity: 0.4;
   }
 `;
 
-export const PaginationPageButton = styled(PaginationButton)<{ $active: boolean }>`
-  width: 32px;
-  height: 32px;
-  padding: 0;
+export const PageInfo = styled.span`
+  font-size: 15px;
+  color: #666;
+  font-weight: 500;
+  font-family: var(--font-main);
   display: flex;
-  text-align: center;
-  justify-content: center;
-  border-radius: 50%;
+  align-items: center;
+  gap: 6px;
+`;
 
-  background: ${({ $active }) => ($active ? 'var(--primary-wine)' : 'var(--white)')};
+export const CurrentPage = styled.span`
+  color: var(--primary-wine, #841013);
+  font-weight: 700;
+  font-size: 16px;
+`;
 
-  color: ${({ $active }) => ($active ? 'var(--white)' : 'var(--primary-gray)')};
-
-  &:hover {
-    background: var(--primary-wine);
-    color: var(--white);
-  }
+// Для сумісності
+export const PaginationPageButton = styled.button<{ $active: boolean }>`
+  display: none;
 `;
