@@ -3,7 +3,11 @@ import { UserIcon } from './Login.styled';
 import { useAuthStore } from '@/store/auth/authStore';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+interface Props {
+  onClick?: () => void;
+}
+
+const Login = ({ onClick }: Props) => {
   const { user, profile, openAuthModal } = useAuthStore();
   const navigate = useNavigate();
 
@@ -13,6 +17,7 @@ const Login = () => {
     } else {
       openAuthModal('login');
     }
+    if (onClick) onClick();
   };
 
   return (

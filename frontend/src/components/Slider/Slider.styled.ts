@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const SliderWrapper = styled.div`
   width: 100%;
   padding: 40px 0;
+  overflow: hidden;
 
   .swiper-pagination-bullet-active {
     background: var(--primary-wine);
