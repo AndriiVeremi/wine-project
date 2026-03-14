@@ -31,7 +31,6 @@ const TourManager = ({ wineryId }: Props) => {
 
   useEffect(() => {
     if (user?.uid && wineryId) {
-      // Backend should support search in query for tours if possible
       fetch({ limit: 10, page, wineryId });
     }
   }, [user?.uid, page, wineryId, fetch]);
@@ -76,7 +75,6 @@ const TourManager = ({ wineryId }: Props) => {
     },
   ];
 
-  // If backend supports search, we use 'tours' directly. If not, we keep local filter for now but fetch is better.
   const data = tours.filter((t) => t.name.toLowerCase().includes(debouncedSearch.toLowerCase()));
 
   if (view !== 'list') {

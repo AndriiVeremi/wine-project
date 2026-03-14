@@ -15,7 +15,7 @@ export const getAllTours = async (query: { page?: string; limit?: string; winery
   const skip = (page - 1) * limit;
   const { wineryId } = query;
 
-  const filter: any = {};
+  const filter: Record<string, string | Types.ObjectId> = {};
   if (wineryId && Types.ObjectId.isValid(wineryId)) {
     filter.winery = new Types.ObjectId(wineryId);
   } else if (wineryId) {

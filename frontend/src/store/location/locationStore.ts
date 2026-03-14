@@ -25,6 +25,8 @@ export const useLocationStore = create<LocationState>()(
 
       setCountry: (country) => {
         set({ country });
+        const state = useLocationStore.getState();
+        state.fetchRegions(country);
       },
 
       fetchRegions: async (countryName) => {
@@ -41,7 +43,7 @@ export const useLocationStore = create<LocationState>()(
     }),
     {
       name: 'location-storage',
-      partialize: (state) => ({ country: state.country }), // Зберігаємо в LocalStorage тільки назву країни
+      partialize: (state) => ({ country: state.country }),
     },
   ),
 );

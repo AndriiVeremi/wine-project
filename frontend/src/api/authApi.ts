@@ -7,10 +7,7 @@ export const registerUser = async (userData: IRegisterData) => {
 };
 
 export const loginUser = async (email: string, pass: string) => {
-  // Ця функція використовується у вашому authStore.ts
-  // Якщо ви використовуєте Firebase для входу на фронті, вона може бути заглушкою
-  // або викликом на бекенд, якщо у вас є такий ендпоінт.
-  return { email, pass }; 
+  return { email, pass };
 };
 
 export const getUserProfile = async () => {

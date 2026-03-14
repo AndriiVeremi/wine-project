@@ -1,7 +1,6 @@
-import mongoose, { Types } from 'mongoose';
+import { Types } from 'mongoose';
 import Grape, { IGrape } from '@/models/grapeModel';
 import Winery from '@/models/wineryModel';
-import User from '@/models/userModel';
 import { uploadFile } from '@/services/firebase';
 import HttpError from '@/utils/HttpError';
 

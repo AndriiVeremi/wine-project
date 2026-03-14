@@ -42,9 +42,7 @@ export const updateTour = ctrlWrapper(async (req: AuthenticatedRequest, res: Res
   if (files && files.length > 0) {
     const uploadPromises = files.map((file) => uploadFile(file, 'tours'));
     const newImages = await Promise.all(uploadPromises);
-    
-    // Якщо у нас вже були картинки, ми можемо або замінити їх, або додати нові.
-    // Для простоти поки що замінимо, або фронтенд може прислати список старих URL.
+
     if (tourData.images && Array.isArray(tourData.images)) {
       tourData.images = [...tourData.images, ...newImages].slice(0, 5);
     } else {
