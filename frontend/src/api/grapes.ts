@@ -14,6 +14,10 @@ export const getGrapes = (params: {
   return apiClient.get('/grapes', { params });
 };
 
+export const getGrapeById = (id: string) => {
+  return apiClient.get<Grape>(`/grapes/${id}`);
+};
+
 export const addGrape = (data: Partial<Grape>) => {
   return apiClient.post('/grapes', data);
 };
