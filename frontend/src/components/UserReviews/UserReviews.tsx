@@ -39,11 +39,24 @@ const AccountReviews = () => {
     const review = items.find((r) => r._id === id);
     if (!review) return;
 
-    const wineId =
-      typeof review.wineId === 'object' ? (review.wineId as { _id: string })._id : review.wineId;
+    let targetId = '';
+    let type: 'wine' | 'winery' | 'tour' = 'wine';
+
+    if (review.wineId) {
+      targetId = typeof review.wineId === 'object' ? review.wineId._id : review.wineId;
+      type = 'wine';
+    } else if (review.wineryId) {
+      targetId = typeof review.wineryId === 'object' ? review.wineryId._id : review.wineryId;
+      type = 'winery';
+    } else if (review.tourId) {
+      targetId = typeof review.tourId === 'object' ? review.tourId._id : review.tourId;
+      type = 'tour';
+    }
+
+    if (!targetId) return;
 
     try {
-      await deleteReview(wineId, id);
+      await deleteReview(targetId, id, type);
       toast.success('Deleted');
       loadData();
     } catch {
@@ -53,21 +66,39 @@ const AccountReviews = () => {
 
   const columns: Column<Review>[] = [
     {
-      header: 'Wine',
+      header: 'Item',
       render: (r) => {
-        const wine = r.wineId as unknown as { _id: string; name: string; imageUrl: string };
+        let name = 'Unknown';
+        let imgUrl = '';
+        let path = '';
+
+        if (r.wineId && typeof r.wineId === 'object') {
+          name = r.wineId.name;
+          imgUrl = r.wineId.imageUrl;
+          path = `/wines/${r.wineId._id}`;
+        } else if (r.wineryId && typeof r.wineryId === 'object') {
+          name = r.wineryId.name;
+          imgUrl = r.wineryId.logoUrl || '';
+          path = `/wineries/${r.wineryId._id}`;
+        } else if (r.tourId && typeof r.tourId === 'object') {
+          name = r.tourId.name;
+          path = `/tours/${r.tourId._id}`;
+        }
+
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <ItemImg
-              src={wine?.imageUrl}
-              onClick={() => navigate(`/wines/${wine?._id}`)}
-              style={{ width: '35px', height: '35px', cursor: 'pointer' }}
-            />
+            {imgUrl && (
+              <ItemImg
+                src={imgUrl}
+                onClick={() => navigate(path)}
+                style={{ width: '35px', height: '35px', cursor: 'pointer' }}
+              />
+            )}
             <span
-              onClick={() => navigate(`/wines/${wine?._id}`)}
+              onClick={() => navigate(path)}
               style={{ cursor: 'pointer', fontWeight: 500 }}
             >
-              {wine?.name || 'Unknown'}
+              {name}
             </span>
           </div>
         );

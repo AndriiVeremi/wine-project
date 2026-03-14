@@ -10,7 +10,9 @@ interface Review {
   rating: number;
   comment: string;
   userId: { firstName: string; lastName: string; avatarUrl?: string };
-  wineId: { name: string; imageUrl?: string };
+  wineId?: { name: string; imageUrl?: string };
+  wineryId?: { name: string; logoUrl?: string };
+  tourId?: { name: string };
   createdAt: string;
 }
 
@@ -66,8 +68,13 @@ const AdminReviews = () => {
       ),
     },
     {
-      header: 'Wine',
-      render: (r) => r.wineId?.name || 'Unknown',
+      header: 'Item',
+      render: (r) => {
+        if (r.wineId) return r.wineId.name;
+        if (r.wineryId) return r.wineryId.name;
+        if (r.tourId) return r.tourId.name;
+        return 'Unknown';
+      },
     },
     {
       header: 'Rating',
