@@ -12,43 +12,51 @@ export interface IUser extends Document {
   address?: string;
   winery?: mongoose.Types.ObjectId;
   favoriteWines: mongoose.Types.ObjectId[];
+  isBanned: boolean;
 }
 
-const userSchema: Schema = new Schema({
-  firebaseUid: { type: String, required: true, unique: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  role: {
-    type: String,
-    enum: ['USER', 'WINERY_OWNER', 'ADMIN'],
-    default: 'USER',
-  },
-  avatarUrl: {
-    type: String,
-    default: '',
-  },
-  phone: {
-    type: String,
-    default: '',
-  },
-  birthDate: {
-    type: Date,
-  },
-  address: {
-    type: String,
-    default: '',
-  },
-  winery: {
-    type: Schema.Types.ObjectId,
-    ref: 'Winery',
-  },
-  favoriteWines: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Wine',
+const userSchema: Schema = new Schema(
+  {
+    firebaseUid: { type: String, required: true, unique: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    role: {
+      type: String,
+      enum: ['USER', 'WINERY_OWNER', 'ADMIN'],
+      default: 'USER',
     },
-  ],
-});
+    avatarUrl: {
+      type: String,
+      default: '',
+    },
+    phone: {
+      type: String,
+      default: '',
+    },
+    birthDate: {
+      type: Date,
+    },
+    address: {
+      type: String,
+      default: '',
+    },
+    winery: {
+      type: Schema.Types.ObjectId,
+      ref: 'Winery',
+    },
+    favoriteWines: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Wine',
+      },
+    ],
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true },
+);
 
 export default mongoose.model<IUser>('User', userSchema);

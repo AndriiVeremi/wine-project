@@ -125,3 +125,20 @@ export const deleteWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
 
   res.status(204).send();
 });
+
+export const toggleVipStatus = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
+  const { id } = req.params;
+  const winery = await Winery.findById(id as string);
+
+  if (!winery) {
+    throw new HttpError('Winery not found.', 404);
+  }
+
+  winery.isVip = !winery.isVip;
+  await winery.save();
+
+  res.status(200).json({
+    message: `VIP status updated to ${winery.isVip}`,
+    winery,
+  });
+});

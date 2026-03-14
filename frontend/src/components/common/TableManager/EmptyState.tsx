@@ -7,7 +7,7 @@ interface Props {
   icon?: React.ReactNode;
   title: string;
   text: string;
-  onAction: () => void;
+  onAction?: () => void;
 }
 
 const EmptyState = ({ icon, title, text, onAction }: Props) => {
@@ -16,11 +16,13 @@ const EmptyState = ({ icon, title, text, onAction }: Props) => {
       <EmptyIconBox>{icon}</EmptyIconBox>
       <EmptyTitle>{title}</EmptyTitle>
       <EmptyText>{text}</EmptyText>
-      <div style={{ marginTop: '20px' }}>
-        <MainButton type="button" onClick={onAction}>
-          <FiPlus /> ADD NEW
-        </MainButton>
-      </div>
+      {onAction && (
+        <div style={{ marginTop: '20px' }}>
+          <MainButton type="button" onClick={onAction}>
+            <FiPlus /> ADD NEW
+          </MainButton>
+        </div>
+      )}
     </EmptyStateWrapper>
   );
 };

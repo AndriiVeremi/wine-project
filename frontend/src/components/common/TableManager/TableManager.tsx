@@ -33,8 +33,8 @@ interface Props<T> {
   search: string;
   onSearch: (val: string) => void;
   onPage: (page: number) => void;
-  onAdd: () => void;
-  onEdit: (item: T) => void;
+  onAdd?: () => void;
+  onEdit?: (item: T) => void;
   onRemove: (id: string) => void;
   getId: (item: T) => string;
   emptyIcon?: React.ReactNode;
@@ -73,9 +73,11 @@ function TableManager<T>({
             value={search}
             onChange={(e) => onSearch(e.target.value)}
           />
-          <MainButton type="button" onClick={onAdd}>
-            <FiPlus /> ADD
-          </MainButton>
+          {onAdd && (
+            <MainButton type="button" onClick={onAdd}>
+              <FiPlus /> ADD
+            </MainButton>
+          )}
         </ListHeader>
       </Header>
 
@@ -103,9 +105,11 @@ function TableManager<T>({
                     ))}
                     <Td>
                       <ActionBtns>
-                        <IconButton onClick={() => onEdit(item)} $type="edit">
-                          <FiEdit2 />
-                        </IconButton>
+                        {onEdit && (
+                          <IconButton onClick={() => onEdit(item)} $type="edit">
+                            <FiEdit2 />
+                          </IconButton>
+                        )}
                         <IconButton onClick={() => onRemove(getId(item))} $type="delete">
                           <FiTrash2 />
                         </IconButton>

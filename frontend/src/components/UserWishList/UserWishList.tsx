@@ -1,70 +1,93 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFavoritesStore } from '@/store/user/useFavoritesStore';
 import { FiHeart } from 'react-icons/fi';
-import MainButton from '@/components/buttons/MainButton';
-import { Loader } from '@/components/common/Loader';
-import FavoriteButton from '@/components/buttons/FavoriteButton';
-import {
-  WishlistContainer,
-  WineGrid,
-  WineCard,
-  WineImage,
-  WineName,
-  WineryName,
-  RemoveButton,
-  EmptyMessage,
-} from './UserWishList.styled';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
+import { ItemImg } from '@/components/common/TableManager/TableManager.styled';
+import type { WishlistWine } from '@/types/wine';
 
-const Wishlist: React.FC = () => {
-  const { favorites, isLoading, fetchFavorites } = useFavoritesStore();
+const UserWishList = () => {
+  const { favorites, isLoading, fetchFavorites, toggleFavorite } = useFavoritesStore();
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const limit = 10;
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If favorites are empty, try to fetch them from server
-    // (though they might be pre-loaded by SharedLayout or similar)
-    if (favorites.length === 0) {
-      fetchFavorites();
-    }
-  }, [fetchFavorites, favorites.length]);
+    fetchFavorites();
+  }, [fetchFavorites]);
 
-  if (isLoading && favorites.length === 0) return <Loader />;
+  const filtered = favorites.filter(
+    (w) =>
+      w.name.toLowerCase().includes(search.toLowerCase()) ||
+      w.winery?.name.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const totalPages = Math.ceil(filtered.length / limit) || 1;
+  const pagedItems = filtered.slice((page - 1) * limit, page * limit);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+
+  const columns: Column<WishlistWine>[] = [
+    {
+      header: 'Image',
+      render: (w) => (
+        <ItemImg
+          src={w.imageUrl}
+          onClick={() => navigate(`/wines/${w.id}`)}
+          style={{ cursor: 'pointer' }}
+        />
+      ),
+    },
+    {
+      header: 'Wine Name',
+      render: (w) => (
+        <span
+          onClick={() => navigate(`/wines/${w.id}`)}
+          style={{ cursor: 'pointer', fontWeight: 500 }}
+        >
+          {w.name}
+        </span>
+      ),
+    },
+    {
+      header: 'Winery',
+      render: (w) => w.winery?.name || '---',
+    },
+    {
+      header: 'Details',
+      render: (w) => (
+        <span style={{ fontSize: '13px', color: '#666', textTransform: 'capitalize' }}>
+          {w.color} - {w.sweetness}
+        </span>
+      ),
+    },
+  ];
 
   return (
-    <WishlistContainer>
-      {favorites.length === 0 ? (
-        <EmptyMessage>
-          <FiHeart size={80} />
-          <h3>Your wishlist is empty</h3>
-          <p>You haven't saved any wines yet. Explore our collection!</p>
-          <MainButton onClick={() => navigate('/wines')}>Explore Wines</MainButton>
-        </EmptyMessage>
-      ) : (
-        <WineGrid>
-          {favorites.map((item) => (
-            <WineCard key={item.id}>
-              <RemoveButton>
-                <FavoriteButton wine={item} size={32} />
-              </RemoveButton>
-              <WineImage
-                src={item.imageUrl}
-                alt={item.name}
-                onClick={() => navigate(`/wines/${item.id}`)}
-                style={{ cursor: 'pointer' }}
-              />
-              <WineName onClick={() => navigate(`/wines/${item.id}`)} style={{ cursor: 'pointer' }}>
-                {item.name}
-              </WineName>
-              {item.winery && <WineryName>{item.winery.name}</WineryName>}
-              <p style={{ fontSize: '14px', color: '#888' }}>
-                {item.color} - {item.sweetness}
-              </p>
-            </WineCard>
-          ))}
-        </WineGrid>
-      )}
-    </WishlistContainer>
+    <TableManager
+      title="My Wishlist"
+      data={pagedItems}
+      columns={columns}
+      loading={isLoading}
+      total={filtered.length}
+      totalPages={totalPages}
+      page={page}
+      search={search}
+      onSearch={setSearch}
+      onPage={setPage}
+      onRemove={(id) => {
+        const item = favorites.find((f) => f.id === id);
+        if (item) toggleFavorite(item);
+      }}
+      getId={(w) => w.id}
+      emptyIcon={<FiHeart />}
+      emptyTitle="Your wishlist is empty"
+      emptyText="Save some wines to see them here."
+    />
   );
 };
 
-export default Wishlist;
+export default UserWishList;

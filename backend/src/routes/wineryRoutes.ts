@@ -198,4 +198,12 @@ router.delete(
   wineryController.deleteWinery,
 );
 
+router.patch(
+  '/:id/vip',
+  isValidId(),
+  authMiddleware,
+  roleMiddleware(['ADMIN']),
+  wineryController.toggleVipStatus,
+);
+
 export default router;

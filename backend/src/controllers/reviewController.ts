@@ -5,6 +5,20 @@ import ctrlWrapper from '@/utils/ctrlWrapper';
 
 const reviewService = new ReviewService();
 
+export const getAllReviews = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+
+  const result = await reviewService.getAllReviews(page, limit);
+
+  res.status(200).json({
+    reviews: result.reviews,
+    total: result.total,
+    page,
+    totalPages: Math.ceil(result.total / limit),
+  });
+});
+
 export const getWineReviews = ctrlWrapper(async (req: Request, res: Response) => {
   const wineId = req.params.id as string;
   const reviews = await reviewService.getReviewsByWine(wineId);

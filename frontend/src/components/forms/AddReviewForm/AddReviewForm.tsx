@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { createReview } from '@/api/reviews';
+import { useAuthStore } from '@/store/auth/authStore';
 import {
   FormContainer,
   TextArea,
@@ -22,9 +23,16 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) 
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user, openAuthModal } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!user) {
+      openAuthModal('login');
+      return;
+    }
+
     if (rating === 0) {
       setError('Please select a rating');
       return;
@@ -45,11 +53,9 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) 
         onReviewAdded();
       }
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data: { message: string } } }).response?.data?.message
-          : 'Failed to submit review';
-      setError(errorMessage || 'Failed to submit review');
+      const apiErr = err as { response?: { data?: { message?: string } } };
+      const errorMessage = apiErr.response?.data?.message || 'Failed to submit review';
+      setError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -91,7 +97,7 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) 
         </StarsContainer>
       </RatingWrapper>
 
-      {error && <p style={{ color: 'red', marginTop: '8px' }}>{error}</p>}
+      {error && <p style={{ color: 'red', marginTop: '8px', fontSize: '14px' }}>{error}</p>}
 
       <SendButton type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Sending...' : 'Send'}

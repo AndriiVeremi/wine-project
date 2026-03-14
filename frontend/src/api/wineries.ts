@@ -20,3 +20,7 @@ export const updateWinery = (id: string, data: FormData | Partial<Winery>) => {
 export const deleteWinery = (id: string) => {
   return apiClient.delete(`/wineries/${id}`);
 };
+
+export const toggleWineryVip = (id: string) => {
+  return apiClient.patch(`/wineries/${id}/vip`);
+};
