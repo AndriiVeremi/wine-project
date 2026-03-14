@@ -10,6 +10,11 @@ import {
   FiMap,
   FiUsers,
   FiMessageSquare,
+  FiInfo,
+  FiMail,
+  FiShield,
+  FiFileText,
+  FiDatabase,
 } from 'react-icons/fi';
 import { FaWineBottle, FaLeaf } from 'react-icons/fa';
 import { MenuContainer, MenuItem } from './UserSidebar.styled';
@@ -31,7 +36,12 @@ export type AccountSection =
   | 'All Wineries'
   | 'All Tours'
   | 'Users'
-  | 'Reviews';
+  | 'Reviews'
+  | 'About project'
+  | 'Contacts'
+  | 'Privacy policy'
+  | 'Terms of use'
+  | 'Cookies';
 
 interface Props {
   currentSection: AccountSection;
@@ -46,6 +56,14 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
   const isAdmin = profile?.role === 'ADMIN';
 
   const getMenuItems = () => {
+    const baseItems = [
+      { name: 'About project', icon: <FiInfo /> },
+      { name: 'Contacts', icon: <FiMail /> },
+      { name: 'Privacy policy', icon: <FiShield /> },
+      { name: 'Terms of use', icon: <FiFileText /> },
+      { name: 'Cookies', icon: <FiDatabase /> },
+    ];
+
     if (isAdmin) {
       return [
         { name: 'Personal Info', icon: <FiUser /> },
@@ -56,6 +74,7 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
         { name: 'Users', icon: <FiUsers /> },
         { name: 'Reviews', icon: <FiMessageSquare /> },
         { name: 'Account Settings', icon: <FiSettings /> },
+        ...baseItems,
       ];
     }
 
@@ -67,6 +86,7 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
         { name: 'My Tours', icon: <FiMap /> },
         { name: 'Grapes', icon: <FaLeaf /> },
         { name: 'Account Settings', icon: <FiSettings /> },
+        ...baseItems,
       ];
     }
 
@@ -75,6 +95,7 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
       { name: 'My Wishlist', icon: <FiHeart /> },
       { name: 'My Reviews', icon: <FiStar /> },
       { name: 'Account Settings', icon: <FiSettings /> },
+      ...baseItems,
     ];
   };
 

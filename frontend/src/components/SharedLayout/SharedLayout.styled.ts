@@ -7,6 +7,7 @@ export const LayoutWrapper = styled.div<{ $bgType: string }>`
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow-x: hidden;
 
   background-image: ${({ $bgType }) => {
     if ($bgType === 'home') return `url(${homeBg})`;
@@ -18,4 +19,12 @@ export const LayoutWrapper = styled.div<{ $bgType: string }>`
   background-size: 100% auto;
   background-position: top center;
   background-attachment: scroll;
+
+  @media (max-width: 1024px) {
+    background-size: cover;
+  }
+
+  @media (max-width: 767px) {
+    background-position: 20% 0;
+  }
 `;

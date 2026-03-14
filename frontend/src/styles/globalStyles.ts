@@ -13,6 +13,12 @@ export const GlobalStyle = createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  html.no-scroll {
+    overflow: hidden;
   }
 
   body {
@@ -24,6 +30,15 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+    touch-action: none;
   }
 
   img {

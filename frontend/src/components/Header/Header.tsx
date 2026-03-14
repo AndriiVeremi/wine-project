@@ -1,10 +1,37 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Nav, StyledHeader, Item, HeaderContainer } from '@/components/Header/Header.styled';
+import {
+  Nav,
+  StyledHeader,
+  Item,
+  HeaderContainer,
+  BurgerButton,
+  DesktopUserMenu,
+} from '@/components/Header/Header.styled';
 import Container from '@/components/common/Container';
 import MainLogo from '@/components/MainLogo/MainLogo';
 import UserMenu from '@/components/UserMenu';
+import MobileMenu from './MobileMenu';
+import { FiMenu } from 'react-icons/fi';
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.classList.add('no-scroll');
+      document.documentElement.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+      document.documentElement.classList.remove('no-scroll');
+    }
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+      document.documentElement.classList.remove('no-scroll');
+    };
+  }, [isMenuOpen]);
+
   return (
     <StyledHeader className="app-header">
       <Container>
@@ -29,9 +56,15 @@ const Header = () => {
               </Item>
             </ul>
           </Nav>
-          <UserMenu />
+          <DesktopUserMenu>
+            <UserMenu />
+          </DesktopUserMenu>
+          <BurgerButton onClick={() => setIsMenuOpen(true)}>
+            <FiMenu />
+          </BurgerButton>
         </HeaderContainer>
       </Container>
+      <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </StyledHeader>
   );
 };
