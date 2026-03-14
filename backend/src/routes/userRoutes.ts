@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as userController from '@/controllers/userController';
 import { getUserReviews } from '@/controllers/reviewController';
-import { authMiddleware } from '@/middleware/auth';
+import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
 import { registerSchema, addFavoriteSchema, updateProfileSchema } from '@/schemas/userSchemas';
 import { isValidId } from '@/middleware/isValidId';
@@ -226,5 +226,22 @@ router.delete(
  *         description: Server error
  */
 router.patch('/me/avatar', authMiddleware, userController.updateAvatar);
+
+// Admin routes
+router.get('/', authMiddleware, roleMiddleware(['ADMIN']), userController.getAllUsers);
+router.patch(
+  '/:id/ban',
+  isValidId(),
+  authMiddleware,
+  roleMiddleware(['ADMIN']),
+  userController.toggleUserBan,
+);
+router.delete(
+  '/:id',
+  isValidId(),
+  authMiddleware,
+  roleMiddleware(['ADMIN']),
+  userController.adminDeleteUser,
+);
 
 export default router;

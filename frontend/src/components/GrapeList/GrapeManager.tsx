@@ -27,10 +27,11 @@ const GrapeManager = ({ wineryId }: Props) => {
   const debouncedSearch = useDebounce(search, 500);
 
   const { grapes, fetchGrapes, removeGrape, loading, totalPages, totalCount } = useGrapesStore();
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
+  const isAdmin = profile?.role === 'ADMIN';
 
   useEffect(() => {
-    if (user?.uid && wineryId) {
+    if (user?.uid && (wineryId || isAdmin)) {
       fetchGrapes({
         limit: 10,
         page: page,
@@ -38,7 +39,7 @@ const GrapeManager = ({ wineryId }: Props) => {
         wineryId,
       });
     }
-  }, [user?.uid, page, debouncedSearch, fetchGrapes, wineryId]);
+  }, [user?.uid, page, debouncedSearch, fetchGrapes, wineryId, isAdmin]);
 
   useEffect(() => {
     setPage(1);
@@ -103,7 +104,7 @@ const GrapeManager = ({ wineryId }: Props) => {
 
   return (
     <TableManager
-      title="Grapes"
+      title={isAdmin ? 'All Grapes' : 'My Grapes'}
       data={grapes}
       columns={columns}
       loading={loading}
@@ -117,7 +118,7 @@ const GrapeManager = ({ wineryId }: Props) => {
         setEditingGrape(null);
         setView('add');
       }}
-      onEdit={handleEdit}
+      onEdit={isAdmin ? undefined : handleEdit}
       onRemove={handleRemove}
       getId={(g) => g._id}
       emptyIcon={<FaLeaf />}

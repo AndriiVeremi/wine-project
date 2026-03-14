@@ -10,17 +10,22 @@ class GrapeController {
   });
 
   public addGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
-    const data = await GrapeService.createGrape(req.body, req.userId!);
+    const data = await GrapeService.createGrape(req.body, req.userId!, req.userRole!);
     res.status(201).json(data);
   });
 
   public updateGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
-    const data = await GrapeService.updateGrape(req.params.id as string, req.body, req.userId!);
+    const data = await GrapeService.updateGrape(
+      req.params.id as string,
+      req.body,
+      req.userId!,
+      req.userRole!,
+    );
     res.json(data);
   });
 
   public deleteGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
-    await GrapeService.deleteGrape(req.params.id as string, req.userId!);
+    await GrapeService.deleteGrape(req.params.id as string, req.userId!, req.userRole!);
     res.status(204).send();
   });
 

@@ -6,6 +6,9 @@ import type { AccountSection } from '@/components/UserSidebar/UserSidebar';
 import WineManager from '@/components/WineManager/WineManager';
 import TourManager from '@/components/TourManager/TourManager';
 import GrapeManager from '@/components/GrapeList/GrapeManager';
+import AdminWineries from '@/components/WineryList/AdminWineries';
+import UsersList from '@/components/UserManager/UsersList';
+import AdminReviews from '@/components/ReviewManager/AdminReviews';
 import AddWinery from '@/components/forms/AddWineryForm/AddWineryForm';
 import AccountInfo from '@/components/UserInfo/UserInfo';
 import AccountSettings from '@/components/UserSettings/UserSettings';
@@ -56,6 +59,18 @@ const AccountPage = () => {
         return <TourManager wineryId={wineryId} />;
       case 'Grapes':
         return <GrapeManager wineryId={wineryId} />;
+      case 'All Wineries':
+        return <AdminWineries />;
+      case 'All Wines':
+        return <WineManager />;
+      case 'All Grapes':
+        return <GrapeManager />;
+      case 'All Tours':
+        return <TourManager />;
+      case 'Users':
+        return <UsersList />;
+      case 'Reviews':
+        return <AdminReviews />;
       case 'My Wishlist':
         return <Wishlist />;
       case 'My Reviews':

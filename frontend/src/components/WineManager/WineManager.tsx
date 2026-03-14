@@ -27,13 +27,14 @@ const WineManager = ({ wineryId }: Props) => {
   const debouncedSearch = useDebounce(search, 500);
 
   const { wines, fetch, remove, loading, totalPages, total } = useWinesStore();
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
+  const isAdmin = profile?.role === 'ADMIN';
 
   useEffect(() => {
-    if (user?.uid && wineryId) {
+    if (user?.uid && (wineryId || isAdmin)) {
       fetch({ limit: 10, page, wineryId, name: debouncedSearch });
     }
-  }, [user?.uid, page, wineryId, debouncedSearch, fetch]);
+  }, [user?.uid, page, wineryId, debouncedSearch, fetch, isAdmin]);
 
   useEffect(() => {
     setPage(1);
@@ -93,7 +94,7 @@ const WineManager = ({ wineryId }: Props) => {
 
   return (
     <TableManager
-      title="My Wines"
+      title={isAdmin ? 'All Wines' : 'My Wines'}
       data={wines}
       columns={columns}
       loading={loading}
@@ -107,7 +108,7 @@ const WineManager = ({ wineryId }: Props) => {
         setEditingWine(null);
         setView('add');
       }}
-      onEdit={handleEdit}
+      onEdit={isAdmin ? undefined : handleEdit}
       onRemove={handleRemove}
       getId={(w) => w._id}
       emptyIcon={<FaWineBottle />}

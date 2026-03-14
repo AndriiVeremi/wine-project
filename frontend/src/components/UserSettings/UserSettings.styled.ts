@@ -4,6 +4,11 @@ export const AccountSettingsContainer = styled.div`
   display: flex;
   gap: 60px;
   flex-direction: column;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  padding: 30px;
 `;
 
 export const LeftColumn = styled.div`
