@@ -11,6 +11,8 @@ export interface ITour extends Document {
     min: number;
     max: number;
   };
+  averageRating: number;
+  totalReviews: number;
 }
 
 const tourSchema: Schema = new Schema({
@@ -37,6 +39,8 @@ const tourSchema: Schema = new Schema({
       },
     },
   },
+  averageRating: { type: Number, default: 0 },
+  totalReviews: { type: Number, default: 0 },
 });
 
 export default mongoose.model<ITour>('Tour', tourSchema);

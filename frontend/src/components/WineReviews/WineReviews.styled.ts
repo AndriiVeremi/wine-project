@@ -3,42 +3,43 @@ import styled from 'styled-components';
 export const WineReviewsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 20px;
   width: 100%;
+  margin-top: 20px;
 `;
 
-export const AvatarList = styled.div`
+export const ReviewItem = styled.div`
   display: flex;
   gap: 20px;
-  overflow-x: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 
-  &::-webkit-scrollbar {
-    height: 4px;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    border-color: #e8e8e8;
   }
-  &::-webkit-scrollbar-thumb {
-    background: var(--secondary-gray);
-    border-radius: 10px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 15px;
   }
 `;
 
-export const AvatarWrapper = styled.div<{ $active?: boolean }>`
-  width: 80px;
-  height: 80px;
+export const AvatarWrapper = styled.div`
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
-  cursor: pointer;
-  border: 3px solid ${(props) => (props.$active ? 'var(--primary-wine)' : 'transparent')};
-  transition: var(--transition);
+  background-color: #f9f9f9;
   flex-shrink: 0;
-  background-color: var(--soft-gray);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    transform: scale(1.05);
-    border-color: ${(props) => (props.$active ? 'var(--primary-wine)' : 'var(--secondary-gray)')};
-  }
+  border: 1px solid #eee;
 
   img {
     width: 100%;
@@ -47,51 +48,50 @@ export const AvatarWrapper = styled.div<{ $active?: boolean }>`
   }
 
   svg {
-    font-size: 32px;
-    color: var(--secondary-gray);
+    font-size: 24px;
+    color: #ddd;
+    margin: 12px;
   }
 `;
 
 export const ReviewContent = styled.div`
-  background: var(--white);
-  padding: 24px;
-  border-radius: var(--border-radius-lg);
-  min-height: 150px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 `;
 
-export const ReviewText = styled.p`
-  font-family: var(--font-main);
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 29px;
-  color: var(--primary-gray);
-  padding-bottom: 30px;
-  font-style: italic;
-
-  &::before,
-  &::after {
-    content: '"';
-  }
-`;
-
-export const ReviewAuthorInfo = styled.div`
+export const ReviewHeader = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
 `;
 
 export const AuthorName = styled.span`
   font-weight: 600;
   font-size: 16px;
-  color: var(--black);
+  color: #222;
 `;
 
-export const NoReviewsMessage = styled.p`
+export const ReviewDate = styled.span`
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 2px;
+`;
+
+export const ReviewText = styled.p`
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin: 0;
+`;
+
+export const NoReviewsMessage = styled.div`
   text-align: center;
-  color: var(--font-grey);
-  font-size: 18px;
-  margin-top: 20px;
+  padding: 50px;
+  color: #aaa;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px dashed #ddd;
+  font-size: 15px;
 `;
