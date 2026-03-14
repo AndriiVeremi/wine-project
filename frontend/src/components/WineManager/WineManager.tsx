@@ -1,26 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useWinesStore } from '@/store/wine/winesStore';
 import { useAuthStore } from '@/store/auth/authStore';
-import { FiEdit2, FiTrash2, FiPlus, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FaWineBottle } from 'react-icons/fa';
 import MainButton from '@/components/buttons/MainButton';
 import AddWine from '@/components/forms/AddWinesForm/AddWinesForm';
 import { useDebounce } from '@/hooks/useDebounce';
 import type { Wine } from '@/types/wine';
+import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
 import {
+  ItemImg,
   ManagerWrapper,
   Header,
-  WineTable,
-  Th,
-  Td,
-  WineImg,
-  ActionBtns,
-  IconButton,
-  SearchInput,
-  ListHeader,
-  PaginationWrapper,
-  PageButton,
-  PageInfo,
-} from './WineManager.styled';
+} from '@/components/common/TableManager/TableManager.styled';
 import { SectionTitle } from '@/pages/AccountPage/AccountPage.styled';
 import toast from 'react-hot-toast';
 
@@ -32,57 +23,58 @@ const WineManager = ({ wineryId }: Props) => {
   const [view, setView] = useState<'list' | 'add' | 'edit'>('list');
   const [editingWine, setEditingWine] = useState<Wine | null>(null);
   const [search, setSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const debouncedSearch = useDebounce(search, 500);
 
   const { wines, fetch, remove, loading, totalPages, total } = useWinesStore();
   const { user } = useAuthStore();
 
-  const limit = 10;
-
   useEffect(() => {
-    if (user?.uid) {
-      fetch({
-        limit,
-        page: currentPage,
-        wineryId,
-        name: debouncedSearch,
-      });
+    if (user?.uid && wineryId) {
+      fetch({ limit: 10, page, wineryId, name: debouncedSearch });
     }
-  }, [user?.uid, currentPage, wineryId, debouncedSearch, fetch]);
+  }, [user?.uid, page, wineryId, debouncedSearch, fetch]);
 
   useEffect(() => {
-    setCurrentPage(1);
+    setPage(1);
   }, [debouncedSearch, wineryId]);
 
-  const onEdit = (wine: Wine) => {
-    setEditingWine(wine);
+  const handleEdit = (item: Wine) => {
+    setEditingWine(item);
     setView('edit');
   };
 
-  const onRemove = async (id: string) => {
-    if (window.confirm('Delete this wine?')) {
-      try {
-        await remove(id);
-        toast.success('Removed');
-        if (wines.length === 1 && currentPage > 1) {
-          setCurrentPage((prev) => prev - 1);
-        } else {
-          fetch({ limit, page: currentPage, wineryId, name: debouncedSearch });
-        }
-      } catch {
-        toast.error('Failed');
-      }
+  const handleRemove = async (id: string) => {
+    if (!window.confirm('Delete wine?')) return;
+    try {
+      await remove(id);
+      toast.success('Removed');
+
+      const isLastOnPage = wines.length === 1 && page > 1;
+      const nextPage = isLastOnPage ? page - 1 : page;
+
+      if (isLastOnPage) setPage(nextPage);
+      else fetch({ limit: 10, page: nextPage, wineryId, name: debouncedSearch });
+    } catch {
+      toast.error('Error');
     }
   };
 
-  const data = Array.isArray(wines) ? wines : [];
+  const columns: Column<Wine>[] = [
+    {
+      header: 'Photo',
+      render: (w) => <ItemImg src={w.imageUrl || '/assets/wine-placeholder.png'} />,
+    },
+    { header: 'Name', render: (w) => w.name },
+    { header: 'Year', render: (w) => w.vintage },
+    { header: 'Price', render: (w) => `$${w.price}` },
+  ];
 
   if (view !== 'list') {
     return (
       <ManagerWrapper>
         <Header>
-          <SectionTitle>{view === 'add' ? 'Add New Wine' : 'Edit Wine'}</SectionTitle>
+          <SectionTitle>{view === 'add' ? 'Add Wine' : 'Edit Wine'}</SectionTitle>
           <MainButton type="button" onClick={() => setView('list')}>
             BACK
           </MainButton>
@@ -92,7 +84,7 @@ const WineManager = ({ wineryId }: Props) => {
           wineData={editingWine}
           onSuccess={() => {
             setView('list');
-            fetch({ limit, page: currentPage, wineryId, name: debouncedSearch });
+            fetch({ limit: 10, page, wineryId, name: debouncedSearch });
           }}
         />
       </ManagerWrapper>
@@ -100,96 +92,28 @@ const WineManager = ({ wineryId }: Props) => {
   }
 
   return (
-    <ManagerWrapper>
-      <Header>
-        <SectionTitle>My Wines ({total})</SectionTitle>
-        <ListHeader>
-          <SearchInput
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <MainButton
-            type="button"
-            onClick={() => {
-              setEditingWine(null);
-              setView('add');
-            }}
-          >
-            <FiPlus style={{ marginRight: '8px' }} /> ADD
-          </MainButton>
-        </ListHeader>
-      </Header>
-
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <WineTable>
-            <thead>
-              <tr>
-                <Th>Photo</Th>
-                <Th>Name</Th>
-                <Th>Year</Th>
-                <Th>Price</Th>
-                <Th>Actions</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((wine) => (
-                <tr key={wine._id}>
-                  <Td>
-                    <WineImg src={wine.imageUrl || '/assets/wine-placeholder.png'} />
-                  </Td>
-                  <Td>{wine.name || 'Untitled'}</Td>
-                  <Td>{wine.vintage || 'N/A'}</Td>
-                  <Td>${wine.price || 0}</Td>
-                  <Td>
-                    <ActionBtns>
-                      <IconButton onClick={() => onEdit(wine)} $type="edit">
-                        <FiEdit2 />
-                      </IconButton>
-                      <IconButton onClick={() => onRemove(wine._id)} $type="delete">
-                        <FiTrash2 />
-                      </IconButton>
-                    </ActionBtns>
-                  </Td>
-                </tr>
-              ))}
-              {data.length === 0 && (
-                <tr>
-                  <Td colSpan={5} style={{ textAlign: 'center', color: '#999' }}>
-                    No items found
-                  </Td>
-                </tr>
-              )}
-            </tbody>
-          </WineTable>
-
-          {totalPages > 1 && (
-            <PaginationWrapper>
-              <PageButton
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
-              >
-                <FiChevronLeft />
-              </PageButton>
-
-              <PageInfo>
-                Page {currentPage} of {totalPages}
-              </PageInfo>
-
-              <PageButton
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
-              >
-                <FiChevronRight />
-              </PageButton>
-            </PaginationWrapper>
-          )}
-        </>
-      )}
-    </ManagerWrapper>
+    <TableManager
+      title="My Wines"
+      data={wines}
+      columns={columns}
+      loading={loading}
+      total={total}
+      totalPages={totalPages}
+      page={page}
+      search={search}
+      onSearch={setSearch}
+      onPage={setPage}
+      onAdd={() => {
+        setEditingWine(null);
+        setView('add');
+      }}
+      onEdit={handleEdit}
+      onRemove={handleRemove}
+      getId={(w) => w._id}
+      emptyIcon={<FaWineBottle />}
+      emptyTitle="No wines"
+      emptyText="Add your first wine production."
+    />
   );
 };
 

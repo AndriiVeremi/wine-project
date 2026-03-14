@@ -1,3 +1,5 @@
+import type { Winery } from './wineries';
+
 export interface Region {
   _id: string;
   name: string;
@@ -18,4 +20,5 @@ export interface Grape {
   tannins?: string;
   aromas: string[];
   agingPotential: string;
+  winery?: string | Winery;
 }

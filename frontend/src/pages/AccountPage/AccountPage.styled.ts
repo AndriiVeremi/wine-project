@@ -11,6 +11,7 @@ export const AccountPageContainer = styled.div`
 
 export const ContentArea = styled.main`
   flex: 1;
+  padding: 20px;
   min-height: 500px;
   overflow-x: hidden;
 `;

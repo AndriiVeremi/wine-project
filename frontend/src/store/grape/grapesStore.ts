@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getGrapes, addGrape, updateGrapeImages } from '@/api/grapes';
+import { getGrapes, addGrape, updateGrape, deleteGrape, updateGrapeImages } from '@/api/grapes';
 import type { Grape } from '@/types/grape';
 
 interface GrapesStore {
@@ -18,8 +18,20 @@ interface GrapesStore {
     acidity?: string;
     page: number;
     limit: number;
+    wineryId?: string;
   }) => Promise<void>;
-  addGrape: (data: Partial<Grape>, files?: File[]) => Promise<void>;
+  add: (data: Partial<Grape>, files?: File[]) => Promise<void>;
+  update: (id: string, data: Partial<Grape>, files?: File[]) => Promise<void>;
+  removeGrape: (id: string) => Promise<void>;
+}
+
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
 }
 
 export const useGrapesStore = create<GrapesStore>()((set) => ({
@@ -41,30 +53,60 @@ export const useGrapesStore = create<GrapesStore>()((set) => ({
         totalCount: response.data.totalCount,
         loading: false,
       });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      set({ error: message, loading: false });
+    } catch (err: unknown) {
+      const e = err as ApiError;
+      set({ error: e.response?.data?.message || e.message, loading: false });
     }
   },
 
-  addGrape: async (data, files) => {
+  add: async (data, files) => {
     set({ loading: true, error: null });
     try {
       const res = await addGrape(data);
-      let newGrape = res.data;
-
+      let item = res.data;
       if (files && files.length > 0) {
-        const imgRes = await updateGrapeImages(newGrape._id, files);
-        newGrape = imgRes.data;
+        const imgRes = await updateGrapeImages(item._id, files);
+        item = imgRes.data;
       }
+      set((s) => ({ grapes: [item, ...s.grapes], loading: false }));
+    } catch (err: unknown) {
+      const e = err as ApiError;
+      set({ error: e.response?.data?.message || e.message, loading: false });
+      throw err;
+    }
+  },
 
-      set((state) => ({
-        grapes: [newGrape, ...state.grapes],
+  update: async (id, data, files) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await updateGrape(id, data);
+      let item = res.data;
+      if (files && files.length > 0) {
+        const imgRes = await updateGrapeImages(id, files);
+        item = imgRes.data;
+      }
+      set((s) => ({
+        grapes: s.grapes.map((g) => (g._id === id ? item : g)),
         loading: false,
       }));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      set({ error: message, loading: false });
+    } catch (err: unknown) {
+      const e = err as ApiError;
+      set({ error: e.response?.data?.message || e.message, loading: false });
+      throw err;
+    }
+  },
+
+  removeGrape: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      await deleteGrape(id);
+      set((s) => ({
+        grapes: s.grapes.filter((g) => g._id !== id),
+        loading: false,
+      }));
+    } catch (err: unknown) {
+      const e = err as ApiError;
+      set({ error: e.response?.data?.message || e.message, loading: false });
       throw err;
     }
   },

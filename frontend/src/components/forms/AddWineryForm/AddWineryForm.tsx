@@ -79,20 +79,21 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
     const load = async () => {
       try {
         const res = await getCountries();
-        setCountries(res.data);
+        const loadedCountries = res.data;
+        setCountries(loadedCountries);
+
+        if (form.country) {
+          const item = loadedCountries.find(
+            (c: { _id: string; name: string }) => c._id === form.country,
+          );
+          if (item) fetchRegions(item.name);
+        }
       } catch (err) {
         console.log(err);
       }
     };
     load();
-  }, []);
-
-  useEffect(() => {
-    if (form.country && countries.length > 0) {
-      const item = countries.find((c) => c._id === form.country);
-      if (item) fetchRegions(item.name);
-    }
-  }, [form.country, countries, fetchRegions]);
+  }, [fetchRegions, form.country]);
 
   const onInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -117,7 +118,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
 
       let sendVal = String(val);
       if (key === 'contactPhone') {
-        sendVal = sendVal.replace(/\s+/g, ''); // прибираємо пробіли
+        sendVal = sendVal.replace(/\s+/g, '');
       }
       data.append(key, sendVal);
     });

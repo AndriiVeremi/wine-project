@@ -64,27 +64,27 @@ export const Text = styled('p')`
 
 export const FacebookIcon = styled(FaFacebookF)`
   color: var(--primary-wine);
-  width: 16px;
-  height: 18px;
+  width: 20px;
+  height: 24px;
   transition: color 0.3s ease;
 `;
 
 export const InstagramIcon = styled(BiLogoInstagramAlt)`
   color: var(--primary-wine);
-  width: 32px;
-  height: 22px;
+  width: 36px;
+  height: 30px;
   transition: color 0.3s ease;
 `;
 export const TelegramIcon = styled(FaTelegramPlane)`
   color: var(--primary-wine);
-  width: 30px;
-  height: 20px;
+  width: 34px;
+  height: 28px;
   transition: color 0.3s ease;
 `;
 
 export const IconCircle = styled('div')`
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border: 1px solid var(--primary-wine);
   border-radius: 50%;
   display: flex;
