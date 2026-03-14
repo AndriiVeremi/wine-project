@@ -16,6 +16,7 @@ const router = Router();
  *     summary: Get all grapes
  */
 router.get('/', GrapeController.getGrapes);
+router.get('/:id', isValidId(), GrapeController.getGrapeById);
 
 /**
  * @swagger
