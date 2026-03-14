@@ -8,8 +8,25 @@ import upload from '@/middleware/uploadMiddleware';
 
 const router = Router();
 
+/**
+ * @swagger
+ * /grapes:
+ *   get:
+ *     tags: [Grapes]
+ *     summary: Get all grapes
+ */
 router.get('/', GrapeController.getGrapes);
+router.get('/:id', isValidId(), GrapeController.getGrapeById);
 
+/**
+ * @swagger
+ * /grapes:
+ *   post:
+ *     tags: [Grapes]
+ *     summary: Add new grape variety
+ *     security:
+ *       - bearerAuth: []
+ */
 router.post(
   '/',
   authMiddleware,
@@ -18,6 +35,15 @@ router.post(
   GrapeController.addGrape,
 );
 
+/**
+ * @swagger
+ * /grapes/{id}:
+ *   patch:
+ *     tags: [Grapes]
+ *     summary: Update grape variety
+ *     security:
+ *       - bearerAuth: []
+ */
 router.patch(
   '/:id',
   isValidId(),
@@ -27,6 +53,15 @@ router.patch(
   GrapeController.updateGrape,
 );
 
+/**
+ * @swagger
+ * /grapes/{id}:
+ *   delete:
+ *     tags: [Grapes]
+ *     summary: Delete grape variety
+ *     security:
+ *       - bearerAuth: []
+ */
 router.delete(
   '/:id',
   isValidId(),
@@ -35,6 +70,15 @@ router.delete(
   GrapeController.deleteGrape,
 );
 
+/**
+ * @swagger
+ * /grapes/{id}/images:
+ *   patch:
+ *     tags: [Grapes]
+ *     summary: Update grape images
+ *     security:
+ *       - bearerAuth: []
+ */
 router.patch(
   '/:id/images',
   isValidId(),

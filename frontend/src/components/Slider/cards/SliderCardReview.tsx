@@ -1,6 +1,41 @@
 import React from 'react';
 import { FiStar, FiMessageSquare } from 'react-icons/fi';
 import { CardBase, Content, Title, RatingBlock } from './SliderCard.styled';
+import styled from 'styled-components';
+
+const StyledCard = styled(CardBase)`
+  height: auto;
+  min-height: 220px;
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  width: 100%;
+  margin: 10px 0;
+`;
+
+const ReviewText = styled.p`
+  font-size: 16px;
+  color: #444;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 15px 0;
+  position: relative;
+`;
+
+const AuthorName = styled.p`
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: '—';
+    color: var(--primary-wine, #841013);
+  }
+`;
 
 interface ReviewCardProps {
   review: {
@@ -19,44 +54,34 @@ interface ReviewCardProps {
 
 const SliderCardReview: React.FC<ReviewCardProps> = ({ review }) => {
   return (
-    <CardBase style={{ height: '280px' }}>
-      {' '}
-      <Content style={{ padding: '25px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-          <FiMessageSquare size={20} color="var(--primary-wine)" />
-          <Title>{review.wineId?.name || 'Wine Review'}</Title>
+    <StyledCard>
+      <Content style={{ padding: '25px 30px', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <FiMessageSquare size={18} color="var(--primary-wine, #841013)" />
+            <Title style={{ fontSize: '16px', fontWeight: 600 }}>
+              {review.wineId?.name || 'Review'}
+            </Title>
+          </div>
+          <RatingBlock>
+            {[1, 2, 3, 4, 5].map((s) => (
+              <FiStar
+                key={s}
+                size={14}
+                fill={s <= review.rating ? '#ffb400' : 'none'}
+                color={s <= review.rating ? '#ffb400' : '#ddd'}
+              />
+            ))}
+          </RatingBlock>
         </div>
 
-        <RatingBlock>
-          {[1, 2, 3, 4, 5].map((s) => (
-            <FiStar key={s} fill={s <= review.rating ? '#ffb400' : 'none'} />
-          ))}
-        </RatingBlock>
+        <ReviewText>{review.comment}</ReviewText>
 
-        <p
-          style={{
-            fontSize: '15px',
-            color: '#555',
-            fontStyle: 'italic',
-            lineHeight: '1.6',
-            margin: '15px 0',
-          }}
-        >
-          "{review.comment}"
-        </p>
-
-        <p
-          style={{
-            fontSize: '14px',
-            fontWeight: 'bold',
-            color: 'var(--font-dark)',
-            marginTop: 'auto',
-          }}
-        >
-          — {review.userId?.firstName} {review.userId?.lastName}
-        </p>
+        <AuthorName>
+          {review.userId?.firstName} {review.userId?.lastName}
+        </AuthorName>
       </Content>
-    </CardBase>
+    </StyledCard>
   );
 };
 

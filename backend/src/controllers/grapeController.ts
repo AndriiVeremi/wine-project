@@ -9,6 +9,11 @@ class GrapeController {
     res.json(data);
   });
 
+  public getGrapeById = ctrlWrapper(async (req: Request, res: Response) => {
+    const data = await GrapeService.getGrapeById(req.params.id as string);
+    res.json(data);
+  });
+
   public addGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
     const data = await GrapeService.createGrape(req.body, req.userId!, req.userRole!);
     res.status(201).json(data);

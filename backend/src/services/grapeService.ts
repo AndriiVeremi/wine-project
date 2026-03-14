@@ -50,6 +50,12 @@ class GrapeService {
     };
   }
 
+  public async getGrapeById(id: string) {
+    const grape = await Grape.findById(id).populate('regions', 'name');
+    if (!grape) throw new HttpError('Grape variety not found', 404);
+    return grape;
+  }
+
   public async createGrape(data: Partial<IGrape>, userId: string, userRole: string) {
     if (data.winery) {
       const winery = await Winery.findById(data.winery);
@@ -90,8 +96,15 @@ class GrapeService {
   }
 
   public async updateGrapeImages(grapeId: string, files: Express.Multer.File[]) {
-    const urls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
-    return await Grape.findByIdAndUpdate(grapeId, { imageUrls: urls }, { new: true });
+    const grape = await Grape.findById(grapeId);
+    if (!grape) throw new HttpError('Grape not found', 404);
+
+    const newUrls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
+
+    // Combine existing URLs with new ones, keeping a maximum of 5 images
+    const updatedUrls = [...(grape.imageUrls || []), ...newUrls].slice(0, 5);
+
+    return await Grape.findByIdAndUpdate(grapeId, { imageUrls: updatedUrls }, { new: true });
   }
 }
 

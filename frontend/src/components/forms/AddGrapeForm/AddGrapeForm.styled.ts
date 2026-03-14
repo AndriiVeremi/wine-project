@@ -127,3 +127,57 @@ export const ButtonWrapper = styled.div`
   justify-content: flex-end;
   gap: 15px;
 `;
+
+export const TagSelectorContainer = styled.div`
+  margin-top: 10px;
+  margin-bottom: 24px;
+`;
+
+export const SelectedTags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 40px;
+  padding: 12px;
+  background: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+`;
+
+export const TagGroup = styled.div`
+  margin-bottom: 16px;
+`;
+
+export const GroupTitle = styled.div`
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--font-grey);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+export const TagsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+export const TagItem = styled.div<{ $selected: boolean }>`
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  background: ${(props) => (props.$selected ? 'var(--primary-wine, #841013)' : '#fff')};
+  color: ${(props) => (props.$selected ? '#fff' : 'var(--primary-gray)')};
+  border: 1px solid ${(props) => (props.$selected ? 'var(--primary-wine, #841013)' : '#e0e0e0')};
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--primary-wine, #841013);
+    background: ${(props) => (props.$selected ? '#6a0d10' : '#f5f5f5')};
+  }
+`;

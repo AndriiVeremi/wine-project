@@ -11,18 +11,36 @@ export const getWineReviews = (wineId: string) => {
   return apiClient.get(`/wines/${wineId}/reviews`);
 };
 
-export const createReview = (wineId: string, data: { rating: number; comment: string }) => {
-  return apiClient.post(`/wines/${wineId}/reviews`, data);
+export const getWineryReviews = (wineryId: string) => {
+  return apiClient.get(`/wineries/${wineryId}/reviews`);
 };
 
-export const deleteReview = (wineId: string, reviewId: string) => {
-  return apiClient.delete(`/wines/${wineId}/reviews/${reviewId}`);
+export const getTourReviews = (tourId: string) => {
+  return apiClient.get(`/tours/${tourId}/reviews`);
 };
 
-export const updateReview = (
-  wineId: string,
+export const createReview = (data: {
+  wineId?: string;
+  wineryId?: string;
+  tourId?: string;
+  rating: number;
+  comment: string;
+}) => {
+  const { wineId, wineryId, tourId, ...rest } = data;
+  const path = wineId
+    ? `/wines/${wineId}/reviews`
+    : wineryId
+      ? `/wineries/${wineryId}/reviews`
+      : `/tours/${tourId}/reviews`;
+
+  return apiClient.post(path, rest);
+};
+
+export const deleteReview = (
+  targetId: string,
   reviewId: string,
-  data: { rating: number; comment: string },
+  type: 'wine' | 'winery' | 'tour',
 ) => {
-  return apiClient.patch(`/wines/${wineId}/reviews/${reviewId}`, data);
+  const prefix = type === 'wine' ? 'wines' : type === 'winery' ? 'wineries' : 'tours';
+  return apiClient.delete(`/${prefix}/${targetId}/reviews/${reviewId}`);
 };

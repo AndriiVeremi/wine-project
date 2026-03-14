@@ -2,22 +2,29 @@ import React, { useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { createReview } from '@/api/reviews';
 import { useAuthStore } from '@/store/auth/authStore';
+import MainButton from '@/components/buttons/MainButton';
 import {
   FormContainer,
   TextArea,
   StarsContainer,
   StarButton,
-  SendButton,
   FormTitle,
   RatingWrapper,
 } from './AddReviewForm.styled';
 
 interface AddReviewFormProps {
-  wineId: string;
+  wineId?: string;
+  wineryId?: string;
+  tourId?: string;
   onReviewAdded?: () => void;
 }
 
-const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) => {
+const AddReviewForm: React.FC<AddReviewFormProps> = ({
+  wineId,
+  wineryId,
+  tourId,
+  onReviewAdded,
+}) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState('');
@@ -46,7 +53,7 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) 
     setError(null);
 
     try {
-      await createReview(wineId, { rating, comment });
+      await createReview({ wineId, wineryId, tourId, rating, comment });
       setRating(0);
       setComment('');
       if (onReviewAdded) {
@@ -66,24 +73,24 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) 
       <FormTitle>Message:</FormTitle>
 
       <TextArea
-        placeholder="Share your experience with this wine..."
+        placeholder="Share your experience..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         rows={4}
       />
 
       <RatingWrapper>
-        <p>Rate the product </p>
+        <p>Rate your experience </p>
         <StarsContainer>
           {[...Array(5)].map((_, index) => {
-            const ratingValue = index + 1;
-            const isFilled = ratingValue <= (hover || rating);
+            const val = index + 1;
+            const isFilled = val <= (hover || rating);
             return (
               <StarButton
                 type="button"
-                key={ratingValue}
-                onClick={() => setRating(ratingValue)}
-                onMouseEnter={() => setHover(ratingValue)}
+                key={val}
+                onClick={() => setRating(val)}
+                onMouseEnter={() => setHover(val)}
                 onMouseLeave={() => setHover(0)}
               >
                 {isFilled ? (
@@ -97,11 +104,13 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) 
         </StarsContainer>
       </RatingWrapper>
 
-      {error && <p style={{ color: 'red', marginTop: '8px', fontSize: '14px' }}>{error}</p>}
+      {error && <p style={{ color: 'red', marginBottom: '15px', fontSize: '14px' }}>{error}</p>}
 
-      <SendButton type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Sending...' : 'Send'}
-      </SendButton>
+      <div style={{ maxWidth: '200px' }}>
+        <MainButton type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'SENDING...' : 'SEND'}
+        </MainButton>
+      </div>
     </FormContainer>
   );
 };
