@@ -13,7 +13,7 @@ import {
   InstagramIcon,
   TelegramIcon,
   SectionTitle,
-  UserMenuMobile
+  UserMenuMobile,
 } from './MobileMenu.styled';
 import Location from '@/components/Location';
 import Language from '@/components/Language';

@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Nav, StyledHeader, Item, HeaderContainer, BurgerButton, DesktopUserMenu } from '@/components/Header/Header.styled';
+import {
+  Nav,
+  StyledHeader,
+  Item,
+  HeaderContainer,
+  BurgerButton,
+  DesktopUserMenu,
+} from '@/components/Header/Header.styled';
 import Container from '@/components/common/Container';
 import MainLogo from '@/components/MainLogo/MainLogo';
 import UserMenu from '@/components/UserMenu';

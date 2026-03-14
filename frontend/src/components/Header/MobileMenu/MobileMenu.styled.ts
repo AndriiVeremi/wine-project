@@ -32,7 +32,9 @@ export const Backdrop = styled.div<{ $isOpen: boolean }>`
   z-index: 100;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
-  transition: opacity var(--transition), visibility var(--transition);
+  transition:
+    opacity var(--transition),
+    visibility var(--transition);
 `;
 
 export const CloseButton = styled.button`
