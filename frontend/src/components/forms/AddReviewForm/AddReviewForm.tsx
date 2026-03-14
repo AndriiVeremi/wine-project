@@ -57,7 +57,7 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({ wineId, onReviewAdded }) 
 
   return (
     <FormContainer onSubmit={handleSubmit}>
-      <FormTitle>Write a review</FormTitle>
+      <FormTitle>Message:</FormTitle>
 
       <TextArea
         placeholder="Share your experience with this wine..."

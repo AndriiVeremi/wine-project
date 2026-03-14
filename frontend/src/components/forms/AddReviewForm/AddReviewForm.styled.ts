@@ -4,15 +4,16 @@ export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 60px;
-  gap: 24px;
+  margin-top: 48px;
 `;
 
 export const FormTitle = styled.h3`
   font-family: var(--font-main);
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
   color: var(--black);
+  margin-bottom: 6px;
 `;
 
 export const TextArea = styled.textarea`
@@ -26,6 +27,7 @@ export const TextArea = styled.textarea`
   resize: none;
   outline: none;
   transition: var(--transition);
+  margin-bottom: 24px;
 
   &:focus {
     border-color: var(--primary-wine);
@@ -37,6 +39,7 @@ export const RatingWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 18px;
+  margin-bottom: 24px;
 
   p {
     font-family: var(--font-main);
