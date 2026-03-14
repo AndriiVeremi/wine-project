@@ -36,7 +36,8 @@ const Location = () => {
     fetchCountries();
   }, []);
 
-  const handleSelect = (c: string) => {
+  const handleSelect = (e: React.MouseEvent, c: string) => {
+    e.stopPropagation();
     setCountry(c);
     setIsOpen(false);
   };
@@ -58,7 +59,7 @@ const Location = () => {
       {isOpen && countries.length > 0 && (
         <CountryDropdown>
           {countries.map((c) => (
-            <CountryItem key={c} onClick={() => handleSelect(c)}>
+            <CountryItem key={c} onClick={(e) => handleSelect(e, c)}>
               {c}
             </CountryItem>
           ))}

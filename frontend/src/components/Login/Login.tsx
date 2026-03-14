@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth/authStore';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const { user, openAuthModal } = useAuthStore();
+  const { user, profile, openAuthModal } = useAuthStore();
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
@@ -22,7 +22,7 @@ const Login = () => {
           <UserIcon />
         </Item>
         <Item>
-          <Text>{user ? user.firstName || 'User' : 'Login'}</Text>
+          <Text>{user ? profile?.firstName || 'User' : 'Login'}</Text>
         </Item>
       </List>
     </>

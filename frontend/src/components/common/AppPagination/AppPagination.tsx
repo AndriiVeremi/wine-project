@@ -1,5 +1,5 @@
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { PaginationButton, PaginationPageButton, PaginationWrapper } from './AppPagination.styled';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { PaginationButton, PaginationWrapper, PageInfo, CurrentPage } from './AppPagination.styled';
 
 interface AppPaginationProps {
   page: number;
@@ -9,21 +9,19 @@ interface AppPaginationProps {
 
 const AppPagination = ({ page, totalPages, onChange }: AppPaginationProps) => {
   if (totalPages <= 1) return null;
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
   return (
     <PaginationWrapper>
       <PaginationButton disabled={page === 1} onClick={() => onChange(page - 1)}>
-        <FaChevronLeft size={16} color="var(--primary-gray)" />
-        Prev
+        <FiChevronLeft size={18} />
       </PaginationButton>
-      {pages.map((p) => (
-        <PaginationPageButton key={p} $active={p === page} onClick={() => onChange(p)}>
-          {p}
-        </PaginationPageButton>
-      ))}
+
+      <PageInfo>
+        Page <CurrentPage>{page}</CurrentPage> of {totalPages}
+      </PageInfo>
+
       <PaginationButton disabled={page === totalPages} onClick={() => onChange(page + 1)}>
-        Next
-        <FaChevronRight size={16} color="var(--primary-gray)" />
+        <FiChevronRight size={18} />
       </PaginationButton>
     </PaginationWrapper>
   );

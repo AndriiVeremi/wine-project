@@ -4,6 +4,9 @@ export const AddWineWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   background-color: var(--white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 `;
 
 export const Title = styled.h2`
