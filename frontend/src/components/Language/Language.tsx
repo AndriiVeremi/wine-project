@@ -7,6 +7,7 @@ import {
   DropDownIcon,
   DropdownList,
   DropdownItem,
+  GlobeIcon,
 } from './Language.styled';
 
 const Language = () => {
@@ -37,6 +38,9 @@ const Language = () => {
   return (
     <LanguageWrapper ref={wrapperRef}>
       <List onClick={toggleDropdown}>
+        <Item>
+          <GlobeIcon />
+        </Item>
         <Item>
           <Text>{currentLang}</Text>
         </Item>

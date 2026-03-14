@@ -1,5 +1,13 @@
 import { IoChevronDownSharp } from 'react-icons/io5';
+import { FiGlobe } from 'react-icons/fi';
 import styled from 'styled-components';
+
+export const GlobeIcon = styled(FiGlobe)`
+  color: var(--brown-icon);
+  width: 20px;
+  height: 28px;
+  stroke-width: 1px;
+`;
 
 export const LanguageWrapper = styled.div`
   position: relative;
