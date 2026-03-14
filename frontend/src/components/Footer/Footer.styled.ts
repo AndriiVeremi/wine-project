@@ -14,6 +14,12 @@ export const FooterContainer = styled('div')`
   justify-content: space-between;
   align-items: center;
   padding: 50px 0 0 0;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px 0;
+  }
 `;
 
 export const StyledNav = styled('nav')`
@@ -25,11 +31,21 @@ export const StyledNav = styled('nav')`
 export const InfoList = styled('ul')`
   display: flex;
   gap: 30px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
 `;
 
 export const SocialList = styled('ul')`
   display: flex;
   gap: 16px;
+
+  @media (max-width: 767px) {
+    justify-content: center;
+  }
 `;
 
 export const Item = styled('li')`
@@ -42,6 +58,11 @@ export const Item = styled('li')`
   line-height: 26px;
   horizontal-align: center;
   transition: all 0.3s ease;
+
+  @media (max-width: 767px) {
+    font-size: 16px;
+    line-height: 1.5;
+  }
 
   a {
     color: inherit;

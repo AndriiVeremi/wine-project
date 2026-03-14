@@ -1,4 +1,4 @@
-import { ReviewService } from '@/services/reviewService';
+import { ReviewService } from '@/servoces/reviewService';
 import Review from '@/models/reviewModel';
 import Wine from '@/models/wineModel';
 

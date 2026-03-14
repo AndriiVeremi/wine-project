@@ -5,4 +5,9 @@ export const Logo = styled('img')`
   height: 60px;
   object-fit: contain;
   cursor: pointer;
+
+  @media (max-width: 767px) {
+    width: 120px;
+    height: 45px;
+  }
 `;
