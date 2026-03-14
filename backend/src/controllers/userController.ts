@@ -122,4 +122,63 @@ export const updateAvatar = [
   }),
 ];
 
+export const getAllUsers = ctrlWrapper(async (req: AuthenticatedRequest, res: express.Response) => {
+  const { search, page = 1, limit = 10 } = req.query;
+  const filter: Record<string, unknown> = {};
+
+  if (search) {
+    filter.$or = [
+      { firstName: { $regex: search, $options: 'i' } },
+      { lastName: { $regex: search, $options: 'i' } },
+      { email: { $regex: search, $options: 'i' } },
+    ];
+  }
+
+  const p = Number(page);
+  const l = Number(limit);
+  const skip = (p - 1) * l;
+
+  const users = await User.find(filter).skip(skip).limit(l).sort({ createdAt: -1 });
+  const total = await User.countDocuments(filter);
+
+  res.status(200).json({
+    users,
+    totalCount: total,
+    totalPages: Math.ceil(total / l),
+    page: p,
+  });
+});
+
+export const toggleUserBan = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) throw new HttpError('User not found', 404);
+    if (user.role === 'ADMIN') throw new HttpError('Cannot ban an admin', 403);
+
+    user.isBanned = !user.isBanned;
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: `User status updated to ${user.isBanned ? 'banned' : 'active'}`, user });
+  },
+);
+
+export const adminDeleteUser = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) throw new HttpError('User not found', 404);
+    if (user.role === 'ADMIN') throw new HttpError('Cannot delete an admin', 403);
+
+    // Тут можна додати логіку видалення з Firebase, якщо потрібно
+    await User.findByIdAndDelete(id);
+
+    res.status(204).send();
+  },
+);
+
 export {};

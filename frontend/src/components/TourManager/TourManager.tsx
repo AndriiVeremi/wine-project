@@ -6,7 +6,7 @@ import MainButton from '@/components/buttons/MainButton';
 import AddTour from '@/components/forms/AddTourForm/AddTourForm';
 import { useDebounce } from '@/hooks/useDebounce';
 import type { Tour } from '@/types/tours';
-import TableManager, { type Column } from '@/components/common/TableManager/EntityManager';
+import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import {
   ItemImg,
   ManagerWrapper,
@@ -27,13 +27,14 @@ const TourManager = ({ wineryId }: Props) => {
   const debouncedSearch = useDebounce(search, 500);
 
   const { tours, fetch, remove, loading, totalPages, total } = useToursStore();
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
+  const isAdmin = profile?.role === 'ADMIN';
 
   useEffect(() => {
-    if (user?.uid && wineryId) {
+    if (user?.uid && (wineryId || isAdmin)) {
       fetch({ limit: 10, page, wineryId });
     }
-  }, [user?.uid, page, wineryId, fetch]);
+  }, [user?.uid, page, wineryId, fetch, isAdmin]);
 
   useEffect(() => {
     setPage(1);
@@ -100,7 +101,7 @@ const TourManager = ({ wineryId }: Props) => {
 
   return (
     <TableManager
-      title="My Tours"
+      title={isAdmin ? 'All Tours' : 'My Tours'}
       data={data}
       columns={columns}
       loading={loading}
@@ -114,7 +115,7 @@ const TourManager = ({ wineryId }: Props) => {
         setEditingTour(null);
         setView('add');
       }}
-      onEdit={handleEdit}
+      onEdit={isAdmin ? undefined : handleEdit}
       onRemove={handleRemove}
       getId={(t) => t._id}
       emptyIcon={<FiMap />}

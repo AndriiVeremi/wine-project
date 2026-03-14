@@ -22,6 +22,24 @@ async function updateWineRating(wineId: string) {
 }
 
 export class ReviewService {
+  public async getAllReviews(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<{ reviews: HydratedDocument<IReview>[]; total: number }> {
+    const skip = (page - 1) * limit;
+    const [reviews, total] = await Promise.all([
+      Review.find()
+        .populate('userId', 'firstName lastName email avatarUrl')
+        .populate('wineId', 'name imageUrl')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+      Review.countDocuments(),
+    ]);
+    return { reviews, total };
+  }
+
   public async getReviewsByWine(wineId: string): Promise<HydratedDocument<IReview>[]> {
     const reviews = await Review.find({ wineId })
       .populate('userId', 'firstName lastName avatarUrl')

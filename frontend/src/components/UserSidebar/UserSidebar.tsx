@@ -2,14 +2,14 @@ import { useAuthStore } from '@/store/auth/authStore';
 import { useNavigate } from 'react-router-dom';
 import {
   FiUser,
-  FiClock,
   FiHeart,
   FiStar,
   FiSettings,
   FiLogOut,
-  FiInbox,
   FiHome,
   FiMap,
+  FiUsers,
+  FiMessageSquare,
 } from 'react-icons/fi';
 import { FaWineBottle, FaLeaf } from 'react-icons/fa';
 import { MenuContainer, MenuItem } from './UserSidebar.styled';
@@ -25,7 +25,13 @@ export type AccountSection =
   | 'My Winery'
   | 'Grapes'
   | 'Buy VIP'
-  | 'Notification Center';
+  | 'Notification Center'
+  | 'All Wines'
+  | 'All Grapes'
+  | 'All Wineries'
+  | 'All Tours'
+  | 'Users'
+  | 'Reviews';
 
 interface Props {
   currentSection: AccountSection;
@@ -39,27 +45,40 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
   const isOwner = profile?.role === 'WINERY_OWNER';
   const isAdmin = profile?.role === 'ADMIN';
 
-  const items =
-    isOwner || isAdmin
-      ? [
-          { name: 'Personal Info', icon: <FiUser /> },
-          { name: 'My Winery', icon: <FiHome /> },
-          { name: 'My Wines', icon: <FaWineBottle /> },
-          { name: 'My Tours', icon: <FiMap /> },
-          { name: 'Grapes', icon: <FaLeaf /> },
-          { name: 'Notification Center', icon: <FiInbox /> },
-          { name: 'Buy VIP', icon: <FiStar /> },
-          { name: 'History', icon: <FiClock /> },
-          { name: 'Account Settings', icon: <FiSettings /> },
-        ]
-      : [
-          { name: 'Personal Info', icon: <FiUser /> },
-          { name: 'My Wishlist', icon: <FiHeart /> },
-          { name: 'My Reviews', icon: <FiStar /> },
-          { name: 'Buy VIP', icon: <FiStar /> },
-          { name: 'History', icon: <FiClock /> },
-          { name: 'Account Settings', icon: <FiSettings /> },
-        ];
+  const getMenuItems = () => {
+    if (isAdmin) {
+      return [
+        { name: 'Personal Info', icon: <FiUser /> },
+        { name: 'All Wineries', icon: <FiHome /> },
+        { name: 'All Wines', icon: <FaWineBottle /> },
+        { name: 'All Grapes', icon: <FaLeaf /> },
+        { name: 'All Tours', icon: <FiMap /> },
+        { name: 'Users', icon: <FiUsers /> },
+        { name: 'Reviews', icon: <FiMessageSquare /> },
+        { name: 'Account Settings', icon: <FiSettings /> },
+      ];
+    }
+
+    if (isOwner) {
+      return [
+        { name: 'Personal Info', icon: <FiUser /> },
+        { name: 'My Winery', icon: <FiHome /> },
+        { name: 'My Wines', icon: <FaWineBottle /> },
+        { name: 'My Tours', icon: <FiMap /> },
+        { name: 'Grapes', icon: <FaLeaf /> },
+        { name: 'Account Settings', icon: <FiSettings /> },
+      ];
+    }
+
+    return [
+      { name: 'Personal Info', icon: <FiUser /> },
+      { name: 'My Wishlist', icon: <FiHeart /> },
+      { name: 'My Reviews', icon: <FiStar /> },
+      { name: 'Account Settings', icon: <FiSettings /> },
+    ];
+  };
+
+  const items = getMenuItems();
 
   const handleLogout = async () => {
     await logout();

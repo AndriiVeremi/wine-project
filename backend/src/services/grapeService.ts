@@ -50,34 +50,40 @@ class GrapeService {
     };
   }
 
-  public async createGrape(data: Partial<IGrape>, userId: string) {
+  public async createGrape(data: Partial<IGrape>, userId: string, userRole: string) {
     if (data.winery) {
       const winery = await Winery.findById(data.winery);
       if (!winery) throw new HttpError('Winery not found', 404);
-      if (winery.owner.toString() !== userId) throw new HttpError('Not owner', 403);
+      if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
+        throw new HttpError('Not owner', 403);
+      }
     }
     return await Grape.create(data);
   }
 
-  public async updateGrape(id: string, data: Partial<IGrape>, userId: string) {
+  public async updateGrape(id: string, data: Partial<IGrape>, userId: string, userRole: string) {
     const grape = await Grape.findById(id);
     if (!grape) throw new HttpError('Not found', 404);
 
     if (grape.winery) {
       const winery = await Winery.findById(grape.winery);
-      if (winery && winery.owner.toString() !== userId) throw new HttpError('Not owner', 403);
+      if (winery && userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
+        throw new HttpError('Not owner', 403);
+      }
     }
 
     return await Grape.findByIdAndUpdate(id, data, { new: true });
   }
 
-  public async deleteGrape(id: string, userId: string) {
+  public async deleteGrape(id: string, userId: string, userRole: string) {
     const grape = await Grape.findById(id);
     if (!grape) throw new HttpError('Not found', 404);
 
     if (grape.winery) {
       const winery = await Winery.findById(grape.winery);
-      if (winery && winery.owner.toString() !== userId) throw new HttpError('Not owner', 403);
+      if (winery && userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
+        throw new HttpError('Not owner', 403);
+      }
     }
 
     await Grape.findByIdAndDelete(id);
