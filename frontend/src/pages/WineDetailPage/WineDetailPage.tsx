@@ -9,7 +9,7 @@ import Container from '@/components/common/Container';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import { getWines } from '@/api/wines';
-import { Wine } from '@/types/wine';
+import type { Wine } from '@/types/wine';
 import {
   StyledWinePageDiv,
   StyledWraperImage,
