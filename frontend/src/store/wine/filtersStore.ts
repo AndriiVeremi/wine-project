@@ -2,6 +2,7 @@ import type { WineColor, WineSweetness } from '@/types/wine';
 import { create } from 'zustand';
 
 interface FiltersState {
+  country: string;
   region: string;
   sweetness: WineSweetness | '';
   color: WineColor | '';
@@ -22,6 +23,7 @@ interface FiltersState {
 }
 
 export const useFiltersStore = create<FiltersState>()((set) => ({
+  country: '',
   region: '',
   sweetness: '',
   color: '',
@@ -48,6 +50,7 @@ export const useFiltersStore = create<FiltersState>()((set) => ({
 
   clearFilters: () =>
     set({
+      country: '',
       region: '',
       sweetness: '',
       color: '',
