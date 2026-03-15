@@ -52,7 +52,7 @@ const Header = () => {
                 <Link to="/grapes">Grapes</Link>
               </Item>
               <Item>
-                <Link to="/wine-tours">Wine tours</Link>
+                <Link to="/tours">Wine tours</Link>
               </Item>
             </ul>
           </Nav>
