@@ -36,7 +36,7 @@ const MobileMenu = ({ isOpen, onClose }: Props) => {
     { name: 'Wineries', path: '/wineries' },
     { name: 'Wines', path: '/wines' },
     { name: 'Grapes', path: '/grapes' },
-    { name: 'Wine tours', path: '/wine-tours' },
+    { name: 'Wine tours', path: '/tours' },
   ];
 
   return (

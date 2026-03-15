@@ -16,7 +16,7 @@ import {
 import InfoButton from '@/components/buttons/InfoButton';
 
 const WineDetailPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [refreshReviews, setRefreshReviews] = useState(0);
 
