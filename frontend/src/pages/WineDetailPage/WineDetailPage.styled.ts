@@ -21,7 +21,6 @@ export const SliderTitle = styled.h2`
   font-family: var(--font-main);
 `;
 
-
 export const StyledWraperImage = styled.div`
   flex: 0 0 896px;
   display: flex;

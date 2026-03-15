@@ -9,6 +9,7 @@ import Container from '@/components/common/Container';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import { getWines } from '@/api/wines';
+import { Wine } from '@/types/wine';
 import {
   StyledWinePageDiv,
   StyledWraperImage,
@@ -22,7 +23,7 @@ import {
 import InfoButton from '@/components/buttons/InfoButton';
 
 const WineDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [refreshReviews, setRefreshReviews] = useState(0);
 
@@ -44,7 +45,7 @@ const WineDetailPage = () => {
   });
 
   const topWines =
-    topWinesData?.data?.wines?.filter((w: any) => w._id !== wine?._id).slice(0, 10) || [];
+    topWinesData?.data?.wines?.filter((w: Wine) => w._id !== wine?._id).slice(0, 10) || [];
 
   useEffect(() => {
     if (id) {
@@ -131,7 +132,7 @@ const WineDetailPage = () => {
             ) : (
               <Slider
                 items={topWines}
-                renderItem={(wineItem: any) => <SliderCardWine wine={wineItem} />}
+                renderItem={(wineItem: Wine) => <SliderCardWine wine={wineItem} />}
               />
             )}
           </>
