@@ -4,8 +4,23 @@ export const StyledWinePageDiv = styled.div`
   width: 100%;
   display: flex;
   gap: 80px;
-  padding-bottom: 500px;
+  padding-bottom: 100px;
 `;
+
+export const SliderSection = styled.section`
+  margin-top: 80px;
+  margin-bottom: 100px;
+  width: 100%;
+`;
+
+export const SliderTitle = styled.h2`
+  text-align: center;
+  font-size: 38px;
+  margin-bottom: 40px;
+  color: var(--primary-wine);
+  font-family: var(--font-main);
+`;
+
 
 export const StyledWraperImage = styled.div`
   flex: 0 0 896px;

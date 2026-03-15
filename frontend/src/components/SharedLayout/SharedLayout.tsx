@@ -3,8 +3,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AuthModal from '@/components/common/AuthModal/AuthModal';
 import AIAssistant from '@/components/common/AIAssistant/AIAssistant';
+import Container from '@/components/common/Container';
 import { useAuthStore } from '@/store/auth/authStore';
-import { LayoutWrapper } from './SharedLayout.styled';
+import { LayoutWrapper, PageTitleContainer, PageTitle } from './SharedLayout.styled';
 
 const SharedLayout = () => {
   const { pathname } = useLocation();
@@ -16,11 +17,37 @@ const SharedLayout = () => {
     return 'inner';
   };
 
+  const getPageTitle = () => {
+    if (pathname === '/') return '';
+
+    const segments = pathname.split('/').filter(Boolean);
+    if (segments.length === 0) return '';
+
+    // Take the first segment (e.g., "wines" from "/wines/123")
+    const mainSegment = segments[0];
+    return mainSegment.replace(/-/g, ' ');
+  };
+
+  const pageTitle = getPageTitle();
+
   return (
     <LayoutWrapper $bgType={getBgType()}>
       <Header />
 
-      <main style={{ flex: 1, paddingTop: pathname === '/' ? '100px' : '300px' }}>
+      {getBgType() === 'inner' && pageTitle && (
+        <PageTitleContainer>
+          <Container>
+            <PageTitle>{pageTitle}</PageTitle>
+          </Container>
+        </PageTitleContainer>
+      )}
+
+      <main
+        style={{
+          flex: 1,
+          paddingTop: pathname === '/' ? '100px' : pageTitle ? '150px' : '300px',
+        }}
+      >
         <Outlet />
       </main>
 
