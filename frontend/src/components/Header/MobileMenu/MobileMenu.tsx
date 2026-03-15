@@ -1,6 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiX, FiHome, FiMap } from 'react-icons/fi';
-import { FaWineBottle, FaLeaf } from 'react-icons/fa';
+import { FiX } from 'react-icons/fi';
 import {
   MobileMenuOverlay,
   Backdrop,
@@ -12,7 +11,6 @@ import {
   FacebookIcon,
   InstagramIcon,
   TelegramIcon,
-  SectionTitle,
   UserMenuMobile,
 } from './MobileMenu.styled';
 import Location from '@/components/Location';
@@ -34,11 +32,11 @@ const MobileMenu = ({ isOpen, onClose }: Props) => {
   };
 
   const navItems = [
-    { name: 'Home', path: '/', icon: <FiHome /> },
-    { name: 'Wineries', path: '/wineries', icon: <FaWineBottle /> },
-    { name: 'Wines', path: '/wines', icon: <FaWineBottle /> },
-    { name: 'Grapes', path: '/grapes', icon: <FaLeaf /> },
-    { name: 'Wine tours', path: '/wine-tours', icon: <FiMap /> },
+    { name: 'Home', path: '/' },
+    { name: 'Wineries', path: '/wineries' },
+    { name: 'Wines', path: '/wines' },
+    { name: 'Grapes', path: '/grapes' },
+    { name: 'Wine tours', path: '/wine-tours' },
   ];
 
   return (
@@ -50,14 +48,12 @@ const MobileMenu = ({ isOpen, onClose }: Props) => {
         </CloseButton>
 
         <MenuNav>
-          <SectionTitle>Main Navigation</SectionTitle>
           {navItems.map((item) => (
             <MenuLink
               key={item.path}
               $active={location.pathname === item.path}
               onClick={() => handleNavigate(item.path)}
             >
-              {item.icon}
               {item.name}
             </MenuLink>
           ))}
