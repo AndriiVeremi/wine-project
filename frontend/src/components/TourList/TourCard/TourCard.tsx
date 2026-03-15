@@ -8,6 +8,7 @@ import {
   StyledTourCardDiv,
   StyledTourRatingStars,
   TourCardImage,
+  TourCardInfo,
   TourCardTitle,
 } from './TourCard.styled';
 
@@ -20,21 +21,25 @@ const TourCard = ({ tour }: PropsTourCard) => {
     <Link to={`/tours/${tour._id}`}>
       <StyledTourCardDiv>
         <TourCardImage src={tour.images[0]} />
-        <TourCardTitle>{tour.name}</TourCardTitle>
-        <StyledTourRatingStars value={tour.averageRating} showLeftValue={true} />
-        <InfoRow>
-          <InfoItem>
-            <FiClock />
-            {tour.duration} h
-          </InfoItem>
+        <TourCardInfo>
+          <TourCardTitle>{tour.name}</TourCardTitle>
+          <InfoRow>
+            <InfoItem>
+              <FiClock />
+              {tour.duration} h
+            </InfoItem>
 
-          <InfoItem>
-            <FiUsers />
-            {tour.groupSize.min}–{tour.groupSize.max}
-          </InfoItem>
-        </InfoRow>
+            <InfoItem>
+              <FiUsers />
+              {tour.groupSize.min}–{tour.groupSize.max}
+            </InfoItem>
+          </InfoRow>
 
-        <Price>£{tour.price} / person</Price>
+          <Price>
+            <span>£{tour.price}/person</span>
+            <StyledTourRatingStars value={tour.averageRating} size={14} />
+          </Price>
+        </TourCardInfo>
       </StyledTourCardDiv>
     </Link>
   );

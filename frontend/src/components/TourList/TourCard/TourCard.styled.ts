@@ -1,12 +1,13 @@
 import RatingStars from '@/components/common/RatingStars';
+import { breakpoints } from '@/styles/breakpoints';
 import styled from 'styled-components';
 
 export const StyledTourCardDiv = styled.div`
   position: relative;
   width: 100%;
+  overflow: hidden;
   border-radius: var(--border-radius-md);
   background: var(--white);
-  padding: var(--space-md);
   transition: var(--transition);
 
   &:hover {
@@ -19,41 +20,38 @@ export const TourCardImage = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
-  margin-bottom: 20px;
 
-  @media (min-width: 768px) {
+  @media (min-width: ${breakpoints.tablet}) {
     height: 260px;
-    margin-bottom: 24px;
   }
 
-  @media (min-width: 1280px) {
+  @media (min-width: ${breakpoints.desktop}) {
     height: 310px;
-    margin-bottom: 32px;
   }
+`;
+
+export const TourCardInfo = styled.div`
+  padding: var(--space-md);
 `;
 
 export const TourCardTitle = styled.h3`
-  text-align: center;
   color: var(--primary-gray);
   margin-bottom: 16px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-export const StyledTourRatingStars = styled(RatingStars)`
-  justify-content: center;
-  margin-bottom: 16px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 20px;
-  }
-`;
+export const StyledTourRatingStars = styled(RatingStars)``;
 
 export const InfoRow = styled.div`
   display: flex;
-  justify-content: space-between;
+
   gap: 16px;
   margin-bottom: 16px;
 
-  @media (min-width: 768px) {
+  @media (min-width: ${breakpoints.tablet}) {
     gap: 20px;
     margin-bottom: 20px;
   }
@@ -73,7 +71,7 @@ export const InfoItem = styled.div`
     color: var(--accent);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: ${breakpoints.tablet}) {
     font-size: 15px;
 
     svg {
@@ -85,12 +83,12 @@ export const InfoItem = styled.div`
 
 export const Price = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 700;
+  color: var(--primary-wine);
 
-  @media (min-width: 768px) {
+  @media (min-width: ${breakpoints.tablet}) {
     font-size: 20px;
   }
 `;
