@@ -2,6 +2,33 @@
 
 Цей документ містить всю необхідну інформацію для розробки та запуску проєкту.
 
+## 🛠 Технологічний стек (Stack)
+
+Проєкт побудований на сучасних технологіях для забезпечення швидкості та безпеки:
+
+### Backend
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Language:** TypeScript
+- **Database:** MongoDB (через Mongoose)
+- **Security/Auth:** Firebase Admin SDK (JWT, RBAC)
+- **File Storage:** Firebase Storage (для зображень та логотипів)
+- **Validation:** Joi
+- **Testing:** Jest
+- **Documentation:** Swagger (OpenAPI 3.0)
+- **AI Integration:** Google Generative AI (Gemini API)
+
+### Frontend
+- **Framework:** React
+- **Build Tool:** Vite
+- **Language:** TypeScript
+- **State Management:** Zustand
+- **Styling:** CSS3 / BEM
+- **Auth:** Firebase SDK
+- **Icons/UI:** Lucide React, Swiper
+
+---
+
 ## ⚙️ Системні вимоги
 
 *   [Node.js](https://nodejs.org/) (рекомендована LTS-версія)
@@ -223,11 +250,17 @@ describe('userService', () => {
 
 Проєкт включає інтерактивного ШІ-помічника, який виконує роль віртуального сомельє. Цей розділ описує його архітектуру та налаштування.
 
-### Архітектура
+### Архітектура ШІ
 
 -   **Технологія:** Google Generative AI (модель `gemini-2.5-flash`).
--   **Призначення:** Допомога користувачам у виборі вина, надання інформації про виноробні та регіони, рекомендація винних турів.
--   **Доступ:** Функціонал доступний лише для автентифікованих користувачів.
+-   **Function Calling:** ШІ інтегрований з базою даних через інструменти (Tools). Він може самостійно викликати функції для:
+    -   Пошуку вин за критеріями (`searchWines`).
+    -   Отримання інформації про регіони (`getRegionInfo`).
+    -   Отримання даних про виноробні (`getWineryInfo`).
+    -   Пошуку винних турів (`searchTours`).
+    -   Аналізу вподобань користувача (`getMyFavoriteWines`).
+-   **Системний промпт:** Налаштований на роль професійного сомельє та гіда.
+-   **Доступ:** Лише для автентифікованих користувачів.
 
 ### Налаштування
 

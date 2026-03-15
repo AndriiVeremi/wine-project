@@ -6,6 +6,7 @@ export const PaginationWrapper = styled.div`
   align-items: center;
   gap: 20px;
   margin-top: 30px;
+  margin-bottom: 50px;
 `;
 
 export const PaginationButton = styled.button`

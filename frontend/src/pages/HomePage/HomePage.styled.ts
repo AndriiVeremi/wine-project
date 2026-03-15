@@ -26,7 +26,7 @@ export const HeroTitle = styled('h1')`
 
 export const HeroWrapper = styled('div')`
   max-width: 800px;
-  padding-left: 180px;
+  padding-left: 100px;
   margin-bottom: 80px;
 
   @media (max-width: 1279px) {
@@ -119,7 +119,7 @@ export const MapSection = styled.section`
 `;
 
 export const ReviewSection = styled.section`
-  margin-top: 100px;
+  margin-top: 70px;
   width: 100%;
   background-color: var(--white);
   background-image: url(${reviewImg});
@@ -142,4 +142,15 @@ export const ReviewList = styled('ul')`
   justify-content: space-between;
   flex-wrap: wrap;
   list-style: none;
+`;
+
+export const ReviewTitle = styled.h2`
+  text-align: center;
+  font-size: 38px;
+  margin-bottom: 40px;
+  margin-top: 60px;
+
+  @media (max-width: 767px) {
+    font-size: 24px;
+  }
 `;

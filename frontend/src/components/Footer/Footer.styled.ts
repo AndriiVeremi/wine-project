@@ -34,7 +34,7 @@ export const StyledNav = styled('nav')`
 
   @media (max-width: 767px) {
     width: 100%;
-    order: 1; /* Move navigation to top */
+    order: 1;
     margin-bottom: 30px;
     display: flex;
     justify-content: center;
@@ -47,7 +47,7 @@ export const InfoList = styled('ul')`
 
   @media (max-width: 767px) {
     flex-direction: column;
-    align-items: center; /* Center navigation links */
+    align-items: center;
     gap: 15px;
   }
 `;
@@ -57,7 +57,7 @@ export const SocialList = styled('ul')`
   gap: 16px;
 
   @media (max-width: 767px) {
-    order: 3; /* Socials on the same level as Logo, right side */
+    order: 3;
   }
 `;
 
@@ -69,7 +69,6 @@ export const Item = styled('li')`
   font-family: var(--font-main);
   text-decoration: none;
   line-height: 26px;
-  horizontal-align: center;
   transition: all 0.3s ease;
 
   @media (max-width: 767px) {
@@ -145,7 +144,7 @@ export const CopyrightText = styled('p')`
   line-height: 20px;
   text-align: center;
   margin-top: 20px;
-  padding-bottom: 30px;
+  padding-bottom: 5px;
 
   @media (max-width: 767px) {
     margin-top: 10px;

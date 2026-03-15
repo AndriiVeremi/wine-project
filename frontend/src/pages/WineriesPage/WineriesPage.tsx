@@ -12,13 +12,6 @@ const PageHeader = styled.div`
   margin-bottom: 24px;
 `;
 
-const Title = styled.h1`
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: 24px;
-  color: var(--black-color, #000000);
-`;
-
 const WineriesPage = () => {
   const { wineries, fetchWineries, loading, error, totalPages } = useWineriesStore();
   const { country, region, name } = useWineriesFiltersStore();
@@ -48,7 +41,6 @@ const WineriesPage = () => {
   return (
     <Container>
       <PageHeader>
-        <Title>Wineries</Title>
         <WineryFilter />
       </PageHeader>
 
