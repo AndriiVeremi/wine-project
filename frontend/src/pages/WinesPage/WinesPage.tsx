@@ -26,7 +26,7 @@ const WinesPage = () => {
   const applyName = useFiltersStore((s) => s.applyName);
 
   const query = useWineQueryParams();
-
+  console.log(query);
   useEffect(() => {
     fetch({ page: 1, limit: 16, ...query });
   }, [query, fetch]);
