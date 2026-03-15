@@ -2,9 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFiltersStore } from '@/store/wine/filtersStore';
 import {
-  ImageList,
-  WineImage,
-  WineImageItem,
+  FilterGrid,
+  FilterCard,
+  CardImage,
+  CardTitle,
 } from '@/components/WineColorFilters/WineColorFilters.styled';
 
 import img1 from '@/assets/wine1_red.png';
@@ -23,21 +24,22 @@ const WineColorFilters: React.FC = () => {
     navigate('/wines');
   };
 
+  const wineColors = [
+    { name: 'Red', label: 'Bold Reds', img: img1 },
+    { name: 'Orange', label: 'Unique Oranges', img: img2 },
+    { name: 'Rose', label: 'Fresh Roses', img: img3 },
+    { name: 'White', label: 'Classic Whites', img: img4 },
+  ];
+
   return (
-    <ImageList>
-      <WineImageItem onClick={() => onWineClick('Red')}>
-        <WineImage src={img1} alt="red wine" />
-      </WineImageItem>
-      <WineImageItem onClick={() => onWineClick('Orange')}>
-        <WineImage src={img2} alt="orange wine" />
-      </WineImageItem>
-      <WineImageItem onClick={() => onWineClick('Rose')}>
-        <WineImage src={img3} alt="rose wine" />
-      </WineImageItem>
-      <WineImageItem onClick={() => onWineClick('White')}>
-        <WineImage src={img4} alt="white wine" />
-      </WineImageItem>
-    </ImageList>
+    <FilterGrid>
+      {wineColors.map((color) => (
+        <FilterCard key={color.name} onClick={() => onWineClick(color.name)}>
+          <CardImage src={color.img} alt={`${color.name} wine`} />
+          <CardTitle>{color.label}</CardTitle>
+        </FilterCard>
+      ))}
+    </FilterGrid>
   );
 };
 

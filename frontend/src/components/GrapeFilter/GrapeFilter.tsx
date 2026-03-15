@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useLocationStore } from '@/store/location/locationStore';
 import FilterClearButton from '../buttons/FilterClearButton';
@@ -12,16 +12,32 @@ const GrapeFilter = () => {
   const filters = useGrapeFiltersStore();
   const { regions, loading: regionsLoading } = useLocationStore();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  const handleOpen = (id: string) => {
+    setOpenDropdown(openDropdown === id ? null : id);
+  };
+
+  const handleClear = () => {
+    filters.clearFilters();
+    if (window.innerWidth < 768 && filterRef.current) {
+      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
-    <StyledWineFilterContainer>
+    <StyledWineFilterContainer ref={filterRef}>
       <StyledDropDown
         label="Type"
         value={filters.type}
         options={GRAPE_TYPES}
         isOpen={openDropdown === 'type'}
-        onOpen={() => setOpenDropdown(openDropdown === 'type' ? null : 'type')}
-        onSelect={(val) => filters.setFilter('type', val)}
+        $isOpen={openDropdown === 'type'}
+        onOpen={() => handleOpen('type')}
+        onSelect={(val) => {
+          filters.setFilter('type', val);
+          setOpenDropdown(null);
+        }}
       />
 
       <StyledDropDown
@@ -29,10 +45,12 @@ const GrapeFilter = () => {
         value={regions.find((r) => r._id === filters.region)?.name || ''}
         options={regions.map((r) => r.name)}
         isOpen={openDropdown === 'region'}
-        onOpen={() => setOpenDropdown(openDropdown === 'region' ? null : 'region')}
+        $isOpen={openDropdown === 'region'}
+        onOpen={() => handleOpen('region')}
         onSelect={(val) => {
           const selectedRegion = regions.find((r) => r.name === val);
           filters.setFilter('region', selectedRegion?._id || '');
+          setOpenDropdown(null);
         }}
         disabled={regionsLoading || regions.length === 0}
       />
@@ -42,8 +60,12 @@ const GrapeFilter = () => {
         value={filters.body}
         options={BODY_OPTIONS}
         isOpen={openDropdown === 'body'}
-        onOpen={() => setOpenDropdown(openDropdown === 'body' ? null : 'body')}
-        onSelect={(val) => filters.setFilter('body', val)}
+        $isOpen={openDropdown === 'body'}
+        onOpen={() => handleOpen('body')}
+        onSelect={(val) => {
+          filters.setFilter('body', val);
+          setOpenDropdown(null);
+        }}
       />
 
       <StyledDropDown
@@ -51,11 +73,15 @@ const GrapeFilter = () => {
         value={filters.acidity}
         options={ACITIDY_OPTIONS}
         isOpen={openDropdown === 'acidity'}
-        onOpen={() => setOpenDropdown(openDropdown === 'acidity' ? null : 'acidity')}
-        onSelect={(val) => filters.setFilter('acidity', val)}
+        $isOpen={openDropdown === 'acidity'}
+        onOpen={() => handleOpen('acidity')}
+        onSelect={(val) => {
+          filters.setFilter('acidity', val);
+          setOpenDropdown(null);
+        }}
       />
 
-      <FilterClearButton onClick={filters.clearFilters}>Clear filters</FilterClearButton>
+      <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
     </StyledWineFilterContainer>
   );
 };

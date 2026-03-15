@@ -6,5 +6,5 @@ export const StyledWineFilter = styled(WineFilter)`
   margin-bottom: 48px;
 `;
 export const StyledSearchBar = styled(SearchBar)`
-  margin-bottom: 104px;
+  margin-bottom: 60px;
 `;

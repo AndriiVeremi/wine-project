@@ -1,37 +1,28 @@
 import styled from 'styled-components';
+import { breakpoints } from '@/styles/breakpoints';
 
 export const StyledContainer = styled.div`
   width: 100%;
   margin: 0 auto;
-  padding: 0 20px;
-  box-sizing: border-box;
+  padding: 0 15px;
 
-  /* Mobile Fluid (0 - 480px) */
-  @media (max-width: 480px) {
-    max-width: 100%;
-    padding: 0 15px;
-  }
-
-  /* Breakpoint Mobile Large (481px - 767px) */
-  @media (min-width: 481px) {
+  @media (min-width: ${breakpoints.mobile}) {
     max-width: 480px;
+    padding: 0 20px;
   }
 
-  /* Breakpoint Tablet (768px - 1279px) */
-  @media (min-width: 768px) {
+  @media (min-width: ${breakpoints.tablet}) {
     max-width: 768px;
     padding: 0 24px;
   }
 
-  /* Breakpoint Desktop (1280px - 1439px) */
-  @media (min-width: 1280px) {
-    max-width: 1280px;
-    padding: 0 48px;
+  @media (min-width: ${breakpoints.desktop}) {
+    max-width: 1200px;
+    padding: 0 30px;
   }
 
-  /* Breakpoint Large Desktop (1440px+) */
-  @media (min-width: 1440px) {
-    max-width: 1440px;
-    padding: 0 64px;
+  @media (min-width: ${breakpoints.largeDesktop}) {
+    max-width: 1400px;
+    padding: 0 40px;
   }
 `;
