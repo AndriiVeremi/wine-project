@@ -17,6 +17,7 @@ import WineDetailPage from './pages/WineDetailPage/WineDetailPage';
 import WineryDetailPage from './pages/WineryDetailPage/WineryDetailPage';
 import { Loader } from '@/components/common/Loader';
 import WineTourDetailPage from './pages/WineTourDetailPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
@@ -48,6 +49,7 @@ function App() {
           <Route path="tours" element={<WineToursPage />} />
           <Route path="tours/:id" element={<WineTourDetailPage />} />
           <Route path="account" element={<AccountPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </>
