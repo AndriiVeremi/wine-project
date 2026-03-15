@@ -4,15 +4,43 @@ import { useFiltersStore } from '@/store/wine/filtersStore';
 import { useLocationStore } from '@/store/location/locationStore';
 import FilterClearButton from '../buttons/FilterClearButton';
 import type { WineColor, WineSweetness } from '@/types/wine';
+import { useQuery } from '@tanstack/react-query';
+import { getRegions } from '@/api/regions';
+import { COLOR_OPTIONS, SWEETNESS_OPTIONS } from '@/constants/wine';
+import { getGrapes } from '@/api/grapes';
+import type { Grape } from '@/types/grape';
 
 interface PropsWineFilter {
   className?: string;
 }
 
+interface RegionOption {
+  _id: string;
+  name: string;
+}
+
 const WineFilter = ({ className }: PropsWineFilter) => {
   const { region, sweetness, color, grape, minRating, vintage, setFilter, clearFilters } =
     useFiltersStore();
-  const { regions, loading: regionsLoading } = useLocationStore();
+
+  const { country } = useLocationStore();
+
+  const { data: regions = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
+    queryKey: ['regions', country],
+    queryFn: async () => {
+      const res = await getRegions(country);
+      return res.data;
+    },
+    enabled: !!country,
+  });
+
+  const { data: grapes = [], isLoading: isLoadingGrapes } = useQuery<Grape[]>({
+    queryKey: ['grapes', region],
+    queryFn: async () => {
+      const res = await getGrapes({ limit: 9999, region });
+      return res.data.grapes;
+    },
+  });
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
@@ -42,13 +70,13 @@ const WineFilter = ({ className }: PropsWineFilter) => {
           setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}
-        disabled={regionsLoading || regions.length === 0}
+        disabled={isLoadingRegions || regions.length === 0}
       />
 
       <StyledDropDown
         label="Sweetness"
         value={sweetness}
-        options={['Dry', 'Semi-dry', 'Semi-sweet', 'Sweet']}
+        options={SWEETNESS_OPTIONS}
         isOpen={openDropdown === 'sweetness'}
         $isOpen={openDropdown === 'sweetness'}
         onOpen={() => handleOpen('sweetness')}
@@ -61,7 +89,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
       <StyledDropDown
         label="Color"
         value={color}
-        options={['Red', 'White', 'Rose', 'Orange']}
+        options={COLOR_OPTIONS}
         isOpen={openDropdown === 'color'}
         $isOpen={openDropdown === 'color'}
         onOpen={() => handleOpen('color')}
@@ -74,7 +102,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
       <StyledDropDown
         label="Grape"
         value={grape}
-        options={['Saperavi', 'Rkatsiteli', 'Kisi']}
+        options={grapes.map((g) => g.name)}
         isOpen={openDropdown === 'grape'}
         $isOpen={openDropdown === 'grape'}
         onOpen={() => handleOpen('grape')}
@@ -82,6 +110,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
           setFilter('grape', value);
           setOpenDropdown(null);
         }}
+        disabled={isLoadingGrapes || regions.length === 0}
       />
 
       <StyledDropDown

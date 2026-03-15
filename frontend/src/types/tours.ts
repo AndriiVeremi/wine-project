@@ -10,6 +10,8 @@ export interface Tour {
     min: number;
     max: number;
   };
+  averageRating: number;
+  totalReviews: number;
 }
 
 export interface ToursResponse {

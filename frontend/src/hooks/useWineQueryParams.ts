@@ -17,7 +17,7 @@ export const useWineQueryParams = (): WineQueryParams => {
       region: region ? region.toLowerCase() : undefined,
       sweetness: sweetness ? (sweetness.toLowerCase() as WineSweetness) : undefined,
       color: color ? (color.toLowerCase() as WineColor) : undefined,
-      grape: grape ? grape.toLowerCase() : undefined,
+      grape: grape ? grape : undefined,
       wineryId: wineryId || undefined,
       minRating: minRating ? Number(minRating) : undefined,
       vintage: vintage ? Number(vintage) : undefined,
