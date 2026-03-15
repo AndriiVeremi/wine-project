@@ -8,61 +8,46 @@
 
 ---
 
-## Користувачі та Адміністрування (`/users`)
-
-### **POST** `/api/users/register`
-- **Опис:** Реєстрація нового користувача.
-- **Body:** `{ firstName, lastName, email, password, role }`
-- **Response (201 Created):** Created user profile.
-
-### **GET** `/api/users/me`
-- **Опис:** Отримати профіль поточного користувача. Захищено.
-
-### **GET** `/api/users`
-- **Опис:** Отримати список всіх користувачів (тільки для ADMIN).
-- **Query Params:** `?search=<text>&page=1&limit=10`
-
-### **PATCH** `/api/users/:id/ban`
-- **Опис:** Заблокувати/розблокувати користувача (тільки для ADMIN).
-
-### **DELETE** `/api/users/:id`
-- **Опис:** Видалити користувача (тільки для ADMIN).
+## Користувачі (`/api/users`)
+*Див. попередню версію або Swagger.*
 
 ---
 
 ## Виноробні (`/api/wineries`)
-
-### **GET** `/api/wineries`
-- **Опис:** Список виноробень. VIP-виноробні перші.
-- **Query Params:** `?search, countryId, regionId, sortBy, page, limit`
-
-### **PATCH** `/api/wineries/:id/vip`
-- **Опис:** Переключити VIP-статус виноробні (тільки для ADMIN).
+*Див. попередню версію або Swagger.*
 
 ---
 
-## Відгуки (`/api/reviews` та вкладені)
+## Сорти винограду (`/api/grapes`)
 
-### **GET** `/api/wines/:id/reviews`
-### **GET** `/api/wineries/:id/reviews`
-### **GET** `/api/tours/:id/reviews`
-- **Опис:** Отримати відгуки для конкретного об'єкта.
+### **GET** `/api/grapes`
+- **Опис:** Список всіх сортів винограду.
 
-### **POST** `/api/wines/:id/reviews`
-### **POST** `/api/wineries/:id/reviews`
-### **POST** `/api/tours/:id/reviews`
-- **Опис:** Додати відгук. Захищено.
-- **Body:** `{ rating, comment }`
-
-### **GET** `/api/reviews`
-- **Опис:** Отримати всі відгуки системи для модерації (тільки для ADMIN).
-
-### **DELETE** `/api/reviews/:reviewId`
-- **Опис:** Видалити будь-який відгук (тільки для ADMIN).
+### **POST** `/api/grapes`
+- **Опис:** Додати новий сорт. Захищено (WINERY_OWNER, ADMIN).
+- **Body:** `{ name, description, origin, characteristics }`
 
 ---
 
-## Вина та Тури
+## Локації та Регіони (`/api/locations` та `/api/regions`)
 
-Логіка залишається стандартною (CRUD), де ADMIN має доступ до видалення/редагування будь-яких об'єктів, а WINERY_OWNER лише до своїх.
-Всі операції з видалення та створення нових об'єктів для адміна та власника тепер підтримують рольову модель.
+### **GET** `/api/locations/countries`
+- **Опис:** Отримати список країн.
+
+### **GET** `/api/locations/regions`
+- **Опис:** Отримати список регіонів.
+
+---
+
+## ШІ-помічник (`/api/ai`)
+
+### **POST** `/api/ai/chat`
+- **Опис:** Чат із віртуальним сомельє.
+- **Body:** `{ message, history }`
+- **Особливості:** Підтримує Function Calling для пошуку реальних даних (вина, тури, виноробні) у базі проекту.
+- **Response:** `{ response: "Текст відповіді ШІ" }`
+
+---
+
+## Адміністрування
+*Див. Swagger.*

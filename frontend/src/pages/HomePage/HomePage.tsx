@@ -16,6 +16,7 @@ import {
   WineSection,
   MapSection,
   ReviewSection,
+  ReviewTitle,
 } from './HomePage.styled';
 
 interface Winery {
@@ -26,15 +27,17 @@ interface Winery {
   averageRating?: number;
   totalReviews?: number;
   region?: { name: string };
+  isVip?: boolean;
 }
 
 const HomePage = () => {
   const { data: wineriesData, isLoading } = useQuery({
-    queryKey: ['wineries', { limit: 10 }],
-    queryFn: () => getWineries({ limit: 10 }),
+    queryKey: ['wineries', { limit: 50 }],
+    queryFn: () => getWineries({ limit: 50 }),
   });
 
-  const wineries = wineriesData?.data?.wineries || [];
+  const vipWineries =
+    wineriesData?.data?.wineries?.filter((w: Winery) => w.isVip)?.slice(0, 8) || [];
 
   return (
     <>
@@ -69,14 +72,12 @@ const HomePage = () => {
       </MapSection>
       <ReviewSection>
         <Container>
-          <h2 style={{ textAlign: 'center', fontSize: '32px', marginBottom: '20px' }}>
-            Our Partners & Wineries
-          </h2>
+          <ReviewTitle>Our Partners & Wineries</ReviewTitle>
           {isLoading ? (
             <p style={{ textAlign: 'center' }}>Loading wineries...</p>
           ) : (
             <Slider
-              items={wineries}
+              items={vipWineries}
               renderItem={(winery: Winery) => <SliderCardWinery winery={winery} />}
             />
           )}

@@ -5,10 +5,10 @@ export const UserIcon = styled(RiUserLine)`
   color: var(--brown-icon);
   width: 20px;
   height: 28px;
-  stroke-width: 0.2px;
+  stroke-width: 1px;
 `;
 export const List = styled('ul')`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 `;

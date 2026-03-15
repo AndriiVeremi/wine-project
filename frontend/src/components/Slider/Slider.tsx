@@ -1,12 +1,14 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { SliderWrapper } from './Slider.styled';
+import { SliderWrapper, NavButton } from './Slider.styled';
+
 interface SliderProps<T> {
   items: T[];
   renderItem: (item: T) => React.ReactNode;
@@ -18,24 +20,29 @@ interface HasId {
 }
 
 const Slider = <T,>({ items, renderItem }: SliderProps<T>) => {
-  // Перевірка: якщо items не масив, повертаємо null або порожній блок
   if (!Array.isArray(items)) {
     return null;
   }
 
   return (
     <SliderWrapper>
+      <NavButton className="prev-btn">
+        <FaChevronLeft size={24} />
+      </NavButton>
+
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={30}
         slidesPerView={1}
-        navigation
+        navigation={{
+          nextEl: '.next-btn',
+          prevEl: '.prev-btn',
+        }}
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         breakpoints={{
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-          1200: { slidesPerView: 4 },
+          768: { slidesPerView: 2, spaceBetween: 20 },
+          1280: { slidesPerView: 4, spaceBetween: 30 },
         }}
       >
         {items.map((item, index) => {
@@ -44,6 +51,10 @@ const Slider = <T,>({ items, renderItem }: SliderProps<T>) => {
           return <SwiperSlide key={key}>{renderItem(item)}</SwiperSlide>;
         })}
       </Swiper>
+
+      <NavButton className="next-btn">
+        <FaChevronRight size={24} />
+      </NavButton>
     </SliderWrapper>
   );
 };

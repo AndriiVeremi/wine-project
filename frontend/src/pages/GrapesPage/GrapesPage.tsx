@@ -30,7 +30,7 @@ const GrapesPage = () => {
       body: body || undefined,
       acidity: acidity || undefined,
       page: currentPage,
-      limit: 16,
+      limit: 12,
     });
   }, [name, type, region, body, acidity, currentPage, fetchGrapes]);
 

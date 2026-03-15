@@ -5,7 +5,7 @@ import '@/styles/vars.css';
 
 export const StyledFooter = styled('footer')`
   width: 100%;
-  height: 100%;
+  min-height: fit-content;
   margin: 0 auto;
   background-color: var(--footer-cream);
 `;
@@ -16,15 +16,28 @@ export const FooterContainer = styled('div')`
   padding: 50px 0 0 0;
 
   @media (max-width: 767px) {
-    flex-direction: column;
-    gap: 30px;
-    padding: 30px 0;
+    flex-wrap: wrap;
+    padding: 30px 0 15px 0;
+  }
+`;
+
+export const LogoWrapper = styled('div')`
+  @media (max-width: 767px) {
+    order: 2;
   }
 `;
 
 export const StyledNav = styled('nav')`
   ul li {
     cursor: pointer;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    order: 1;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
   }
 `;
 
@@ -44,7 +57,7 @@ export const SocialList = styled('ul')`
   gap: 16px;
 
   @media (max-width: 767px) {
-    justify-content: center;
+    order: 3;
   }
 `;
 
@@ -56,12 +69,12 @@ export const Item = styled('li')`
   font-family: var(--font-main);
   text-decoration: none;
   line-height: 26px;
-  horizontal-align: center;
   transition: all 0.3s ease;
 
   @media (max-width: 767px) {
     font-size: 16px;
     line-height: 1.5;
+    text-align: left;
   }
 
   a {
@@ -131,5 +144,10 @@ export const CopyrightText = styled('p')`
   line-height: 20px;
   text-align: center;
   margin-top: 20px;
-  padding-bottom: 30px;
+  padding-bottom: 5px;
+
+  @media (max-width: 767px) {
+    margin-top: 10px;
+    padding-bottom: 20px;
+  }
 `;

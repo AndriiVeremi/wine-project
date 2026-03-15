@@ -11,6 +11,7 @@ import {
   CopyrightText,
   StyledNav,
   Item,
+  LogoWrapper,
 } from '@/components/Footer/Footer.styled';
 import Container from '@/components/common/Container';
 import { Link } from 'react-router-dom';
@@ -21,7 +22,9 @@ const Footer = () => {
       <StyledFooter>
         <Container>
           <FooterContainer>
-            <MainLogo />
+            <LogoWrapper>
+              <MainLogo />
+            </LogoWrapper>
             <StyledNav>
               <InfoList>
                 <Item>

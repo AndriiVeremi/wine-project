@@ -1,13 +1,28 @@
 import styled from 'styled-components';
+import { breakpoints } from '@/styles/breakpoints';
 
 export const StyledWineList = styled.ul`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 70px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
 `;
 
 export const StyledWineListItem = styled.li`
-  flex-basis: calc(25% - 32px);
-  gap: 16px;
+  width: 100%;
+  display: flex;
 `;

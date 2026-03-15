@@ -1,26 +1,91 @@
 import styled from 'styled-components';
+import { breakpoints } from '@/styles/breakpoints';
 
-export const ImageList = styled.ul`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 60px;
+export const FilterSection = styled.section`
+  padding: 40px 0;
 `;
 
-export const WineImageItem = styled.li`
-  cursor: pointer;
-  transition: transform var(--transition);
+export const FilterGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
 
-  &:hover {
-    transform: scale(1.1);
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 30px;
   }
 `;
 
-export const WineImage = styled.img`
-  height: 280px;
-  object-fit: cover;
+export const FilterCard = styled.div`
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  background: transparent;
+  transition: var(--transition);
+  aspect-ratio: 1 / 1.3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+
+  @media (min-width: 375px) {
+    padding: 15px;
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    padding: 20px;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  &.active {
+    background: var(--filter-active-bg);
+    border-radius: var(--border-radius-lg);
+  }
+`;
+
+export const CardImage = styled.img`
+  width: 100%;
+  height: auto;
+  max-height: 75%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+
+  ${FilterCard}:hover & {
+    transform: scale(1.08);
+  }
+`;
+
+export const CardTitle = styled.h3`
+  margin-top: 8px;
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-wine);
+  text-transform: capitalize;
+  text-align: center;
+  width: 100%;
+  line-height: 1.2;
+
+  @media (min-width: 360px) {
+    font-size: 16px;
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 18px;
+    margin-top: 12px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 20px;
+    margin-top: 15px;
+  }
 `;

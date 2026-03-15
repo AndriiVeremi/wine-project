@@ -15,7 +15,7 @@ export const MobileMenuOverlay = styled.div<{ $isOpen: boolean }>`
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  padding: 50px 0 20px;
+  padding: 50px 0 0; /* Padding top only */
   overflow: hidden;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
   border-left: 1px solid var(--tertiary-gray);
@@ -61,21 +61,19 @@ export const MenuNav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-bottom: 15px;
-  flex: 1;
+  margin-bottom: 20px;
 `;
 
 export const MenuLink = styled.button<{ $active?: boolean }>`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 16px;
+  padding: 8px 30px;
   width: 100%;
   border: none;
   background: ${({ $active }) => ($active ? 'var(--primary-wine-light, #f8eeee)' : 'none')};
   color: ${({ $active }) => ($active ? 'var(--primary-wine)' : 'var(--primary-gray)')};
   font-family: var(--font-main);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: ${({ $active }) => ($active ? '500' : '400')};
   cursor: pointer;
   transition: var(--transition);
@@ -86,31 +84,31 @@ export const MenuLink = styled.button<{ $active?: boolean }>`
     background-color: var(--tertiary-gray);
     color: var(--primary-wine);
   }
-
-  svg {
-    font-size: 18px;
-  }
 `;
 
-export const SectionTitle = styled.h3`
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--secondary-gray);
-  margin: 10px 16px 4px;
-  font-weight: 600;
+export const UserMenuMobile = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically in the middle section */
+  gap: 20px;
+  margin: 0 16px;
+  padding: 25px 0;
+  border-top: 1px solid var(--tertiary-gray);
+  flex: 1; /* Takes all available middle space */
 `;
 
 export const SocialList = styled.ul`
   display: flex;
-  gap: 16px;
-  margin: 15px 16px 0;
-  padding-top: 15px;
+  justify-content: center;
+  gap: 20px;
+  margin: 0 16px;
+  padding: 25px 0; /* Padding top and bottom (symmetrical) */
   border-top: 1px solid var(--tertiary-gray);
 `;
 
 export const SocialIconWrapper = styled.div`
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--primary-wine);
   border-radius: 50%;
   display: flex;
@@ -135,13 +133,4 @@ export const InstagramIcon = styled(BiLogoInstagramAlt)`
 
 export const TelegramIcon = styled(FaTelegramPlane)`
   font-size: 20px;
-`;
-
-export const UserMenuMobile = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 0 16px;
-  padding-top: 15px;
-  border-top: 1px solid var(--tertiary-gray);
 `;

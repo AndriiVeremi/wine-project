@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   StyledDropDown,
   StyledWineryFilterContainer,
@@ -15,13 +15,21 @@ const WineryFilter = () => {
 
   const { regions, loading: regionsLoading } = useLocationStore();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = (id: string) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
+  const handleClear = () => {
+    clearFilters();
+    if (window.innerWidth < 768 && filterRef.current) {
+      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
-    <StyledWineryFilterContainer>
+    <StyledWineryFilterContainer ref={filterRef}>
       <StyledDropDown
         label="Region"
         value={regions.find((r) => r._id === region)?.name || ''}
@@ -46,7 +54,7 @@ const WineryFilter = () => {
         />
       </SearchFieldWrapper>
 
-      <FilterClearButton onClick={clearFilters}>Clear</FilterClearButton>
+      <FilterClearButton onClick={handleClear}>Clear</FilterClearButton>
     </StyledWineryFilterContainer>
   );
 };
