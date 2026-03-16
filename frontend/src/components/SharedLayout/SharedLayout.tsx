@@ -5,7 +5,13 @@ import AuthModal from '@/components/common/AuthModal/AuthModal';
 import AIAssistant from '@/components/common/AIAssistant/AIAssistant';
 import Container from '@/components/common/Container';
 import { useAuthStore } from '@/store/auth/authStore';
-import { LayoutWrapper, PageTitleContainer, PageTitle } from './SharedLayout.styled';
+import {
+  LayoutWrapper,
+  PageTitleContainer,
+  PageTitle,
+  DecorativeBackground,
+  MainContent,
+} from './SharedLayout.styled';
 import { ROUTES } from '@/constants/routes';
 
 const SharedLayout = () => {
@@ -24,7 +30,6 @@ const SharedLayout = () => {
     const segments = pathname.split('/').filter(Boolean);
     if (segments.length === 0) return '';
 
-    // Take the first segment (e.g., "wines" from "/wines/123")
     const mainSegment = segments[0];
 
     if (!ROUTES.includes(mainSegment)) {
@@ -35,12 +40,16 @@ const SharedLayout = () => {
   };
 
   const pageTitle = getPageTitle();
+  const bgType = getBgType();
+  const isHome = pathname === '/';
 
   return (
-    <LayoutWrapper $bgType={getBgType()}>
+    <LayoutWrapper>
+      <DecorativeBackground $bgType={bgType} />
+
       <Header />
 
-      {getBgType() === 'inner' && pageTitle && (
+      {bgType === 'inner' && pageTitle && (
         <PageTitleContainer>
           <Container>
             <PageTitle>{pageTitle}</PageTitle>
@@ -48,14 +57,9 @@ const SharedLayout = () => {
         </PageTitleContainer>
       )}
 
-      <main
-        style={{
-          flex: 1,
-          paddingTop: pathname === '/' ? '100px' : pageTitle ? '150px' : '300px',
-        }}
-      >
+      <MainContent $isHome={isHome} $hasTitle={!!pageTitle}>
         <Outlet />
-      </main>
+      </MainContent>
 
       <Footer />
 
