@@ -10,7 +10,9 @@ export const SliderWrapper = styled.div`
 
   .swiper {
     width: 100%;
+    padding-top: 15px;
     padding-bottom: 40px;
+    margin-top: -15px;
   }
 
   .swiper-pagination {

@@ -8,7 +8,8 @@ const reviewService = new ReviewService();
 export const getAllReviews = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 10;
-  const result = await reviewService.getAllReviews(page, limit);
+  const type = req.query.type as string;
+  const result = await reviewService.getAllReviews(page, limit, type);
   res.status(200).json(result);
 });
 

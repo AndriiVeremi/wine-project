@@ -31,14 +31,32 @@ const WineManager = ({ wineryId }: Props) => {
   const isAdmin = profile?.role === 'ADMIN';
 
   useEffect(() => {
+    // Якщо користувач не адмін і не має виноробні — нічого не вантажимо
     if (user?.uid && (wineryId || isAdmin)) {
       fetch({ limit: 10, page, wineryId, name: debouncedSearch });
+    } else if (user?.uid && !isAdmin && !wineryId) {
+      // Очищуємо список, якщо він був заповнений раніше
+      useWinesStore.setState({ wines: [], total: 0, totalPages: 0 });
     }
   }, [user?.uid, page, wineryId, debouncedSearch, fetch, isAdmin]);
 
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch, wineryId]);
+
+  if (!isAdmin && !wineryId) {
+    return (
+      <ManagerWrapper>
+        <SectionTitle>My Wines</SectionTitle>
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <FaWineBottle size={50} style={{ color: 'var(--tertiary-gray)', marginBottom: '20px' }} />
+          <p style={{ color: 'var(--secondary-gray)', fontSize: '18px' }}>
+            To manage wines, please first create your winery in the "My Winery" section.
+          </p>
+        </div>
+      </ManagerWrapper>
+    );
+  }
 
   const handleEdit = (item: Wine) => {
     setEditingWine(item);

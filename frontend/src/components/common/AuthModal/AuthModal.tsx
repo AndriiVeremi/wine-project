@@ -21,6 +21,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
   const [activeTab, setActiveTab] = useState<'login' | 'register'>(initialTab);
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     setActiveTab(initialTab);
   }, [initialTab, isOpen]);
 

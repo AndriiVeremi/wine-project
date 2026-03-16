@@ -5,8 +5,11 @@ import Container from '@/components/common/Container';
 import AppPagination from '@/components/common/AppPagination';
 
 import { useToursStore } from '@/store/tours/toursStore';
+import { useTourFiltersStore } from '@/store/tours/tourFiltersStore';
+import { useTourQueryParams } from '@/hooks/useTourQueryParams';
 import TourList from '@/components/TourList/TourList';
 
+import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
 
 const TourPage = () => {
@@ -17,9 +20,15 @@ const TourPage = () => {
   const error = useToursStore((s) => s.error);
   const fetch = useToursStore((s) => s.fetch);
 
+  const nameInput = useTourFiltersStore((s) => s.nameInput);
+  const setNameInput = useTourFiltersStore((s) => s.setNameInput);
+  const applyName = useTourFiltersStore((s) => s.applyName);
+
+  const query = useTourQueryParams();
+
   useEffect(() => {
-    fetch({ page: 1, limit: 12 });
-  }, [fetch]);
+    fetch({ page: 1, limit: 12, ...query });
+  }, [query, fetch]);
 
   useEffect(() => {
     if (error) notifyError(error);
@@ -27,6 +36,14 @@ const TourPage = () => {
 
   return (
     <Container>
+      <StyledTourFilter />
+      <StyledSearchBar
+        value={nameInput}
+        onChange={setNameInput}
+        onSearch={applyName}
+        placeholder="Search tours..."
+      />
+
       {loading && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Oval
@@ -46,7 +63,7 @@ const TourPage = () => {
       <AppPagination
         page={page}
         totalPages={totalPages}
-        onChange={(p) => fetch({ page: p, limit: 12 })}
+        onChange={(p) => fetch({ page: p, limit: 12, ...query })}
       />
     </Container>
   );

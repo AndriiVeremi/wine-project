@@ -3,14 +3,31 @@ import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useLocationStore } from '@/store/location/locationStore';
 import FilterClearButton from '../buttons/FilterClearButton';
 import { StyledDropDown, StyledWineFilterContainer } from '../WineFilter/WineFilter.styled';
+import { useQuery } from '@tanstack/react-query';
+import { getRegions } from '@/api/regions';
 
 const ACITIDY_OPTIONS = ['Low', 'Medium', 'High', 'Very High'];
 const BODY_OPTIONS = ['Light', 'Medium', 'Full-bodied'];
 const GRAPE_TYPES = ['Red', 'White', 'Rose'];
 
+interface RegionOption {
+  _id: string;
+  name: string;
+}
+
 const GrapeFilter = () => {
   const filters = useGrapeFiltersStore();
-  const { regions, loading: regionsLoading } = useLocationStore();
+  const { country } = useLocationStore();
+
+  const { data: regions = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
+    queryKey: ['regions', country],
+    queryFn: async () => {
+      const res = await getRegions(country);
+      return res.data;
+    },
+    enabled: !!country,
+  });
+
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +69,7 @@ const GrapeFilter = () => {
           filters.setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}
-        disabled={regionsLoading || regions.length === 0}
+        disabled={isLoadingRegions || regions.length === 0}
       />
 
       <StyledDropDown

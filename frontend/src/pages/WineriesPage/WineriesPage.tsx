@@ -1,68 +1,58 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useWineriesStore } from '@/store/wineries/wineriesStore';
 import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
+import { useWineryQueryParams } from '@/hooks/useWineryQueryParams';
+
 import WineryList from '@/components/WineryList/WineryList';
-import WineryFilter from '@/components/WineryFilter/WineryFilter';
 import AppPagination from '@/components/common/AppPagination';
 import Container from '@/components/common/Container';
-import styled from 'styled-components';
 import { Loader } from '@/components/common/Loader';
 
-const PageHeader = styled.div`
-  margin-bottom: 24px;
-`;
+import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
+import { notifyError } from '@/utils/toast';
 
 const WineriesPage = () => {
-  const { wineries, fetchWineries, loading, error, totalPages } = useWineriesStore();
-  const { country, region, name } = useWineriesFiltersStore();
+  const { wineries, fetchWineries, loading, error, page, totalPages } = useWineriesStore();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const limit = 12;
+  const nameInput = useWineriesFiltersStore((s) => s.nameInput);
+  const setNameInput = useWineriesFiltersStore((s) => s.setNameInput);
+  const applyName = useWineriesFiltersStore((s) => s.applyName);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [country, region, name]);
+  const query = useWineryQueryParams();
 
   useEffect(() => {
     fetchWineries({
-      page: currentPage,
-      limit,
-      country,
-      region,
-      search: name,
+      page: 1,
+      limit: 12,
+      ...query,
     });
-  }, [fetchWineries, country, region, name, currentPage]);
+  }, [fetchWineries, query]);
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  useEffect(() => {
+    if (error) notifyError(error);
+  }, [error]);
 
   return (
     <Container>
-      <PageHeader>
-        <WineryFilter />
-      </PageHeader>
+      <StyledWineryFilter />
+      <StyledSearchBar
+        value={nameInput}
+        onChange={setNameInput}
+        onSearch={applyName}
+        placeholder="Search wineries..."
+      />
 
       {loading && <Loader />}
 
-      {error && <p style={{ color: 'red', textAlign: 'center' }}>Error: {error}</p>}
+      {!loading && !error && wineries?.length === 0 && <p>No wineries found</p>}
 
-      {!loading && !error && (
-        <>
-          <WineryList wineries={wineries} />
+      {!loading && !error && wineries.length > 0 && <WineryList wineries={wineries} />}
 
-          {totalPages > 1 && (
-            <div style={{ marginTop: '40px', display: 'flex', justifyContent: 'center' }}>
-              <AppPagination
-                page={currentPage}
-                totalPages={totalPages}
-                onChange={handlePageChange}
-              />
-            </div>
-          )}
-        </>
-      )}
+      <AppPagination
+        page={page}
+        totalPages={totalPages}
+        onChange={(p) => fetchWineries({ page: p, limit: 12, ...query })}
+      />
     </Container>
   );
 };

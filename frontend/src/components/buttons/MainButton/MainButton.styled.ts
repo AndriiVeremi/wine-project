@@ -4,6 +4,7 @@ type ButtonSize = 'small' | 'medium' | 'large';
 
 interface ButtonProps {
   $size?: ButtonSize;
+  $fullWidth?: boolean;
 }
 
 const sizes = {
@@ -51,4 +52,9 @@ export const Button = styled.button<ButtonProps>`
   }
 
   ${({ $size = 'medium' }) => sizes[$size]}
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;

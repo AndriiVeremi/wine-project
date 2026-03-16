@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 
 import Container from '@/components/common/Container';
 import GrapeList from '@/components/GrapeList/GrapeList';
 import AppPagination from '@/components/common/AppPagination';
-import GrapeFilter from '@/components/GrapeFilter/GrapeFilter';
 import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useGrapesStore } from '@/store/grape/grapesStore';
+import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
 
-import { StyledSearchBar } from './GrapesPage.styled';
+import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
 const GrapesPage = () => {
   const grapes = useGrapesStore((s) => s.grapes);
@@ -17,32 +17,21 @@ const GrapesPage = () => {
   const totalPages = useGrapesStore((s) => s.totalPages);
   const fetchGrapes = useGrapesStore((s) => s.fetchGrapes);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const { nameInput, setNameInput, applyName } = useGrapeFiltersStore();
 
-  const { nameInput, setNameInput, applyName, name, type, region, body, acidity } =
-    useGrapeFiltersStore();
+  const query = useGrapeQueryParams();
 
   useEffect(() => {
     fetchGrapes({
-      search: name || undefined,
-      type: type || undefined,
-      region: region || undefined,
-      body: body || undefined,
-      acidity: acidity || undefined,
-      page: currentPage,
+      ...query,
+      page: 1,
       limit: 12,
     });
-  }, [name, type, region, body, acidity, currentPage, fetchGrapes]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [name, type, region, body, acidity]);
+  }, [query, fetchGrapes]);
 
   return (
     <Container>
-      <div style={{ marginBottom: '48px' }}>
-        <GrapeFilter />
-      </div>
+      <StyledGrapeFilter />
 
       <StyledSearchBar
         value={nameInput}
@@ -64,14 +53,18 @@ const GrapesPage = () => {
         </div>
       )}
 
-      {!loading && grapes.length === 0 && (
+      {!loading && grapes?.length === 0 && (
         <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
       )}
 
-      {!loading && grapes.length > 0 && <GrapeList grapes={grapes} />}
+      {!loading && grapes?.length > 0 && <GrapeList grapes={grapes} />}
 
       <div style={{ marginTop: '40px' }}>
-        <AppPagination page={page} totalPages={totalPages} onChange={(p) => setCurrentPage(p)} />
+        <AppPagination
+          page={page}
+          totalPages={totalPages}
+          onChange={(p) => fetchGrapes({ ...query, page: p, limit: 12 })}
+        />
       </div>
     </Container>
   );
