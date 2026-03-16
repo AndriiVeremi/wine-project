@@ -71,7 +71,7 @@ const WineTourDetailPage = () => {
     );
 
   const galleryImages = tour.images || [];
-  const winery = tour.winery as unknown as Winery;
+  const winery = typeof tour.winery === 'object' ? (tour.winery as unknown as Winery) : null;
 
   return (
     <Container>
@@ -86,7 +86,7 @@ const WineTourDetailPage = () => {
               />
               <span>•</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <FiMapPin /> {winery?.region?.name || 'Georgia'}
+                <FiMapPin /> {(winery?.region as { name?: string })?.name || 'Georgia'}
               </span>
             </TourSubtitle>
             <TourTitle>{tour.name}</TourTitle>
@@ -134,7 +134,7 @@ const WineTourDetailPage = () => {
                 <FiMapPin />
               </div>
               <div className="label">Region</div>
-              <div className="value">{winery?.region?.name || 'Local'}</div>
+              <div className="value">{(winery?.region as { name?: string })?.name || 'Local'}</div>
             </SpecItem>
             <SpecItem>
               <div className="icon">

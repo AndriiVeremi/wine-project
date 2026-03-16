@@ -53,7 +53,7 @@ export const ReviewSection = styled.section`
     background-position: center 15px;
 
     & > div {
-      transform: translateY(-15px);
+      transform: translateY(-тpx);
     }
   }
 
