@@ -6,6 +6,7 @@ import AIAssistant from '@/components/common/AIAssistant/AIAssistant';
 import Container from '@/components/common/Container';
 import { useAuthStore } from '@/store/auth/authStore';
 import { LayoutWrapper, PageTitleContainer, PageTitle } from './SharedLayout.styled';
+import { ROUTES } from '@/constants/routes';
 
 const SharedLayout = () => {
   const { pathname } = useLocation();
@@ -25,6 +26,11 @@ const SharedLayout = () => {
 
     // Take the first segment (e.g., "wines" from "/wines/123")
     const mainSegment = segments[0];
+
+    if (!ROUTES.includes(mainSegment)) {
+      return 'error';
+    }
+
     return mainSegment.replace(/-/g, ' ');
   };
 
