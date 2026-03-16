@@ -16,9 +16,9 @@ export const LayoutWrapper = styled.div<{ $bgType: string }>`
   }};
 
   background-repeat: no-repeat;
-  background-size: 100% auto;
-  background-position: top center;
-  background-attachment: scroll;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 
   @media (max-width: 1024px) {
     background-size: cover;

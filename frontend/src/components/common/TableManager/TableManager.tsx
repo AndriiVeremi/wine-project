@@ -40,6 +40,7 @@ interface Props<T> {
   emptyIcon?: React.ReactNode;
   emptyTitle?: string;
   emptyText?: string;
+  extraHeaderContent?: React.ReactNode;
 }
 
 function TableManager<T>({
@@ -60,6 +61,7 @@ function TableManager<T>({
   emptyIcon,
   emptyTitle = 'No data',
   emptyText = 'Click add button to start.',
+  extraHeaderContent,
 }: Props<T>) {
   return (
     <ManagerWrapper>
@@ -68,11 +70,14 @@ function TableManager<T>({
           {title} ({total})
         </SectionTitle>
         <ListHeader>
-          <SearchInput
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => onSearch(e.target.value)}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+            <SearchInput
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => onSearch(e.target.value)}
+            />
+            {extraHeaderContent}
+          </div>
           {onAdd && (
             <MainButton type="button" onClick={onAdd}>
               <FiPlus /> ADD

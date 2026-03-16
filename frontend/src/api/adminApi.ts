@@ -12,7 +12,7 @@ export const deleteUser = (id: string) => {
   return apiClient.delete(`/users/${id}`);
 };
 
-export const getAllReviews = (params: { page?: number; limit?: number }) => {
+export const getAllReviews = (params: { page?: number; limit?: number; type?: string }) => {
   return apiClient.get('/reviews', { params });
 };
 

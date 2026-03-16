@@ -27,10 +27,16 @@ async function updateRating(targetId: string, model: Model<unknown>) {
 }
 
 export class ReviewService {
-  public async getAllReviews(page: number = 1, limit: number = 10) {
+  public async getAllReviews(page: number = 1, limit: number = 10, type?: string) {
     const skip = (page - 1) * limit;
+
+    let query = {};
+    if (type === 'wine') query = { wineId: { $exists: true } };
+    else if (type === 'winery') query = { wineryId: { $exists: true } };
+    else if (type === 'tour') query = { tourId: { $exists: true } };
+
     const [reviews, total] = await Promise.all([
-      Review.find()
+      Review.find(query)
         .populate('userId', 'firstName lastName email avatarUrl')
         .populate('wineId', 'name imageUrl')
         .populate('wineryId', 'name logoUrl')
@@ -39,7 +45,7 @@ export class ReviewService {
         .skip(skip)
         .limit(limit)
         .exec(),
-      Review.countDocuments(),
+      Review.countDocuments(query),
     ]);
     return { reviews, total };
   }

@@ -35,7 +35,10 @@ export const getAllTours = async (query: { page?: string; limit?: string; winery
 };
 
 export const getTourById = async (id: string): Promise<HydratedDocument<ITour>> => {
-  const tour = await Tour.findById(id);
+  const tour = await Tour.findById(id).populate({
+    path: 'winery',
+    populate: { path: 'region', select: 'name' },
+  });
 
   if (!tour) {
     throw new HttpError('Tour not found.', 404);

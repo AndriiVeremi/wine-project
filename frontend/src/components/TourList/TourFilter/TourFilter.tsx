@@ -1,8 +1,11 @@
 import { useState, useRef } from 'react';
-import { StyledDropDown, StyledWineryFilterContainer } from './WineryFilter.styled';
-import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
+import { useTourFiltersStore } from '@/store/tours/tourFiltersStore';
 import { useLocationStore } from '@/store/location/locationStore';
-import FilterClearButton from '../buttons/FilterClearButton';
+import FilterClearButton from '@/components/buttons/FilterClearButton';
+import {
+  StyledDropDown,
+  StyledWineFilterContainer,
+} from '@/components/WineFilter/WineFilter.styled';
 import { useQuery } from '@tanstack/react-query';
 import { getRegions } from '@/api/regions';
 
@@ -11,9 +14,8 @@ interface RegionOption {
   name: string;
 }
 
-const WineryFilter = () => {
-  const { region, setFilter, clearFilters } = useWineriesFiltersStore();
-
+const TourFilter = () => {
+  const { region, setFilter, clearFilters } = useTourFiltersStore();
   const { country } = useLocationStore();
 
   const { data: regions = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
@@ -40,7 +42,7 @@ const WineryFilter = () => {
   };
 
   return (
-    <StyledWineryFilterContainer ref={filterRef}>
+    <StyledWineFilterContainer ref={filterRef}>
       <StyledDropDown
         label="Region"
         value={regions.find((r) => r._id === region)?.name || ''}
@@ -57,8 +59,8 @@ const WineryFilter = () => {
       />
 
       <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
-    </StyledWineryFilterContainer>
+    </StyledWineFilterContainer>
   );
 };
 
-export default WineryFilter;
+export default TourFilter;

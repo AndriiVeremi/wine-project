@@ -33,12 +33,28 @@ const TourManager = ({ wineryId }: Props) => {
   useEffect(() => {
     if (user?.uid && (wineryId || isAdmin)) {
       fetch({ limit: 10, page, wineryId });
+    } else if (user?.uid && !isAdmin && !wineryId) {
+      useToursStore.setState({ tours: [], total: 0, totalPages: 0 });
     }
   }, [user?.uid, page, wineryId, fetch, isAdmin]);
 
   useEffect(() => {
     setPage(1);
   }, [wineryId]);
+
+  if (!isAdmin && !wineryId) {
+    return (
+      <ManagerWrapper>
+        <SectionTitle>My Tours</SectionTitle>
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <FiMap size={50} style={{ color: 'var(--tertiary-gray)', marginBottom: '20px' }} />
+          <p style={{ color: 'var(--secondary-gray)', fontSize: '18px' }}>
+            To manage tours, please first create your winery in the "My Winery" section.
+          </p>
+        </div>
+      </ManagerWrapper>
+    );
+  }
 
   const handleEdit = (item: Tour) => {
     setEditingTour(item);

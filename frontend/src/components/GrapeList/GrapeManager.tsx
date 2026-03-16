@@ -38,12 +38,28 @@ const GrapeManager = ({ wineryId }: Props) => {
         search: debouncedSearch,
         wineryId,
       });
+    } else if (user?.uid && !isAdmin && !wineryId) {
+      useGrapesStore.setState({ grapes: [], totalCount: 0, totalPages: 0 });
     }
   }, [user?.uid, page, debouncedSearch, fetchGrapes, wineryId, isAdmin]);
 
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch, wineryId]);
+
+  if (!isAdmin && !wineryId) {
+    return (
+      <ManagerWrapper>
+        <SectionTitle>My Grapes</SectionTitle>
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <FaLeaf size={50} style={{ color: 'var(--tertiary-gray)', marginBottom: '20px' }} />
+          <p style={{ color: 'var(--secondary-gray)', fontSize: '18px' }}>
+            To manage grapes, please first create your winery in the "My Winery" section.
+          </p>
+        </div>
+      </ManagerWrapper>
+    );
+  }
 
   const handleEdit = (item: Grape) => {
     setEditingGrape(item);

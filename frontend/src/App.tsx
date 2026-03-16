@@ -13,11 +13,11 @@ import GrapeDetailPage from '@/pages/GrapeDetailPage/GrapeDetailPage';
 import WineToursPage from '@/pages/WineToursPage';
 import AccountPage from '@/pages/AccountPage';
 import { Toaster } from 'react-hot-toast';
-import WineDetailPage from './pages/WineDetailPage/WineDetailPage';
-import WineryDetailPage from './pages/WineryDetailPage/WineryDetailPage';
+import WineDetailPage from '@/pages/WineDetailPage/WineDetailPage';
+import WineryDetailPage from '@/pages/WineryDetailPage/WineryDetailPage';
 import { Loader } from '@/components/common/Loader';
-import WineTourDetailPage from './pages/WineTourDetailPage';
-import NotFoundPage from './pages/NotFoundPage';
+import WineTourDetailPage from '@/pages/WineTourDetailPage';
+import NotFoundPage from '@/pages/NotFoundPage';
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
