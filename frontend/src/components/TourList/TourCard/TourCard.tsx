@@ -5,6 +5,7 @@ import {
   InfoItem,
   InfoRow,
   Price,
+  PriceRatingRow,
   StyledTourCardDiv,
   StyledTourRatingStars,
   TourCardImage,
@@ -22,7 +23,7 @@ const TourCard = ({ tour }: PropsTourCard) => {
       <StyledTourCardDiv>
         <TourCardImage src={tour.images[0]} />
         <TourCardInfo>
-          <TourCardTitle>{tour.name}</TourCardTitle>
+          <TourCardTitle title={tour.name}>{tour.name}</TourCardTitle>
           <InfoRow>
             <InfoItem>
               <FiClock />
@@ -35,10 +36,10 @@ const TourCard = ({ tour }: PropsTourCard) => {
             </InfoItem>
           </InfoRow>
 
-          <Price>
-            <span>£{tour.price}/person</span>
+          <PriceRatingRow>
+            <Price>£{tour.price}/person</Price>
             <StyledTourRatingStars value={tour.averageRating} size={14} />
-          </Price>
+          </PriceRatingRow>
         </TourCardInfo>
       </StyledTourCardDiv>
     </Link>

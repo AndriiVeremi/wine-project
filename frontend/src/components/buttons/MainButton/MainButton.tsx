@@ -7,6 +7,7 @@ interface MainButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   style?: React.CSSProperties;
+  fullWidth?: boolean;
 }
 
 const MainButton: React.FC<MainButtonProps> = ({
@@ -16,9 +17,17 @@ const MainButton: React.FC<MainButtonProps> = ({
   disabled = false,
   onClick,
   style,
+  fullWidth = false,
 }) => {
   return (
-    <Button type={type} $size={size} onClick={onClick} disabled={disabled} style={style}>
+    <Button
+      type={type}
+      $size={size}
+      onClick={onClick}
+      disabled={disabled}
+      style={style}
+      $fullWidth={fullWidth}
+    >
       {children}
     </Button>
   );

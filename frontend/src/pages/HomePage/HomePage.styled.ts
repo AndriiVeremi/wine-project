@@ -2,95 +2,6 @@ import styled from 'styled-components';
 import bgImg from '@/assets/bg-img.png';
 import reviewImg from '@/assets/review_bg-img.png';
 
-export const HeroSection = styled('section')`
-  width: 100%;
-  overflow: hidden;
-`;
-
-export const HeroTitle = styled('h1')`
-  font-family: var(--font-main);
-  font-size: 44px;
-  font-weight: 600;
-  color: var(--font-dark);
-  margin-bottom: 30px;
-
-  @media (max-width: 1024px) {
-    font-size: 36px;
-  }
-
-  @media (max-width: 767px) {
-    font-size: 28px;
-    text-align: center;
-  }
-`;
-
-export const HeroWrapper = styled('div')`
-  max-width: 800px;
-  padding-left: 100px;
-  margin-bottom: 80px;
-
-  @media (max-width: 1279px) {
-    padding-left: 50px;
-  }
-
-  @media (max-width: 767px) {
-    padding-left: 0;
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100%;
-  }
-`;
-
-export const HeroSubtitle = styled('h2')`
-  font-family: var(--font-main);
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 1.2;
-  color: var(--primary-gray);
-
-  @media (max-width: 767px) {
-    font-size: 18px;
-    text-align: center;
-  }
-`;
-
-export const HeroSubtitleWrapper = styled('div')`
-  max-width: 540px;
-  margin-bottom: 30px;
-
-  @media (max-width: 767px) {
-    max-width: 100%;
-  }
-`;
-
-export const Span = styled('span')`
-  color: var(--primary-wine);
-`;
-
-export const TextWrapper = styled('div')`
-  max-width: 600px;
-  margin-top: 20px;
-
-  @media (max-width: 767px) {
-    max-width: 100%;
-  }
-`;
-
-export const Text = styled('p')`
-  font-family: var(--font-main);
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 1.7;
-
-  @media (max-width: 767px) {
-    font-size: 16px;
-    text-align: center;
-    line-height: 1.5;
-  }
-`;
-
 export const WineSection = styled.section`
   width: 100%;
   background-color: var(--white);
@@ -119,19 +30,42 @@ export const MapSection = styled.section`
 `;
 
 export const ReviewSection = styled.section`
-  margin-top: 70px;
   width: 100%;
   background-color: var(--white);
   background-image: url(${reviewImg});
   background-size: cover;
-  background-position: center;
+  background-position: center 20px;
   background-repeat: no-repeat;
-  min-height: 1060px;
+  padding: 100px 0;
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
+
+  & > div {
+    transform: translateY(-30px);
+  }
+
+  @media (max-width: 1024px) {
+    min-height: 600px;
+    padding: 80px 0;
+    background-position: center 15px;
+
+    & > div {
+      transform: translateY(-тpx);
+    }
+  }
 
   @media (max-width: 767px) {
     margin-top: 50px;
-    min-height: 600px;
+    min-height: 450px;
+    padding: 60px 0;
+    background-position: center 10px;
+
+    & > div {
+      transform: translateY(-10px);
+    }
   }
 `;
 

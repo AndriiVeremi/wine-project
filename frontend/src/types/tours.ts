@@ -1,6 +1,6 @@
 export interface Tour {
   _id: string;
-  winery: string | { _id: string; name: string };
+  winery: string | { _id: string; name: string; region?: { name: string } };
   name: string;
   description?: string;
   duration?: number;
@@ -26,4 +26,6 @@ export interface TourQueryParams {
   page?: number;
   limit?: number;
   wineryId?: string;
+  region?: string;
+  name?: string;
 }

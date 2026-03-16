@@ -2,12 +2,22 @@ import styled from 'styled-components';
 import homeBg from '@/assets/home-bg.svg';
 import innerBg from '@/assets/home-bg-alternative.png';
 
-export const LayoutWrapper = styled.div<{ $bgType: string }>`
+export const LayoutWrapper = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow-x: hidden;
+  background-color: var(--bg-main);
+`;
+
+export const DecorativeBackground = styled.div<{ $bgType: string }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: ${({ $bgType }) => ($bgType === 'home' ? '700px' : '400px')};
+  z-index: 0;
+  pointer-events: none;
 
   background-image: ${({ $bgType }) => {
     if ($bgType === 'home') return `url(${homeBg})`;
@@ -16,16 +26,18 @@ export const LayoutWrapper = styled.div<{ $bgType: string }>`
   }};
 
   background-repeat: no-repeat;
-  background-size: 100% auto;
   background-position: top center;
-  background-attachment: scroll;
+  background-size: 100% auto;
 
   @media (max-width: 1024px) {
     background-size: cover;
+    height: ${({ $bgType }) => ($bgType === 'home' ? '500px' : '300px')};
   }
 
   @media (max-width: 767px) {
-    background-position: 20% 0;
+    background-size: cover;
+    background-position: center top;
+    height: ${({ $bgType }) => ($bgType === 'home' ? '400px' : '250px')};
   }
 `;
 
@@ -36,6 +48,8 @@ export const PageTitleContainer = styled.div`
   align-items: flex-start;
   padding-top: 50px;
   padding-bottom: 20px;
+  position: relative;
+  z-index: 1;
   pointer-events: none;
 
   @media (max-width: 1024px) {
@@ -63,5 +77,20 @@ export const PageTitle = styled.h1`
   @media (max-width: 767px) {
     font-size: 28px;
     letter-spacing: 1px;
+  }
+`;
+
+export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>`
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding-top: ${({ $isHome, $hasTitle }) => ($isHome ? '100px' : $hasTitle ? '150px' : '300px')};
+
+  @media (max-width: 1024px) {
+    padding-top: ${({ $isHome }) => ($isHome ? '60px' : '80px')};
+  }
+
+  @media (max-width: 767px) {
+    padding-top: ${({ $isHome }) => ($isHome ? '0px' : '40px')};
   }
 `;

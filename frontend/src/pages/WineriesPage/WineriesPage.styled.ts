@@ -1,11 +1,10 @@
 import SearchBar from '@/components/common/SearchBar';
-import GrapeFilter from '@/components/GrapeFilter/GrapeFilter';
+import WineryFilter from '@/components/WineryFilter/WineryFilter';
 import styled from 'styled-components';
 
-export const StyledGrapeFilter = styled(GrapeFilter)`
+export const StyledWineryFilter = styled(WineryFilter)`
   margin-bottom: 48px;
 `;
-
 export const StyledSearchBar = styled(SearchBar)`
   margin-bottom: 60px;
 `;

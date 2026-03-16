@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getAllReviews, deleteReview } from '@/api/adminApi';
-import { FiMessageSquare, FiStar } from 'react-icons/fi';
+import { FiMessageSquare, FiStar, FiFilter } from 'react-icons/fi';
 import TableManager, { type Column } from '@/components/common/TableManager/TableManager';
 import { ItemImg, ManagerWrapper } from '@/components/common/TableManager/TableManager.styled';
 import toast from 'react-hot-toast';
+import styled from 'styled-components';
 
 interface Review {
   _id: string;
@@ -16,17 +17,61 @@ interface Review {
   createdAt: string;
 }
 
+const SortSelect = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--tertiary-gray);
+  padding: 0 12px;
+  border-radius: 12px;
+  height: 48px;
+  transition: var(--transition);
+
+  &:focus-within {
+    border-color: var(--primary-wine);
+  }
+
+  select {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--primary-gray);
+  }
+
+  svg {
+    color: var(--primary-wine);
+  }
+`;
+
+const TypeBadge = styled.span<{ $type: string }>`
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: ${({ $type }) =>
+    $type === 'wine' ? '#e3f2fd' : $type === 'winery' ? '#f3e5f5' : '#e8f5e9'};
+  color: ${({ $type }) =>
+    $type === 'wine' ? '#1976d2' : $type === 'winery' ? '#7b1fa2' : '#388e3c'};
+`;
+
 const AdminReviews = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(1);
   const [page, setPage] = useState(1);
+  const [selectedType, setSelectedType] = useState('all');
 
   const loadReviews = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await getAllReviews({ limit: 10, page });
+      const typeParam = selectedType === 'all' ? undefined : selectedType;
+      const res = await getAllReviews({ limit: 10, page, type: typeParam });
       setReviews(res.data.reviews);
       setTotal(res.data.total);
       setPages(res.data.totalPages);
@@ -35,11 +80,15 @@ const AdminReviews = () => {
     } finally {
       setLoading(false);
     }
-  }, [page]);
+  }, [page, selectedType]);
 
   useEffect(() => {
     loadReviews();
   }, [loadReviews]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedType]);
 
   const onRemove = async (id: string) => {
     if (!window.confirm('Delete this review?')) return;
@@ -66,6 +115,13 @@ const AdminReviews = () => {
           </span>
         </div>
       ),
+    },
+    {
+      header: 'Type',
+      render: (r) => {
+        const type = r.wineId ? 'wine' : r.wineryId ? 'winery' : 'tour';
+        return <TypeBadge $type={type}>{type}</TypeBadge>;
+      },
     },
     {
       header: 'Item',
@@ -97,7 +153,7 @@ const AdminReviews = () => {
   return (
     <ManagerWrapper>
       <TableManager
-        title="All Reviews"
+        title="User Reviews"
         data={reviews}
         columns={cols}
         loading={loading}
@@ -111,7 +167,18 @@ const AdminReviews = () => {
         getId={(r) => r._id}
         emptyIcon={<FiMessageSquare />}
         emptyTitle="No reviews"
-        emptyText="No user reviews found."
+        emptyText="No user reviews found for this category."
+        extraHeaderContent={
+          <SortSelect>
+            <FiFilter />
+            <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
+              <option value="all">All Types</option>
+              <option value="wine">Wines</option>
+              <option value="winery">Wineries</option>
+              <option value="tour">Tours</option>
+            </select>
+          </SortSelect>
+        }
       />
     </ManagerWrapper>
   );

@@ -1,94 +1,85 @@
 import RatingStars from '@/components/common/RatingStars';
-import { breakpoints } from '@/styles/breakpoints';
 import styled from 'styled-components';
 
 export const StyledTourCardDiv = styled.div`
   position: relative;
   width: 100%;
-  overflow: hidden;
-  border-radius: var(--border-radius-md);
-  background: var(--white);
-  transition: var(--transition);
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  box-sizing: border-box;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--main-shadow);
+    transform: translateY(-5px);
   }
 `;
 
 export const TourCardImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 240px;
   object-fit: cover;
-
-  @media (min-width: ${breakpoints.tablet}) {
-    height: 260px;
-  }
-
-  @media (min-width: ${breakpoints.desktop}) {
-    height: 310px;
-  }
+  border-radius: 12px;
+  margin-bottom: 8px;
 `;
 
 export const TourCardInfo = styled.div`
-  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
 `;
 
 export const TourCardTitle = styled.h3`
-  color: var(--primary-gray);
-  margin-bottom: 16px;
-
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--black-color, #000000);
+  margin: 0;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-export const StyledTourRatingStars = styled(RatingStars)``;
-
 export const InfoRow = styled.div`
   display: flex;
-
   gap: 16px;
-  margin-bottom: 16px;
-
-  @media (min-width: ${breakpoints.tablet}) {
-    gap: 20px;
-    margin-bottom: 20px;
-  }
+  margin-bottom: 4px;
 `;
 
 export const InfoItem = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-
   font-size: 14px;
-  color: var(--text-secondary);
+  color: var(--secondary-gray);
 
   svg {
     width: 18px;
     height: 18px;
-    color: var(--accent);
+    color: var(--primary-wine);
   }
+`;
 
-  @media (min-width: ${breakpoints.tablet}) {
-    font-size: 15px;
-
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-  }
+export const PriceRatingRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--tertiary-gray);
 `;
 
 export const Price = styled.div`
-  display: flex;
-  justify-content: space-between;
   font-size: 18px;
   font-weight: 700;
   color: var(--primary-wine);
-
-  @media (min-width: ${breakpoints.tablet}) {
-    font-size: 20px;
-  }
 `;
+
+export const StyledTourRatingStars = styled(RatingStars)``;
