@@ -1,67 +1,173 @@
 import styled from 'styled-components';
+import { breakpoints } from '@/styles/breakpoints';
 
 export const StyledWinePageDiv = styled.div`
   width: 100%;
   display: flex;
-  gap: 80px;
-  padding-bottom: 100px;
-`;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 20px; /* Зменшили, бо тепер є padding у Layout */
 
-export const SliderSection = styled.section`
-  margin-top: 80px;
-  margin-bottom: 100px;
-  width: 100%;
-`;
-
-export const SliderTitle = styled.h2`
-  text-align: center;
-  font-size: 38px;
-  margin-bottom: 40px;
-  color: var(--primary-wine);
-  font-family: var(--font-main);
+  @media (min-width: ${breakpoints.desktop}) {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    grid-template-areas:
+      'image info'
+      'tabs info'
+      'content info';
+    gap: 40px 80px;
+    padding-bottom: 40px; /* Зменшили */
+    align-items: start;
+  }
 `;
 
 export const StyledWraperImage = styled.div`
-  flex: 0 0 896px;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  order: 1; /* Мобілка: 1. Картинка */
+
+  @media (min-width: ${breakpoints.desktop}) {
+    grid-area: image;
+    order: unset;
+  }
 `;
 
 export const StyledWineInfo = styled.div`
-  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  order: 2; /* Мобілка: 2. Характеристики */
+
+  /* Стиль картки */
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+  @media (min-width: ${breakpoints.tablet}) {
+    padding: 32px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    grid-area: info;
+    order: unset;
+    position: sticky;
+    top: 100px;
+  }
 `;
 
 export const StyledWineImg = styled.img`
   width: 100%;
-  height: 635px;
-  object-fit: cover;
+  height: 450px;
+  object-fit: contain;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #f0f0f0;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    height: 550px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    height: 700px;
+  }
 `;
 
 export const WineDetailPageTabs = styled.div`
-  margin-top: 72px;
   display: flex;
-  gap: 24px;
+  flex-direction: column;
+  gap: 12px;
+  order: 3; /* Мобілка: 3. Кнопки перемикання */
+
+  button {
+    width: 100%;
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    flex-direction: row;
+    gap: 24px;
+
+    button {
+      width: auto;
+    }
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    grid-area: tabs;
+    order: unset;
+    margin-top: 40px;
+  }
 `;
 
 export const WineDescriptionContent = styled.div`
-  margin-top: 80px;
   font-family: var(--font-main);
-  font-size: 18px;
-  line-height: 1.8;
+  font-size: 16px;
+  line-height: 1.6;
   color: var(--primary-gray);
   max-width: 100%;
+  order: 4; /* Мобілка: 4. Опис/Відгуки */
+
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 18px;
+    line-height: 1.8;
+    padding: 32px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    grid-area: content;
+    order: unset;
+  }
 
   p {
     margin-bottom: 20px;
   }
 
   .description-title {
-    margin-top: 32px;
+    margin-top: 24px;
+    font-weight: 500;
+
+    @media (min-width: ${breakpoints.tablet}) {
+      margin-top: 32px;
+    }
   }
 
   .description-label {
     font-weight: 700;
     color: var(--black);
     margin-right: 8px;
+  }
+`;
+
+export const SliderSection = styled.section`
+  margin-top: 40px;
+  margin-bottom: 60px;
+  width: 100%;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    margin-top: 80px;
+    margin-bottom: 100px;
+  }
+`;
+
+export const SliderTitle = styled.h2`
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 24px;
+  color: var(--primary-wine);
+  font-family: var(--font-main);
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 38px;
+    margin-bottom: 40px;
   }
 `;
