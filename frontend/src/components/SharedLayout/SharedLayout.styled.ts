@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import homeBg from '@/assets/home-bg.svg';
 import innerBg from '@/assets/home-bg-alternative.png';
+import bottomBg from '@/assets/review_bg-img.png';
 
 export const LayoutWrapper = styled.div`
   min-height: 100vh;
@@ -8,6 +9,35 @@ export const LayoutWrapper = styled.div`
   flex-direction: column;
   position: relative;
   background-color: var(--bg-main);
+`;
+
+export const BottomDecorativeBackground = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 750px;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url(${bottomBg});
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: 100% auto;
+
+  @media (max-width: 1024px) {
+    height: 400px;
+  }
+
+  @media (max-width: 767px) {
+    height: 350px;
+    background-size: cover;
+  }
+`;
+
+export const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+  width: 100%;
 `;
 
 export const DecorativeBackground = styled.div<{ $bgType: string }>`
@@ -31,13 +61,13 @@ export const DecorativeBackground = styled.div<{ $bgType: string }>`
 
   @media (max-width: 1024px) {
     background-size: cover;
-    height: ${({ $bgType }) => ($bgType === 'home' ? '500px' : '300px')};
+    height: ${({ $bgType }) => ($bgType === 'home' ? '500px' : '200px')};
   }
 
   @media (max-width: 767px) {
     background-size: cover;
     background-position: center top;
-    height: ${({ $bgType }) => ($bgType === 'home' ? '400px' : '250px')};
+    height: ${({ $bgType }) => ($bgType === 'home' ? '400px' : '120px')};
   }
 `;
 
@@ -85,12 +115,15 @@ export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>
   position: relative;
   z-index: 1;
   padding-top: ${({ $isHome, $hasTitle }) => ($isHome ? '100px' : $hasTitle ? '150px' : '300px')};
+  padding-bottom: 150px;
 
   @media (max-width: 1024px) {
     padding-top: ${({ $isHome }) => ($isHome ? '60px' : '80px')};
+    padding-bottom: 100px;
   }
 
   @media (max-width: 767px) {
     padding-top: ${({ $isHome }) => ($isHome ? '0px' : '40px')};
+    padding-bottom: 80px;
   }
 `;

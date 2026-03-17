@@ -149,12 +149,13 @@ const WineryDetailPage = () => {
               </InfoRow>
             </ContactsList>
           </WineryHeaderRow>
-          {getYouTubeEmbedUrl(winery.videoUrl) && (
-            <VideoWrapper>
-              <iframe src={getYouTubeEmbedUrl(winery.videoUrl)!} title="Video" allowFullScreen />
-            </VideoWrapper>
-          )}
         </WineryInfoBlock>
+
+        {getYouTubeEmbedUrl(winery.videoUrl) && (
+          <VideoWrapper>
+            <iframe src={getYouTubeEmbedUrl(winery.videoUrl)!} title="Video" allowFullScreen />
+          </VideoWrapper>
+        )}
       </HeroSection>
 
       <TabButtonsWrapper>
