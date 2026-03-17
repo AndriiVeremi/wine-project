@@ -12,6 +12,7 @@ import {
   DecorativeBackground,
   BottomDecorativeBackground,
   MainContent,
+  ContentWrapper,
 } from './SharedLayout.styled';
 import { ROUTES } from '@/constants/routes';
 
@@ -59,10 +60,11 @@ const SharedLayout = () => {
       )}
 
       <MainContent $isHome={isHome} $hasTitle={!!pageTitle}>
-        <Outlet />
+        <ContentWrapper>
+          <Outlet />
+        </ContentWrapper>
+        <BottomDecorativeBackground />
       </MainContent>
-
-      <BottomDecorativeBackground />
 
       <Footer />
 

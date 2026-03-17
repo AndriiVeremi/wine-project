@@ -61,17 +61,14 @@ const WineDetailPage = () => {
   return (
     <Container>
       <StyledWinePageDiv>
-        {/* 1. Блок з картинкою */}
         <StyledWraperImage>
           <StyledWineImg src={wine.imageUrl} alt={wine.name} />
         </StyledWraperImage>
 
-        {/* 2. Блок з характеристиками */}
         <StyledWineInfo>
           <WineOverview wine={wine} />
         </StyledWineInfo>
 
-        {/* 3. Блок з табами */}
         <WineDetailPageTabs>
           <InfoButton
             active={activeTab === 'description'}
@@ -84,7 +81,6 @@ const WineDetailPage = () => {
           </InfoButton>
         </WineDetailPageTabs>
 
-        {/* 4. Блок з контентом опису/відгуків */}
         <WineDescriptionContent>
           {activeTab === 'description' ? (
             <>

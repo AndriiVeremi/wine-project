@@ -6,7 +6,7 @@ export const StyledWinePageDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  padding-bottom: 20px; /* Зменшили, бо тепер є padding у Layout */
+  padding-bottom: 20px;
 
   @media (min-width: ${breakpoints.desktop}) {
     display: grid;
@@ -16,7 +16,7 @@ export const StyledWinePageDiv = styled.div`
       'tabs info'
       'content info';
     gap: 40px 80px;
-    padding-bottom: 40px; /* Зменшили */
+    padding-bottom: 40px;
     align-items: start;
   }
 `;
@@ -25,7 +25,7 @@ export const StyledWraperImage = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  order: 1; /* Мобілка: 1. Картинка */
+  order: 1;
 
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: image;
@@ -38,9 +38,8 @@ export const StyledWineInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  order: 2; /* Мобілка: 2. Характеристики */
+  order: 2;
 
-  /* Стиль картки */
   background: #fff;
   padding: 24px;
   border-radius: 16px;
@@ -81,7 +80,7 @@ export const WineDetailPageTabs = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  order: 3; /* Мобілка: 3. Кнопки перемикання */
+  order: 3;
 
   button {
     width: 100%;
@@ -109,7 +108,7 @@ export const WineDescriptionContent = styled.div`
   line-height: 1.6;
   color: var(--primary-gray);
   max-width: 100%;
-  order: 4; /* Мобілка: 4. Опис/Відгуки */
+  order: 4;
 
   background: #fff;
   padding: 24px;

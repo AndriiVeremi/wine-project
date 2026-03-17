@@ -28,18 +28,14 @@ import {
   InfoCard,
 } from './GrapeDetailPage.styled';
 
-// Функція для перетворення текстових значень у відсотки для прогрес-барів
-// Студентський підхід: просто перевіряємо слово і повертаємо число
 const getPercent = (val: string): number => {
   if (val === 'Low' || val === 'Light') return 25;
   if (val === 'Medium') return 50;
   if (val === 'High' || val === 'Full-bodied') return 75;
   if (val === 'Very High') return 100;
-  return 0; // Якщо значення невідоме
+  return 0;
 };
 
-// Функція для автоматичного підбору іконки їжі за назвою
-// Використовуємо прості перевірки .includes()
 const getFoodIcon = (food: string): string => {
   const text = food.toLowerCase();
 
@@ -51,7 +47,7 @@ const getFoodIcon = (food: string): string => {
   if (text.includes('dessert') || text.includes('fruit') || text.includes('sweet')) return '🍰';
   if (text.includes('pasta') || text.includes('pizza')) return '🍝';
 
-  return '🍽️'; // Стандартна іконка, якщо нічого не підійшло
+  return '🍽️';
 };
 
 const GrapeDetailPage = () => {
@@ -60,7 +56,6 @@ const GrapeDetailPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [activeImg, setActiveImg] = useState<number>(0);
 
-  // Завантажуємо дані про виноград при завантаженні сторінки
   useEffect(() => {
     const fetchGrapeData = async () => {
       if (!id) return;
@@ -69,8 +64,7 @@ const GrapeDetailPage = () => {
         const response = await getGrapeById(id);
         setGrape(response.data);
       } catch (error: unknown) {
-        // Використовуємо unknown для безпеки типів
-        console.error('Помилка при завантаженні винограду:', error);
+        console.error('Error loading grapes:', error);
       } finally {
         setLoading(false);
       }
@@ -84,7 +78,7 @@ const GrapeDetailPage = () => {
   if (!grape) {
     return (
       <Container>
-        <p>Вибачте, сорт винограду не знайдено.</p>
+        <p>Sorry, no grape variety found.</p>
       </Container>
     );
   }
@@ -93,7 +87,6 @@ const GrapeDetailPage = () => {
     <Container>
       <DetailContainer>
         <HeroSection>
-          {/* Блок з фотографіями */}
           <ImageWrapper>
             <MainImage>
               <img
@@ -102,7 +95,6 @@ const GrapeDetailPage = () => {
               />
             </MainImage>
 
-            {/* Показуємо маленькі фото, тільки якщо їх більше одного */}
             {grape.imageUrls && grape.imageUrls.length > 1 && (
               <ThumbnailGrid>
                 {grape.imageUrls.map((url, index) => (
@@ -118,12 +110,10 @@ const GrapeDetailPage = () => {
             )}
           </ImageWrapper>
 
-          {/* Блок з основною інформацією */}
           <InfoWrapper>
             <Badge $type={grape.type}>{grape.type} variety</Badge>
             <Title>{grape.name}</Title>
 
-            {/* Синоніми винограду (якщо є) */}
             {grape.alsoKnownAs && grape.alsoKnownAs.length > 0 && (
               <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 <span
@@ -134,7 +124,7 @@ const GrapeDetailPage = () => {
                     textTransform: 'uppercase',
                   }}
                 >
-                  Синоніми:
+                  Synonyms:
                 </span>
                 {grape.alsoKnownAs.map((name) => (
                   <span
@@ -155,7 +145,6 @@ const GrapeDetailPage = () => {
 
             <Description>{grape.description}</Description>
 
-            {/* Картка з технічними характеристиками */}
             <InfoCard>
               <StatsGrid>
                 <StatItem>
@@ -168,7 +157,6 @@ const GrapeDetailPage = () => {
                   <ProgressBar $percent={getPercent(grape.body)} $type="body" />
                 </StatItem>
 
-                {/* Показуємо таніни тільки якщо вони не "None" */}
                 {grape.tannins && grape.tannins !== 'None' && (
                   <StatItem>
                     <StatLabel>Таніни: {grape.tannins}</StatLabel>
@@ -201,9 +189,7 @@ const GrapeDetailPage = () => {
           </InfoWrapper>
         </HeroSection>
 
-        {/* Нижня частина сторінки: Характеристики та Їжа */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px' }}>
-          {/* Список характеристик */}
           {grape.characteristics && grape.characteristics.length > 0 && (
             <section>
               <SectionTitle>Характеристики сорту</SectionTitle>
@@ -218,7 +204,6 @@ const GrapeDetailPage = () => {
             </section>
           )}
 
-          {/* Список страв */}
           {grape.foodPairing && grape.foodPairing.length > 0 && (
             <section>
               <SectionTitle>З чим поєднувати</SectionTitle>
