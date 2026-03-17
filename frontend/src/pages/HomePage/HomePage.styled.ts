@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import bgImg from '@/assets/bg-img.png';
 import reviewImg from '@/assets/review_bg-img.png';
 
@@ -22,10 +23,61 @@ export const MapSection = styled.section`
   background-position: center;
   background-repeat: no-repeat;
   min-height: 1200px;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+  position: relative;
 
   @media (max-width: 767px) {
     min-height: 600px;
+    padding: 60px 0;
+  }
+`;
+
+export const RegionTitle = styled.h2`
+  text-align: center;
+  font-size: 48px;
+  color: var(--white);
+  margin-bottom: 60px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 767px) {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+`;
+
+export const RegionList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+`;
+
+export const RegionLink = styled(Link)`
+  padding: 15px 30px;
+  background-color: rgba(132, 16, 19, 0.85);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    background-color: var(--white);
+    color: #841013;
+    border-color: #841013;
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 767px) {
+    padding: 10px 20px;
+    font-size: 14px;
   }
 `;
 

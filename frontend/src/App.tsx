@@ -17,6 +17,7 @@ import WineDetailPage from '@/pages/WineDetailPage/WineDetailPage';
 import WineryDetailPage from '@/pages/WineryDetailPage/WineryDetailPage';
 import { Loader } from '@/components/common/Loader';
 import WineTourDetailPage from '@/pages/WineTourDetailPage';
+import RegionDetailPage from '@/pages/RegionDetailPage/RegionDetailPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="wines/:id" element={<WineDetailPage />} />
           <Route path="grapes" element={<GrapesPage />} />
           <Route path="grapes/:id" element={<GrapeDetailPage />} />
+          <Route path="regions/:name" element={<RegionDetailPage />} />
           <Route path="tours" element={<WineToursPage />} />
           <Route path="tours/:id" element={<WineTourDetailPage />} />
           <Route path="account" element={<AccountPage />} />

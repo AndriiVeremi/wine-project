@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocationStore } from '@/store/location/locationStore';
+import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
 import { getCountries } from '@/api/regions';
 import {
   List,
@@ -19,6 +20,7 @@ interface Country {
 
 const Location = () => {
   const { country, setCountry } = useLocationStore();
+  const setFilter = useWineriesFiltersStore((s) => s.setFilter);
   const [isOpen, setIsOpen] = useState(false);
   const [countries, setCountries] = useState<string[]>([]);
 
@@ -39,6 +41,8 @@ const Location = () => {
   const handleSelect = (e: React.MouseEvent, c: string) => {
     e.stopPropagation();
     setCountry(c);
+    setFilter('country', c);
+    setFilter('region', '');
     setIsOpen(false);
   };
 
