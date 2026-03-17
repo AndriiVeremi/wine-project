@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
-import WineOverview from '@/components/WineOverview/WineOverview';
-import WineReviews from '@/components/WineReviews';
-import AddReviewForm from '@/components/forms/AddReviewForm/AddReviewForm';
-import Container from '@/components/common/Container';
+import WineOverview from '@/components/Wine/WineOverview/WineOverview';
+import WineReviews from '@/components/Wine/WineReviews';
+import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
+import Container from '@/components/Common/Container';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import { getWines } from '@/api/wines';
@@ -20,7 +20,7 @@ import {
   SliderSection,
   SliderTitle,
 } from './WineDetailPage.styled';
-import InfoButton from '@/components/buttons/InfoButton';
+import InfoButton from '@/components/Buttons/InfoButton';
 
 const WineDetailPage = () => {
   const { id } = useParams();

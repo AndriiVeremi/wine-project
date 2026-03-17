@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 
-import WineList from '@/components/WineList/WineList';
-import Container from '@/components/common/Container';
+import WineList from '@/components/Wine/WineList/WineList';
+import Container from '@/components/Common/Container';
 
 import { useWinesStore } from '@/store/wine/winesStore';
 import { useFiltersStore } from '@/store/wine/filtersStore';
@@ -11,7 +11,7 @@ import { useWineQueryParams } from '@/hooks/useWineQueryParams';
 import { StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
 
 import { notifyError } from '@/utils/toast';
-import AppPagination from '@/components/common/AppPagination';
+import AppPagination from '@/components/Common/AppPagination';
 
 const WinesPage = () => {
   const wines = useWinesStore((s) => s.wines);

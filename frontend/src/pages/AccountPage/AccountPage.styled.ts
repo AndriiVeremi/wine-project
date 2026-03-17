@@ -3,15 +3,15 @@ import styled from 'styled-components';
 export const AccountPageContainer = styled.div`
   display: flex;
   gap: 20px;
-  padding: 0 0 100px;
+  padding: 0 0 60px;
   width: 100%;
   margin: 0 auto;
   align-items: flex-start;
 
   @media (max-width: 1024px) {
     flex-direction: column;
-    padding: 0 0 60px;
-    gap: 32px;
+    padding: 0 0 40px;
+    gap: 24px;
   }
 `;
 
@@ -19,7 +19,7 @@ export const ContentArea = styled.main`
   flex: 1;
   width: 100%;
   padding: 0;
-  min-height: 500px;
+  min-height: 400px;
   overflow-x: hidden;
 
   @media (min-width: 1025px) {

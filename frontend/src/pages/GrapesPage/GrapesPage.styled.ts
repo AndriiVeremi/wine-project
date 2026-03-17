@@ -1,5 +1,5 @@
-import SearchBar from '@/components/common/SearchBar';
-import GrapeFilter from '@/components/GrapeFilter/GrapeFilter';
+import SearchBar from '@/components/Common/SearchBar';
+import GrapeFilter from '@/components/Grape/GrapeFilter/GrapeFilter';
 import styled from 'styled-components';
 
 export const StyledGrapeFilter = styled(GrapeFilter)`

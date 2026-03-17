@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { FaClock, FaWineGlassAlt } from 'react-icons/fa';
 import { getGrapeById } from '@/api/grapes';
 import type { Grape } from '@/types/grape';
-import Container from '@/components/common/Container';
-import { Loader } from '@/components/common/Loader';
+import Container from '@/components/Common/Container';
+import { Loader } from '@/components/Common/Loader';
 import {
   DetailContainer,
   HeroSection,

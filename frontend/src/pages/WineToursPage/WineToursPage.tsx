@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 
-import Container from '@/components/common/Container';
-import AppPagination from '@/components/common/AppPagination';
+import Container from '@/components/Common/Container';
+import AppPagination from '@/components/Common/AppPagination';
 
 import { useToursStore } from '@/store/tours/toursStore';
 import { useTourFiltersStore } from '@/store/tours/tourFiltersStore';
 import { useTourQueryParams } from '@/hooks/useTourQueryParams';
-import TourList from '@/components/TourList/TourList';
+import TourList from '@/components/Tour/TourList/TourList';
 
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';

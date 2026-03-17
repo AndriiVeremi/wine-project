@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import Container from '@/components/common/Container';
-import WineColorFilters from '@/components/WineColorFilters/WineColorFilters';
+import Container from '@/components/Common/Container';
+import WineColorFilters from '@/components/Wine/WineColorFilters/WineColorFilters';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWinery from '@/components/Slider/cards/SliderCardWinery';
 import { getWineries } from '@/api/wineries';

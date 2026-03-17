@@ -1,7 +1,7 @@
-import Container from '@/components/common/Container';
+import Container from '@/components/Common/Container';
 import NotFoundImg from '@/assets/404.png';
 import { Link } from 'react-router-dom';
-import MainButton from '@/components/buttons/MainButton';
+import MainButton from '@/components/Buttons/MainButton';
 import { NotFoundButtonWrapper, NotFoundImage, NotFoundWrapper } from './NotFoundPage.styled';
 
 const NotFoundPage = () => {

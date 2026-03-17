@@ -61,7 +61,7 @@ const SliderCardWine: React.FC<WineCardProps> = ({ wine }) => {
             margin: '5px 0',
           }}
         >
-          {wine.price} UAH
+          {wine.price} $
         </p>
 
         <FooterLink onClick={() => navigate(`/wines/${wine._id}`)}>Order Now →</FooterLink>

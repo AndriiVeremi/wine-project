@@ -28,7 +28,6 @@ export const uploadFile = async (file: Express.Multer.File, folder: string): Pro
     },
   });
 
-  // Make the file publicly accessible
   await fileRef.makePublic();
 
   return `https://storage.googleapis.com/${bucket.name}/${fileName}`;
