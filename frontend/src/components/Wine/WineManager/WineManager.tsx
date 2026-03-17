@@ -1,0 +1,139 @@
+import { useState, useEffect } from 'react';
+import { useWinesStore } from '@/store/wine/winesStore';
+import { useAuthStore } from '@/store/auth/authStore';
+import { FaWineBottle } from 'react-icons/fa';
+import MainButton from '@/components/Buttons/MainButton';
+import AddWine from '@/components/Forms/AddWinesForm/AddWinesForm';
+import { useDebounce } from '@/hooks/useDebounce';
+import type { Wine } from '@/types/wine';
+import TableManager, { type Column } from '@/components/Common/TableManager/TableManager';
+import {
+  ItemImg,
+  ManagerWrapper,
+  Header,
+} from '@/components/Common/TableManager/TableManager.styled';
+import { SectionTitle } from '@/pages/AccountPage/AccountPage.styled';
+import toast from 'react-hot-toast';
+
+interface Props {
+  wineryId?: string;
+}
+
+const WineManager = ({ wineryId }: Props) => {
+  const [view, setView] = useState<'list' | 'add' | 'edit'>('list');
+  const [editingWine, setEditingWine] = useState<Wine | null>(null);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const debouncedSearch = useDebounce(search, 500);
+
+  const { wines, fetch, remove, loading, totalPages, total } = useWinesStore();
+  const { user, profile } = useAuthStore();
+  const isAdmin = profile?.role === 'ADMIN';
+
+  useEffect(() => {
+    // Якщо користувач не адмін і не має виноробні — нічого не вантажимо
+    if (user?.uid && (wineryId || isAdmin)) {
+      fetch({ limit: 10, page, wineryId, name: debouncedSearch });
+    } else if (user?.uid && !isAdmin && !wineryId) {
+      // Очищуємо список, якщо він був заповнений раніше
+      useWinesStore.setState({ wines: [], total: 0, totalPages: 0 });
+    }
+  }, [user?.uid, page, wineryId, debouncedSearch, fetch, isAdmin]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, wineryId]);
+
+  if (!isAdmin && !wineryId) {
+    return (
+      <ManagerWrapper>
+        <SectionTitle>My Wines</SectionTitle>
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <FaWineBottle size={50} style={{ color: 'var(--tertiary-gray)', marginBottom: '20px' }} />
+          <p style={{ color: 'var(--secondary-gray)', fontSize: '18px' }}>
+            To manage wines, please first create your winery in the "My Winery" section.
+          </p>
+        </div>
+      </ManagerWrapper>
+    );
+  }
+
+  const handleEdit = (item: Wine) => {
+    setEditingWine(item);
+    setView('edit');
+  };
+
+  const handleRemove = async (id: string) => {
+    if (!window.confirm('Delete wine?')) return;
+    try {
+      await remove(id);
+      toast.success('Removed');
+
+      const isLastOnPage = wines.length === 1 && page > 1;
+      const nextPage = isLastOnPage ? page - 1 : page;
+
+      if (isLastOnPage) setPage(nextPage);
+      else fetch({ limit: 10, page: nextPage, wineryId, name: debouncedSearch });
+    } catch {
+      toast.error('Error');
+    }
+  };
+
+  const columns: Column<Wine>[] = [
+    {
+      header: 'Photo',
+      render: (w) => <ItemImg src={w.imageUrl || '/assets/wine-placeholder.png'} />,
+    },
+    { header: 'Name', render: (w) => w.name },
+    { header: 'Year', render: (w) => w.vintage },
+    { header: 'Price', render: (w) => `$${w.price}` },
+  ];
+
+  if (view !== 'list') {
+    return (
+      <ManagerWrapper>
+        <Header>
+          <SectionTitle>{view === 'add' ? 'Add Wine' : 'Edit Wine'}</SectionTitle>
+          <MainButton type="button" onClick={() => setView('list')}>
+            BACK
+          </MainButton>
+        </Header>
+        <AddWine
+          wineryId={wineryId}
+          wineData={editingWine}
+          onSuccess={() => {
+            setView('list');
+            fetch({ limit: 10, page, wineryId, name: debouncedSearch });
+          }}
+        />
+      </ManagerWrapper>
+    );
+  }
+
+  return (
+    <TableManager
+      title={isAdmin ? 'All Wines' : 'My Wines'}
+      data={wines}
+      columns={columns}
+      loading={loading}
+      total={total}
+      totalPages={totalPages}
+      page={page}
+      search={search}
+      onSearch={setSearch}
+      onPage={setPage}
+      onAdd={() => {
+        setEditingWine(null);
+        setView('add');
+      }}
+      onEdit={isAdmin ? undefined : handleEdit}
+      onRemove={handleRemove}
+      getId={(w) => w._id}
+      emptyIcon={<FaWineBottle />}
+      emptyTitle="No wines"
+      emptyText="Add your first wine production."
+    />
+  );
+};
+
+export default WineManager;

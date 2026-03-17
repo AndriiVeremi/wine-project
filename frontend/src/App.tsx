@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/config/firebase';
-import SharedLayout from '@/components/SharedLayout';
+import SharedLayout from '@/components/Layout/SharedLayout';
 import HomePage from '@/pages/HomePage';
 import WineriesPage from '@/pages/WineriesPage';
 import AboutPage from '@/pages/AboutPage';
@@ -15,8 +15,9 @@ import AccountPage from '@/pages/AccountPage';
 import { Toaster } from 'react-hot-toast';
 import WineDetailPage from '@/pages/WineDetailPage/WineDetailPage';
 import WineryDetailPage from '@/pages/WineryDetailPage/WineryDetailPage';
-import { Loader } from '@/components/common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import WineTourDetailPage from '@/pages/WineTourDetailPage';
+import RegionDetailPage from '@/pages/RegionDetailPage/RegionDetailPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="wines/:id" element={<WineDetailPage />} />
           <Route path="grapes" element={<GrapesPage />} />
           <Route path="grapes/:id" element={<GrapeDetailPage />} />
+          <Route path="regions/:name" element={<RegionDetailPage />} />
           <Route path="tours" element={<WineToursPage />} />
           <Route path="tours/:id" element={<WineTourDetailPage />} />
           <Route path="account" element={<AccountPage />} />

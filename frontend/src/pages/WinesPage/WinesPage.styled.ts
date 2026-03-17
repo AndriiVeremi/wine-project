@@ -1,5 +1,5 @@
-import SearchBar from '@/components/common/SearchBar';
-import WineFilter from '@/components/WineFilter';
+import SearchBar from '@/components/Common/SearchBar';
+import WineFilter from '@/components/Wine/WineFilter';
 import styled from 'styled-components';
 
 export const StyledWineFilter = styled(WineFilter)`

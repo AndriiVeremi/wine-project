@@ -101,7 +101,6 @@ class GrapeService {
 
     const newUrls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
 
-    // Combine existing URLs with new ones, keeping a maximum of 5 images
     const updatedUrls = [...(grape.imageUrls || []), ...newUrls].slice(0, 5);
 
     return await Grape.findByIdAndUpdate(grapeId, { imageUrls: updatedUrls }, { new: true });

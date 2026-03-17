@@ -3,10 +3,10 @@ import { useWineriesStore } from '@/store/wineries/wineriesStore';
 import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
 import { useWineryQueryParams } from '@/hooks/useWineryQueryParams';
 
-import WineryList from '@/components/WineryList/WineryList';
-import AppPagination from '@/components/common/AppPagination';
-import Container from '@/components/common/Container';
-import { Loader } from '@/components/common/Loader';
+import WineryList from '@/components/Winery/WineryList/WineryList';
+import AppPagination from '@/components/Common/AppPagination';
+import Container from '@/components/Common/Container';
+import { Loader } from '@/components/Common/Loader';
 
 import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
 import { notifyError } from '@/utils/toast';

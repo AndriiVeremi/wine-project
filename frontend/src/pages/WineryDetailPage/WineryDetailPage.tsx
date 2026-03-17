@@ -3,16 +3,15 @@ import { useParams } from 'react-router-dom';
 import { getWineryById } from '@/api/wineries';
 import type { Winery } from '@/types/wineries';
 import { useWinesStore } from '@/store/wine/winesStore';
-import RatingStars from '@/components/common/RatingStars';
-import { Loader } from '@/components/common/Loader';
-import WineryMap from '@/components/Location/WineryMap';
+import RatingStars from '@/components/Common/RatingStars';
+import { Loader } from '@/components/Common/Loader';
+import WineryMap from '@/components/Common/Location/WineryMap';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
-import InfoButton from '@/components/buttons/InfoButton/InfoButton';
-import ItemReviews from '@/components/WineReviews';
-import AddReviewForm from '@/components/forms/AddReviewForm/AddReviewForm';
+import InfoButton from '@/components/Buttons/InfoButton/InfoButton';
+import ItemReviews from '@/components/Wine/WineReviews';
+import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
 import { HiMapPin, HiGlobeAlt, HiEnvelope, HiPhone } from 'react-icons/hi2';
-
 import {
   DetailPageContainer,
   HeroSection,
@@ -32,14 +31,12 @@ import {
   SectionHeaderTitle,
   MapSection,
 } from './WineryDetailPage.styled';
-
 function getYouTubeEmbedUrl(url?: string) {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return match && match[2].length === 11 ? `https://www.youtube.com/embed/${match[2]}` : null;
 }
-
 const WineryDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [winery, setWinery] = useState<Winery | null>(null);
@@ -48,9 +45,7 @@ const WineryDetailPage = () => {
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [refresh, setRefresh] = useState(0);
-
   const { wines, fetch, loading: winesLoading } = useWinesStore();
-
   const loadWinery = useCallback(async () => {
     if (!id) return;
     try {
@@ -60,7 +55,6 @@ const WineryDetailPage = () => {
       console.error(err);
     }
   }, [id]);
-
   useEffect(() => {
     const loadAll = async () => {
       if (!id) return;
@@ -76,14 +70,11 @@ const WineryDetailPage = () => {
     };
     loadAll();
   }, [id, fetch, loadWinery]);
-
   if (loading) return <Loader />;
   if (error || !winery) return <DetailPageContainer>Winery not found.</DetailPageContainer>;
-
   const galleryImages = [...(winery.logoUrl ? [winery.logoUrl] : []), ...(winery.galleryUrl || [])];
   if (galleryImages.length === 0) galleryImages.push('/assets/winery-placeholder.png');
   const thumbnails = galleryImages.slice(0, 4);
-
   return (
     <DetailPageContainer>
       <HeroSection>
@@ -103,7 +94,6 @@ const WineryDetailPage = () => {
             ))}
           </ThumbnailsGrid>
         </GalleryWrapper>
-
         <WineryInfoBlock>
           <WineryNameTitle>{winery.name}</WineryNameTitle>
           <WineryHeaderRow>
@@ -150,14 +140,12 @@ const WineryDetailPage = () => {
             </ContactsList>
           </WineryHeaderRow>
         </WineryInfoBlock>
-
         {getYouTubeEmbedUrl(winery.videoUrl) && (
           <VideoWrapper>
             <iframe src={getYouTubeEmbedUrl(winery.videoUrl)!} title="Video" allowFullScreen />
           </VideoWrapper>
         )}
       </HeroSection>
-
       <TabButtonsWrapper>
         <InfoButton
           active={activeTab === 'description'}
@@ -169,7 +157,6 @@ const WineryDetailPage = () => {
           Reviews
         </InfoButton>
       </TabButtonsWrapper>
-
       {activeTab === 'description' ? (
         <DescriptionText>{winery.history || 'No description available.'}</DescriptionText>
       ) : (
@@ -184,7 +171,6 @@ const WineryDetailPage = () => {
           />
         </div>
       )}
-
       <MapSection style={{ marginBottom: '80px' }}>
         {winery.coordinates ? (
           <WineryMap
@@ -206,7 +192,6 @@ const WineryDetailPage = () => {
           </div>
         )}
       </MapSection>
-
       {winesLoading ? (
         <p style={{ textAlign: 'center' }}>Loading bestsellers...</p>
       ) : (
@@ -220,5 +205,4 @@ const WineryDetailPage = () => {
     </DetailPageContainer>
   );
 };
-
 export default WineryDetailPage;

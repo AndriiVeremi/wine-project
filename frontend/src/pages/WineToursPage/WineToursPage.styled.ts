@@ -1,5 +1,5 @@
-import SearchBar from '@/components/common/SearchBar';
-import TourFilter from '@/components/TourList/TourFilter/TourFilter';
+import SearchBar from '@/components/Common/SearchBar';
+import TourFilter from '@/components/Tour/TourList/TourFilter/TourFilter';
 import styled from 'styled-components';
 
 export const StyledTourFilter = styled(TourFilter)`

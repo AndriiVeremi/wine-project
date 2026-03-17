@@ -11,8 +11,8 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["jest"]
+    "types": ["jest", "node"]
   },
-  "include": ["src", "src/data/seeder.ts"],
+  "include": ["src", "src/data/seeder.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

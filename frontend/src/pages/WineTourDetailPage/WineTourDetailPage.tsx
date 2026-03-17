@@ -21,15 +21,15 @@ import {
   FeatureList,
   FeatureItem,
 } from './WineTourDetailPage.styled';
-import Container from '@/components/common/Container';
-import RatingStars from '@/components/common/RatingStars';
+import Container from '@/components/Common/Container';
+import RatingStars from '@/components/Common/RatingStars';
 import { FiClock, FiUsers, FiCheckCircle, FiShield, FiMapPin } from 'react-icons/fi';
-import MainButton from '@/components/buttons/MainButton';
-import { Loader } from '@/components/common/Loader';
-import ItemReviews from '@/components/WineReviews';
-import AddReviewForm from '@/components/forms/AddReviewForm/AddReviewForm';
+import MainButton from '@/components/Buttons/MainButton';
+import { Loader } from '@/components/Common/Loader';
+import ItemReviews from '@/components/Wine/WineReviews';
+import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
 import { useAuthStore } from '@/store/auth/authStore';
-import WineryContactModal from '@/components/common/WineryContactModal/WineryContactModal';
+import WineryContactModal from '@/components/Common/WineryContactModal/WineryContactModal';
 import type { Winery } from '@/types/wineries';
 
 const WineTourDetailPage = () => {

@@ -13,7 +13,7 @@ interface WineriesFiltersState {
 }
 
 export const useWineriesFiltersStore = create<WineriesFiltersState>((set) => ({
-  country: '',
+  country: 'Georgia',
   region: '',
   nameInput: '',
   name: '',
@@ -33,7 +33,7 @@ export const useWineriesFiltersStore = create<WineriesFiltersState>((set) => ({
 
   clearFilters: () =>
     set({
-      country: '',
+      country: 'Georgia',
       region: '',
       nameInput: '',
       name: '',
