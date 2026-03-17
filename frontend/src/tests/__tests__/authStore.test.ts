@@ -85,7 +85,13 @@ describe('AuthStore', () => {
       mockRegisterUser.mockResolvedValue({});
 
       const { register } = useAuthStore.getState();
-      await register({ email: 'test@test.com', password: 'password123', name: 'Test' });
+      await register({
+        email: 'test@test.com',
+        password: 'password123',
+        firstName: 'Test',
+        lastName: 'User',
+        role: 'USER',
+      });
 
       expect(mockRegisterUser).toHaveBeenCalled();
       expect(useAuthStore.getState().isAuthModalOpen).toBe(false);

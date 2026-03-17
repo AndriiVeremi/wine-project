@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getAuth } from 'firebase/auth';
+import { getAuth, type User } from 'firebase/auth';
 import apiClient from '@/api/axios';
 import { mockGetIdToken } from '../__mocks__/firebase';
+import type { InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
 
 vi.mock('firebase/auth', () => ({
   getAuth: vi.fn(() => ({
@@ -20,15 +21,20 @@ describe('Axios Interceptor', () => {
   });
 
   it('should not add token when user is null', async () => {
-    (getAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+    (getAuth as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       currentUser: null,
     });
 
     const config = {
-      headers: {},
-    };
+      headers: {} as AxiosHeaders,
+    } as InternalAxiosRequestConfig;
 
-    const modifiedConfig = await apiClient.interceptors.request.handlers[0].fulfilled(config);
+    const handlers = (
+      apiClient.interceptors.request as unknown as {
+        handlers: Array<{ fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig> }>;
+      }
+    ).handlers;
+    const modifiedConfig = await handlers[0].fulfilled(config);
 
     expect(modifiedConfig.headers.Authorization).toBeUndefined();
   });
@@ -38,16 +44,21 @@ describe('Axios Interceptor', () => {
 
     const mockUser = {
       getIdToken: mockGetIdToken,
-    };
-    (getAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+    } as unknown as User;
+    (getAuth as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       currentUser: mockUser,
     });
 
     const config = {
-      headers: {},
-    };
+      headers: {} as AxiosHeaders,
+    } as InternalAxiosRequestConfig;
 
-    const modifiedConfig = await apiClient.interceptors.request.handlers[0].fulfilled(config);
+    const handlers = (
+      apiClient.interceptors.request as unknown as {
+        handlers: Array<{ fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig> }>;
+      }
+    ).handlers;
+    const modifiedConfig = await handlers[0].fulfilled(config);
 
     expect(mockGetIdToken).toHaveBeenCalled();
     expect(modifiedConfig.headers.Authorization).toBe('Bearer mock-token-123');
@@ -58,8 +69,8 @@ describe('Axios Interceptor', () => {
 
     const mockUser = {
       getIdToken: mockGetIdToken,
-    };
-    (getAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+    } as unknown as User;
+    (getAuth as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       currentUser: mockUser,
     });
 
@@ -67,10 +78,15 @@ describe('Axios Interceptor', () => {
       headers: {
         'Content-Type': 'application/json',
         'X-Custom-Header': 'custom-value',
-      },
-    };
+      } as unknown as AxiosHeaders,
+    } as InternalAxiosRequestConfig;
 
-    const modifiedConfig = await apiClient.interceptors.request.handlers[0].fulfilled(config);
+    const handlers = (
+      apiClient.interceptors.request as unknown as {
+        handlers: Array<{ fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig> }>;
+      }
+    ).handlers;
+    const modifiedConfig = await handlers[0].fulfilled(config);
 
     expect(modifiedConfig.headers['Content-Type']).toBe('application/json');
     expect(modifiedConfig.headers['X-Custom-Header']).toBe('custom-value');

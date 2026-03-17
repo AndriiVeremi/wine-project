@@ -5,6 +5,7 @@ import { useWineriesStore } from '@/store/wineries/wineriesStore';
 import { Loader } from '@/components/Common/Loader';
 import Container from '@/components/Common/Container';
 import WineryList from '@/components/Winery/WineryList/WineryList';
+import type { Region } from '@/types/region';
 
 import {
   RegionDetailWrapper,
@@ -65,7 +66,7 @@ const RegionDetailPage = () => {
                 <h3>{region.climate.title || 'Climate'}</h3>
                 <p>{region.climate.description}</p>
                 <ul>
-                  {region.climate.features?.map((f, i) => (
+                  {region.climate.features?.map((f: string, i: number) => (
                     <li key={i}>{f}</li>
                   ))}
                 </ul>
@@ -77,7 +78,7 @@ const RegionDetailPage = () => {
                 <h3>{region.soils.title || 'Soils'}</h3>
                 <p>{region.soils.description}</p>
                 <ul>
-                  {region.soils.mainTypes?.map((s, i) => (
+                  {region.soils.mainTypes?.map((s: string, i: number) => (
                     <li key={i}>{s}</li>
                   ))}
                 </ul>
@@ -89,7 +90,7 @@ const RegionDetailPage = () => {
                 <h3>{region.traditions.title || 'Traditions'}</h3>
                 <p>{region.traditions.description}</p>
                 <ul>
-                  {region.traditions.rituals?.map((r, i) => (
+                  {region.traditions.rituals?.map((r: string, i: number) => (
                     <li key={i}>{r}</li>
                   ))}
                 </ul>

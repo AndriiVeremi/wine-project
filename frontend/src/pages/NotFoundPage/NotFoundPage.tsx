@@ -12,7 +12,7 @@ const NotFoundPage = () => {
 
         <NotFoundButtonWrapper>
           <Link to="/">
-            <MainButton style={{ textTransform: 'uppercase' }}>back to home</MainButton>
+            <MainButton>back to home</MainButton>
           </Link>
         </NotFoundButtonWrapper>
       </NotFoundWrapper>

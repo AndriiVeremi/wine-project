@@ -5,6 +5,7 @@ import {
   mockAddWineToFavorites,
   mockRemoveWineFromFavorites,
 } from '../__mocks__/userApi';
+import type { WishlistWine } from '@/types/wine';
 
 vi.mock('@/api/userApi', () => ({
   getUserFavorites: (...args: unknown[]) => mockGetUserFavorites(...args),
@@ -16,11 +17,13 @@ vi.mock('@/utils/toast', () => ({
   notifySuccess: vi.fn(),
 }));
 
-const mockWine = {
+const mockWine: WishlistWine = {
   id: 'wine-1',
   name: 'Cabernet Sauvignon',
-  price: 150,
-  averageRating: 4.5,
+  winery: { id: 'winery-1', name: 'Test Winery' },
+  imageUrl: 'http://image.url',
+  color: 'red',
+  sweetness: 'dry',
 };
 
 describe('useFavoritesStore', () => {
@@ -39,7 +42,7 @@ describe('useFavoritesStore', () => {
   });
 
   it('should fetch favorites', async () => {
-    const mockFavorites = [mockWine, { id: 'wine-2', name: 'Merlot' }];
+    const mockFavorites = [mockWine, { ...mockWine, id: 'wine-2', name: 'Merlot' }];
     mockGetUserFavorites.mockResolvedValue({
       data: mockFavorites,
     });
