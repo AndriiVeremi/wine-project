@@ -31,7 +31,9 @@ describe('Axios Interceptor', () => {
 
     const handlers = (
       apiClient.interceptors.request as unknown as {
-        handlers: Array<{ fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig> }>;
+        handlers: Array<{
+          fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig>;
+        }>;
       }
     ).handlers;
     const modifiedConfig = await handlers[0].fulfilled(config);
@@ -55,7 +57,9 @@ describe('Axios Interceptor', () => {
 
     const handlers = (
       apiClient.interceptors.request as unknown as {
-        handlers: Array<{ fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig> }>;
+        handlers: Array<{
+          fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig>;
+        }>;
       }
     ).handlers;
     const modifiedConfig = await handlers[0].fulfilled(config);
@@ -83,7 +87,9 @@ describe('Axios Interceptor', () => {
 
     const handlers = (
       apiClient.interceptors.request as unknown as {
-        handlers: Array<{ fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig> }>;
+        handlers: Array<{
+          fulfilled: (config: InternalAxiosRequestConfig) => Promise<InternalAxiosRequestConfig>;
+        }>;
       }
     ).handlers;
     const modifiedConfig = await handlers[0].fulfilled(config);
