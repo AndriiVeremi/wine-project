@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getRegionByName } from '@/api/regions';
-import type { Region } from '@/types/region';
 import { useWineriesStore } from '@/store/wineries/wineriesStore';
-import { Loader } from '@/components/common/Loader';
-import Container from '@/components/common/Container';
-import WineryList from '@/components/WineryList/WineryList';
+import { Loader } from '@/components/Common/Loader';
+import Container from '@/components/Common/Container';
+import WineryList from '@/components/Winery/WineryList/WineryList';
+
 import {
   RegionDetailWrapper,
   RegionHeroSection,
