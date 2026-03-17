@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import LoginForm from '@/components/Forms/AuthForm/LoginForm/LoginForm';
 import { useAuthStore } from '@/store/auth/authStore';
+import type { Mock } from 'vitest';
 
 vi.mock('react-hot-toast', () => ({
   __esModule: true,
@@ -35,7 +36,7 @@ describe('LoginForm', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useAuthStore as ReturnType<typeof vi.fn>).mockReturnValue({
+    (useAuthStore as unknown as Mock).mockReturnValue({
       login: mockLogin,
       isLoading: false,
       error: null,
@@ -101,7 +102,7 @@ describe('LoginForm', () => {
   });
 
   it('should show loading state', () => {
-    (useAuthStore as ReturnType<typeof vi.fn>).mockReturnValue({
+    (useAuthStore as unknown as Mock).mockReturnValue({
       login: mockLogin,
       isLoading: true,
       error: null,
