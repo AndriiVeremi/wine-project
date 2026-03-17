@@ -2,6 +2,9 @@ jest.mock('@/models/wineModel');
 jest.mock('@/models/wineryModel');
 jest.mock('@/models/userModel');
 jest.mock('@/models/grapeModel');
+jest.mock('@/services/firebase', () => ({
+  uploadFile: jest.fn().mockResolvedValue('http://mock-url.com/file.png'),
+}));
 
 import Wine from '@/models/wineModel';
 import Winery from '@/models/wineryModel';
@@ -9,6 +12,7 @@ import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import { WineService } from '@/services/wineService';
 import HttpError from '@/utils/HttpError';
+import { uploadFile } from '@/services/firebase';
 
 const wineService = new WineService();
 
@@ -222,6 +226,20 @@ describe('WineService', () => {
       const result = await wineService.getAllWines({ vintage: '2020' });
 
       expect(result.wines).toHaveLength(1);
+    });
+
+    it('filter by inStock', async () => {
+      mockWineAggregate
+        .mockReturnValueOnce({
+          exec: jest.fn().mockResolvedValue([testWines[0]]),
+        })
+        .mockReturnValueOnce({
+          exec: jest.fn().mockResolvedValue([{ total: 1 }]),
+        });
+
+      await wineService.getAllWines({ inStock: 'true' });
+
+      expect(mockWineAggregate).toHaveBeenCalled();
     });
 
     it('filter by wineryId', async () => {
@@ -486,6 +504,60 @@ describe('WineService', () => {
       );
 
       expect(result).toEqual(updatedWine);
+    });
+  });
+
+  describe('updateWineImage', () => {
+    const testWine = {
+      _id: 'wine-1',
+      winery: {
+        _id: 'winery-1',
+        owner: 'user-1',
+      },
+    };
+    const mockFile = { filename: 'test.jpg' } as Express.Multer.File;
+
+    it('return null when wine not found', async () => {
+      mockWineFindById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue(null),
+        }),
+      });
+
+      const result = await wineService.updateWineImage('wine-1', mockFile, 'user-1', 'ADMIN');
+      expect(result).toBeNull();
+    });
+
+    it('error when user not authorized', async () => {
+      mockWineFindById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue(testWine),
+        }),
+      });
+
+      await expect(
+        wineService.updateWineImage('wine-1', mockFile, 'other-user', 'USER'),
+      ).rejects.toThrow('You cant update this wine.');
+    });
+
+    it('update wine image good', async () => {
+      mockWineFindById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue(testWine),
+        }),
+      });
+
+      const updatedWine = { ...testWine, imageUrl: 'http://image.url' };
+      mockWineFindByIdAndUpdate.mockResolvedValue(updatedWine);
+
+      const result = await wineService.updateWineImage('wine-1', mockFile, 'user-1', 'WINERY_OWNER');
+
+      expect(result).toEqual(updatedWine);
+      expect(mockWineFindByIdAndUpdate).toHaveBeenCalledWith(
+        'wine-1',
+        { imageUrl: expect.any(String) },
+        { new: true },
+      );
     });
   });
 
