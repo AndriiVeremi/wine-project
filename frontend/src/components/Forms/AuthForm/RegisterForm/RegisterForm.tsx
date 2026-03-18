@@ -132,7 +132,7 @@ const RegisterForm = () => {
       </FieldWrapper>
 
       <RegisterFormButtonWrapper>
-        <MainButton type="submit" size="large">
+        <MainButton type="submit" size="large" centered>
           {isLoading ? 'Registering...' : 'Sign Up'}
         </MainButton>
       </RegisterFormButtonWrapper>

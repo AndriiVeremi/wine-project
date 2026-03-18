@@ -65,6 +65,54 @@ export const BuyFavRow = styled.div`
     margin-bottom: 64px;
   }
 `;
+
+export const TechGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+  @media (min-width: ${breakpoints.tablet}) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+`;
+
+export const TechItem = styled.div`
+  background: #fcfcfc;
+  border: 1px solid var(--tertiary-gray);
+  border-radius: var(--border-radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--primary-wine);
+    background: var(--white);
+  }
+
+  .tech-icon {
+    color: var(--primary-wine);
+    font-size: 20px;
+  }
+
+  .tech-label {
+    font-size: 11px;
+    color: var(--secondary-gray);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-value {
+    font-size: 14px;
+    color: var(--primary-gray);
+    font-weight: 600;
+  }
+`;
+
 export const Characteristics = styled.ul`
   display: flex;
   flex-direction: column;

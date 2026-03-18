@@ -101,7 +101,10 @@ const WineDetailPage = () => {
                 {wine.foodPairing?.join(', ') || '—'}
               </p>
 
-              <p className="description-title">Why is it worth buying? {wine.description || '—'}</p>
+              <div className="description-title">
+                Why is it worth buying?
+                <div dangerouslySetInnerHTML={{ __html: wine.description || '—' }} />
+              </div>
             </>
           ) : (
             <>
@@ -129,7 +132,7 @@ const WineDetailPage = () => {
               <p style={{ textAlign: 'center' }}>Loading similar wines...</p>
             ) : (
               <Slider
-                items={topWines}
+                items={topWines.slice(0, 8)}
                 renderItem={(wineItem: Wine) => <SliderCardWine wine={wineItem} />}
               />
             )}

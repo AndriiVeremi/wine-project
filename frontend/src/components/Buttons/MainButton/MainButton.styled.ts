@@ -6,6 +6,7 @@ type ButtonSize = 'small' | 'medium' | 'large';
 interface ButtonProps {
   $size?: ButtonSize;
   $fullWidth?: boolean;
+  $centered?: boolean;
 }
 
 const sizeStyles = {
@@ -34,7 +35,6 @@ export const Button = styled.button<ButtonProps>`
   align-items: center;
   gap: 10px;
   width: 100%;
-  margin: 0 auto;
   border-radius: 200px;
   background: var(--white);
   color: var(--primary-wine);
@@ -49,6 +49,7 @@ export const Button = styled.button<ButtonProps>`
   ${({ $size = 'medium' }) => sizeStyles[$size]}
   @media (min-width: ${breakpoints.tablet}) {
     width: ${({ $fullWidth }) => ($fullWidth ? '100%' : 'auto')};
+    margin: ${({ $centered }) => ($centered ? '0 auto' : '0')};
   }
   &:hover:not(:disabled) {
     background: var(--primary-wine);

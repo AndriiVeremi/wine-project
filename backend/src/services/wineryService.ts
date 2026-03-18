@@ -2,6 +2,7 @@ import Winery from '@/models/wineryModel';
 import Wine from '@/models/wineModel';
 import User, { IUser } from '@/models/userModel';
 import HttpError from '@/utils/HttpError';
+import { sanitize } from '@/utils/sanitize';
 import mongoose, { Types } from 'mongoose';
 
 // Simple function to get winery rating
@@ -52,6 +53,10 @@ export const createWinery = async (ownerId: Types.ObjectId | string, data: Winer
   const existingWinery = await Winery.findOne({ name: data.name });
   if (existingWinery) {
     throw new HttpError('Winery with this name already exist.', 409);
+  }
+
+  if (data.history) {
+    data.history = sanitize(data.history);
   }
 
   const newWinery = new Winery({
@@ -174,6 +179,10 @@ export const updateWinery = async (
     if (existingWinery && existingWinery._id.toString() !== wineryId.toString()) {
       throw new HttpError('Winery with this name already exist.', 409);
     }
+  }
+
+  if (updateData.history) {
+    updateData.history = sanitize(updateData.history);
   }
 
   Object.assign(winery, updateData);

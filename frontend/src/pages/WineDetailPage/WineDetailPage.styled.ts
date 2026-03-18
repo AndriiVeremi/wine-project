@@ -35,13 +35,8 @@ export const StyledWineInfo = styled.div`
   gap: 20px;
   order: 2;
   background: #fff;
-  padding: 24px;
   border-radius: 16px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 32px;
-  }
+
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: info;
     order: unset;

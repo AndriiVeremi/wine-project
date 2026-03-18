@@ -8,6 +8,7 @@ import {
   Title,
   RatingBlock,
   FooterLink,
+  PriceBadge,
 } from './SliderCard.styled';
 
 interface WineCardProps {
@@ -26,9 +27,10 @@ const SliderCardWine: React.FC<WineCardProps> = ({ wine }) => {
   const navigate = useNavigate();
 
   return (
-    <CardBase>
+    <CardBase onClick={() => navigate(`/wines/${wine._id}`)}>
       <ImageWrapper>
         <img src={wine.imageUrl} alt={wine.name} />
+        <PriceBadge>{wine.price} $</PriceBadge>
       </ImageWrapper>
       <Content>
         <Title>{wine.name}</Title>
@@ -37,6 +39,9 @@ const SliderCardWine: React.FC<WineCardProps> = ({ wine }) => {
           <FiStar fill={wine.averageRating && wine.averageRating > 0 ? '#ffb400' : 'none'} />
           <span style={{ fontWeight: 'bold', color: '#333' }}>
             {wine.averageRating && wine.averageRating > 0 ? wine.averageRating : 'No rating'}
+          </span>
+          <span style={{ fontSize: '12px', color: '#999', marginLeft: '4px' }}>
+            ({wine.totalReviews || 0})
           </span>
         </RatingBlock>
 
@@ -47,24 +52,13 @@ const SliderCardWine: React.FC<WineCardProps> = ({ wine }) => {
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
-            margin: 0,
+            margin: '4px 0',
           }}
         >
           <FiCalendar size={14} /> Vintage: {wine.vintage}
         </p>
 
-        <p
-          style={{
-            fontSize: '20px',
-            color: 'var(--primary-wine)',
-            fontWeight: 'bold',
-            margin: '5px 0',
-          }}
-        >
-          {wine.price} $
-        </p>
-
-        <FooterLink onClick={() => navigate(`/wines/${wine._id}`)}>Order Now →</FooterLink>
+        <FooterLink>Order Now →</FooterLink>
       </Content>
     </CardBase>
   );
