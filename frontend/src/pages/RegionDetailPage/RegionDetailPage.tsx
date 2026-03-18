@@ -61,12 +61,12 @@ const RegionDetailPage = () => {
 
         <RegionContent>
           <RegionInfoGrid>
-            {region.climate && (
+            {region.locationAndClimate && (
               <InfoCard>
-                <h3>{region.climate.title || 'Climate'}</h3>
-                <p>{region.climate.description}</p>
+                <h3>{region.locationAndClimate.title || 'Climate'}</h3>
+                <p>{region.locationAndClimate.description}</p>
                 <ul>
-                  {region.climate.features?.map((f: string, i: number) => (
+                  {region.locationAndClimate.features?.map((f: string, i: number) => (
                     <li key={i}>{f}</li>
                   ))}
                 </ul>
@@ -85,12 +85,12 @@ const RegionDetailPage = () => {
               </InfoCard>
             )}
 
-            {region.traditions && (
+            {region.cultureAndTraditions && (
               <InfoCard>
-                <h3>{region.traditions.title || 'Traditions'}</h3>
-                <p>{region.traditions.description}</p>
+                <h3>{region.cultureAndTraditions.title || 'Traditions'}</h3>
+                <p>{region.cultureAndTraditions.description}</p>
                 <ul>
-                  {region.traditions.rituals?.map((r: string, i: number) => (
+                  {region.cultureAndTraditions.rituals?.map((r: string, i: number) => (
                     <li key={i}>{r}</li>
                   ))}
                 </ul>
