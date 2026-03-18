@@ -266,3 +266,24 @@ export const FoodCard = styled.div`
     }
   }
 `;
+
+export const SliderSection = styled.section`
+  margin-top: 60px;
+  margin-bottom: 40px;
+`;
+
+export const SectionHeaderTitle = styled.h2`
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+  border-left: 4px solid var(--primary-wine, #841013);
+  padding-left: 12px;
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 28px;
+    border-left-width: 6px;
+    padding-left: 20px;
+    margin-bottom: 30px;
+  }
+`;

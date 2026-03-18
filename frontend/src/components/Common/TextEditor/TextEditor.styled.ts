@@ -9,7 +9,7 @@ export const StyledEditorWrapper = styled.div`
   background-color: var(--white);
   transition: var(--transition);
   margin-top: 8px;
-  box-shadow: var(--main-shadow);
+  /* box-shadow removed */
 
   &:focus-within {
     border-color: var(--primary-wine);

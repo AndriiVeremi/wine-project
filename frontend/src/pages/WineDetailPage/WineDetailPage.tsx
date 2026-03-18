@@ -132,7 +132,7 @@ const WineDetailPage = () => {
               <p style={{ textAlign: 'center' }}>Loading similar wines...</p>
             ) : (
               <Slider
-                items={topWines}
+                items={topWines.slice(0, 8)}
                 renderItem={(wineItem: Wine) => <SliderCardWine wine={wineItem} />}
               />
             )}

@@ -108,13 +108,16 @@ GET /api/wines
 | `limit` | number | Елементів на сторінку (default: 12) |
 | `color` | string | red, white, rose, orange |
 | `sweetness` | string | dry, semi-dry, semi-sweet, sweet |
-| `grape` | string | ID сорту винограду |
+| `grape` | string | Назва сорту винограду |
 | `region` | string | ID регіону |
-| `minPrice` | number | Мінімальна ціна |
+| `country` | string | ID країни |
+| `wineryId` | string | ID виноробні (для списку вин виноробні) |
 | `maxPrice` | number | Максимальна ціна |
 | `minRating` | number | Мінімальний рейтинг |
 | `vintage` | number | Рік врожаю |
-| `search` | string | Пошук по назві |
+| `name` | string | Пошук по назві |
+| `inStock` | boolean | Тільки в наявності |
+| `sortBy` | string | Поле_напрямок (напр. name_asc, price_desc, averageRating_desc) |
 
 ### Отримати вино за ID
 ```
@@ -298,9 +301,11 @@ GET /api/regions/:name
 
 ## Відгуки (`/api/reviews`)
 
-### Отримати відгук за ID
+### Отримати відгуки для конкретного ресурсу
 ```
-GET /api/reviews/:id
+GET /api/wines/:wineId/reviews
+GET /api/wineries/:wineryId/reviews
+GET /api/tours/:tourId/reviews
 ```
 
 ### Створити відгук (захищено)
@@ -311,18 +316,11 @@ POST /api/reviews
 ```json
 {
   "rating": 5,
-  "comment": "Чудове вино!",
+  "comment": "<p>Чудове <b>вино</b>!</p>",
   "wineId": "60d5ec49f1b2c8a1234567890"
 }
 ```
-Або для виноробні:
-```json
-{
-  "rating": 4,
-  "comment": "Гарна виноробня",
-  "wineryId": "60d5ec49f1b2c8a1234567891"
-}
-```
+*Примітка: `comment` підтримує HTML-форматування (очищується на бекенді).*
 
 ### Оновити відгук (автор або ADMIN)
 ```
@@ -334,17 +332,14 @@ PATCH /api/reviews/:id
 DELETE /api/reviews/:id
 ```
 
-### Адмін: Всі відгуки
+### Адмін: Керування відгуками (ADMIN)
+Загальний доступ до всіх відгуків через `/api/reviews` (підключено до `adminReviewRoutes`):
 ```
-GET /api/admin/reviews
-GET /api/admin/reviews?type=wines
-GET /api/admin/reviews?type=wineries
-GET /api/admin/reviews?type=tours
-```
-
-### Адмін: Видалити відгук
-```
-DELETE /api/admin/reviews/:id
+GET /api/reviews
+GET /api/reviews?type=wine
+GET /api/reviews?type=winery
+GET /api/reviews?type=tour
+DELETE /api/reviews/:id
 ```
 
 ---
@@ -412,8 +407,14 @@ POST /api/ai/chat
 {
   "message": "Яке вино ви порадите до стейка?",
   "history": [
-    { "role": "user", "parts": ["Раніше я любив білі вина"] },
-    { "role": "model", "parts": ["Дякую за інформацію!"] }
+    { 
+      "role": "user", 
+      "parts": [{ "text": "Раніше я любив білі вина" }] 
+    },
+    { 
+      "role": "model", 
+      "parts": [{ "text": "Дякую за інформацію!" }] 
+    }
   ]
 }
 ```
