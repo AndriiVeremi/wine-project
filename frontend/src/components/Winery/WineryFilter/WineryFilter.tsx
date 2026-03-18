@@ -16,7 +16,7 @@ const WineryFilter = () => {
 
   const { country } = useLocationStore();
 
-  const { data: regions = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
+  const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery({
     queryKey: ['regions', country],
     queryFn: async () => {
       const res = await getRegions(country);
@@ -24,6 +24,8 @@ const WineryFilter = () => {
     },
     enabled: !!country,
   });
+
+  const regions = Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : [];
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
