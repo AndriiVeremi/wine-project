@@ -70,13 +70,14 @@ interface GetWineriesParams {
   search?: string;
   countryId?: string;
   regionId?: string;
+  region?: string; // Add region for compatibility
   sortBy?: string;
   page?: number;
   limit?: number;
 }
 
 export const getWineries = async (params: GetWineriesParams) => {
-  const { search, countryId, regionId, sortBy, page = 1, limit = 10 } = params;
+  const { search, countryId, regionId, region, sortBy, page = 1, limit = 10 } = params;
 
   const query: Record<string, unknown> = {};
 
@@ -86,8 +87,9 @@ export const getWineries = async (params: GetWineriesParams) => {
   if (countryId) {
     query.country = new Types.ObjectId(countryId);
   }
-  if (regionId) {
-    query.region = new Types.ObjectId(regionId);
+  const actualRegionId = regionId || region;
+  if (actualRegionId) {
+    query.region = new Types.ObjectId(actualRegionId);
   }
 
   const sort: { [key: string]: 1 | -1 } = {};

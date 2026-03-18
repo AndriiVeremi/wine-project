@@ -5,24 +5,24 @@ const regionSchema = new Schema({
   description: { type: String },
   imageUrl: { type: String },
   country: { type: Schema.Types.ObjectId, ref: 'Location' },
-  climate: {
-    title: { type: String },
+  locationAndClimate: {
+    title: { type: String, default: 'Geographic Location and Climate' },
     description: { type: String },
     features: [{ type: String }],
   },
   soils: {
-    title: { type: String },
+    title: { type: String, default: 'Soils of Region' },
     description: { type: String },
     mainTypes: [{ type: String }],
     properties: [{ type: String }],
   },
-  traditions: {
-    title: { type: String },
+  cultureAndTraditions: {
+    title: { type: String, default: 'Winemaking Culture and Traditions' },
     description: { type: String },
     rituals: [{ type: String }],
   },
-  grapeVarieties: {
-    title: { type: String },
+  grape: {
+    title: { type: String, default: 'Main Grape Varieties of Region' },
     white: [
       {
         name: { type: String },
@@ -37,17 +37,17 @@ const regionSchema = new Schema({
     ],
   },
   typicalWines: {
-    title: { type: String },
+    title: { type: String, default: 'Typical Wines of the Region' },
     description: { type: String },
     styles: [{ type: String }],
   },
-  pdos: {
-    title: { type: String },
+  pdo: {
+    title: { type: String, default: 'Protected Designations of Origin (PDO)' },
     description: { type: String },
     list: [{ type: String }],
   },
-  importance: {
-    title: { type: String },
+  regionImportance: {
+    title: { type: String, default: 'Importance of Region for Georgian Winemaking' },
     description: { type: String },
     points: [{ type: String }],
   },

@@ -110,6 +110,58 @@ export const regions = [
     description:
       'The cradle of Georgian wine culture. This eastern region is famous for its ancient qvevri winemaking tradition and produces the majority of Georgias premium wines. The unique terroir with diverse microclimates creates ideal conditions for both red and white grape varieties.',
     imageUrl: 'https://placehold.co/600x400/841013/FFFFFF?text=Kakheti',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Located in eastern Georgia, Kakheti is dominated by the Alazani and Iori river valleys. The climate is subtropical, with hot summers and relatively mild winters, providing excellent sun exposure for vineyards.',
+      features: ['Alazani Valley', 'Caucasus Mountains protection', '300+ sunny days'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'The soils of Kakheti are incredibly diverse, ranging from brown forest soils to alluvial and volcanic layers. Many vineyards sit on limestone-rich terrain which contributes to the mineral character of the wines.',
+      mainTypes: ['Brown Forest', 'Alluvial', 'Cinnamonic'],
+      properties: ['Well-drained', 'Mineral-rich', 'High clay content'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Winemaking in Kakheti dates back 8,000 years. The traditional Qvevri method (fermenting in large clay jars buried underground) is recognized by UNESCO as intangible cultural heritage. Wine is central to the Georgian "Supra" (feast) culture.',
+      rituals: ['Qvevri sealing', 'Rtveli harvest festival', 'Supra feast tradition'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [
+        { name: 'Rkatsiteli', description: 'The most widely planted white variety.' },
+        { name: 'Mtsvane Kakhuri', description: 'Produces aromatic, elegant white wines.' },
+      ],
+      red: [
+        { name: 'Saperavi', description: 'Georgias premier red grape, deep and robust.' },
+        { name: 'Cabernet Sauvignon', description: 'Successfully adapted international variety.' },
+      ],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description:
+        'Kakheti is known for both robust reds and complex amber wines. The region produces some of the most prestigious aged wines in Georgia.',
+      styles: ['Qvevri Amber', 'Full-bodied Dry Red', 'Semi-sweet Red'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description:
+        'Kakheti hosts most of Georgias PDOs, ensuring quality and authenticity of regional styles.',
+      list: ['Mukuzani', 'Tsinandali', 'Kindzmarauli', 'Napareuli', 'Teliani'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description:
+        'Kakheti is the heart of the industry, producing over 70% of Georgia total wine volume and housing its most historic estates.',
+      points: [
+        'Economic powerhouse',
+        'Historical winemaking center',
+        'Home to premier wine research',
+      ],
+    },
   },
   {
     _id: imeretiId,
@@ -117,6 +169,58 @@ export const regions = [
     description:
       'The green heart of Georgia, famous for its fresh white wines and traditional winemaking methods. Located in the western part of the country, Imereti enjoys a humid subtropical climate perfect for cultivating delicate grape varieties.',
     imageUrl: 'https://placehold.co/600x400/006633/FFFFFF?text=Imereti',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Situated in western Georgia, Imereti has a humid subtropical climate. The region is protected by mountain ranges, leading to moderate temperatures and high humidity, ideal for crisp white wines.',
+      features: ['Western Georgia', 'Humid Subtropical', 'Protected by mountains'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'The soils are diverse, with significant deposits of heavy clay and limestone-rich layers. These conditions help retain moisture and impart a unique mineral profile to the local wines.',
+      mainTypes: ['Heavy Clay', 'Limestone', 'Alluvial'],
+      properties: ['Moisture-retaining', 'Mineral-rich', 'Cooler soil temperature'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'The Imeretian method is a lighter variation of the Qvevri tradition, where fewer skins are used during fermentation, resulting in fresher, more elegant wines with higher acidity.',
+      rituals: ['Imeretian Qvevri style', 'Autumn Rtveli', 'Local wine festivals'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [
+        { name: 'Tsitska', description: 'Produces light-bodied, floral white wines.' },
+        { name: 'Tsolikouri', description: 'The most popular white variety in western Georgia.' },
+        { name: 'Krakhuna', description: 'Known for full-bodied, characterful white wines.' },
+      ],
+      red: [
+        { name: 'Otskhanuri Sapere', description: 'A rare and powerful red variety.' },
+        { name: 'Aladasturi', description: 'Produces light, aromatic red and rose wines.' },
+      ],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description:
+        'Imereti is renowned for its vibrant, high-acidity white wines and elegant, lighter-styled Qvevri expressions.',
+      styles: ['Crisp Dry White', 'Elegant Amber', 'Natural Sparkling'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'The region focuses on specific micro-zones that produce unique expressions.',
+      list: ['Sviri'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description:
+        'As the largest wine region in western Georgia, Imereti is crucial for maintaining diversity and preserving unique grape varieties found nowhere else.',
+      points: [
+        'Center of western winemaking',
+        'Biodiversity hotspot',
+        'Famous for elegant white wines',
+      ],
+    },
   },
   {
     _id: rachaId,
@@ -124,6 +228,58 @@ export const regions = [
     description:
       'A mountainous region in northwestern Georgia known for premium red wines. The high-altitude vineyards at 800-1200 meters create unique conditions for slow-ripening grapes. Racha is famous for producing prestigious aged wines.',
     imageUrl: 'https://placehold.co/600x400/5D4037/FFFFFF?text=Racha',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'A remote mountainous region in northwestern Georgia. The vineyards are located at high altitudes in narrow river valleys, where cool nights and long sunny days ensure perfect grape ripening.',
+      features: ['High altitude (800-1200m)', 'Continental climate', 'Alpine influences'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'The soils are predominantly stony and calcareous (limestone-rich), which provide excellent drainage and contribute to the concentrated flavor profiles of Racha red wines.',
+      mainTypes: ['Calcareous', 'Stony', 'Sandy Loam'],
+      properties: ['Excellent drainage', 'Heat-reflective stones', 'Limestone influence'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Racha is famous for its naturally semi-sweet wines, a tradition born from the cool climate which naturally stops fermentation, preserving the grapes natural sweetness.',
+      rituals: ['Mountain viticulture', 'Late harvest', 'Small family estates'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [
+        { name: 'Tsitska', description: 'Grown in lower Lechkhumi for fresh white wines.' },
+        { name: 'Tsolikouri', description: 'Widely planted for semi-sweet white wines.' },
+      ],
+      red: [
+        { name: 'Aleksandrouli', description: 'The noble grape used for Khvanchkara.' },
+        { name: 'Mujuretuli', description: 'Always blended with Aleksandrouli for depth.' },
+        { name: 'Usakhelouri', description: 'A rare, ultra-premium red variety from Lechkhumi.' },
+      ],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description:
+        'Famous worldwide for naturally semi-sweet red wines, particularly the legendary Khvanchkara.',
+      styles: ['Naturally Semi-sweet Red', 'Premium Dry Red', 'Rare Varietals'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Home to some of the most prestigious and internationally recognized PDOs.',
+      list: ['Khvanchkara', 'Tvishi', 'Usakhelouri'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description:
+        'Racha-Lechkhumi represents the "boutique" side of Georgian wine, focusing on rarity, quality, and extreme viticulture.',
+      points: [
+        'Home to iconic semi-sweet wines',
+        'Extreme viticulture leader',
+        'Source of Georgias rarest grapes',
+      ],
+    },
   },
   {
     _id: kartliId,
@@ -131,6 +287,57 @@ export const regions = [
     description:
       'The central region surrounding Tbilisi, offering diverse microclimates and soils. Kartli has emerged as a center for natural and orange wines, with many small producers experimenting with ancient varieties.',
     imageUrl: 'https://placehold.co/600x400/455A64/FFFFFF?text=Kartli',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Located in central Georgia, Kartli includes the Mtkvari River valley. The climate is continental with hot summers and cold winters, influenced by both eastern and western air masses.',
+      features: ['Central Georgia', 'River Valley influence', 'Varied microclimates'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'Diverse soils include alluvial deposits along the rivers and sandy, limestone-rich soils on the slopes. This variety allows for a wide range of wine styles from sparkling to robust reds.',
+      mainTypes: ['Alluvial', 'Sandy', 'Limestone'],
+      properties: ['Well-drained', 'Diverse mineral content', 'Balanced fertility'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Kartli is a hub for the modern Georgian natural wine movement. It has a long history of sparkling wine production and is famous for its unique vertical-press traditions.',
+      rituals: ['Natural wine movement', 'Sparkling wine heritage', 'City-edge viticulture'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [
+        { name: 'Chinuri', description: 'Ideal for both still and sparkling wines.' },
+        { name: 'Goruli Mtsvane', description: 'Produces aromatic, floral wines.' },
+      ],
+      red: [
+        { name: 'Tavkveri', description: 'Versatile red used for still and sparkling rose.' },
+        { name: 'Shavkapito', description: 'An ancient variety producing elegant, mineral reds.' },
+      ],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description:
+        'Known for Georgias best traditional method sparkling wines and elegant, mineral-driven natural wines.',
+      styles: ['Traditional Sparkling', 'Natural White & Amber', 'Elegant Light Red'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Contains key micro-zones for sparkling and specialized still wines.',
+      list: ['Atenuri', 'Bolnisi'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description:
+        'Kartli bridges the gap between traditional heritage and modern innovation, serving as the experimental heart of Georgian wine.',
+      points: [
+        'Leader in natural wine',
+        'Center for sparkling production',
+        'Historical cultural hub',
+      ],
+    },
   },
   {
     _id: adjaraId,
