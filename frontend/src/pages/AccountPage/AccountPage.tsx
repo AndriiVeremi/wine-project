@@ -8,7 +8,7 @@ import TourManager from '@/components/Tour/TourManager/TourManager';
 import GrapeManager from '@/components/Grape/GrapeList/GrapeManager';
 import AdminWineries from '@/components/Winery/WineryList/AdminWineries';
 import UsersList from '@/components/User/UserManager/UsersList';
-import AdminReviews from '@/components/ReviewManager/AdminReviews';
+import AdminReviews from '@/components/User/ReviewManager/AdminReviews';
 import AddWinery from '@/components/Forms/AddWineryForm/AddWineryForm';
 import AccountInfo from '@/components/User/UserInfo/UserInfo';
 import AccountSettings from '@/components/User/UserSettings/UserSettings';

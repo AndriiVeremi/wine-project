@@ -15,7 +15,7 @@ import {
 } from './MobileMenu.styled';
 import Location from '@/components/Common/Location';
 import Language from '@/components/Common/Language';
-import Login from '@/components/LoginPanel';
+import Login from '@/components/Common/LoginPanel';
 
 interface Props {
   isOpen: boolean;
