@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
@@ -23,6 +23,18 @@ interface WineryMapProps {
   onLocationSelect?: (lat: number, lng: number) => void;
 }
 
+const MapCenter = ({ position }: { position: [number, number] | null }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (position) {
+      map.flyTo(position, 13, { duration: 1 });
+    }
+  }, [position, map]);
+
+  return null;
+};
+
 const LocationMarker = ({
   position,
   onSelect,
@@ -46,18 +58,18 @@ const LocationMarker = ({
 };
 
 const WineryMap = ({
-  lat = 41.7151,
-  lng = 44.8271,
+  lat,
+  lng,
   wineryName = 'Winery',
   isEditable = false,
   onLocationSelect,
 }: WineryMapProps) => {
   const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(
-    lat && lng ? [lat, lng] : null,
+    lat && lng && !isNaN(lat) && !isNaN(lng) ? [lat, lng] : null,
   );
 
   useEffect(() => {
-    if (lat && lng) {
+    if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
       setMarkerPosition([lat, lng]);
     }
   }, [lat, lng]);
@@ -71,18 +83,17 @@ const WineryMap = ({
     }
   };
 
+  const defaultCenter: [number, number] = [41.7151, 44.8271];
+  const center = markerPosition || defaultCenter;
+
   return (
     <div style={{ height: '100%', width: '100%', borderRadius: '20px', overflow: 'hidden' }}>
-      <MapContainer
-        center={markerPosition || [41.7151, 44.8271]}
-        zoom={13}
-        style={{ height: '100%', width: '100%' }}
-      >
+      <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-
+        {markerPosition && <MapCenter position={markerPosition} />}
         {isEditable ? (
           <LocationMarker position={markerPosition} onSelect={handleSelect} />
         ) : (

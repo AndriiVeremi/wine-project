@@ -9,6 +9,7 @@ import WineryLogoUpload from '@/components/Common/WineryLogoUpload/WineryLogoUpl
 import MainButton from '@/components/Buttons/MainButton';
 import { toast } from 'react-hot-toast';
 import type { Winery } from '@/types/wineries';
+import TextEditor from '@/components/Common/TextEditor/TextEditor';
 import {
   StyledAddWineryForm,
   FieldsGrid,
@@ -104,6 +105,10 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
 
   const onLoc = (lat: number, lng: number) => {
     setCoords({ lat, lng });
+  };
+
+  const handleEditorChange = (value: string) => {
+    setForm((prev) => ({ ...prev, history: value }));
   };
 
   const save = async (e: React.FormEvent) => {
@@ -267,19 +272,59 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         </FullWidthWrapper>
       </FieldsGrid>
 
-      <FormField
-        label="History"
-        id="history"
-        name="history"
-        value={form.history}
-        onChange={onInput}
-        isTextarea
-        placeholder="Min 10 characters..."
-        required
-      />
+      <TextEditor label="History" value={form.history} onChange={handleEditorChange} />
 
       <div>
-        <MapInstruction>Mark location:</MapInstruction>
+        <MapInstruction>Coordinates:</MapInstruction>
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', alignItems: 'flex-end' }}>
+          <div style={{ flex: 1 }}>
+            <FormField
+              label="Latitude"
+              id="lat"
+              name="lat"
+              type="number"
+              step="any"
+              value={coords?.lat || ''}
+              onChange={(e) => {
+                const val = e.target.value;
+                setCoords((prev) => ({
+                  lng: prev?.lng || 0,
+                  lat: val ? parseFloat(val) : NaN,
+                }));
+              }}
+              placeholder="e.g. 50.4501"
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <FormField
+              label="Longitude"
+              id="lng"
+              name="lng"
+              type="number"
+              step="any"
+              value={coords?.lng || ''}
+              onChange={(e) => {
+                const val = e.target.value;
+                setCoords((prev) => ({
+                  lat: prev?.lat || 0,
+                  lng: val ? parseFloat(val) : NaN,
+                }));
+              }}
+              placeholder="e.g. 30.5234"
+            />
+          </div>
+          <MainButton
+            type="button"
+            onClick={() => {
+              if (coords?.lat && coords?.lng) {
+                setCoords({ lat: coords.lat, lng: coords.lng });
+              }
+            }}
+            style={{ marginBottom: '0', height: '42px' }}
+          >
+            CENTER MAP
+          </MainButton>
+        </div>
         <MapFieldWrapper>
           <WineryMap
             isEditable={true}

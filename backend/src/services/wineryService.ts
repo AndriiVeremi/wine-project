@@ -2,6 +2,7 @@ import Winery from '@/models/wineryModel';
 import Wine from '@/models/wineModel';
 import User, { IUser } from '@/models/userModel';
 import HttpError from '@/utils/HttpError';
+import { sanitize } from '@/utils/sanitize';
 import mongoose, { Types } from 'mongoose';
 
 // Simple function to get winery rating
@@ -54,6 +55,10 @@ export const createWinery = async (ownerId: Types.ObjectId | string, data: Winer
     throw new HttpError('Winery with this name already exist.', 409);
   }
 
+  if (data.history) {
+    data.history = sanitize(data.history);
+  }
+
   const newWinery = new Winery({
     ...data,
     owner: ownerId,
@@ -70,13 +75,14 @@ interface GetWineriesParams {
   search?: string;
   countryId?: string;
   regionId?: string;
+  region?: string; // Add region for compatibility
   sortBy?: string;
   page?: number;
   limit?: number;
 }
 
 export const getWineries = async (params: GetWineriesParams) => {
-  const { search, countryId, regionId, sortBy, page = 1, limit = 10 } = params;
+  const { search, countryId, regionId, region, sortBy, page = 1, limit = 10 } = params;
 
   const query: Record<string, unknown> = {};
 
@@ -86,8 +92,9 @@ export const getWineries = async (params: GetWineriesParams) => {
   if (countryId) {
     query.country = new Types.ObjectId(countryId);
   }
-  if (regionId) {
-    query.region = new Types.ObjectId(regionId);
+  const actualRegionId = regionId || region;
+  if (actualRegionId) {
+    query.region = new Types.ObjectId(actualRegionId);
   }
 
   const sort: { [key: string]: 1 | -1 } = {};
@@ -172,6 +179,10 @@ export const updateWinery = async (
     if (existingWinery && existingWinery._id.toString() !== wineryId.toString()) {
       throw new HttpError('Winery with this name already exist.', 409);
     }
+  }
+
+  if (updateData.history) {
+    updateData.history = sanitize(updateData.history);
   }
 
   Object.assign(winery, updateData);

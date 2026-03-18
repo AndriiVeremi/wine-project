@@ -81,7 +81,7 @@ router.get('/', regionController.getRegionsByCountry);
  *                     name:
  *                       type: string
  *                       example: France
- *                 climate:
+ *                 locationAndClimate:
  *                   type: object
  *                   properties:
  *                     title:
@@ -107,7 +107,7 @@ router.get('/', regionController.getRegionsByCountry);
  *                       type: array
  *                       items:
  *                         type: string
- *                 traditions:
+ *                 cultureAndTraditions:
  *                   type: object
  *                   properties:
  *                     title:
@@ -118,7 +118,7 @@ router.get('/', regionController.getRegionsByCountry);
  *                       type: array
  *                       items:
  *                         type: string
- *                 grapeVarieties:
+ *                 grape:
  *                   type: object
  *                   properties:
  *                     title:
@@ -152,7 +152,7 @@ router.get('/', regionController.getRegionsByCountry);
  *                       type: array
  *                       items:
  *                         type: string
- *                 pdos:
+ *                 pdo:
  *                   type: object
  *                   properties:
  *                     title:
@@ -163,7 +163,7 @@ router.get('/', regionController.getRegionsByCountry);
  *                       type: array
  *                       items:
  *                         type: string
- *                 importance:
+ *                 regionImportance:
  *                   type: object
  *                   properties:
  *                     title:

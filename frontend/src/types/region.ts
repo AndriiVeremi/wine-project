@@ -7,7 +7,7 @@ export interface Region {
     _id: string;
     name: string;
   };
-  climate?: {
+  locationAndClimate?: {
     title?: string;
     description?: string;
     features?: string[];
@@ -18,12 +18,12 @@ export interface Region {
     mainTypes?: string[];
     properties?: string[];
   };
-  traditions?: {
+  cultureAndTraditions?: {
     title?: string;
     description?: string;
     rituals?: string[];
   };
-  grapeVarieties?: {
+  grape?: {
     title?: string;
     white?: Array<{ name: string; description: string }>;
     red?: Array<{ name: string; description: string }>;
@@ -33,12 +33,12 @@ export interface Region {
     description?: string;
     styles?: string[];
   };
-  pdos?: {
+  pdo?: {
     title?: string;
     description?: string;
     list?: string[];
   };
-  importance?: {
+  regionImportance?: {
     title?: string;
     description?: string;
     points?: string[];

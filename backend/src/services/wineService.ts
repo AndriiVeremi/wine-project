@@ -5,6 +5,7 @@ import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import HttpError from '@/utils/HttpError';
 import { uploadFile } from '@/services/firebase';
+import { sanitize } from '@/utils/sanitize';
 
 interface WineQuery {
   country?: string;
@@ -203,6 +204,10 @@ export class WineService {
     const grapeExists = await Grape.findById(wineData.grape);
     if (!grapeExists) throw new HttpError('Grape not found.', 404);
 
+    if (wineData.description) {
+      wineData.description = sanitize(wineData.description);
+    }
+
     return await Wine.create({ ...wineData });
   }
 
@@ -225,6 +230,10 @@ export class WineService {
     if (updateData.grape) {
       const grapeExists = await Grape.findById(updateData.grape);
       if (!grapeExists) throw new HttpError('Grape not found.', 404);
+    }
+
+    if (updateData.description) {
+      updateData.description = sanitize(updateData.description);
     }
 
     return await Wine.findByIdAndUpdate(wineId, updateData, { new: true });

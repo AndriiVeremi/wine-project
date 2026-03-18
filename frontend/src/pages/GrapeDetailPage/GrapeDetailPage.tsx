@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaClock, FaWineGlassAlt } from 'react-icons/fa';
 import { getGrapeById } from '@/api/grapes';
+import { useWinesStore } from '@/store/wine/winesStore';
 import type { Grape } from '@/types/grape';
 import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
+import Slider from '@/components/Slider/Slider';
+import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import {
   DetailContainer,
   HeroSection,
@@ -26,6 +29,8 @@ import {
   FoodGrid,
   FoodCard,
   InfoCard,
+  SliderSection,
+  SectionHeaderTitle,
 } from './GrapeDetailPage.styled';
 
 const getPercent = (val: string): number => {
@@ -55,23 +60,30 @@ const GrapeDetailPage = () => {
   const [grape, setGrape] = useState<Grape | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeImg, setActiveImg] = useState<number>(0);
+  const { wines, fetch, loading: winesLoading } = useWinesStore();
+
+  const fetchGrapeData = useCallback(async () => {
+    if (!id) return;
+
+    try {
+      const response = await getGrapeById(id);
+      setGrape(response.data);
+    } catch (error: unknown) {
+      console.error('Error loading grapes:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
 
   useEffect(() => {
-    const fetchGrapeData = async () => {
-      if (!id) return;
-
-      try {
-        const response = await getGrapeById(id);
-        setGrape(response.data);
-      } catch (error: unknown) {
-        console.error('Error loading grapes:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchGrapeData();
-  }, [id]);
+  }, [fetchGrapeData]);
+
+  useEffect(() => {
+    if (grape?.name) {
+      fetch({ grape: grape.name, limit: 10 });
+    }
+  }, [grape?.name, fetch]);
 
   if (loading) return <Loader />;
 
@@ -219,6 +231,20 @@ const GrapeDetailPage = () => {
           )}
         </div>
       </DetailContainer>
+
+      {winesLoading ? (
+        <p style={{ textAlign: 'center' }}>Loading wines...</p>
+      ) : (
+        wines.length > 0 && (
+          <SliderSection>
+            <SectionHeaderTitle>Wines from {grape.name} variety</SectionHeaderTitle>
+            <Slider
+              items={wines.slice(0, 8)}
+              renderItem={(wine) => <SliderCardWine wine={wine} />}
+            />
+          </SliderSection>
+        )
+      )}
     </Container>
   );
 };

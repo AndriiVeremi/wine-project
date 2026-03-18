@@ -74,7 +74,7 @@ const LoginForm = () => {
       </FieldWrapper>
 
       <LoginFormButtonWrapper>
-        <MainButton type="submit" size="large">
+        <MainButton type="submit" size="large" centered>
           {isLoading ? 'Wait...' : 'Login'}
         </MainButton>
       </LoginFormButtonWrapper>

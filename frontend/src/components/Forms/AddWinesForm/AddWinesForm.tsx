@@ -19,6 +19,7 @@ import {
 } from './AddWinesForm.styled';
 import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
 import { useWinesStore } from '@/store/wine/winesStore';
+import TextEditor from '@/components/Common/TextEditor/TextEditor';
 
 const init = {
   name: '',
@@ -162,6 +163,10 @@ const AddWine: React.FC<Props> = ({ wineryId, wineData, onSuccess }) => {
     else if (['price', 'vintage', 'volume', 'boxQuantity'].includes(id))
       val = value === '' ? 0 : Number(value);
     setForm((prev) => ({ ...prev, [id]: val }));
+  };
+
+  const handleEditorChange = (value: string) => {
+    setForm((prev) => ({ ...prev, description: value }));
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -357,12 +362,10 @@ const AddWine: React.FC<Props> = ({ wineryId, wineData, onSuccess }) => {
             onChange={handleInput}
             isTextarea
           />
-          <FormField
+          <TextEditor
             label="General Description"
-            id="description"
             value={form.description}
-            onChange={handleInput}
-            isTextarea
+            onChange={handleEditorChange}
           />
         </FullWidthWrapper>
         <ButtonWrapper>

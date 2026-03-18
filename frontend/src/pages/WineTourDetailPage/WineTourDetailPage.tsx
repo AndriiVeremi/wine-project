@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getTourById } from '@/api/tours';
+import { getTourById, getTours } from '@/api/tours';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import {
@@ -20,6 +20,8 @@ import {
   PriceRow,
   FeatureList,
   FeatureItem,
+  SliderSection,
+  SectionHeaderTitle,
 } from './WineTourDetailPage.styled';
 import Container from '@/components/Common/Container';
 import RatingStars from '@/components/Common/RatingStars';
@@ -31,6 +33,8 @@ import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
 import { useAuthStore } from '@/store/auth/authStore';
 import WineryContactModal from '@/components/Common/WineryContactModal/WineryContactModal';
 import type { Winery } from '@/types/wineries';
+import Slider from '@/components/Slider/Slider';
+import SliderCardTour from '@/components/Slider/cards/SliderCardTour';
 
 const WineTourDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -52,6 +56,15 @@ const WineTourDetailPage = () => {
     },
     enabled: !!id,
   });
+
+  const { data: allToursData } = useQuery({
+    queryKey: ['all-tours-for-slider'],
+    queryFn: () => getTours({ limit: 50 }),
+    enabled: !!id,
+  });
+
+  const otherTours =
+    allToursData?.data?.tours?.filter((t: { _id: string }) => t._id !== id).slice(0, 8) || [];
 
   const handleReviewAdded = () => {
     setReviewsKey((prev) => prev + 1);
@@ -200,6 +213,13 @@ const WineTourDetailPage = () => {
           isOpen={isContactModalOpen}
           onClose={() => setIsContactModalOpen(false)}
         />
+      )}
+
+      {otherTours.length > 0 && (
+        <SliderSection>
+          <SectionHeaderTitle>More tours</SectionHeaderTitle>
+          <Slider items={otherTours} renderItem={(t) => <SliderCardTour tour={t} />} />
+        </SliderSection>
       )}
     </Container>
   );

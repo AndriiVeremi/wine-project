@@ -22,10 +22,12 @@
 - **Framework:** React
 - **Build Tool:** Vite
 - **Language:** TypeScript
-- **State Management:** Zustand
-- **Styling:** CSS3 / BEM
+- **State Management:** Zustand, React Query
+- **Styling:** Styled Components
+- **Rich Text:** Tiptap
+- **Maps:** Leaflet
 - **Auth:** Firebase SDK
-- **Icons/UI:** Lucide React, Swiper
+- **Icons:** Lucide React, React Icons
 
 ---
 
