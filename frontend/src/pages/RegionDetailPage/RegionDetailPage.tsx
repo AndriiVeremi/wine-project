@@ -216,7 +216,9 @@ const RegionDetailPage = () => {
             ) : wineries.length > 0 ? (
               <WineryList wineries={wineries} />
             ) : (
-              <p style={{ textAlign: 'center', color: '#666' }}>No wineries found in this region.</p>
+              <p style={{ textAlign: 'center', color: '#666' }}>
+                No wineries found in this region.
+              </p>
             )
           ) : winesLoading ? (
             <Loader />
