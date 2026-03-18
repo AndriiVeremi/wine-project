@@ -33,6 +33,9 @@
 ## 📚 Документація
 
 Детальну документацію по проєкту можна знайти у папці `docs/`:
-*   [**API Documentation**](./docs/API.md) - Детальний опис усіх доступних API-ендпоінтів.
+*   [**API Documentation**](./docs/API.md) - Детальний опис усіх API-ендпоінтів.
 *   [**Data Models**](./docs/DB-MODELS.md) - Опис структур даних (моделей) проекту.
-*   [**DEVELOPMENT.md**](./docs/DEVELOPMENT.md) - Інструкції для розробників.
+*   [**Development Guide**](./docs/DEVELOPMENT.md) - Інструкції для розробників.
+*   [**Architecture**](./docs/ARCHITECTURE.md) - Опис архітектури системи.
+*   [**Features**](./docs/FEATURES.md) - Опис всіх функцій проекту.
+

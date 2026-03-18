@@ -9,6 +9,7 @@ import WineryLogoUpload from '@/components/Common/WineryLogoUpload/WineryLogoUpl
 import MainButton from '@/components/Buttons/MainButton';
 import { toast } from 'react-hot-toast';
 import type { Winery } from '@/types/wineries';
+import TextEditor from '@/components/Common/TextEditor/TextEditor';
 import {
   StyledAddWineryForm,
   FieldsGrid,
@@ -104,6 +105,10 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
 
   const onLoc = (lat: number, lng: number) => {
     setCoords({ lat, lng });
+  };
+
+  const handleEditorChange = (value: string) => {
+    setForm((prev) => ({ ...prev, history: value }));
   };
 
   const save = async (e: React.FormEvent) => {
@@ -267,16 +272,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         </FullWidthWrapper>
       </FieldsGrid>
 
-      <FormField
-        label="History"
-        id="history"
-        name="history"
-        value={form.history}
-        onChange={onInput}
-        isTextarea
-        placeholder="Min 10 characters..."
-        required
-      />
+      <TextEditor label="History" value={form.history} onChange={handleEditorChange} />
 
       <div>
         <MapInstruction>Mark location:</MapInstruction>

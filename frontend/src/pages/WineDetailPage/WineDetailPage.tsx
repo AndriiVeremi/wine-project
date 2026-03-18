@@ -101,7 +101,10 @@ const WineDetailPage = () => {
                 {wine.foodPairing?.join(', ') || '—'}
               </p>
 
-              <p className="description-title">Why is it worth buying? {wine.description || '—'}</p>
+              <div className="description-title">
+                Why is it worth buying?
+                <div dangerouslySetInnerHTML={{ __html: wine.description || '—' }} />
+              </div>
             </>
           ) : (
             <>

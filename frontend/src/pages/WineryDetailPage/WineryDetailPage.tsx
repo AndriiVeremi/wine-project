@@ -158,7 +158,9 @@ const WineryDetailPage = () => {
         </InfoButton>
       </TabButtonsWrapper>
       {activeTab === 'description' ? (
-        <DescriptionText>{winery.history || 'No description available.'}</DescriptionText>
+        <DescriptionText
+          dangerouslySetInnerHTML={{ __html: winery.history || 'No description available.' }}
+        />
       ) : (
         <div style={{ marginBottom: '80px' }}>
           <ItemReviews key={refresh} wineryId={winery._id} />
