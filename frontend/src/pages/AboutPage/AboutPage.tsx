@@ -1,6 +1,5 @@
-import AboutFirstImg from '@/assets/about-first.png';
-import AboutSecondImg from '@/assets/about-second.png';
 import Container from '@/components/Common/Container';
+
 import {
   AboutContainer,
   AboutInfoContainer,
@@ -8,7 +7,6 @@ import {
   FeatureIcon,
   FeaturesList,
   FeatureText,
-  FirstImg,
   FirstImgContainer,
   MissionHeading3,
   MissionText,
@@ -16,9 +14,28 @@ import {
   SectionWithBg,
   SectionWithImage,
   TitleStyled,
+  FindSection,
+  FindTitle,
+  FindList,
+  FindItem,
+  FindIcon,
+  FindText,
+  FindHeadingSecond,
+  AudienceSection,
+  AudienceContent,
+  AudienceTitle,
+  AudienceText,
+  AudienceList,
+  AudienceItem,
+  AudienceSubList,
+  AudienceSubItem,
+  AudienceImageContainer,
+  AudienceIconSmall,
+  AudienceIcon,
 } from './AboutPage.styled';
-import { FiInfo, FiHeadphones, FiLayers } from 'react-icons/fi';
-import { GiGrapes } from 'react-icons/gi';
+
+import { FiInfo, FiHeadphones, FiLayers, FiMapPin, FiStar, FiCheck } from 'react-icons/fi';
+import { GiGrapes, GiWineBottle, GiWineGlass } from 'react-icons/gi';
 
 const AboutPage = () => {
   return (
@@ -26,9 +43,7 @@ const AboutPage = () => {
       <Container>
         <Section>
           <AboutContainer>
-            <FirstImgContainer>
-              <FirstImg src={AboutFirstImg} alt="About Wine Discovery" />
-            </FirstImgContainer>
+            <FirstImgContainer></FirstImgContainer>
             <AboutInfoContainer>
               <h2>About the Project</h2>
               <p>
@@ -103,9 +118,143 @@ const AboutPage = () => {
 
       <SectionWithImage>
         <Container>
-          <h2>What You Can Find on Wine Discovery</h2>
+          <FindSection>
+            <FindTitle>What You Can Find on Wine Discovery</FindTitle>
+            <FindHeadingSecond>On Wine Discovery, users can:</FindHeadingSecond>
+            <FindList>
+              <FindItem>
+                <FindIcon>
+                  <FiMapPin />
+                </FindIcon>
+                <FindText>Explore wine regions using an interactive map.</FindText>
+              </FindItem>
+
+              <FindItem>
+                <FindIcon>
+                  <GiWineBottle />
+                </FindIcon>
+                <FindText>
+                  Browse winery profiles with descriptions, contact details, and wine listings.
+                </FindText>
+              </FindItem>
+
+              <FindItem>
+                <FindIcon>
+                  <GiWineGlass />
+                </FindIcon>
+                <FindText>
+                  Discover wines by region, grape variety, wine type, color, vintage, or rating.
+                </FindText>
+              </FindItem>
+
+              <FindItem>
+                <FindIcon>
+                  <GiGrapes />
+                </FindIcon>
+                <FindText>Learn about grape varieties, their characteristics, and usage.</FindText>
+              </FindItem>
+
+              <FindItem>
+                <FindIcon>
+                  <FiStar />
+                </FindIcon>
+                <FindText>
+                  Save favorite wines, leave ratings, and write reviews (for registered users).
+                </FindText>
+              </FindItem>
+            </FindList>
+          </FindSection>
         </Container>
       </SectionWithImage>
+      <Section>
+        <Container>
+          <AudienceSection>
+            <AudienceContent>
+              <AudienceTitle>Who Is Wine Discovery For</AudienceTitle>
+
+              <AudienceText>
+                Wine Discovery is designed for a wide range of users, including:
+              </AudienceText>
+
+              <AudienceList>
+                <AudienceItem>
+                  <AudienceIcon>
+                    <FiCheck />
+                  </AudienceIcon>
+                  <span>wine enthusiasts and curious explorers;</span>
+                </AudienceItem>
+
+                <AudienceItem>
+                  <AudienceIcon>
+                    <FiCheck />
+                  </AudienceIcon>
+                  <span>travelers interested in wine regions and wine tourism;</span>
+                </AudienceItem>
+
+                <AudienceItem>
+                  <AudienceIcon>
+                    <FiCheck />
+                  </AudienceIcon>
+                  <span>sommeliers, restaurateurs, and wine industry professionals;</span>
+                </AudienceItem>
+
+                <AudienceItem>
+                  <AudienceIcon>
+                    <FiCheck />
+                  </AudienceIcon>
+                  <span>wineries, especially:</span>
+                </AudienceItem>
+
+                <AudienceSubList>
+                  <AudienceSubItem>
+                    <AudienceIconSmall>
+                      <FiCheck />
+                    </AudienceIconSmall>
+                    <span>those without their own websites,</span>
+                  </AudienceSubItem>
+
+                  <AudienceSubItem>
+                    <AudienceIconSmall>
+                      <FiCheck />
+                    </AudienceIconSmall>
+                    <span>those seeking additional online visibility,</span>
+                  </AudienceSubItem>
+
+                  <AudienceSubItem>
+                    <AudienceIconSmall>
+                      <FiCheck />
+                    </AudienceIconSmall>
+                    <span>those looking to attract new audiences,</span>
+                  </AudienceSubItem>
+
+                  <AudienceSubItem>
+                    <AudienceIconSmall>
+                      <FiCheck />
+                    </AudienceIconSmall>
+                    <span>
+                      those aiming to present their wines and winery in a clear, structured format;
+                    </span>
+                  </AudienceSubItem>
+                </AudienceSubList>
+                <AudienceItem>
+                  <AudienceIcon>
+                    <FiCheck />
+                  </AudienceIcon>
+                  <span>anyone interested in wine, its origin, and cultural background.</span>
+                </AudienceItem>
+              </AudienceList>
+
+              <AudienceText>
+                For wineries, Wine Discovery can serve as a <strong>digital showcase</strong>,
+                informational profile, and an additional channel to reach wine-interested audiences.
+              </AudienceText>
+            </AudienceContent>
+
+            <AudienceImageContainer>{/* твоє зображення-колаж */}</AudienceImageContainer>
+          </AudienceSection>
+        </Container>
+      </Section>
+      <SectionWithBg></SectionWithBg>
     </>
   );
 };
