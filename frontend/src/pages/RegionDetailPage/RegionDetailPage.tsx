@@ -2,112 +2,231 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getRegionByName } from '@/api/regions';
 import { useWineriesStore } from '@/store/wineries/wineriesStore';
+import { useWinesStore } from '@/store/wine/winesStore';
 import { Loader } from '@/components/Common/Loader';
 import Container from '@/components/Common/Container';
 import WineryList from '@/components/Winery/WineryList/WineryList';
+import WineList from '@/components/Wine/WineList/WineList';
+import InfoButton from '@/components/Buttons/InfoButton';
 import type { Region } from '@/types/region';
 
 import {
-  RegionDetailWrapper,
-  RegionHeroSection,
-  MainBanner,
-  RegionInfoBlock,
-  RegionNameTitle,
-  DescriptionText,
-  RegionContent,
-  RegionInfoGrid,
-  InfoCard,
-  SectionHeaderTitle,
+  StyledRegionWrapper,
+  StyledRegionHero,
+  StyledRegionImg,
+  StyledNoImg,
+  StyledRegionInfo,
+  StyledRegionLabel,
+  StyledRegionTitle,
+  StyledText,
+  StyledSection,
+  StyledRegionGrid,
+  StyledColumn,
+  StyledBlock,
+  StyledGrapeGrid,
+  StyledGrapeItem,
+  StyledTag,
+  StyledTagsWrap,
+  StyledWineriesWines,
+  StyledTitle,
+  StyledTabs,
 } from './RegionDetailPage.styled';
 
 const RegionDetailPage = () => {
   const { name } = useParams<{ name: string }>();
   const [region, setRegion] = useState<Region | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'wineries' | 'wines'>('wineries');
+
   const { wineries, fetchWineries, loading: wineriesLoading } = useWineriesStore();
+  const { wines, fetch: fetchWines, loading: winesLoading } = useWinesStore();
 
   useEffect(() => {
     const loadRegion = async () => {
       if (!name) return;
       try {
         setLoading(true);
-        const response = await getRegionByName(name);
-        setRegion(response.data);
-        await fetchWineries({ region: name, limit: 12 });
+        const res = await getRegionByName(name);
+        const regionData = res.data;
+        setRegion(regionData);
+
+        if (regionData?._id) {
+          await Promise.all([
+            fetchWineries({ region: regionData._id, limit: 12 }),
+            fetchWines({ region: regionData._id, limit: 12 }),
+          ]);
+        }
       } catch (err) {
-        console.error('Failed to load region:', err);
+        console.error('Error loading region:', err);
       } finally {
         setLoading(false);
       }
     };
     loadRegion();
-  }, [name, fetchWineries]);
+  }, [name, fetchWineries, fetchWines]);
 
   if (loading) return <Loader />;
   if (!region) return <Container>Region not found.</Container>;
 
   return (
     <Container>
-      <RegionDetailWrapper>
-        <RegionHeroSection>
-          <MainBanner>
-            <img src={region.imageUrl || '/assets/region-placeholder.jpg'} alt={region.name} />
-          </MainBanner>
-          <RegionInfoBlock>
-            <RegionNameTitle>{region.name}</RegionNameTitle>
-            <DescriptionText>{region.description}</DescriptionText>
-          </RegionInfoBlock>
-        </RegionHeroSection>
+      <StyledRegionWrapper>
+        <StyledRegionHero>
+          <StyledRegionImg>
+            {region.imageUrl ? (
+              <img src={region.imageUrl} alt={region.name} />
+            ) : (
+              <StyledNoImg>{region.name}</StyledNoImg>
+            )}
+          </StyledRegionImg>
 
-        <RegionContent>
-          <RegionInfoGrid>
+          <StyledRegionInfo>
+            <div>
+              <StyledRegionLabel>Region:</StyledRegionLabel>
+              <StyledRegionTitle>{region.name}</StyledRegionTitle>
+            </div>
+            <StyledText>{region.description}</StyledText>
+
             {region.locationAndClimate && (
-              <InfoCard>
-                <h3>{region.locationAndClimate.title || 'Climate'}</h3>
+              <StyledSection>
+                <h3>{region.locationAndClimate.title || 'Geographic location and climate'}</h3>
                 <p>{region.locationAndClimate.description}</p>
-                <ul>
-                  {region.locationAndClimate.features?.map((f: string, i: number) => (
-                    <li key={i}>{f}</li>
-                  ))}
-                </ul>
-              </InfoCard>
+                {region.locationAndClimate.features && (
+                  <ul>
+                    {region.locationAndClimate.features.map((f, i) => (
+                      <li key={i}>{f}</li>
+                    ))}
+                  </ul>
+                )}
+              </StyledSection>
             )}
+          </StyledRegionInfo>
+        </StyledRegionHero>
 
+        <StyledRegionGrid>
+          <StyledColumn>
             {region.soils && (
-              <InfoCard>
-                <h3>{region.soils.title || 'Soils'}</h3>
+              <StyledBlock>
+                <h2>{region.soils.title || `Soils of ${region.name}`}</h2>
                 <p>{region.soils.description}</p>
-                <ul>
-                  {region.soils.mainTypes?.map((s: string, i: number) => (
-                    <li key={i}>{s}</li>
-                  ))}
-                </ul>
-              </InfoCard>
+                {region.soils.mainTypes && (
+                  <StyledTagsWrap>
+                    {region.soils.mainTypes.map((t, i) => (
+                      <StyledTag key={i}>{t}</StyledTag>
+                    ))}
+                  </StyledTagsWrap>
+                )}
+              </StyledBlock>
             )}
 
+            {region.grape && (
+              <StyledBlock>
+                <h2>{region.grape.title || `Main grape varieties of ${region.name}`}</h2>
+                <StyledGrapeGrid>
+                  {region.grape.white && region.grape.white.length > 0 && (
+                    <StyledGrapeItem>
+                      <h4>White Grapes</h4>
+                      <ul>
+                        {region.grape.white.map((g, i) => (
+                          <li key={i}>
+                            <strong>{g.name}</strong>
+                            {g.description}
+                          </li>
+                        ))}
+                      </ul>
+                    </StyledGrapeItem>
+                  )}
+                  {region.grape.red && region.grape.red.length > 0 && (
+                    <StyledGrapeItem>
+                      <h4>Red Grapes</h4>
+                      <ul>
+                        {region.grape.red.map((g, i) => (
+                          <li key={i}>
+                            <strong>{g.name}</strong>
+                            {g.description}
+                          </li>
+                        ))}
+                      </ul>
+                    </StyledGrapeItem>
+                  )}
+                </StyledGrapeGrid>
+              </StyledBlock>
+            )}
+          </StyledColumn>
+
+          <StyledColumn>
             {region.cultureAndTraditions && (
-              <InfoCard>
-                <h3>{region.cultureAndTraditions.title || 'Traditions'}</h3>
+              <StyledBlock>
+                <h2>{region.cultureAndTraditions.title || 'Winemaking culture and traditions'}</h2>
                 <p>{region.cultureAndTraditions.description}</p>
-                <ul>
-                  {region.cultureAndTraditions.rituals?.map((r: string, i: number) => (
-                    <li key={i}>{r}</li>
-                  ))}
-                </ul>
-              </InfoCard>
+                {region.cultureAndTraditions.rituals && (
+                  <ul>
+                    {region.cultureAndTraditions.rituals.map((r, i) => (
+                      <li key={i} style={{ fontSize: '14px', marginBottom: '8px', color: '#555' }}>
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </StyledBlock>
             )}
-          </RegionInfoGrid>
 
-          <SectionHeaderTitle>Wineries in {region.name}</SectionHeaderTitle>
-          {wineriesLoading ? (
+            {region.typicalWines && (
+              <StyledBlock>
+                <h2>{region.typicalWines.title || 'Typical wines of the region'}</h2>
+                <p>{region.typicalWines.description}</p>
+                {region.typicalWines.styles && (
+                  <StyledTagsWrap>
+                    {region.typicalWines.styles.map((s, i) => (
+                      <StyledTag key={i}>{s}</StyledTag>
+                    ))}
+                  </StyledTagsWrap>
+                )}
+              </StyledBlock>
+            )}
+
+            {region.pdo && region.pdo.list && region.pdo.list.length > 0 && (
+              <StyledBlock>
+                <h2>{region.pdo.title || 'PDO'}</h2>
+                <StyledTagsWrap>
+                  {region.pdo.list.map((p, i) => (
+                    <StyledTag key={i}>{p}</StyledTag>
+                  ))}
+                </StyledTagsWrap>
+              </StyledBlock>
+            )}
+          </StyledColumn>
+        </StyledRegionGrid>
+
+        <StyledWineriesWines>
+          <StyledTitle>Wineries and wines of the regions</StyledTitle>
+
+          <StyledTabs>
+            <InfoButton active={activeTab === 'wineries'} onClick={() => setActiveTab('wineries')}>
+              Wineries located in {region.name}
+            </InfoButton>
+            <InfoButton active={activeTab === 'wines'} onClick={() => setActiveTab('wines')}>
+              Wines produced in the {region.name} region
+            </InfoButton>
+          </StyledTabs>
+
+          {activeTab === 'wineries' ? (
+            wineriesLoading ? (
+              <Loader />
+            ) : wineries.length > 0 ? (
+              <WineryList wineries={wineries} />
+            ) : (
+              <p style={{ textAlign: 'center', color: '#666' }}>No wineries found in this region.</p>
+            )
+          ) : winesLoading ? (
             <Loader />
-          ) : wineries.length > 0 ? (
-            <WineryList wineries={wineries} />
+          ) : wines.length > 0 ? (
+            <WineList wines={wines} />
           ) : (
-            <p>No wineries found in this region.</p>
+            <p style={{ textAlign: 'center', color: '#666' }}>No wines found in this region.</p>
           )}
-        </RegionContent>
-      </RegionDetailWrapper>
+        </StyledWineriesWines>
+      </StyledRegionWrapper>
     </Container>
   );
 };

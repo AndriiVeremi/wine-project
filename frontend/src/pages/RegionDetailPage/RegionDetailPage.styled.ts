@@ -1,123 +1,154 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
 
-export const RegionDetailWrapper = styled.div`
+export const StyledRegionWrapper = styled.div`
   width: 100%;
+  padding-top: 40px;
+  padding-bottom: 0;
 `;
 
-export const RegionHeroSection = styled.section`
+export const StyledRegionHero = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  margin-bottom: 60px;
+  gap: 30px;
+  margin-bottom: 50px;
 
   @media (min-width: 1024px) {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: start;
     gap: 48px;
+    align-items: start;
   }
 `;
 
-export const MainBanner = styled.div`
+export const StyledRegionImg = styled.div`
   width: 100%;
-  height: 300px;
+  aspect-ratio: 16 / 10;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-
-  @media (min-width: ${breakpoints.tablet}) {
-    height: 450px;
-  }
-
-  @media (min-width: 1024px) {
-    height: 584px;
-  }
 `;
 
-export const RegionInfoBlock = styled.div`
+export const StyledNoImg = styled.div`
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #841013 0%, #4a0608 100%);
+  color: white;
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  text-align: center;
+  padding: 20px;
+  text-transform: uppercase;
+`;
+
+export const StyledRegionInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
-
-  background: #fff;
-  padding: 24px;
-  border-radius: 16px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-
-  @media (min-width: 1024px) {
-    padding: 32px;
-  }
+  gap: 20px;
 `;
 
-export const RegionNameTitle = styled.h1`
+export const StyledRegionLabel = styled.span`
   font-family: 'Montserrat Alternates', sans-serif;
-  font-size: 28px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  text-transform: uppercase;
+`;
+
+export const StyledRegionTitle = styled.h1`
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 36px;
   font-weight: 600;
-  color: var(--accent-color, #841013);
+  color: #841013;
   margin: 0;
-  line-height: 1.1;
 
   @media (min-width: ${breakpoints.tablet}) {
-    font-size: 40px;
-  }
-
-  @media (min-width: ${breakpoints.desktop}) {
-    font-size: 49px;
+    font-size: 48px;
   }
 `;
 
-export const DescriptionText = styled.div`
+export const StyledText = styled.p`
   font-size: 16px;
   line-height: 1.6;
-  color: #3f3f3f;
-  white-space: pre-wrap;
-
-  @media (min-width: ${breakpoints.tablet}) {
-    font-size: 18px;
-  }
+  color: #444;
+  margin: 0;
 `;
 
-export const RegionContent = styled.div`
-  padding: 40px 0 80px;
-`;
-
-export const RegionInfoGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-bottom: 80px;
-`;
-
-export const InfoCard = styled.div`
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+export const StyledSection = styled.div`
+  margin-top: 10px;
 
   h3 {
+    font-family: 'Montserrat Alternates', sans-serif;
     font-size: 24px;
+    font-weight: 600;
     color: #841013;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #841013;
-    padding-bottom: 10px;
-    display: inline-block;
+    margin-bottom: 12px;
   }
 
   p {
     font-size: 16px;
-    color: #333;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: disc;
+    padding-left: 20px;
+    color: #555;
+  }
+
+  li {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+`;
+
+export const StyledRegionGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+`;
+
+export const StyledColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;
+
+export const StyledBlock = styled.div`
+  h2 {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #841013;
     margin-bottom: 15px;
-    line-height: 1.5;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 15px;
   }
 
   ul {
@@ -132,16 +163,79 @@ export const InfoCard = styled.div`
   }
 `;
 
-export const SectionHeaderTitle = styled.h2`
+export const StyledGrapeGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+`;
+
+export const StyledGrapeItem = styled.div`
+  h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
+
+    strong {
+      color: #841013;
+      display: block;
+    }
+  }
+`;
+
+export const StyledTagsWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+`;
+
+export const StyledTag = styled.span`
+  background: #f8f1f1;
+  color: #841013;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #ebdada;
+`;
+
+export const StyledWineriesWines = styled.section`
+  margin-top: 80px;
+`;
+
+export const StyledTitle = styled.h2`
   font-family: 'Montserrat Alternates', sans-serif;
   font-size: 32px;
-  font-weight: 500;
-  color: var(--accent-color, #841013);
+  font-weight: 600;
+  color: #841013;
   text-align: center;
+  margin-bottom: 0;
   text-transform: uppercase;
-  margin-bottom: 40px;
+`;
+
+export const StyledTabs = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 110px;
+  margin-bottom: 90px;
 
   @media (min-width: ${breakpoints.tablet}) {
-    font-size: 49px;
+    flex-direction: row;
+    gap: 24px;
   }
 `;
