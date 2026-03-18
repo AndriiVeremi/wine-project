@@ -25,7 +25,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
 
   const { country } = useLocationStore();
 
-  const { data: regions = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
+  const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery({
     queryKey: ['regions', country],
     queryFn: async () => {
       const res = await getRegions(country);
@@ -34,13 +34,17 @@ const WineFilter = ({ className }: PropsWineFilter) => {
     enabled: !!country,
   });
 
-  const { data: grapes = [], isLoading: isLoadingGrapes } = useQuery<Grape[]>({
+  const regions = Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : [];
+
+  const { data: grapesRaw, isLoading: isLoadingGrapes } = useQuery({
     queryKey: ['grapes', region],
     queryFn: async () => {
       const res = await getGrapes({ limit: 9999, region });
       return res.data.grapes;
     },
   });
+
+  const grapes = Array.isArray(grapesRaw) ? (grapesRaw as Grape[]) : [];
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
