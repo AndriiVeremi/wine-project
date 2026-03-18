@@ -8,12 +8,12 @@ export const StyledWinePageDiv = styled.div`
   padding-bottom: 20px;
   @media (min-width: ${breakpoints.desktop}) {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr 500px;
     grid-template-areas:
       'image info'
       'tabs info'
       'content info';
-    gap: 40px 80px;
+    gap: 40px 40px;
     padding-bottom: 40px;
     align-items: start;
   }
