@@ -9,6 +9,7 @@ interface MainButtonProps {
   fullWidth?: boolean;
   centered?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 const MainButton: React.FC<MainButtonProps> = ({
   children,
@@ -19,6 +20,7 @@ const MainButton: React.FC<MainButtonProps> = ({
   fullWidth = false,
   centered = false,
   className,
+  style,
 }) => {
   return (
     <Button
@@ -29,6 +31,7 @@ const MainButton: React.FC<MainButtonProps> = ({
       $fullWidth={fullWidth}
       $centered={centered}
       className={className}
+      style={style}
     >
       {children}
     </Button>

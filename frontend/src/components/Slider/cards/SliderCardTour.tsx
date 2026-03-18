@@ -15,10 +15,11 @@ interface TourCardProps {
     _id: string;
     name: string;
     images: string[];
-    price: number;
-    duration: number;
+    price?: number;
+    duration?: number;
     averageRating?: number;
     totalReviews?: number;
+    groupSize?: { min: number; max: number };
   };
 }
 
