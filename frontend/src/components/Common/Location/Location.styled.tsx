@@ -14,10 +14,10 @@ export const Text = styled('p')`
 
 export const LocationIcon = styled(CiLocationOn)`
   color: var(--brown-icon);
-  width: 20px;
-  height: 28px;
+  width: 22px;
+  height: 30px;
   margin-right: 2px;
-  stroke-width: 1px;
+  stroke-width: 0.6px;
 `;
 
 export const DropDownIcon = styled(IoChevronDownSharp)`
