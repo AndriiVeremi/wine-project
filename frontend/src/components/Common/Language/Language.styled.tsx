@@ -6,7 +6,7 @@ export const GlobeIcon = styled(FiGlobe)`
   color: var(--brown-icon);
   width: 20px;
   height: 28px;
-  stroke-width: 1px;
+  stroke-width: 1.4px;
 `;
 
 export const LanguageWrapper = styled.div`
