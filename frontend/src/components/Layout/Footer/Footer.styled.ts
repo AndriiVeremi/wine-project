@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FaFacebookF, FaTelegramPlane } from 'react-icons/fa';
+import { FaFacebookF, FaTripadvisor } from 'react-icons/fa';
 import { BiLogoInstagramAlt } from 'react-icons/bi';
 import '@/styles/vars.css';
 
@@ -109,7 +109,7 @@ export const InstagramIcon = styled(BiLogoInstagramAlt)`
   height: 30px;
   transition: color 0.3s ease;
 `;
-export const TelegramIcon = styled(FaTelegramPlane)`
+export const TelegramIcon = styled(FaTripadvisor)`
   color: var(--primary-wine);
   width: 34px;
   height: 28px;
