@@ -26,9 +26,7 @@ const TourCard = ({ tour }: PropsTourCard) => {
         <TourCardImage src={tour.images[0]} />
         <TourCardInfo>
           <TourCardTitle title={tour.name}>{tour.name}</TourCardTitle>
-          <TourCardDescription>
-            {stripHtml(tour.description || '')}
-          </TourCardDescription>
+          <TourCardDescription>{stripHtml(tour.description || '')}</TourCardDescription>
           <InfoRow>
             <InfoItem>
               <FiClock />
