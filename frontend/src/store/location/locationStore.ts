@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { getRegions } from '@/api/regions';
+import { notifyError } from '@/utils/toast';
 
 interface RegionOption {
   _id: string;
@@ -37,6 +38,7 @@ export const useLocationStore = create<LocationState>()(
           set({ regions: res.data || [], loading: false });
         } catch (err) {
           console.error('Failed to fetch regions', err);
+          notifyError('Failed to load regions');
           set({ regions: [], loading: false });
         }
       },

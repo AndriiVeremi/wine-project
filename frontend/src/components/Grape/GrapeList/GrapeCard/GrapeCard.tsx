@@ -1,6 +1,7 @@
 import { FaMapMarkerAlt, FaTint, FaWineBottle, FaClock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import type { Grape } from '@/types/grape';
+import { stripHtml } from '@/utils/text';
 import {
   StyledGrapeCardDiv,
   GrapeImage,
@@ -70,7 +71,7 @@ const GrapeCard = ({ grape }: Props) => {
         </CharacteristicItem>
       </CharacteristicsContainer>
 
-      <GrapeDescription>{grape.description}</GrapeDescription>
+      <GrapeDescription>{stripHtml(grape.description || '')}</GrapeDescription>
     </StyledGrapeCardDiv>
   );
 };

@@ -13,6 +13,7 @@ import {
   ActionBtns,
   IconButton,
   SearchInput,
+  SearchWrapper,
   ListHeader,
   Row,
 } from './TableManager.styled';
@@ -71,14 +72,14 @@ function TableManager<T>({
           {title} ({total})
         </SectionTitle>
         <ListHeader>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+          <SearchWrapper>
             <SearchInput
               placeholder="Search items..."
               value={search}
               onChange={(e) => onSearch(e.target.value)}
             />
             {extraHeaderContent}
-          </div>
+          </SearchWrapper>
           {onAdd && (
             <MainButton type="button" onClick={onAdd}>
               <FiPlus /> ADD NEW

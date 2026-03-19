@@ -76,10 +76,14 @@ export const GrapeDescription = styled.p`
   color: var(--font-grey);
   font-family: var(--font-main);
   font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
 
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-top: auto;
+  min-height: 84px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 `;
