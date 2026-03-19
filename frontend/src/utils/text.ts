@@ -1,0 +1,10 @@
+export const stripHtml = (html: string) => {
+  const tmp = document.createElement('DIV');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+};
+
+export const truncateText = (text: string, limit: number = 100) => {
+  if (text.length <= limit) return text;
+  return text.slice(0, limit) + '...';
+};

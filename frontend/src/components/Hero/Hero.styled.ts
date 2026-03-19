@@ -8,6 +8,7 @@ export const HeroSection = styled('section')`
 export const HeroWrapper = styled('div')`
   max-width: 800px;
   padding-left: 100px;
+  padding-top: 60px;
   margin-bottom: 80px;
 
   @media (max-width: 1279px) {

@@ -12,6 +12,7 @@ import InfoButton from '@/components/Buttons/InfoButton/InfoButton';
 import ItemReviews from '@/components/Wine/WineReviews';
 import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
 import { HiMapPin, HiGlobeAlt, HiEnvelope, HiPhone } from 'react-icons/hi2';
+import Container from '@/components/Common/Container';
 import {
   DetailPageContainer,
   HeroSection,
@@ -76,145 +77,152 @@ const WineryDetailPage = () => {
   }, [id, fetch, loadWinery]);
 
   if (loading) return <Loader />;
-  if (error || !winery) return <DetailPageContainer>Winery not found.</DetailPageContainer>;
+  if (error || !winery)
+    return (
+      <Container>
+        <p>Winery not found.</p>
+      </Container>
+    );
 
   const galleryImages = [...(winery.logoUrl ? [winery.logoUrl] : []), ...(winery.galleryUrl || [])];
   if (galleryImages.length === 0) galleryImages.push('/assets/winery-placeholder.png');
   const thumbnails = galleryImages.slice(0, 4);
 
   return (
-    <DetailPageContainer>
-      <HeroSection>
-        <GalleryWrapper>
-          <MainBanner>
-            <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={winery.name} />
-          </MainBanner>
-          <ThumbnailsGrid>
-            {thumbnails.map((url, index) => (
-              <Thumbnail
-                key={index}
-                $active={activeImageIdx === index}
-                onClick={() => setActiveImageIdx(index)}
-              >
-                <img src={url} alt="Thumbnail" />
-              </Thumbnail>
-            ))}
-          </ThumbnailsGrid>
-        </GalleryWrapper>
-        <WineryInfoBlock>
-          <WineryNameTitle>{winery.name}</WineryNameTitle>
-          <WineryHeaderRow>
-            <WineryLogoInHeader>
-              <img src={winery.logoUrl || '/assets/winery-placeholder.png'} alt="Logo" />
-            </WineryLogoInHeader>
-            <ContactsList>
-              <InfoRow>
-                <RatingStars
-                  value={winery.averageRating ?? 0}
-                  showLeftValue={true}
-                  showRightReviews={true}
-                  size={18}
-                />
-                <span style={{ color: '#3f3f3f', fontSize: '14px' }}>
-                  ({winery.totalReviews || 0})
-                </span>
-              </InfoRow>
-              <InfoRow>
-                <HiMapPin size={20} />
-                {winery.address || 'Georgia'}
-              </InfoRow>
-              <InfoRow>
-                <HiGlobeAlt size={20} />
-                <a
-                  href={winery.websiteUrl || '#'}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ color: 'inherit', textDecoration: 'none' }}
+    <Container>
+      <DetailPageContainer>
+        <HeroSection>
+          <GalleryWrapper>
+            <MainBanner>
+              <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={winery.name} />
+            </MainBanner>
+            <ThumbnailsGrid>
+              {thumbnails.map((url, index) => (
+                <Thumbnail
+                  key={index}
+                  $active={activeImageIdx === index}
+                  onClick={() => setActiveImageIdx(index)}
                 >
-                  {winery.websiteUrl
-                    ? winery.websiteUrl.replace('https://', '')
-                    : 'winery-website.com'}
-                </a>
-              </InfoRow>
-              <InfoRow>
-                <HiEnvelope size={20} />
-                {winery.contactEmail}
-              </InfoRow>
-              <InfoRow>
-                <HiPhone size={20} />
-                {winery.contactPhone}
-              </InfoRow>
-            </ContactsList>
-          </WineryHeaderRow>
-        </WineryInfoBlock>
-        {getYouTubeEmbedUrl(winery.videoUrl) && (
-          <VideoWrapper>
-            <iframe src={getYouTubeEmbedUrl(winery.videoUrl)!} title="Video" allowFullScreen />
-          </VideoWrapper>
-        )}
-      </HeroSection>
-      <TabButtonsWrapper>
-        <InfoButton
-          active={activeTab === 'description'}
-          onClick={() => setActiveTab('description')}
-        >
-          Description
-        </InfoButton>
-        <InfoButton active={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')}>
-          Reviews
-        </InfoButton>
-      </TabButtonsWrapper>
-      {activeTab === 'description' ? (
-        <DescriptionText
-          dangerouslySetInnerHTML={{ __html: winery.history || 'No description available.' }}
-        />
-      ) : (
-        <div style={{ marginBottom: '80px' }}>
-          <ItemReviews key={refresh} wineryId={winery._id} />
-          <AddReviewForm
-            wineryId={winery._id}
-            onReviewAdded={() => {
-              setRefresh((prev) => prev + 1);
-              loadWinery();
-            }}
-          />
-        </div>
-      )}
-      <MapSection style={{ marginBottom: '80px' }}>
-        {winery.coordinates ? (
-          <WineryMap
-            lat={winery.coordinates.lat}
-            lng={winery.coordinates.lng}
-            wineryName={winery.name}
+                  <img src={url} alt="Thumbnail" />
+                </Thumbnail>
+              ))}
+            </ThumbnailsGrid>
+          </GalleryWrapper>
+          <WineryInfoBlock>
+            <WineryNameTitle>{winery.name}</WineryNameTitle>
+            <WineryHeaderRow>
+              <WineryLogoInHeader>
+                <img src={winery.logoUrl || '/assets/winery-placeholder.png'} alt="Logo" />
+              </WineryLogoInHeader>
+              <ContactsList>
+                <InfoRow>
+                  <RatingStars
+                    value={winery.averageRating ?? 0}
+                    showLeftValue={true}
+                    showRightReviews={true}
+                    size={18}
+                  />
+                  <span style={{ color: '#3f3f3f', fontSize: '14px' }}>
+                    ({winery.totalReviews || 0})
+                  </span>
+                </InfoRow>
+                <InfoRow>
+                  <HiMapPin size={20} />
+                  {winery.address || 'Georgia'}
+                </InfoRow>
+                <InfoRow>
+                  <HiGlobeAlt size={20} />
+                  <a
+                    href={winery.websiteUrl || '#'}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: 'inherit', textDecoration: 'none' }}
+                  >
+                    {winery.websiteUrl
+                      ? winery.websiteUrl.replace('https://', '')
+                      : 'winery-website.com'}
+                  </a>
+                </InfoRow>
+                <InfoRow>
+                  <HiEnvelope size={20} />
+                  {winery.contactEmail}
+                </InfoRow>
+                <InfoRow>
+                  <HiPhone size={20} />
+                  {winery.contactPhone}
+                </InfoRow>
+              </ContactsList>
+            </WineryHeaderRow>
+          </WineryInfoBlock>
+          {getYouTubeEmbedUrl(winery.videoUrl) && (
+            <VideoWrapper>
+              <iframe src={getYouTubeEmbedUrl(winery.videoUrl)!} title="Video" allowFullScreen />
+            </VideoWrapper>
+          )}
+        </HeroSection>
+        <TabButtonsWrapper>
+          <InfoButton
+            active={activeTab === 'description'}
+            onClick={() => setActiveTab('description')}
+          >
+            Description
+          </InfoButton>
+          <InfoButton active={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')}>
+            Reviews
+          </InfoButton>
+        </TabButtonsWrapper>
+        {activeTab === 'description' ? (
+          <DescriptionText
+            dangerouslySetInnerHTML={{ __html: winery.history || 'No description available.' }}
           />
         ) : (
-          <div
-            style={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: '#f0f0f0',
-            }}
-          >
-            Map not available
+          <div style={{ marginBottom: '80px' }}>
+            <ItemReviews key={refresh} wineryId={winery._id} />
+            <AddReviewForm
+              wineryId={winery._id}
+              onReviewAdded={() => {
+                setRefresh((prev) => prev + 1);
+                loadWinery();
+              }}
+            />
           </div>
         )}
-      </MapSection>
-      {winesLoading ? (
-        <p style={{ textAlign: 'center' }}>Loading bestsellers...</p>
-      ) : (
-        wines.length > 0 && (
-          <section style={{ marginBottom: '40px' }}>
-            <SectionHeaderTitle>Bestsellers</SectionHeaderTitle>
-            <Slider
-              items={wines.slice(0, 8)}
-              renderItem={(wine) => <SliderCardWine wine={wine} />}
+        <MapSection style={{ marginBottom: '80px' }}>
+          {winery.coordinates ? (
+            <WineryMap
+              lat={winery.coordinates.lat}
+              lng={winery.coordinates.lng}
+              wineryName={winery.name}
             />
-          </section>
-        )
-      )}
-    </DetailPageContainer>
+          ) : (
+            <div
+              style={{
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#f0f0f0',
+              }}
+            >
+              Map not available
+            </div>
+          )}
+        </MapSection>
+        {winesLoading ? (
+          <p style={{ textAlign: 'center' }}>Loading bestsellers...</p>
+        ) : (
+          wines.length > 0 && (
+            <section style={{ marginBottom: '40px' }}>
+              <SectionHeaderTitle>Bestsellers</SectionHeaderTitle>
+              <Slider
+                items={wines.slice(0, 8)}
+                renderItem={(wine) => <SliderCardWine wine={wine} />}
+              />
+            </section>
+          )
+        )}
+      </DetailPageContainer>
+    </Container>
   );
 };
 

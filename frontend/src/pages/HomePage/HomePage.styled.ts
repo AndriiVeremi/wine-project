@@ -6,13 +6,13 @@ import reviewImg from '@/assets/review_bg-img.png';
 export const WineSection = styled.section`
   width: 100%;
   background-color: var(--white);
-  padding-top: 100px;
-  padding-bottom: 140px;
+  padding-bottom: 100px;
+  padding-top: 60px;
   overflow: hidden;
 
   @media (max-width: 767px) {
-    padding-top: 60px;
-    padding-bottom: 80px;
+    padding-top: 40px;
+    padding-bottom: 60px;
   }
 `;
 

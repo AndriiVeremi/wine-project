@@ -4,7 +4,6 @@ export const TourDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 40px 0;
   @media (min-width: ${breakpoints.desktop}) {
     flex-direction: row;
     align-items: flex-start;
@@ -158,6 +157,22 @@ export const BookingCard = styled.div`
     max-width: 280px;
   }
 `;
+export const MobileBookingCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--tertiary-gray);
+  @media (min-width: ${breakpoints.desktop}) {
+    display: none;
+  }
+  button {
+    align-self: center;
+    width: 100%;
+  }
+`;
 export const PriceRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -194,21 +209,18 @@ export const FeatureItem = styled.li`
 
 export const SliderSection = styled.section`
   margin-top: 60px;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 `;
 
 export const SectionHeaderTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: left;
-  border-left: 4px solid var(--primary-wine, #841013);
-  padding-left: 12px;
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--accent-color, #841013);
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 40px;
   @media (min-width: ${breakpoints.tablet}) {
-    font-size: 28px;
-    border-left-width: 6px;
-    padding-left: 20px;
-    margin-bottom: 30px;
+    font-size: 49px;
   }
 `;

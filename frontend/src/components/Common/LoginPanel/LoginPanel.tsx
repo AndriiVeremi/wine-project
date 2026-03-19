@@ -1,5 +1,4 @@
-import { Item, List, Text } from '@/components/Common/Location/Location.styled';
-import { UserIcon } from './LoginPanel.styled';
+import { LoginWrapper, UserIcon, LoginText } from './LoginPanel.styled';
 import { useAuthStore } from '@/store/auth/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,16 +20,10 @@ const Login = ({ onClick }: Props) => {
   };
 
   return (
-    <>
-      <List onClick={handleLoginClick} style={{ cursor: 'pointer' }}>
-        <Item>
-          <UserIcon />
-        </Item>
-        <Item>
-          <Text>{user ? profile?.firstName || 'User' : 'Login'}</Text>
-        </Item>
-      </List>
-    </>
+    <LoginWrapper onClick={handleLoginClick}>
+      <UserIcon />
+      <LoginText>{user ? profile?.firstName || 'User' : 'Login'}</LoginText>
+    </LoginWrapper>
   );
 };
 

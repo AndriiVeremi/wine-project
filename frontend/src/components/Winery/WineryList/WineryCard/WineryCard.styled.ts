@@ -55,6 +55,8 @@ export const WineryInfo = styled.p`
   overflow: hidden;
   line-height: 1.5;
   min-height: 105px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 `;
 
 export const WineryLink = styled.a`
