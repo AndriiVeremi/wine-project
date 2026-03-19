@@ -5,7 +5,7 @@ export const UserIcon = styled(RiUserLine)`
   color: var(--brown-icon);
   width: 20px;
   height: 28px;
-  stroke-width: 1px;
+  stroke-width: 0.1px;
 `;
 export const List = styled('ul')`
   display: flex;

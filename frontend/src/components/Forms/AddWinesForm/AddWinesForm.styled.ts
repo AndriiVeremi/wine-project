@@ -63,22 +63,14 @@ export const FormGrid = styled.div`
 
 export const SectionTitle = styled.h3`
   grid-column: 1 / -1;
-  font-size: 14px;
-  font-weight: 800;
-  color: #94a3b8;
+  font-size: 18px;
+  font-weight: 700;
+  color: #841013;
   margin: 40px 0 20px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   display: flex;
   align-items: center;
-  gap: 16px;
-
-  &:after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #f1f5f9;
-  }
 `;
 
 export const FullWidthWrapper = styled.div`
@@ -95,21 +87,54 @@ export const CheckboxWrapper = styled.label`
   cursor: pointer;
   font-size: 15px;
   color: #475569;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  padding: 14px 18px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
   transition: all 0.2s;
+  user-select: none;
 
   &:hover {
-    background: #f1f5f9;
+    border-color: #841013;
+    background: #fffafa;
+  }
+
+  &:hover input {
+    border-color: #841013;
   }
 
   input {
-    width: 20px;
-    height: 20px;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #94a3b8;
+    border-radius: 6px;
+    background: #ffffff;
     cursor: pointer;
-    accent-color: #841013;
+    position: relative;
+    transition: all 0.2s;
+    flex-shrink: 0;
+
+    &:checked {
+      background: #841013;
+      border-color: #841013;
+    }
+
+    &:checked::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 11px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.1);
+    }
   }
 `;
 

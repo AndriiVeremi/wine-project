@@ -1,6 +1,7 @@
 import { FiClock, FiUsers } from 'react-icons/fi';
 import type { Tour } from '@/types/tours';
 import { Link } from 'react-router-dom';
+import { stripHtml } from '@/utils/text';
 import {
   InfoItem,
   InfoRow,
@@ -11,6 +12,7 @@ import {
   TourCardImage,
   TourCardInfo,
   TourCardTitle,
+  TourCardDescription,
 } from './TourCard.styled';
 
 interface PropsTourCard {
@@ -24,6 +26,7 @@ const TourCard = ({ tour }: PropsTourCard) => {
         <TourCardImage src={tour.images[0]} />
         <TourCardInfo>
           <TourCardTitle title={tour.name}>{tour.name}</TourCardTitle>
+          <TourCardDescription>{stripHtml(tour.description || '')}</TourCardDescription>
           <InfoRow>
             <InfoItem>
               <FiClock />

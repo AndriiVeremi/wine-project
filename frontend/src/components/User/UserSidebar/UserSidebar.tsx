@@ -12,9 +12,6 @@ import {
   FiMessageSquare,
   FiInfo,
   FiMail,
-  FiShield,
-  FiFileText,
-  FiDatabase,
 } from 'react-icons/fi';
 import { FaWineBottle, FaLeaf } from 'react-icons/fa';
 import { MenuContainer, MenuItem } from './UserSidebar.styled';
@@ -38,10 +35,7 @@ export type AccountSection =
   | 'Users'
   | 'Reviews'
   | 'About project'
-  | 'Contacts'
-  | 'Privacy policy'
-  | 'Terms of use'
-  | 'Cookies';
+  | 'Contacts';
 
 interface Props {
   currentSection: AccountSection;
@@ -59,9 +53,6 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
     const baseItems = [
       { name: 'About project', icon: <FiInfo /> },
       { name: 'Contacts', icon: <FiMail /> },
-      { name: 'Privacy policy', icon: <FiShield /> },
-      { name: 'Terms of use', icon: <FiFileText /> },
-      { name: 'Cookies', icon: <FiDatabase /> },
     ];
 
     if (isAdmin) {

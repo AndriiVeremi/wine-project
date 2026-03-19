@@ -4,13 +4,14 @@ import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 import MainButton from '@/components/Buttons/MainButton';
 import type { Grape } from '@/types/grape';
+import TextEditor from '@/components/Common/TextEditor/TextEditor';
 import {
   AddGrapeWrapper,
   TopSection,
   PhotoSide,
   InfoSide,
+  InfoGrid,
   FormGrid,
-  SectionTitle,
   FullWidthWrapper,
   ButtonWrapper,
   TagItem,
@@ -88,17 +89,7 @@ const DynamicTags = ({
 
   return (
     <TagBox>
-      <label
-        style={{
-          fontSize: '12px',
-          fontWeight: 800,
-          color: '#94a3b8',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-        }}
-      >
-        {label}
-      </label>
+      <h4>{label}</h4>
       <TagsList>
         {tags.map((t) => (
           <TagItem key={t} $selected onClick={() => kill(t)} style={{ cursor: 'pointer' }}>
@@ -207,7 +198,7 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
             />
           </PhotoSide>
           <InfoSide>
-            <FormGrid>
+            <InfoGrid>
               <FormField
                 label="Varietal Name"
                 id="name"
@@ -224,11 +215,10 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
                 required
                 options={typeOpts}
               />
-            </FormGrid>
+            </InfoGrid>
           </InfoSide>
         </TopSection>
 
-        <SectionTitle>Profile & Characteristics</SectionTitle>
         <FormGrid>
           <FormField
             label="Acidity Level"
@@ -275,13 +265,10 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
               tags={vals.foodPairing}
               onUpdate={(t) => setVals((p) => ({ ...p, foodPairing: t }))}
             />
-            <FormField
+            <TextEditor
               label="Full Variety History"
-              id="description"
-              isTextarea
               value={vals.description}
-              onChange={onInput}
-              placeholder="Write about history, origin..."
+              onChange={(v: string) => setVals((p) => ({ ...p, description: v }))}
             />
           </FullWidthWrapper>
         </FormGrid>
