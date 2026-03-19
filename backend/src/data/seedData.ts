@@ -108,7 +108,7 @@ export const regions = [
     _id: kakhetiId,
     name: 'Kakheti',
     description:
-      'The cradle of Georgian wine culture. This eastern region is famous for its ancient qvevri winemaking tradition and produces the majority of Georgias premium wines. The unique terroir with diverse microclimates creates ideal conditions for both red and white grape varieties.',
+      'The cradle of Georgian wine culture. This eastern region is famous for its ancient qvevri winemaking tradition and produces the majority of Georgia premium wines. The unique terroir with diverse microclimates creates ideal conditions for both red and white grape varieties.',
     imageUrl: 'https://placehold.co/600x400/841013/FFFFFF?text=Kakheti',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
@@ -345,6 +345,46 @@ export const regions = [
     description:
       'A scenic coastal region in southwestern Georgia with a unique maritime climate. Adjara is renowned for producing Chkhaveri, a rare pink grape variety that creates elegant rose wines.',
     imageUrl: 'https://placehold.co/600x400/0277BD/FFFFFF?text=Adjara',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Located along the Black Sea coast, Adjara has a humid maritime climate with high rainfall and mild temperatures throughout the year.',
+      features: ['Coastal proximity', 'Humid Maritime', 'High precipitation'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'The soils are predominantly red and yellow podzolic, rich in iron and other minerals, which contribute to the unique character of local varieties.',
+      mainTypes: ['Red Podzolic', 'Yellow Podzolic'],
+      properties: ['Acidic', 'Iron-rich', 'Well-drained on slopes'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Adjara has a long history of mountain viticulture, where vines were traditionally grown up trees (Maglari method).',
+      rituals: ['Mountain vine cultivation', 'Maritime harvest', 'Traditional family cellars'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Tsolikouri', description: 'Adapts well to the humid coastal climate.' }],
+      red: [{ name: 'Chkhaveri', description: 'The pride of Adjara, making delicate rose wines.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description:
+        'Famous for its elegant Chkhaveri rose and light, refreshing white wines with high acidity.',
+      styles: ['Delicate Rose', 'Crisp White', 'Natural Semi-sweet'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Focusing on the unique micro-zones of the Adjarian mountains.',
+      list: ['Keda'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'Adjara preserves unique coastal and mountain viticulture traditions.',
+      points: ['Maritime terroir leader', 'Home to rare Chkhaveri', 'Eco-tourism hub'],
+    },
   },
   {
     _id: tbilisiId,
@@ -352,6 +392,46 @@ export const regions = [
     description:
       'The capital region and urban winemaking hub of Georgia. While not a traditional wine region, Tbilisi hosts many innovative wineries and wine bars showcasing diverse wine culture.',
     imageUrl: 'https://placehold.co/600x400/37474F/FFFFFF?text=Tbilisi',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Located in the heart of the country, Tbilisi has a moderate continental climate with hot summers and cool winters.',
+      features: ['Urban microclimate', 'Mtkvari River valley', 'Sheltered by hills'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'The surrounding areas have diverse soils, including clay and alluvial deposits.',
+      mainTypes: ['Clay', 'Alluvial', 'Urban soil layers'],
+      properties: ['Varied', 'Balanced fertility'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Tbilisi is the center of the modern Georgian wine scene, hosting major festivals and experimental urban wineries.',
+      rituals: ['New Wine Festival', 'Urban wine tastings', 'Wine bar culture'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Rkatsiteli', description: 'Widely available from surrounding regions.' }],
+      red: [{ name: 'Saperavi', description: 'The staple of urban wine production.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Features a mix of traditional styles and modern experimental blends.',
+      styles: ['Urban Blends', 'Natural Wines', 'Craft Labels'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Tbilisi serves as a hub for wines from all PDOs.',
+      list: ['National Hub'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description:
+        'As the capital, it is the primary market and promotional center for Georgian wine.',
+      points: ['Commercial center', 'Tourism gateway', 'Education hub'],
+    },
   },
   {
     _id: guriaId,
@@ -359,6 +439,45 @@ export const regions = [
     description:
       'A small but significant region in western Georgia known for rare indigenous varieties. Guria produces distinctive wines from Tsolikouri and other local grapes.',
     imageUrl: 'https://placehold.co/600x400/2E7D32/FFFFFF?text=Guria',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'A humid region in western Georgia with a subtropical maritime climate, influenced by the Black Sea.',
+      features: ['Subtropical humidity', 'Maritime influence', 'Lush vegetation'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'Red and yellow soils predominate, providing good conditions for local varietals.',
+      mainTypes: ['Red Soil', 'Alluvial'],
+      properties: ['Moist', 'Mineral-rich'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Guria has a unique tradition of polyphonic singing associated with the harvest.',
+      rituals: ['Harvest songs', 'Traditional pressing', 'Local wine festivals'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Tsolikouri', description: 'The main white grape of the region.' }],
+      red: [{ name: 'Jani', description: 'A rare and prized local red variety.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Known for high-quality dry and semi-sweet wines.',
+      styles: ['Light White', 'Rare Red'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Developing PDOs based on local micro-zones.',
+      list: ['Chkhaveri zones'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'Crucial for preserving rare western Georgian grape varieties.',
+      points: ['Biodiversity', 'Cultural heritage', 'Unique terroir'],
+    },
   },
   {
     _id: samtskheJavakhetiId,
@@ -366,6 +485,43 @@ export const regions = [
     description:
       'A southern highland region with a continental climate ideal for wine production. The region is known for producing robust wines with high acidity from varieties adapted to harsh winters.',
     imageUrl: 'https://placehold.co/600x400/6D4C41/FFFFFF?text=Samtskhe',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'A high-altitude plateau with a harsh continental climate and significant temperature fluctuations.',
+      features: ['High altitude', 'Extreme temperatures', 'Volcanic plateau'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description: 'Volcanic and stony soils provide unique mineral profiles.',
+      mainTypes: ['Volcanic', 'Stony'],
+      properties: ['Mineral-dense', 'Well-drained'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description: 'Revival of ancient terrace viticulture in high-altitude zones.',
+      rituals: ['Terrace restoration', 'Mountain harvest', 'Ancient cellar finds'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Tamris Vazi', description: 'An ancient variety being rediscovered.' }],
+      red: [{ name: 'Saperavi Budeshuriseburi', description: 'Adapted to higher altitudes.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Mineral-driven wines with high acidity and aging potential.',
+      styles: ['High-acid White', 'Mineral Red'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Focusing on unique high-altitude micro-zones.',
+      list: ['Vardzia zones'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'Leading the way in high-altitude and terrace viticulture research.',
+      points: ['Historical revival', 'Extreme viticulture', 'Unique mineral terroir'],
+    },
   },
   {
     _id: zakarpattiaId,
@@ -373,6 +529,43 @@ export const regions = [
     description:
       'Ukraines most famous wine region, located in the southwestern Carpathian mountains. The unique microclimate and volcanic soils create ideal conditions for producing premium wines, particularly from indigenous grape varieties.',
     imageUrl: 'https://placehold.co/600x400/8B4513/FFFFFF?text=Zakarpattia',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Sheltered by the Carpathian Mountains, this region enjoys a sunny and warm microclimate.',
+      features: ['Carpathian protection', 'Warm microclimate', 'Volcanic slopes'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description: 'Rich volcanic soils provide a distinct mineral character to the wines.',
+      mainTypes: ['Volcanic', 'Clay', 'Rocky'],
+      properties: ['Rich in minerals', 'Good heat retention'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description: 'A mix of Ukrainian, Hungarian, and European winemaking traditions.',
+      rituals: ['Wine festivals', 'Cellar tastings', 'Autumn harvest celebrations'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Leanka', description: 'A delicate and aromatic white variety.' }],
+      red: [{ name: 'Cabernet Sauvignon', description: 'Produces structured and fruity reds.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Famous for both aromatic whites and full-bodied reds.',
+      styles: ['Aromatic White', 'Mineral Red', 'Dessert Wine'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Recognized geographical indications for Transcarpathian wines.',
+      list: ['Zakarpattia'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'A key Ukrainian partner and producer of high-quality European-style wines.',
+      points: ['Western gateway', 'Volcanic terroir leader', 'Cultural bridge'],
+    },
   },
   {
     _id: odesaId,
@@ -380,6 +573,42 @@ export const regions = [
     description:
       'A major wine-producing region in southern Ukraine with a long winemaking tradition. The Black Sea coast provides a mild climate perfect for cultivating international grape varieties.',
     imageUrl: 'https://placehold.co/600x400/87CEEB/333333?text=Odesa',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description: 'A mild maritime climate with long, sunny summers influenced by the Black Sea.',
+      features: ['Maritime influence', 'Steppe plains', 'Sun-drenched vineyards'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description: 'Black soil (chernozem) and sandy-clay deposits predominate.',
+      mainTypes: ['Chernozem', 'Sandy-Clay'],
+      properties: ['Fertile', 'Balanced'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description: 'Home to some of Ukraines largest and most historic wineries.',
+      rituals: ['Sea-side festivals', 'Industrial-scale harvest', 'Wine tourism'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Telti-Kuruk', description: 'A unique local variety from Shabo.' }],
+      red: [{ name: 'Cabernet Sauvignon', description: 'The dominant red variety.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Versatile range from sparkling to heavy reds.',
+      styles: ['Sparkling', 'Coastal White', 'Robust Red'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Developing quality standards for coastal zones.',
+      list: ['Shabo', 'Yalpuh'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'The largest wine production center in Ukraine.',
+      points: ['Industrial leader', 'Maritime terroir', 'Export hub'],
+    },
   },
   {
     _id: khersonId,
@@ -387,6 +616,42 @@ export const regions = [
     description:
       'A southern Ukrainian region known for its vast vineyards and modern winemaking. The steppe climate and fertile soils produce reliable yields of quality grapes.',
     imageUrl: 'https://placehold.co/600x400/DAA520/333333?text=Kherson',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description: 'Dry steppe climate with hot summers and significant irrigation needs.',
+      features: ['Steppe climate', 'Dnipro River proximity', 'Low rainfall'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description: 'Sandy soils and chestnut soils are common in the vineyard areas.',
+      mainTypes: ['Sandy', 'Chestnut Soil'],
+      properties: ['Light', 'Warm'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description: 'Focused on modern large-scale production and irrigation techniques.',
+      rituals: ['Modern harvest', 'Irrigation management', 'Local tastings'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Rkatsiteli', description: 'Widely planted for bulk and quality wines.' }],
+      red: [{ name: 'Saperavi', description: 'Adapts well to the hot steppe climate.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Reliable quality wines with good varietal expression.',
+      styles: ['Steppe White', 'Fruit-forward Red'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Identifying specific river-influenced micro-zones.',
+      list: ['Lower Dnipro'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'Key region for large-scale viticulture in Ukraine.',
+      points: ['Production volume', 'Modern techniques', 'River-side terroir'],
+    },
   },
   {
     _id: mykolaivId,
@@ -394,6 +659,42 @@ export const regions = [
     description:
       'A historic Ukrainian wine region in the southern steppe. The region has been developing its winemaking industry with a focus on both traditional and experimental varieties.',
     imageUrl: 'https://placehold.co/600x400/DEB887/333333?text=Mykolaiv',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description: 'Continental steppe climate with maritime influences near the estuaries.',
+      features: ['Estuary influence', 'Steppe plains', 'Moderate rainfall'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description: 'Fertile black soils and clay-limestone deposits.',
+      mainTypes: ['Chernozem', 'Limestone'],
+      properties: ['Rich', 'Good structure'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description: 'A growing scene of boutique and artisanal wineries.',
+      rituals: ['Boutique tastings', 'New wave festivals', 'Experimental harvest'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Chardonnay', description: 'Successfully grown for premium whites.' }],
+      red: [{ name: 'Merlot', description: 'Produces soft and aromatic reds.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Known for balanced and elegant European-style wines.',
+      styles: ['Elegant White', 'Soft Red', 'Rose Blends'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Establishing micro-zones near the Southern Bug estuary.',
+      list: ['Estuary zones'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'Emerging leader in high-quality boutique wine production in Ukraine.',
+      points: ['Quality focus', 'Boutique growth', 'Estuary terroir'],
+    },
   },
 ];
 

@@ -6,7 +6,7 @@ export const Button = styled.button<{ $active?: boolean }>`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  min-width: 280px;
+  min-width: 120px;
 
   border-radius: 44px;
   background: ${(props) =>
@@ -31,9 +31,8 @@ export const Button = styled.button<{ $active?: boolean }>`
     background: rgba(132, 16, 19, 0.1);
   }
 
-  @media screen and (max-width: 768px) {
-    padding: 12px 30px;
-    font-size: 18px;
-    min-width: 100%;
+  @media screen and (max-width: 767px) {
+    padding: 12px 15px;
+    font-size: 14px;
   }
 `;

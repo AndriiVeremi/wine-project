@@ -30,6 +30,7 @@ import {
   StyledWineriesWines,
   StyledTitle,
   StyledTabs,
+  StyledTitleWrapper,
 } from './RegionDetailPage.styled';
 
 const RegionDetailPage = () => {
@@ -81,10 +82,10 @@ const RegionDetailPage = () => {
           </StyledRegionImg>
 
           <StyledRegionInfo>
-            <div>
+            <StyledTitleWrapper>
               <StyledRegionLabel>Region:</StyledRegionLabel>
               <StyledRegionTitle>{region.name}</StyledRegionTitle>
-            </div>
+            </StyledTitleWrapper>
             <StyledText>{region.description}</StyledText>
 
             {region.locationAndClimate && (

@@ -58,23 +58,35 @@ export const StyledRegionInfo = styled.div`
   gap: 20px;
 `;
 
+export const StyledTitleWrapper = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+`;
+
 export const StyledRegionLabel = styled.span`
   font-family: 'Montserrat Alternates', sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  color: #841013;
   text-transform: uppercase;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 36px;
+  }
 `;
 
 export const StyledRegionTitle = styled.h1`
   font-family: 'Montserrat Alternates', sans-serif;
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 600;
   color: #841013;
   margin: 0;
 
+  text-transform: uppercase;
+
   @media (min-width: ${breakpoints.tablet}) {
-    font-size: 48px;
+    font-size: 36px;
   }
 `;
 
@@ -227,15 +239,19 @@ export const StyledTitle = styled.h2`
 
 export const StyledTabs = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  align-items: center;
-  gap: 16px;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
   margin-top: 110px;
   margin-bottom: 90px;
 
+  & > button {
+    flex: 1;
+  }
+
   @media (min-width: ${breakpoints.tablet}) {
-    flex-direction: row;
     gap: 24px;
   }
 `;
