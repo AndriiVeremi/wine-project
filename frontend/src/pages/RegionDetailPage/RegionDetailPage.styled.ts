@@ -71,7 +71,7 @@ export const StyledRegionLabel = styled.span`
   color: #841013;
   text-transform: uppercase;
 
-   @media (min-width: ${breakpoints.tablet}) {
+  @media (min-width: ${breakpoints.tablet}) {
     font-size: 36px;
   }
 `;
