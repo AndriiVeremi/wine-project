@@ -7,6 +7,7 @@ import WineryList from '@/components/Winery/WineryList/WineryList';
 import AppPagination from '@/components/Common/AppPagination';
 import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
+import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
 import { notifyError } from '@/utils/toast';
@@ -46,13 +47,16 @@ const WineriesPage = () => {
 
       {!loading && !error && wineries?.length === 0 && <p>No wineries found</p>}
 
-      {!loading && !error && wineries.length > 0 && <WineryList wineries={wineries} />}
-
-      <AppPagination
-        page={page}
-        totalPages={totalPages}
-        onChange={(p) => fetchWineries({ page: p, limit: 12, ...query })}
-      />
+      {!loading && !error && wineries.length > 0 && (
+        <ListSection>
+          <WineryList wineries={wineries} />
+          <AppPagination
+            page={page}
+            totalPages={totalPages}
+            onChange={(p) => fetchWineries({ page: p, limit: 12, ...query })}
+          />
+        </ListSection>
+      )}
     </Container>
   );
 };

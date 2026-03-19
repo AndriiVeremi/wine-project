@@ -5,6 +5,7 @@ export const StyledTourList = styled.ul`
   flex-wrap: wrap;
   gap: 32px;
   width: 100%;
+  padding-bottom: 40px;
 `;
 
 export const StyledTourListItem = styled.li`

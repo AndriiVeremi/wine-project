@@ -105,4 +105,6 @@ export const WineDescription = styled.p`
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
+  overflow-wrap: break-word;
+  word-break: break-word;
 `;

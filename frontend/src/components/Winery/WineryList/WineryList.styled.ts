@@ -8,7 +8,7 @@ export const StyledWineryList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-bottom: 120px;
+  padding-bottom: 40px;
 
   @media (min-width: ${breakpoints.tablet}) {
     grid-template-columns: repeat(2, 1fr);

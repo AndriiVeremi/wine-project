@@ -1,12 +1,8 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
 export const DetailPageContainer = styled.div`
-  max-width: 1440px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 20px 20px 60px;
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 40px 20px 100px;
-  }
 `;
 export const HeroSection = styled.section`
   display: flex;
@@ -114,7 +110,7 @@ export const WineryHeaderRow = styled.div`
   gap: 20px;
   @media (min-width: ${breakpoints.tablet}) {
     flex-direction: row;
-    gap: 24px;
+    gap: 40px;
   }
 `;
 export const WineryLogoInHeader = styled.div`
@@ -186,6 +182,8 @@ export const DescriptionText = styled.div`
   border-radius: 16px;
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  overflow-wrap: break-word;
+  word-break: break-word;
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 18px;
     padding: 32px;

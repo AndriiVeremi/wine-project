@@ -8,12 +8,12 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+    align-items: stretch;
+    gap: 16px;
   }
 `;
 
@@ -21,23 +21,27 @@ export const ListHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 
   @media (max-width: 768px) {
-    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
   }
 `;
 
 export const SearchInput = styled.input`
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  width: 250px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  width: 280px;
   outline: none;
-  font-family: var(--font-main);
+  font-family: inherit;
+  font-size: 14px;
+  transition: all 0.2s;
 
   &:focus {
-    border-color: var(--accent-color, #841013);
+    border-color: #841013;
+    box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.1);
   }
 
   @media (max-width: 480px) {
@@ -48,62 +52,69 @@ export const SearchInput = styled.input`
 export const TableContainer = styled.div`
   width: 100%;
   overflow-x: auto;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
 `;
 
 export const CustomTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  min-width: 800px;
 `;
 
 export const Th = styled.th`
   text-align: left;
-  padding: 15px;
-  background: #f8f8f8;
-  color: #666;
-  font-weight: 600;
-  font-size: 14px;
-  white-space: nowrap;
+  padding: 18px 24px;
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #f1f5f9;
 `;
 
 export const Td = styled.td`
-  padding: 15px;
-  border-top: 1px solid #eee;
+  padding: 18px 24px;
   vertical-align: middle;
-  color: #333;
+  color: #334155;
+  font-size: 15px;
+  border-bottom: 1px solid #f8fafc;
 `;
 
 export const ItemImg = styled.img`
-  width: 45px;
-  height: 45px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
-  border-radius: 6px;
-  background: #fdfdfd;
-  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 4px;
 `;
 
 export const ActionBtns = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 10px;
 `;
 
 export const IconButton = styled.button<{ $type?: 'edit' | 'delete' }>`
-  background: none;
-  border: none;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   cursor: pointer;
-  color: ${({ $type }) => ($type === 'delete' ? '#e44848' : '#4a90e2')};
+  color: ${({ $type }) => ($type === 'delete' ? '#ef4444' : '#3b82f6')};
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
-  border-radius: 6px;
+  padding: 8px;
+  border-radius: 8px;
   transition: all 0.2s;
 
   &:hover {
-    background: ${({ $type }) => ($type === 'delete' ? '#fff5f5' : '#f0f7ff')};
-    transform: translateY(-1px);
+    background: ${({ $type }) => ($type === 'delete' ? '#fee2e2' : '#dbeafe')};
+    border-color: transparent;
+    transform: scale(1.05);
   }
 
   svg {
@@ -112,10 +123,17 @@ export const IconButton = styled.button<{ $type?: 'edit' | 'delete' }>`
   }
 `;
 
+export const Row = styled.tr`
+  transition: background 0.2s;
+  &:hover {
+    background: #f8fafc;
+  }
+`;
+
 export const PageInfo = styled.span`
   font-size: 14px;
-  color: #666;
-  font-weight: 500;
+  color: #64748b;
+  font-weight: 600;
 `;
 
 export const EmptyStateWrapper = styled.div`
@@ -123,33 +141,32 @@ export const EmptyStateWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 80px 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   text-align: center;
   width: 100%;
+  border: 1px solid #f1f5f9;
 `;
 
 export const EmptyIconBox = styled.div`
-  font-size: 64px;
-  color: #ddd;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 72px;
+  color: #cbd5e1;
+  margin-bottom: 24px;
 `;
 
 export const EmptyTitle = styled.h3`
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 10px;
-  font-weight: 600;
+  font-size: 22px;
+  color: #1e293b;
+  margin-bottom: 12px;
+  font-weight: 700;
 `;
 
 export const EmptyText = styled.p`
-  font-size: 15px;
-  color: #888;
-  max-width: 300px;
-  line-height: 1.5;
+  font-size: 16px;
+  color: #94a3b8;
+  max-width: 320px;
+  line-height: 1.6;
+  margin-bottom: 24px;
 `;

@@ -65,16 +65,21 @@ export const PageTitleContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 50px;
-  padding-bottom: 20px;
+  padding-top: 40px;
+  padding-bottom: 130px;
   position: relative;
   z-index: 1;
   pointer-events: none;
-  @media (max-width: 1024px) {
+  @media (max-width: 1440px) {
     padding-top: 40px;
+    padding-bottom: 60px;
+  }
+  @media (max-width: 1200px) {
+    padding-top: 40px;
+    padding-bottom: 60px;
   }
   @media (max-width: 767px) {
-    padding-top: 30px;
+    padding-top: 20px;
   }
 `;
 export const PageTitle = styled.h1`
@@ -97,14 +102,4 @@ export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>
   flex: 1;
   position: relative;
   z-index: 1;
-  padding-top: ${({ $isHome, $hasTitle }) => ($isHome ? '100px' : $hasTitle ? '150px' : '300px')};
-  padding-bottom: 150px;
-  @media (max-width: 1024px) {
-    padding-top: ${({ $isHome }) => ($isHome ? '60px' : '80px')};
-    padding-bottom: 100px;
-  }
-  @media (max-width: 767px) {
-    padding-top: ${({ $isHome }) => ($isHome ? '0px' : '40px')};
-    padding-bottom: 80px;
-  }
 `;

@@ -12,6 +12,7 @@ import {
 import RatingStars from '@/components/Common/RatingStars';
 import VIPBadge from '@/components/Common/VIPBadge';
 import { HiMapPin, HiGlobeAlt } from 'react-icons/hi2';
+import { stripHtml } from '@/utils/text';
 
 interface WineryCardProps {
   winery: Winery;
@@ -19,6 +20,7 @@ interface WineryCardProps {
 
 const WineryCard = ({ winery }: WineryCardProps) => {
   const navigate = useNavigate();
+  const cleanHistory = stripHtml(winery.history || '');
 
   const handleCardClick = () => {
     navigate(`/wineries/${winery._id}`);
@@ -57,7 +59,7 @@ const WineryCard = ({ winery }: WineryCardProps) => {
         </WineryLink>
       </IconWithText>
 
-      <WineryInfo>{winery.history || 'No history available.'}</WineryInfo>
+      <WineryInfo>{cleanHistory || 'No history available.'}</WineryInfo>
     </StyledWineryCardDiv>
   );
 };

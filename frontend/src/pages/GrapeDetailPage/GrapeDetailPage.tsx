@@ -33,7 +33,7 @@ import {
   SectionHeaderTitle,
 } from './GrapeDetailPage.styled';
 
-const getPercent = (val: string): number => {
+const calcProgress = (val: string): number => {
   if (val === 'Low' || val === 'Light') return 25;
   if (val === 'Medium') return 50;
   if (val === 'High' || val === 'Full-bodied') return 75;
@@ -41,59 +41,54 @@ const getPercent = (val: string): number => {
   return 0;
 };
 
-const getFoodIcon = (food: string): string => {
-  const text = food.toLowerCase();
-
-  if (text.includes('cheese')) return '🧀';
-  if (text.includes('meat') || text.includes('beef') || text.includes('steak')) return '🥩';
-  if (text.includes('poultry') || text.includes('chicken')) return '🍗';
-  if (text.includes('fish') || text.includes('seafood')) return '🐟';
-  if (text.includes('salad') || text.includes('vegetable')) return '🥗';
-  if (text.includes('dessert') || text.includes('fruit') || text.includes('sweet')) return '🍰';
-  if (text.includes('pasta') || text.includes('pizza')) return '🍝';
-
+const getFoodEmoji = (text: string): string => {
+  const low = text.toLowerCase();
+  if (low.includes('cheese')) return '🧀';
+  if (low.includes('meat') || low.includes('beef') || low.includes('steak')) return '🥩';
+  if (low.includes('poultry') || low.includes('chicken')) return '🍗';
+  if (low.includes('fish') || low.includes('seafood')) return '🐟';
+  if (low.includes('salad') || low.includes('vegetable')) return '🥗';
+  if (low.includes('dessert') || low.includes('fruit') || low.includes('sweet')) return '🍰';
+  if (low.includes('pasta') || low.includes('pizza')) return '🍝';
   return '🍽️';
 };
 
 const GrapeDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [grape, setGrape] = useState<Grape | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [activeImg, setActiveImg] = useState<number>(0);
+  const [data, setData] = useState<Grape | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeIdx, setActiveIdx] = useState(0);
   const { wines, fetch, loading: winesLoading } = useWinesStore();
 
-  const fetchGrapeData = useCallback(async () => {
+  const loadData = useCallback(async () => {
     if (!id) return;
-
     try {
-      const response = await getGrapeById(id);
-      setGrape(response.data);
-    } catch (error: unknown) {
-      console.error('Error loading grapes:', error);
+      const res = await getGrapeById(id);
+      setData(res.data);
+    } catch (e) {
+      console.log(e);
     } finally {
       setLoading(false);
     }
   }, [id]);
 
   useEffect(() => {
-    fetchGrapeData();
-  }, [fetchGrapeData]);
+    loadData();
+  }, [loadData]);
 
   useEffect(() => {
-    if (grape?.name) {
-      fetch({ grape: grape.name, limit: 10 });
+    if (data?.name) {
+      fetch({ grape: data.name, limit: 10 });
     }
-  }, [grape?.name, fetch]);
+  }, [data?.name, fetch]);
 
   if (loading) return <Loader />;
-
-  if (!grape) {
+  if (!data)
     return (
       <Container>
-        <p>Sorry, no grape variety found.</p>
+        <p>Varietal information not found.</p>
       </Container>
     );
-  }
 
   return (
     <Container>
@@ -102,20 +97,15 @@ const GrapeDetailPage = () => {
           <ImageWrapper>
             <MainImage>
               <img
-                src={grape.imageUrls?.[activeImg] || '/assets/grape-placeholder.png'}
-                alt={grape.name}
+                src={data.imageUrls?.[activeIdx] || '/assets/grape-placeholder.png'}
+                alt={data.name}
               />
             </MainImage>
-
-            {grape.imageUrls && grape.imageUrls.length > 1 && (
+            {data.imageUrls && data.imageUrls.length > 1 && (
               <ThumbnailGrid>
-                {grape.imageUrls.map((url, index) => (
-                  <Thumbnail
-                    key={index}
-                    $active={activeImg === index}
-                    onClick={() => setActiveImg(index)}
-                  >
-                    <img src={url} alt={`Фото ${index + 1}`} />
+                {data.imageUrls.map((url, i) => (
+                  <Thumbnail key={i} $active={activeIdx === i} onClick={() => setActiveIdx(i)}>
+                    <img src={url} alt="Varietal photo" />
                   </Thumbnail>
                 ))}
               </ThumbnailGrid>
@@ -123,77 +113,81 @@ const GrapeDetailPage = () => {
           </ImageWrapper>
 
           <InfoWrapper>
-            <Badge $type={grape.type}>{grape.type} variety</Badge>
-            <Title>{grape.name}</Title>
+            <Badge $type={data.type}>{data.type} variety</Badge>
+            <Title>{data.name}</Title>
 
-            {grape.alsoKnownAs && grape.alsoKnownAs.length > 0 && (
+            {data.alsoKnownAs && data.alsoKnownAs.length > 0 && (
               <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 <span
                   style={{
                     fontSize: '12px',
                     fontWeight: 700,
-                    color: '#aaa',
+                    color: '#94a3b8',
                     textTransform: 'uppercase',
                   }}
                 >
                   Synonyms:
                 </span>
-                {grape.alsoKnownAs.map((name) => (
+                {data.alsoKnownAs.map((n) => (
                   <span
-                    key={name}
+                    key={n}
                     style={{
                       fontSize: '13px',
-                      color: '#666',
-                      background: '#f5f5f5',
-                      padding: '2px 8px',
-                      borderRadius: '4px',
+                      color: '#475569',
+                      background: '#f1f5f9',
+                      padding: '2px 10px',
+                      borderRadius: '6px',
                     }}
                   >
-                    {name}
+                    {n}
                   </span>
                 ))}
               </div>
             )}
 
-            <Description>{grape.description}</Description>
+            <Description dangerouslySetInnerHTML={{ __html: data.description }} />
 
             <InfoCard>
               <StatsGrid>
                 <StatItem>
-                  <StatLabel>Кислотність: {grape.acidity}</StatLabel>
-                  <ProgressBar $percent={getPercent(grape.acidity)} $type="acid" />
+                  <StatLabel>Acidity: {data.acidity}</StatLabel>
+                  <ProgressBar $percent={calcProgress(data.acidity)} $type="acid" />
                 </StatItem>
-
                 <StatItem>
-                  <StatLabel>Тільність: {grape.body}</StatLabel>
-                  <ProgressBar $percent={getPercent(grape.body)} $type="body" />
+                  <StatLabel>Body: {data.body}</StatLabel>
+                  <ProgressBar $percent={calcProgress(data.body)} $type="body" />
                 </StatItem>
-
-                {grape.tannins && grape.tannins !== 'None' && (
+                {data.tannins && data.tannins !== 'None' && (
                   <StatItem>
-                    <StatLabel>Таніни: {grape.tannins}</StatLabel>
-                    <ProgressBar $percent={getPercent(grape.tannins)} $type="tannin" />
+                    <StatLabel>Tannins: {data.tannins}</StatLabel>
+                    <ProgressBar $percent={calcProgress(data.tannins)} $type="tannin" />
                   </StatItem>
                 )}
-
                 <StatItem>
                   <div
                     style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '5px' }}
                   >
-                    <FaClock color="#aaa" />
+                    <FaClock color="#94a3b8" />
                     <span
                       style={{
                         fontSize: '11px',
                         fontWeight: 700,
-                        color: '#999',
+                        color: '#94a3b8',
                         textTransform: 'uppercase',
                       }}
                     >
-                      Витримка
+                      Aging Potential
                     </span>
                   </div>
-                  <p style={{ fontSize: '15px', color: '#444', fontWeight: 600, marginTop: '4px' }}>
-                    {grape.agingPotential || 'Найкраще пити молодим'}
+                  <p
+                    style={{
+                      fontSize: '15px',
+                      color: '#1e293b',
+                      fontWeight: 600,
+                      marginTop: '4px',
+                    }}
+                  >
+                    {data.agingPotential || 'Best enjoyed young'}
                   </p>
                 </StatItem>
               </StatsGrid>
@@ -202,11 +196,11 @@ const GrapeDetailPage = () => {
         </HeroSection>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px' }}>
-          {grape.characteristics && grape.characteristics.length > 0 && (
+          {data.characteristics && data.characteristics.length > 0 && (
             <section>
-              <SectionTitle>Характеристики сорту</SectionTitle>
+              <SectionTitle>Key Characteristics</SectionTitle>
               <TagCloud>
-                {grape.characteristics.map((item) => (
+                {data.characteristics.map((item) => (
                   <Tag key={item}>
                     <FaWineGlassAlt size={12} style={{ marginRight: '8px', color: '#841013' }} />
                     {item}
@@ -216,14 +210,14 @@ const GrapeDetailPage = () => {
             </section>
           )}
 
-          {grape.foodPairing && grape.foodPairing.length > 0 && (
+          {data.foodPairing && data.foodPairing.length > 0 && (
             <section>
-              <SectionTitle>З чим поєднувати</SectionTitle>
+              <SectionTitle>Perfect Pairings</SectionTitle>
               <FoodGrid>
-                {grape.foodPairing.map((food) => (
-                  <FoodCard key={food}>
-                    <span className="icon">{getFoodIcon(food)}</span>
-                    <span>{food}</span>
+                {data.foodPairing.map((f) => (
+                  <FoodCard key={f}>
+                    <span className="icon">{getFoodEmoji(f)}</span>
+                    <span>{f}</span>
                   </FoodCard>
                 ))}
               </FoodGrid>
@@ -233,15 +227,12 @@ const GrapeDetailPage = () => {
       </DetailContainer>
 
       {winesLoading ? (
-        <p style={{ textAlign: 'center' }}>Loading wines...</p>
+        <p style={{ textAlign: 'center', padding: '40px' }}>Searching for varietal wines...</p>
       ) : (
         wines.length > 0 && (
           <SliderSection>
-            <SectionHeaderTitle>Wines from {grape.name} variety</SectionHeaderTitle>
-            <Slider
-              items={wines.slice(0, 8)}
-              renderItem={(wine) => <SliderCardWine wine={wine} />}
-            />
+            <SectionHeaderTitle>Wines of {data.name}</SectionHeaderTitle>
+            <Slider items={wines.slice(0, 8)} renderItem={(w) => <SliderCardWine wine={w} />} />
           </SliderSection>
         )
       )}

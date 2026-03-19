@@ -7,6 +7,7 @@ import AppPagination from '@/components/Common/AppPagination';
 import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useGrapesStore } from '@/store/grape/grapesStore';
 import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
+import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
@@ -57,15 +58,16 @@ const GrapesPage = () => {
         <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
       )}
 
-      {!loading && grapes?.length > 0 && <GrapeList grapes={grapes} />}
-
-      <div style={{ marginTop: '40px' }}>
-        <AppPagination
-          page={page}
-          totalPages={totalPages}
-          onChange={(p) => fetchGrapes({ ...query, page: p, limit: 12 })}
-        />
-      </div>
+      {!loading && grapes?.length > 0 && (
+        <ListSection>
+          <GrapeList grapes={grapes} />
+          <AppPagination
+            page={page}
+            totalPages={totalPages}
+            onChange={(p) => fetchGrapes({ ...query, page: p, limit: 12 })}
+          />
+        </ListSection>
+      )}
     </Container>
   );
 };

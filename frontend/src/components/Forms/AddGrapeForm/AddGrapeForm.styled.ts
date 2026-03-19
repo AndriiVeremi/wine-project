@@ -2,182 +2,149 @@ import styled from 'styled-components';
 
 export const AddGrapeWrapper = styled.div`
   width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
-  background-color: var(--white);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-`;
-
-export const Title = styled.h2`
-  font-weight: 400;
-  font-size: 28px;
-  color: var(--primary-gray);
-  margin-bottom: 50px;
-  text-align: left;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
 `;
 
 export const TopSection = styled.div`
   display: flex;
-  gap: 40px;
-  margin-bottom: 50px;
+  gap: 48px;
+  margin-bottom: 48px;
 
-  @media (max-width: 900px) {
+  @media (max-width: 950px) {
     flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+    gap: 24px;
   }
 `;
 
 export const PhotoSide = styled.div`
-  width: 400px;
+  width: 340px;
   flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 
-  @media (max-width: 900px) {
+  @media (max-width: 950px) {
     width: 100%;
-  }
-`;
-
-export const PhotoGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-`;
-
-export const MiniPhotoPreview = styled.div`
-  aspect-ratio: 1 / 1;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid #eee;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 400px;
+    margin: 0 auto;
   }
 `;
 
 export const InfoSide = styled.div`
   flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
 `;
 
 export const FormGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 40px;
+  column-gap: 32px;
   row-gap: 24px;
 
-  @media (max-width: 800px) {
+  @media (max-width: 650px) {
     grid-template-columns: 1fr;
-  }
-`;
-
-export const PhotoUploadContainer = styled.div`
-  width: 100%;
-  height: 320px;
-  border: 2px dashed #ddd;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: #fff;
-  transition: all 0.3s ease;
-  gap: 12px;
-  overflow: hidden;
-
-  &:hover {
-    border-color: var(--accent-color, #841013);
-  }
-
-  svg {
-    font-size: 40px;
-    color: #aaa;
-  }
-
-  span {
-    font-size: 14px;
-    color: #aaa;
   }
 `;
 
 export const SectionTitle = styled.h3`
   grid-column: 1 / -1;
-  font-size: 30px;
-  color: var(--primary-gray);
-  margin-bottom: 30px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #94a3b8;
+  margin: 40px 0 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &:after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #f1f5f9;
+  }
 `;
 
 export const FullWidthWrapper = styled.div`
   grid-column: 1 / -1;
-`;
-
-export const ButtonWrapper = styled.div`
-  margin-top: 50px;
   display: flex;
-  justify-content: flex-end;
-  gap: 15px;
+  flex-direction: column;
+  gap: 32px;
 `;
 
-export const TagSelectorContainer = styled.div`
-  margin-top: 10px;
-  margin-bottom: 24px;
+export const TagBox = styled.div`
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 `;
 
-export const SelectedTags = styled.div`
+export const TagInput = styled.input`
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-top: 16px;
+  outline: none;
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &:focus {
+    border-color: #841013;
+    box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.05);
+  }
+`;
+
+export const TagsList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
-  min-height: 40px;
-  padding: 12px;
-  background: #f9f9f9;
-  border: 1px dashed #ddd;
+  margin-top: 12px;
+`;
+
+export const TagItem = styled.span<{ $selected?: boolean }>`
+  padding: 6px 14px;
   border-radius: 8px;
-`;
-
-export const TagGroup = styled.div`
-  margin-bottom: 16px;
-`;
-
-export const GroupTitle = styled.div`
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--font-grey);
-  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   gap: 6px;
-`;
 
-export const TagsWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-export const TagItem = styled.div<{ $selected: boolean }>`
-  font-size: 13px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  background: ${(props) => (props.$selected ? 'var(--primary-wine, #841013)' : '#fff')};
-  color: ${(props) => (props.$selected ? '#fff' : 'var(--primary-gray)')};
-  border: 1px solid ${(props) => (props.$selected ? 'var(--primary-wine, #841013)' : '#e0e0e0')};
-  transition: all 0.2s;
+  ${(props) =>
+    props.$selected &&
+    `
+    background: #fff1f2;
+    color: #841013;
+    border-color: #fecaca;
+  `}
 
   &:hover {
-    border-color: var(--primary-wine, #841013);
-    background: ${(props) => (props.$selected ? '#6a0d10' : '#f5f5f5')};
+    transform: translateY(-1px);
+    border-color: #841013;
+  }
+`;
+
+export const ButtonWrapper = styled.div`
+  margin-top: 60px;
+  padding-top: 32px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    button {
+      width: 100%;
+    }
   }
 `;
