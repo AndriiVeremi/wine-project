@@ -400,7 +400,8 @@ export const regions = [
     },
     soils: {
       title: 'Soils of Region',
-      description: 'The surrounding areas have diverse soils, including clay and alluvial deposits.',
+      description:
+        'The surrounding areas have diverse soils, including clay and alluvial deposits.',
       mainTypes: ['Clay', 'Alluvial', 'Urban soil layers'],
       properties: ['Varied', 'Balanced fertility'],
     },
@@ -427,7 +428,8 @@ export const regions = [
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
-      description: 'As the capital, it is the primary market and promotional center for Georgian wine.',
+      description:
+        'As the capital, it is the primary market and promotional center for Georgian wine.',
       points: ['Commercial center', 'Tourism gateway', 'Education hub'],
     },
   },
@@ -445,13 +447,15 @@ export const regions = [
     },
     soils: {
       title: 'Soils of Region',
-      description: 'Red and yellow soils predominate, providing good conditions for local varietals.',
+      description:
+        'Red and yellow soils predominate, providing good conditions for local varietals.',
       mainTypes: ['Red Soil', 'Alluvial'],
       properties: ['Moist', 'Mineral-rich'],
     },
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
-      description: 'Guria has a unique tradition of polyphonic singing associated with the harvest.',
+      description:
+        'Guria has a unique tradition of polyphonic singing associated with the harvest.',
       rituals: ['Harvest songs', 'Traditional pressing', 'Local wine festivals'],
     },
     grape: {
