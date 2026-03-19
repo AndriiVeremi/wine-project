@@ -10,7 +10,7 @@ export const MenuContainer = styled.aside`
   border-radius: 20px;
   padding: 16px 0;
   box-shadow: var(--main-shadow);
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -53,7 +53,7 @@ export const MenuItem = styled.button<{ $active?: boolean; $isLogout?: boolean }
     font-size: 20px;
     flex-shrink: 0;
   }
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     padding: 12px 16px;
     border-left: none;
     border-radius: 12px;

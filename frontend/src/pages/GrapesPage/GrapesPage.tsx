@@ -8,12 +8,14 @@ import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useGrapesStore } from '@/store/grape/grapesStore';
 import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
+import { notifyError } from '@/utils/toast';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
 const GrapesPage = () => {
   const grapes = useGrapesStore((s) => s.grapes);
   const loading = useGrapesStore((s) => s.loading);
+  const error = useGrapesStore((s) => s.error);
   const page = useGrapesStore((s) => s.page);
   const totalPages = useGrapesStore((s) => s.totalPages);
   const fetchGrapes = useGrapesStore((s) => s.fetchGrapes);
@@ -29,6 +31,10 @@ const GrapesPage = () => {
       limit: 12,
     });
   }, [query, fetchGrapes]);
+
+  useEffect(() => {
+    if (error) notifyError(error);
+  }, [error]);
 
   return (
     <Container>
@@ -54,7 +60,7 @@ const GrapesPage = () => {
         </div>
       )}
 
-      {!loading && grapes?.length === 0 && (
+      {!loading && !error && grapes?.length === 0 && (
         <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
       )}
 

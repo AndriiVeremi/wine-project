@@ -4,8 +4,10 @@ export const UploadGroupWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   align-items: center;
+  margin: 0 auto;
 `;
 
 export const MainPhotoContainer = styled.div`
@@ -22,8 +24,12 @@ export const MainPhotoContainer = styled.div`
   transition: all 0.3s ease;
   background-color: #fff;
 
+  @media (max-width: 480px) {
+    height: 240px;
+  }
+
   &:hover {
-    border-color: var(--accent-color, #841013);
+    border-color: #841013;
   }
 
   img {

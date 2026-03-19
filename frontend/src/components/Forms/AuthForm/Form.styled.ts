@@ -27,12 +27,12 @@ export const Input = styled.input`
   height: 48px;
   padding: 0 16px;
   padding-right: 45px;
-  border: 1px solid #ddd;
+  border: 1px solid #cbd5e1;
   border-radius: 10px;
   font-family: var(--font-main);
   font-size: 15px;
   color: #333;
-  background-color: #fcfcfc;
+  background-color: #ffffff;
   outline: none;
   transition: all 0.2s ease-in-out;
 
@@ -41,13 +41,13 @@ export const Input = styled.input`
   }
 
   &:hover {
-    border-color: #bbb;
-    background-color: #fff;
+    border-color: #841013;
+    background-color: #fffafa;
   }
 
   &:focus {
-    border-color: var(--accent-color, #841013);
-    background-color: #fff;
+    border-color: #841013;
+    background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.1);
   }
 
@@ -62,12 +62,12 @@ export const Textarea = styled.textarea`
   width: 100%;
   min-height: 120px;
   padding: 12px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #cbd5e1;
   border-radius: 10px;
   font-family: var(--font-main);
   font-size: 15px;
   color: #333;
-  background-color: #fcfcfc;
+  background-color: #ffffff;
   outline: none;
   transition: all 0.2s ease-in-out;
   resize: vertical;
@@ -77,13 +77,13 @@ export const Textarea = styled.textarea`
   }
 
   &:hover {
-    border-color: #bbb;
-    background-color: #fff;
+    border-color: #841013;
+    background-color: #fffafa;
   }
 
   &:focus {
-    border-color: var(--accent-color, #841013);
-    background-color: #fff;
+    border-color: #841013;
+    background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.1);
   }
 `;
@@ -92,12 +92,12 @@ export const Select = styled.select`
   width: 100%;
   height: 48px;
   padding: 0 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #cbd5e1;
   border-radius: 10px;
   font-family: var(--font-main);
   font-size: 15px;
   color: #333;
-  background-color: #fcfcfc;
+  background-color: #ffffff;
   outline: none;
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -108,13 +108,13 @@ export const Select = styled.select`
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: #bbb;
-    background-color: #fff;
+    border-color: #841013;
+    background-color: #fffafa;
   }
 
   &:focus {
-    border-color: var(--accent-color, #841013);
-    background-color: #fff;
+    border-color: #841013;
+    background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.1);
   }
 

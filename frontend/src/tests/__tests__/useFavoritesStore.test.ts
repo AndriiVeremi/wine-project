@@ -15,6 +15,7 @@ vi.mock('@/api/userApi', () => ({
 
 vi.mock('@/utils/toast', () => ({
   notifySuccess: vi.fn(),
+  notifyError: vi.fn(),
 }));
 
 const mockWine: WishlistWine = {

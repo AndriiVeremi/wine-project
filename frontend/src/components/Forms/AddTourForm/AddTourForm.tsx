@@ -3,11 +3,13 @@ import toast from 'react-hot-toast';
 import MainButton from '@/components/Buttons/MainButton';
 import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
+import TextEditor from '@/components/Common/TextEditor/TextEditor';
 import type { Tour } from '@/types/tours';
 import {
   AddTourWrapper,
   ButtonWrapper,
   FormGrid,
+  FullWidthWrapper,
   SectionTitle,
   TopSection,
   PhotoSide,
@@ -150,14 +152,6 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
               onChange={handleInput}
               required
             />
-            <FormField
-              label="Description"
-              id="description"
-              value={form.description}
-              onChange={handleInput}
-              isTextarea
-              required
-            />
 
             <FormGrid>
               <FormField
@@ -199,6 +193,14 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
             </GroupSizeWrapper>
           </InfoSide>
         </TopSection>
+
+        <FullWidthWrapper>
+          <TextEditor
+            label="Description"
+            value={form.description}
+            onChange={(v: string) => setForm((prev) => ({ ...prev, description: v }))}
+          />
+        </FullWidthWrapper>
 
         <ButtonWrapper>
           <MainButton type="submit" disabled={loading}>

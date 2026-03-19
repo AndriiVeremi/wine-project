@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { breakpoints } from '@/styles/breakpoints';
 
 export const ManagerWrapper = styled.div`
   width: 100%;
@@ -9,8 +10,9 @@ export const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  gap: 20px;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoints.desktop}) {
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
@@ -22,10 +24,27 @@ export const ListHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 16px;
+  width: 100%;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoints.desktop}) {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    gap: 16px;
+  }
+`;
+
+export const SearchWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+
+  @media (max-width: ${breakpoints.desktop}) {
+    width: 100%;
+
+    & > input {
+      flex: 1;
+    }
   }
 `;
 
@@ -44,7 +63,7 @@ export const SearchInput = styled.input`
     box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.1);
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: ${breakpoints.desktop}) {
     width: 100%;
   }
 `;
@@ -61,13 +80,13 @@ export const TableContainer = styled.div`
 export const CustomTable = styled.table`
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px;
+  min-width: 600px;
 `;
 
 export const Th = styled.th`
   text-align: left;
   padding: 18px 24px;
-  background: #f8fafc;
+  background: #ffeacb;
   color: #64748b;
   font-weight: 700;
   font-size: 12px;
@@ -81,7 +100,7 @@ export const Td = styled.td`
   vertical-align: middle;
   color: #334155;
   font-size: 15px;
-  border-bottom: 1px solid #f8fafc;
+  border-bottom: 1px solid #ffeacb;
 `;
 
 export const ItemImg = styled.img`
@@ -89,7 +108,7 @@ export const ItemImg = styled.img`
   height: 52px;
   object-fit: contain;
   border-radius: 10px;
-  background: #f1f5f9;
+  background: #ffeacb;
   border: 1px solid #e2e8f0;
   padding: 4px;
 `;
@@ -100,7 +119,7 @@ export const ActionBtns = styled.div`
 `;
 
 export const IconButton = styled.button<{ $type?: 'edit' | 'delete' }>`
-  background: #f8fafc;
+  background: #ffeacb;
   border: 1px solid #e2e8f0;
   cursor: pointer;
   color: ${({ $type }) => ($type === 'delete' ? '#ef4444' : '#3b82f6')};
@@ -126,7 +145,7 @@ export const IconButton = styled.button<{ $type?: 'edit' | 'delete' }>`
 export const Row = styled.tr`
   transition: background 0.2s;
   &:hover {
-    background: #f8fafc;
+    background: #ffeacb;
   }
 `;
 

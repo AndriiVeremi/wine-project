@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { getUserFavorites, addWineToFavorites, removeWineFromFavorites } from '@/api/userApi';
 import type { WishlistWine } from '@/types/wine';
-import { notifySuccess } from '@/utils/toast';
+import { notifySuccess, notifyError } from '@/utils/toast';
 
 interface FavoritesState {
   favorites: WishlistWine[];
@@ -42,6 +42,7 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
       if (isFav) await removeWineFromFavorites(wine.id);
       else await addWineToFavorites(wine.id);
     } catch {
+      notifyError('Failed to update favorites');
       set({ favorites });
     }
   },

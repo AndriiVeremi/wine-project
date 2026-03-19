@@ -90,7 +90,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
           if (item) fetchRegions(item.name);
         }
       } catch (err) {
-        console.log(err);
+        console.error('Failed to load countries', err);
       }
     };
     load();
@@ -142,7 +142,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
       }
       if (onSuccess) onSuccess();
     } catch (err) {
-      console.log(err);
+      console.error('Failed to save winery', err);
       toast.error('Save failed');
     }
   };

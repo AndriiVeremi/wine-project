@@ -88,12 +88,6 @@ const AccountPage = () => {
         return <SectionTitle>About project</SectionTitle>;
       case 'Contacts':
         return <SectionTitle>Contacts</SectionTitle>;
-      case 'Privacy policy':
-        return <SectionTitle>Privacy policy</SectionTitle>;
-      case 'Terms of use':
-        return <SectionTitle>Terms of use</SectionTitle>;
-      case 'Cookies':
-        return <SectionTitle>Cookies</SectionTitle>;
       default:
         return <PlaceholderText>Coming soon...</PlaceholderText>;
     }

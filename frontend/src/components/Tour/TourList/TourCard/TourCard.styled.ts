@@ -47,6 +47,18 @@ export const TourCardTitle = styled.h3`
   text-overflow: ellipsis;
 `;
 
+export const TourCardDescription = styled.p`
+  font-size: 13px;
+  color: var(--secondary-gray);
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 36px;
+`;
+
 export const InfoRow = styled.div`
   display: flex;
   gap: 16px;

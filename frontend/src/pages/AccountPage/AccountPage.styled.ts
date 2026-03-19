@@ -8,7 +8,7 @@ export const AccountPageContainer = styled.div`
   margin: 0 auto;
   align-items: flex-start;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     flex-direction: column;
     padding: 0 0 40px;
     gap: 24px;
@@ -18,12 +18,11 @@ export const AccountPageContainer = styled.div`
 export const ContentArea = styled.main`
   flex: 1;
   width: 100%;
-  padding: 0;
+  padding: 4px 10px 30px;
   min-height: 400px;
-  overflow-x: hidden;
 
-  @media (min-width: 1025px) {
-    padding: 0 20px;
+  @media (min-width: 1281px) {
+    padding: 10px 20px 40px;
   }
 `;
 

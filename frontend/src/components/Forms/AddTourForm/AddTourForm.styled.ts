@@ -61,10 +61,19 @@ export const InfoSide = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
+  margin-top: 60px;
+  padding-top: 32px;
+  border-top: 1px solid #f1f5f9;
   display: flex;
   justify-content: flex-end;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    button {
+      width: 100%;
+    }
+  }
 `;
 
 export const GroupSizeWrapper = styled.div`

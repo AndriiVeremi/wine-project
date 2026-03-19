@@ -10,7 +10,6 @@ import {
   AddWineWrapper,
   ButtonWrapper,
   FormGrid,
-  SectionTitle,
   FullWidthWrapper,
   TopSection,
   PhotoSide,
@@ -261,7 +260,6 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
           </InfoSide>
         </TopSection>
 
-        <SectionTitle>Technical Specifications</SectionTitle>
         <FormGrid>
           <FormField
             label="Volume (ml)"
@@ -313,7 +311,6 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
           />
         </FormGrid>
 
-        <SectionTitle>Distribution Details</SectionTitle>
         <FormGrid>
           <FormField label="Wine Supplier" id="supplier" value={vals.supplier} onChange={onInput} />
           <FormField label="Name Suffix" id="suffix" value={vals.suffix} onChange={onInput} />
@@ -329,7 +326,6 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
           </CheckboxWrapper>
         </FormGrid>
 
-        <SectionTitle>Description & Notes</SectionTitle>
         <FullWidthWrapper>
           <FormField
             label="Tasting Notes (comma separated)"

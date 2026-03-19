@@ -37,6 +37,12 @@ export const InfoSide = styled.div`
   flex-grow: 1;
 `;
 
+export const InfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+`;
+
 export const FormGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -50,22 +56,14 @@ export const FormGrid = styled.div`
 
 export const SectionTitle = styled.h3`
   grid-column: 1 / -1;
-  font-size: 14px;
-  font-weight: 800;
-  color: #94a3b8;
+  font-size: 30px;
+  font-weight: 400;
+  color: #841013;
   margin: 40px 0 20px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   display: flex;
   align-items: center;
-  gap: 16px;
-
-  &:after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #f1f5f9;
-  }
 `;
 
 export const FullWidthWrapper = styled.div`
@@ -79,15 +77,33 @@ export const TagBox = styled.div`
   background: #ffffff;
   padding: 24px;
   border-radius: 12px;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  border: 1px solid #cbd5e1;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #841013;
+  }
+
+  h4 {
+    font-family: var(--font-main);
+    font-weight: 600;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
 `;
 
 export const TagInput = styled.input`
   width: 100%;
   padding: 12px 16px;
   border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #cbd5e1;
   margin-top: 16px;
   outline: none;
   font-size: 14px;
@@ -95,7 +111,7 @@ export const TagInput = styled.input`
 
   &:focus {
     border-color: #841013;
-    box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.05);
+    box-shadow: 0 0 0 3px rgba(132, 16, 19, 0.1);
   }
 `;
 
@@ -107,29 +123,32 @@ export const TagsList = styled.div`
 `;
 
 export const TagItem = styled.span<{ $selected?: boolean }>`
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   transition: all 0.2s;
-  background: #f8fafc;
+  background: #ffffff;
   color: #475569;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #cbd5e1;
   display: flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
 
   ${(props) =>
     props.$selected &&
     `
-    background: #fff1f2;
+    background: #fffafa;
     color: #841013;
-    border-color: #fecaca;
+    border-color: #841013;
+    font-weight: 600;
   `}
 
   &:hover {
-    transform: translateY(-1px);
     border-color: #841013;
+    color: #841013;
+    background: #fffafa;
   }
 `;
 
