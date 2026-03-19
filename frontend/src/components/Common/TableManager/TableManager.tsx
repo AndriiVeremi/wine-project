@@ -14,6 +14,7 @@ import {
   IconButton,
   SearchInput,
   ListHeader,
+  Row,
 } from './TableManager.styled';
 import { SectionTitle } from '@/pages/AccountPage/AccountPage.styled';
 
@@ -72,7 +73,7 @@ function TableManager<T>({
         <ListHeader>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
             <SearchInput
-              placeholder="Search..."
+              placeholder="Search items..."
               value={search}
               onChange={(e) => onSearch(e.target.value)}
             />
@@ -80,14 +81,14 @@ function TableManager<T>({
           </div>
           {onAdd && (
             <MainButton type="button" onClick={onAdd}>
-              <FiPlus /> ADD
+              <FiPlus /> ADD NEW
             </MainButton>
           )}
         </ListHeader>
       </Header>
 
       {loading ? (
-        <p>Loading...</p>
+        <p style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>Loading records...</p>
       ) : total === 0 && !search ? (
         <EmptyState icon={emptyIcon} title={emptyTitle} text={emptyText} onAction={onAdd} />
       ) : (
@@ -99,17 +100,17 @@ function TableManager<T>({
                   {columns.map((col, i) => (
                     <Th key={i}>{col.header}</Th>
                   ))}
-                  <Th>Actions</Th>
+                  <Th style={{ textAlign: 'right' }}>Actions</Th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((item) => (
-                  <tr key={getId(item)}>
+                  <Row key={getId(item)}>
                     {columns.map((col, i) => (
                       <Td key={i}>{col.render(item)}</Td>
                     ))}
                     <Td>
-                      <ActionBtns>
+                      <ActionBtns style={{ justifyContent: 'flex-end' }}>
                         {onEdit && (
                           <IconButton onClick={() => onEdit(item)} $type="edit">
                             <FiEdit2 />
@@ -120,12 +121,15 @@ function TableManager<T>({
                         </IconButton>
                       </ActionBtns>
                     </Td>
-                  </tr>
+                  </Row>
                 ))}
                 {data.length === 0 && (
                   <tr>
-                    <Td colSpan={columns.length + 1} style={{ textAlign: 'center', color: '#999' }}>
-                      Not found
+                    <Td
+                      colSpan={columns.length + 1}
+                      style={{ textAlign: 'center', padding: '60px', color: '#94a3b8' }}
+                    >
+                      No results found for your search.
                     </Td>
                   </tr>
                 )}
@@ -133,7 +137,9 @@ function TableManager<T>({
             </CustomTable>
           </TableContainer>
 
-          <AppPagination page={page} totalPages={totalPages} onChange={onPage} />
+          <div style={{ marginTop: '24px' }}>
+            <AppPagination page={page} totalPages={totalPages} onChange={onPage} />
+          </div>
         </>
       )}
     </ManagerWrapper>
