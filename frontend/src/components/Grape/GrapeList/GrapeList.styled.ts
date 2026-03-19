@@ -9,6 +9,7 @@ export const StyledGrapeList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  padding-bottom: 40px;
 
   @media (min-width: ${breakpoints.tablet}) {
     grid-template-columns: repeat(2, 1fr);

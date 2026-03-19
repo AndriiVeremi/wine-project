@@ -12,6 +12,7 @@ import { StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
 
 import { notifyError } from '@/utils/toast';
 import AppPagination from '@/components/Common/AppPagination';
+import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 const WinesPage = () => {
   const wines = useWinesStore((s) => s.wines);
@@ -59,12 +60,16 @@ const WinesPage = () => {
       )}
 
       {!loading && !error && wines?.length === 0 && <p>No wines found</p>}
-      {!loading && !error && wines.length > 0 && <WineList wines={wines} />}
-      <AppPagination
-        page={page}
-        totalPages={totalPages}
-        onChange={(p) => fetch({ page: p, limit: 16, ...query })}
-      />
+      {!loading && !error && wines.length > 0 && (
+        <ListSection>
+          <WineList wines={wines} />
+          <AppPagination
+            page={page}
+            totalPages={totalPages}
+            onChange={(p) => fetch({ page: p, limit: 16, ...query })}
+          />
+        </ListSection>
+      )}
     </Container>
   );
 };

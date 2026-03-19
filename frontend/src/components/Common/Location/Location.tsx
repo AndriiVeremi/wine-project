@@ -2,16 +2,8 @@ import { useState, useEffect } from 'react';
 import { useLocationStore } from '@/store/location/locationStore';
 import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
 import { getCountries } from '@/api/regions';
-import {
-  List,
-  Text,
-  Item,
-  LocationIcon,
-  DropDownIcon,
-  RelativeContainer,
-  CountryDropdown,
-  CountryItem,
-} from './Location.styled';
+import { Text, LocationIcon, DropDownIcon, RelativeContainer } from './Location.styled';
+import { List, ListItem, DropdownMenu, DropdownMenuItem } from '../ListStyles/ListStyles';
 
 interface Country {
   _id: string;
@@ -49,25 +41,25 @@ const Location = () => {
   return (
     <RelativeContainer onClick={() => setIsOpen(!isOpen)}>
       <List>
-        <Item>
+        <ListItem>
           <LocationIcon />
-        </Item>
-        <Item>
+        </ListItem>
+        <ListItem>
           <Text>{country}</Text>
-        </Item>
-        <Item>
+        </ListItem>
+        <ListItem>
           <DropDownIcon />
-        </Item>
+        </ListItem>
       </List>
 
       {isOpen && countries.length > 0 && (
-        <CountryDropdown>
+        <DropdownMenu>
           {countries.map((c) => (
-            <CountryItem key={c} onClick={(e) => handleSelect(e, c)}>
+            <DropdownMenuItem key={c} onClick={(e) => handleSelect(e, c)}>
               {c}
-            </CountryItem>
+            </DropdownMenuItem>
           ))}
-        </CountryDropdown>
+        </DropdownMenu>
       )}
     </RelativeContainer>
   );

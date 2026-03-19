@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import {
   LanguageWrapper,
-  List,
-  Item,
-  Text,
+  LanguageTrigger,
+  LangText,
   DropDownIcon,
   DropdownList,
   DropdownItem,
@@ -37,17 +36,11 @@ const Language = () => {
 
   return (
     <LanguageWrapper ref={wrapperRef}>
-      <List onClick={toggleDropdown}>
-        <Item>
-          <GlobeIcon />
-        </Item>
-        <Item>
-          <Text>{currentLang}</Text>
-        </Item>
-        <Item>
-          <DropDownIcon $isOpen={isOpen} />
-        </Item>
-      </List>
+      <LanguageTrigger onClick={toggleDropdown}>
+        <GlobeIcon />
+        <LangText>{currentLang}</LangText>
+        <DropDownIcon $isOpen={isOpen} />
+      </LanguageTrigger>
 
       {isOpen && (
         <DropdownList>

@@ -15,12 +15,15 @@ import {
   WinePrice,
 } from './WineCard.styled';
 import RatingStars from '@/components/Common/RatingStars';
+import { stripHtml } from '@/utils/text';
 
 interface WineCardProps {
   wine: Wine;
 }
 
 const WineCard = ({ wine }: WineCardProps) => {
+  const cleanDesc = stripHtml(wine.description || '');
+
   return (
     <Link to={`/wines/${wine._id}`}>
       <StyledWineCardDiv>
@@ -40,7 +43,7 @@ const WineCard = ({ wine }: WineCardProps) => {
           {wine.grape?.name && <Tag>{wine.grape.name}</Tag>}
         </TagsContainer>
 
-        <WineDescription>{wine.description}</WineDescription>
+        <WineDescription>{cleanDesc}</WineDescription>
 
         <PriceRatingRow>
           <WinePrice>{wine.price > 0 ? `$${wine.price}` : 'Price on request'}</WinePrice>

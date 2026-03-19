@@ -1,163 +1,157 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
+
 export const DetailContainer = styled.div`
-  padding: 20px 0 60px;
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 40px 0 100px;
-  }
+  max-width: 100%;
+  margin: 0 auto;
 `;
+
 export const HeroSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin-bottom: 40px;
+  gap: 40px;
+  margin-bottom: 60px;
+
   @media (min-width: ${breakpoints.desktop}) {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
+    grid-template-columns: 1fr 1fr;
     gap: 60px;
-    margin-bottom: 80px;
+    margin-bottom: 100px;
   }
 `;
+
 export const ImageWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  @media (min-width: ${breakpoints.tablet}) {
-    gap: 16px;
-  }
+  gap: 16px;
 `;
+
 export const MainImage = styled.div`
   width: 100%;
-  height: 300px;
-  border-radius: 12px;
+  height: 350px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+
   @media (min-width: ${breakpoints.tablet}) {
-    height: 400px;
-    border-radius: 20px;
+    height: 450px;
   }
   @media (min-width: ${breakpoints.desktop}) {
-    height: 500px;
+    height: 550px;
   }
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 `;
+
 export const ThumbnailGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  @media (min-width: ${breakpoints.tablet}) {
-    gap: 12px;
-  }
+  gap: 12px;
 `;
+
 export const Thumbnail = styled.div<{ $active: boolean }>`
   aspect-ratio: 1 / 1;
-  border-radius: 6px;
+  border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  border: 2px solid ${(props) => (props.$active ? 'var(--primary-wine, #841013)' : 'transparent')};
+  border: 2px solid ${(props) => (props.$active ? '#841013' : 'transparent')};
   transition: all 0.2s;
-  @media (min-width: ${breakpoints.tablet}) {
-    border-radius: 8px;
-  }
+  background: #f8fafc;
+
   &:hover {
     opacity: 0.8;
   }
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 `;
+
 export const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
 `;
+
 export const Badge = styled.span<{ $type: string }>`
   align-self: flex-start;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: #fff;
   background: ${(props) =>
     props.$type === 'red' ? '#841013' : props.$type === 'white' ? '#d4af37' : '#ffb7c5'};
-  margin-bottom: 12px;
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    margin-bottom: 20px;
-  }
+  margin-bottom: 20px;
 `;
+
 export const Title = styled.h1`
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 16px;
+  color: #1e293b;
+  margin-bottom: 24px;
+  line-height: 1.1;
+
   @media (min-width: ${breakpoints.tablet}) {
-    font-size: 38px;
+    font-size: 48px;
   }
   @media (min-width: ${breakpoints.desktop}) {
-    font-size: 48px;
-    margin-bottom: 20px;
+    font-size: 56px;
   }
 `;
-export const Description = styled.p`
-  font-size: 15px;
-  line-height: 1.6;
-  color: #666;
-  margin-bottom: 24px;
+
+export const Description = styled.div`
+  font-size: 16px;
+  line-height: 1.7;
+  color: #475569;
+  margin-bottom: 40px;
+
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 18px;
-    line-height: 1.8;
-    margin-bottom: 40px;
   }
 `;
+
 export const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: 24px;
+
   @media (min-width: ${breakpoints.mobile}) {
     grid-template-columns: 1fr 1fr;
   }
-  @media (min-width: ${breakpoints.tablet}) {
-    gap: 30px;
-    margin-bottom: 40px;
-  }
 `;
+
 export const StatItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 `;
+
 export const StatLabel = styled.span`
-  font-size: 12px;
-  font-weight: 600;
-  color: #999;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
   text-transform: uppercase;
-  @media (min-width: ${breakpoints.tablet}) {
-    font-size: 14px;
-  }
+  letter-spacing: 0.02em;
 `;
+
 export const ProgressBar = styled.div<{ $percent: number; $type?: string }>`
   width: 100%;
-  height: 6px;
-  background: #f0f0f0;
-  border-radius: 3px;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
-  @media (min-width: ${breakpoints.tablet}) {
-    height: 8px;
-    border-radius: 4px;
-  }
+
   &::after {
     content: '';
     position: absolute;
@@ -166,124 +160,121 @@ export const ProgressBar = styled.div<{ $percent: number; $type?: string }>`
     height: 100%;
     width: ${(props) => props.$percent}%;
     background: ${(props) => {
-      if (props.$type === 'acid') return 'linear-gradient(90deg, #f1c40f, #e67e22)';
-      if (props.$type === 'body') return 'linear-gradient(90deg, #e056fd, #841013)';
-      if (props.$type === 'tannin') return 'linear-gradient(90deg, #95a5a6, #2c3e50)';
-      return 'var(--primary-wine, #841013)';
+      if (props.$type === 'acid') return '#f1c40f';
+      if (props.$type === 'body') return '#841013';
+      if (props.$type === 'tannin') return '#64748b';
+      return '#841013';
     }};
     transition: width 1s ease-in-out;
   }
 `;
+
 export const InfoCard = styled.div`
-  background: #fdfdfd;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #f0f0f0;
-  margin-top: 20px;
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 30px;
-    border-radius: 16px;
-    margin-top: 30px;
-  }
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 20px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 `;
+
 export const SectionTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: left;
-  border-left: 4px solid var(--primary-wine, #841013);
-  padding-left: 12px;
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e293b;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &:after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #f1f5f9;
+  }
+
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 28px;
-    border-left-width: 6px;
-    padding-left: 20px;
-    margin-bottom: 30px;
   }
 `;
+
 export const TagCloud = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 30px;
-  @media (min-width: ${breakpoints.tablet}) {
-    gap: 10px;
-    margin-bottom: 50px;
-  }
-`;
-export const Tag = styled.span`
-  padding: 6px 14px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #444;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 8px 18px;
-    border-radius: 8px;
-    font-size: 14px;
-  }
-`;
-export const FoodGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 10px;
   margin-bottom: 40px;
-  @media (min-width: ${breakpoints.tablet}) {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-    margin-bottom: 60px;
+`;
+
+export const Tag = styled.span`
+  padding: 10px 20px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #841013;
+    transform: translateY(-2px);
   }
 `;
+
+export const FoodGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 60px;
+`;
+
 export const FoodCard = styled.div`
-  padding: 16px 10px;
+  padding: 24px 16px;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 16px;
   text-align: center;
-  border: 1px solid #eee;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 24px 15px;
-    border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   }
+
   .icon {
-    font-size: 24px;
-    margin-bottom: 8px;
+    font-size: 32px;
+    margin-bottom: 12px;
     display: block;
-    @media (min-width: ${breakpoints.tablet}) {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
   }
+
   span {
-    font-size: 12px;
-    font-weight: 600;
-    color: #333;
-    @media (min-width: ${breakpoints.tablet}) {
-      font-size: 14px;
-    }
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
   }
 `;
 
 export const SliderSection = styled.section`
-  margin-top: 60px;
-  margin-bottom: 40px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 `;
 
 export const SectionHeaderTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: left;
-  border-left: 4px solid var(--primary-wine, #841013);
-  padding-left: 12px;
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--accent-color, #841013);
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 40px;
   @media (min-width: ${breakpoints.tablet}) {
-    font-size: 28px;
-    border-left-width: 6px;
-    padding-left: 20px;
-    margin-bottom: 30px;
+    font-size: 49px;
   }
 `;

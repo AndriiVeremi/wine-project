@@ -17,6 +17,7 @@ import {
   DescriptionBox,
   Sidebar,
   BookingCard,
+  MobileBookingCard,
   PriceRow,
   FeatureList,
   FeatureItem,
@@ -163,6 +164,32 @@ const WineTourDetailPage = () => {
             <p>{tour.description}</p>
           </DescriptionBox>
 
+          <MobileBookingCard>
+            <PriceRow>
+              <div className="label">Price per person</div>
+              <div className="amount">${tour.price}</div>
+            </PriceRow>
+
+            <FeatureList>
+              <FeatureItem>
+                <FiCheckCircle /> Professional wine guide
+              </FeatureItem>
+              <FeatureItem>
+                <FiCheckCircle /> Tasting of 5 premium wines
+              </FeatureItem>
+              <FeatureItem>
+                <FiCheckCircle /> Traditional Georgian snacks
+              </FeatureItem>
+              <FeatureItem>
+                <FiCheckCircle /> Free cancellation (24h)
+              </FeatureItem>
+            </FeatureList>
+
+            <MainButton size="large" onClick={handleBookingClick}>
+              Book This Tour
+            </MainButton>
+          </MobileBookingCard>
+
           <DescriptionBox>
             <h2>Reviews</h2>
             <ItemReviews tourId={id} key={reviewsKey} />
@@ -178,7 +205,7 @@ const WineTourDetailPage = () => {
           <BookingCard>
             <PriceRow>
               <div className="label">Price per person</div>
-              <div className="amount">£{tour.price}</div>
+              <div className="amount">${tour.price}</div>
             </PriceRow>
 
             <FeatureList>

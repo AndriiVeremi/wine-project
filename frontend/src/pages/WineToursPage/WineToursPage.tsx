@@ -8,6 +8,7 @@ import { useToursStore } from '@/store/tours/toursStore';
 import { useTourFiltersStore } from '@/store/tours/tourFiltersStore';
 import { useTourQueryParams } from '@/hooks/useTourQueryParams';
 import TourList from '@/components/Tour/TourList/TourList';
+import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
@@ -58,13 +59,16 @@ const TourPage = () => {
       )}
 
       {!loading && !error && tours.length === 0 && <p>No tours found</p>}
-      {!loading && !error && tours.length > 0 && <TourList tours={tours} />}
-
-      <AppPagination
-        page={page}
-        totalPages={totalPages}
-        onChange={(p) => fetch({ page: p, limit: 12, ...query })}
-      />
+      {!loading && !error && tours.length > 0 && (
+        <ListSection>
+          <TourList tours={tours} />
+          <AppPagination
+            page={page}
+            totalPages={totalPages}
+            onChange={(p) => fetch({ page: p, limit: 12, ...query })}
+          />
+        </ListSection>
+      )}
     </Container>
   );
 };
