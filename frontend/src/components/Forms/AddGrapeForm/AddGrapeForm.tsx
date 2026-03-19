@@ -156,7 +156,9 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
     setExtraPre(fs.map((f) => URL.createObjectURL(f)));
   };
 
-  const onInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { id, value } = e.target;
     setVals((p) => ({ ...p, [id]: value }));
   };

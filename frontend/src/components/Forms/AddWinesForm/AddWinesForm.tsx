@@ -99,7 +99,7 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
         setGrapeList(g.data.grapes || g.data);
 
         if (wineryId && !wineData) {
-          const item = wList.find((x) => x._id === wineryId);
+          const item = wList.find((x: { _id: string }) => x._id === wineryId);
           if (item) {
             setVals((p) => ({
               ...p,
@@ -126,8 +126,14 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
   const onInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
-    const { id, value, type, checked } = e.target;
-    let final = type === 'checkbox' ? checked : value;
+    const { id, value, type } = e.target as
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement;
+    let final: string | number | boolean = value;
+    if (type === 'checkbox') {
+      final = (e.target as HTMLInputElement).checked;
+    }
     if (['price', 'vintage', 'volume', 'boxQuantity'].includes(id)) {
       final = value === '' ? 0 : Number(value);
     }
