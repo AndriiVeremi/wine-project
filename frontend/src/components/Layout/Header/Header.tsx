@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   Nav,
   StyledHeader,
@@ -40,19 +40,19 @@ const Header = () => {
           <Nav className="app-nav">
             <ul>
               <Item>
-                <Link to="/">Home</Link>
+                <NavLink to="/">Home</NavLink>
               </Item>
               <Item>
-                <Link to="/wineries">Wineries</Link>
+                <NavLink to="/wineries">Wineries</NavLink>
               </Item>
               <Item>
-                <Link to="/wines">Wines</Link>
+                <NavLink to="/wines">Wines</NavLink>
               </Item>
               <Item>
-                <Link to="/grapes">Grapes</Link>
+                <NavLink to="/grapes">Grapes</NavLink>
               </Item>
               <Item>
-                <Link to="/tours">Wine tours</Link>
+                <NavLink to="/tours">Wine tours</NavLink>
               </Item>
             </ul>
           </Nav>

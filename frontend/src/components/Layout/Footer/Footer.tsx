@@ -14,7 +14,7 @@ import {
   LogoWrapper,
 } from '@/components/Layout/Footer/Footer.styled';
 import Container from '@/components/Common/Container';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -28,19 +28,19 @@ const Footer = () => {
             <StyledNav>
               <InfoList>
                 <Item>
-                  <Link to="/about">About project</Link>
+                  <NavLink to="/about">About project</NavLink>
                 </Item>
                 <Item>
-                  <Link to="/contacts">Contacts</Link>
+                  <NavLink to="/contacts">Contacts</NavLink>
                 </Item>
                 <Item>
-                  <Link to="/privacy">Privacy policy</Link>
+                  <NavLink to="/privacy">Privacy policy</NavLink>
                 </Item>
                 <Item>
-                  <Link to="/terms">Terms of use</Link>
+                  <NavLink to="/terms">Terms of use</NavLink>
                 </Item>
                 <Item>
-                  <Link to="/cookies">Cookies</Link>
+                  <NavLink to="/cookies">Cookies</NavLink>
                 </Item>
               </InfoList>
             </StyledNav>

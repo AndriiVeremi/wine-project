@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocationStore } from '@/store/location/locationStore';
 import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
 import { getCountries } from '@/api/regions';
@@ -15,12 +15,12 @@ const Location = () => {
   const setFilter = useWineriesFiltersStore((s) => s.setFilter);
   const [isOpen, setIsOpen] = useState(false);
   const [countries, setCountries] = useState<string[]>([]);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchCountries = async () => {
       try {
         const res = await getCountries();
-        // Витягуємо тільки імена країн, якщо прийшли об'єкти
         const names = res.data.map((c: Country) => (typeof c === 'string' ? c : c.name));
         setCountries(names);
       } catch (err) {
@@ -28,6 +28,16 @@ const Location = () => {
       }
     };
     fetchCountries();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleSelect = (e: React.MouseEvent, c: string) => {
@@ -39,7 +49,7 @@ const Location = () => {
   };
 
   return (
-    <RelativeContainer onClick={() => setIsOpen(!isOpen)}>
+    <RelativeContainer ref={wrapperRef} onClick={() => setIsOpen(!isOpen)}>
       <List>
         <ListItem>
           <LocationIcon />
@@ -48,14 +58,14 @@ const Location = () => {
           <Text>{country}</Text>
         </ListItem>
         <ListItem>
-          <DropDownIcon />
+          <DropDownIcon $isOpen={isOpen} />
         </ListItem>
       </List>
 
       {isOpen && countries.length > 0 && (
         <DropdownMenu>
           {countries.map((c) => (
-            <DropdownMenuItem key={c} onClick={(e) => handleSelect(e, c)}>
+            <DropdownMenuItem key={c} onClick={(e) => handleSelect(e, c)} $active={c === country}>
               {c}
             </DropdownMenuItem>
           ))}

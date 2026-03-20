@@ -68,7 +68,7 @@ export const Item = styled('li')`
   text-decoration: none;
   line-height: 26px;
   white-space: nowrap;
-  transition: var(--transition);
+  transition: color 0.2s ease;
   @media (min-width: 1280px) {
     font-size: 18px;
   }
@@ -76,8 +76,29 @@ export const Item = styled('li')`
     color: var(--primary-wine);
   }
   a {
+    position: relative;
     color: inherit;
     text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary-wine);
+      transition: transform 0.2s ease;
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    &.active {
+      color: var(--primary-wine);
+      &::after {
+        transform: scaleX(1);
+      }
+    }
   }
 `;
 
