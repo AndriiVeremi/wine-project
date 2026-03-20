@@ -1,7 +1,11 @@
 import styled from 'styled-components';
-import homeBg from '@/assets/home-bg.svg';
-import innerBg from '@/assets/home-bg-alternative.png';
-import bottomBg from '@/assets/review_bg-img.png';
+
+export {
+  HomeDecorativeBackground,
+  InnerDecorativeBackground,
+  BottomDecorativeBackground,
+} from './Backgrounds.styled';
+
 export const LayoutWrapper = styled.div`
   min-height: 100vh;
   display: flex;
@@ -9,95 +13,35 @@ export const LayoutWrapper = styled.div`
   position: relative;
   background-color: var(--bg-main);
 `;
-export const BottomDecorativeBackground = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 750px;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url(${bottomBg});
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: 100% auto;
-  @media (max-width: 1024px) {
-    height: 400px;
-  }
-  @media (max-width: 767px) {
-    height: 350px;
-    background-size: cover;
-  }
-`;
+
 export const ContentWrapper = styled.div`
   position: relative;
   z-index: 1;
   width: 100%;
 `;
-export const DecorativeBackground = styled.div<{ $bgType: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: ${({ $bgType }) => ($bgType === 'home' ? '700px' : '400px')};
-  z-index: 0;
-  pointer-events: none;
-  background-image: ${({ $bgType }) => {
-    if ($bgType === 'home') return `url(${homeBg})`;
-    if ($bgType === 'inner') return `url(${innerBg})`;
-    return 'none';
-  }};
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: 100% auto;
-  @media (max-width: 1024px) {
-    background-size: cover;
-    height: ${({ $bgType }) => ($bgType === 'home' ? '500px' : '200px')};
-  }
-  @media (max-width: 767px) {
-    background-size: cover;
-    background-position: center top;
-    height: ${({ $bgType }) => ($bgType === 'home' ? '400px' : '120px')};
-  }
-`;
+
 export const PageTitleContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 40px;
-  padding-bottom: 130px;
+  padding-top: clamp(20px, 3vw, 40px);
+  padding-bottom: clamp(40px, 8vw, 100px);
   position: relative;
   z-index: 1;
   pointer-events: none;
-  @media (max-width: 1440px) {
-    padding-top: 40px;
-    padding-bottom: 60px;
-  }
-  @media (max-width: 1200px) {
-    padding-top: 40px;
-    padding-bottom: 60px;
-  }
-  @media (max-width: 767px) {
-    padding-top: 20px;
-  }
 `;
+
 export const PageTitle = styled.h1`
   font-family: var(--font-main);
-  font-size: 56px;
+  font-size: clamp(24px, 5vw, 56px);
   font-weight: 700;
   color: var(--primary-wine);
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
-  @media (max-width: 1024px) {
-    font-size: 42px;
-  }
-  @media (max-width: 767px) {
-    font-size: 28px;
-    letter-spacing: 1px;
-  }
 `;
+
 export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>`
   flex: 1;
   position: relative;

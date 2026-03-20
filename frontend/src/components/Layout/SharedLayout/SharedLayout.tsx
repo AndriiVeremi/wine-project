@@ -9,20 +9,19 @@ import {
   LayoutWrapper,
   PageTitleContainer,
   PageTitle,
-  DecorativeBackground,
+  HomeDecorativeBackground,
+  InnerDecorativeBackground,
   BottomDecorativeBackground,
   MainContent,
   ContentWrapper,
 } from './SharedLayout.styled';
 import { ROUTES } from '@/constants/routes';
+
 const SharedLayout = () => {
   const { pathname } = useLocation();
   const { user, isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();
   const aiAssistantEnabled = import.meta.env.VITE_AI_ASSISTANT_ENABLED === 'true';
-  const getBgType = () => {
-    if (pathname === '/') return 'home';
-    return 'inner';
-  };
+
   const getPageTitle = () => {
     if (pathname === '/') return '';
     const segments = pathname.split('/').filter(Boolean);
@@ -33,30 +32,38 @@ const SharedLayout = () => {
     }
     return mainSegment.replace(/-/g, ' ');
   };
+
   const pageTitle = getPageTitle();
-  const bgType = getBgType();
   const isHome = pathname === '/';
+
   return (
     <LayoutWrapper>
-      <DecorativeBackground $bgType={bgType} />
+      {isHome ? <HomeDecorativeBackground /> : <InnerDecorativeBackground />}
+
       <Header />
-      {bgType === 'inner' && pageTitle && (
+
+      {!isHome && pageTitle && (
         <PageTitleContainer>
           <Container>
             <PageTitle>{pageTitle}</PageTitle>
           </Container>
         </PageTitleContainer>
       )}
+
       <MainContent $isHome={isHome} $hasTitle={!!pageTitle}>
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
         <BottomDecorativeBackground />
       </MainContent>
+
       <Footer />
+
       {user && aiAssistantEnabled && <AIAssistant />}
+
       <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} initialTab={authModalView} />
     </LayoutWrapper>
   );
 };
+
 export default SharedLayout;
