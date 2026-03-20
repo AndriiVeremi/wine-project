@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FiUser } from 'react-icons/fi';
+import { RiUserLine } from 'react-icons/ri';
 
 export const LoginWrapper = styled.button`
   display: flex;
@@ -15,7 +16,7 @@ export const UserIcon = styled(FiUser)`
   color: var(--brown-icon);
   width: 20px;
   height: 28px;
-  stroke-width: 1px;
+  stroke-width: 1.8px;
 `;
 
 export const LoginText = styled.span`
@@ -24,4 +25,10 @@ export const LoginText = styled.span`
   font-size: 17px;
   font-weight: 500;
   line-height: 26px;
+`;
+
+export const List = styled('ul')`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;

@@ -20,10 +20,12 @@ export const LocationIcon = styled(CiLocationOn)`
   stroke-width: 0.6px;
 `;
 
-export const DropDownIcon = styled(IoChevronDownSharp)`
+export const DropDownIcon = styled(IoChevronDownSharp)<{ $isOpen: boolean }>`
   color: var(--font-grey);
   width: 20px;
   height: 20px;
+  transition: transform 0.3s ease;
+  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
 
 export const RelativeContainer = styled.div`

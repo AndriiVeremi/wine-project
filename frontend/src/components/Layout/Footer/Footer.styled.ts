@@ -69,7 +69,7 @@ export const Item = styled('li')`
   font-family: var(--font-main);
   text-decoration: none;
   line-height: 26px;
-  transition: all 0.3s ease;
+  transition: color 0.2s ease;
 
   @media (max-width: 767px) {
     font-size: 16px;
@@ -78,9 +78,30 @@ export const Item = styled('li')`
   }
 
   a {
+    position: relative;
     color: inherit;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary-wine);
+      transition: transform 0.2s ease;
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    &.active {
+      color: var(--primary-wine);
+      &::after {
+        transform: scaleX(1);
+      }
+    }
   }
 
   &:hover {

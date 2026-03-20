@@ -24,7 +24,6 @@ export const FilterGrid = styled.div`
 export const FilterCard = styled.div`
   position: relative;
   cursor: pointer;
-  overflow: hidden;
   background: transparent;
   transition: var(--transition);
   aspect-ratio: 1 / 1.3;
@@ -40,6 +39,11 @@ export const FilterCard = styled.div`
 
   @media (min-width: ${breakpoints.tablet}) {
     padding: 20px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    padding: 5px;
+    aspect-ratio: 1 / 1.5;
   }
 
   &:hover {
@@ -58,6 +62,10 @@ export const CardImage = styled.img`
   max-height: 75%;
   object-fit: contain;
   transition: transform 0.4s ease;
+
+  @media (min-width: ${breakpoints.desktop}) {
+    max-height: 85%;
+  }
 
   ${FilterCard}:hover & {
     transform: scale(1.08);
