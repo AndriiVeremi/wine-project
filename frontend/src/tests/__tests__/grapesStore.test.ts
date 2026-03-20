@@ -7,10 +7,18 @@ vi.mock('@/api/grapes');
 const mockGrape = {
   _id: 'grape-1',
   name: 'Saperavi',
-  type: 'red',
+  type: 'red' as const,
   description: 'Famous Georgian grape',
   regions: [{ _id: 'reg-1', name: 'Kakheti' }],
   imageUrls: ['http://test.com/grape.jpg'],
+  alsoKnownAs: ['Saperavi Boreami'],
+  characteristics: ['deep color', 'full body'],
+  foodPairing: ['meat', 'cheese'],
+  acidity: 'high',
+  body: 'full',
+  tannins: 'high',
+  aromas: ['berry', 'plum'],
+  agingPotential: '10 years',
 };
 
 describe('grapesStore', () => {

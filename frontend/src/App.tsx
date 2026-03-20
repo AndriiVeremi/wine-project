@@ -1,25 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/config/firebase';
-import SharedLayout from '@/components/Layout/SharedLayout';
-import HomePage from '@/pages/HomePage';
-import WineriesPage from '@/pages/WineriesPage';
-import AboutPage from '@/pages/AboutPage';
-import WinesPage from '@/pages/WinesPage';
-import GrapesPage from '@/pages/GrapesPage';
-import GrapeDetailPage from '@/pages/GrapeDetailPage/GrapeDetailPage';
-import WineToursPage from '@/pages/WineToursPage';
-import AccountPage from '@/pages/AccountPage';
 import { Toaster } from 'react-hot-toast';
-import WineDetailPage from '@/pages/WineDetailPage/WineDetailPage';
-import WineryDetailPage from '@/pages/WineryDetailPage/WineryDetailPage';
 import { Loader } from '@/components/Common/Loader';
-import WineTourDetailPage from '@/pages/WineTourDetailPage';
-import RegionDetailPage from '@/pages/RegionDetailPage/RegionDetailPage';
-import NotFoundPage from '@/pages/NotFoundPage';
+import SharedLayout from '@/components/Layout/SharedLayout';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
+
+// Lazy loading pages
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const WineriesPage = lazy(() => import('@/pages/WineriesPage'));
+const WineryDetailPage = lazy(() => import('@/pages/WineryDetailPage/WineryDetailPage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
+const WinesPage = lazy(() => import('@/pages/WinesPage'));
+const WineDetailPage = lazy(() => import('@/pages/WineDetailPage/WineDetailPage'));
+const GrapesPage = lazy(() => import('@/pages/GrapesPage'));
+const GrapeDetailPage = lazy(() => import('@/pages/GrapeDetailPage/GrapeDetailPage'));
+const RegionDetailPage = lazy(() => import('@/pages/RegionDetailPage/RegionDetailPage'));
+const WineToursPage = lazy(() => import('@/pages/WineToursPage'));
+const WineTourDetailPage = lazy(() => import('@/pages/WineTourDetailPage'));
+const AccountPage = lazy(() => import('@/pages/AccountPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 
 function App() {
   const { setUser, isLoading } = useAuthStore();
@@ -39,23 +41,25 @@ function App() {
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <ErrorBoundary>
-        <Routes>
-          <Route path="/" element={<SharedLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="wineries" element={<WineriesPage />} />
-            <Route path="wineries/:id" element={<WineryDetailPage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="wines" element={<WinesPage />} />
-            <Route path="wines/:id" element={<WineDetailPage />} />
-            <Route path="grapes" element={<GrapesPage />} />
-            <Route path="grapes/:id" element={<GrapeDetailPage />} />
-            <Route path="regions/:name" element={<RegionDetailPage />} />
-            <Route path="tours" element={<WineToursPage />} />
-            <Route path="tours/:id" element={<WineTourDetailPage />} />
-            <Route path="account" element={<AccountPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<SharedLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="wineries" element={<WineriesPage />} />
+              <Route path="wineries/:id" element={<WineryDetailPage />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="wines" element={<WinesPage />} />
+              <Route path="wines/:id" element={<WineDetailPage />} />
+              <Route path="grapes" element={<GrapesPage />} />
+              <Route path="grapes/:id" element={<GrapeDetailPage />} />
+              <Route path="regions/:name" element={<RegionDetailPage />} />
+              <Route path="tours" element={<WineToursPage />} />
+              <Route path="tours/:id" element={<WineTourDetailPage />} />
+              <Route path="account" element={<AccountPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </ErrorBoundary>
     </>
   );

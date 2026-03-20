@@ -10,11 +10,13 @@ const mockWine = {
   winery: { _id: 'win-1', name: 'Test Winery' },
   grape: { _id: 'grape-1', name: 'Cabernet' },
   vintage: 2020,
-  color: 'red',
-  sweetness: 'dry',
+  color: 'red' as const,
+  sweetness: 'dry' as const,
   price: 500,
   imageUrl: 'http://test.com/img.jpg',
   averageRating: 4.5,
+  description: 'Test wine description',
+  tastingNotes: ['berry', 'oak'],
 };
 
 describe('winesStore', () => {

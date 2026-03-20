@@ -1,6 +1,7 @@
 .vscode/
 .GoIT_commit
 tsconfig.json
+package-lock.json
 
 # Logs
 logs

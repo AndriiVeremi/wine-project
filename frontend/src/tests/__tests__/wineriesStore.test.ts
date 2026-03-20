@@ -7,6 +7,9 @@ vi.mock('@/api/wineries');
 const mockWinery = {
   _id: 'win-1',
   name: 'Test Winery',
+  owner: 'user-1',
+  country: 'georgia-id',
+  region: 'kakheti-id',
   address: 'Tbilisi',
   contactEmail: 'test@winery.com',
   contactPhone: '+99551234567',

@@ -9,8 +9,12 @@ const mockTour = {
   name: 'Wine Tasting Tour',
   description: 'Amazing tour',
   price: 100,
-  duration: '3 hours',
+  duration: 180,
   imageUrl: 'http://test.com/tour.jpg',
+  images: [],
+  groupSize: { min: 2, max: 10 },
+  averageRating: 4.5,
+  totalReviews: 5,
   winery: { _id: 'win-1', name: 'Test Winery' },
 };
 
