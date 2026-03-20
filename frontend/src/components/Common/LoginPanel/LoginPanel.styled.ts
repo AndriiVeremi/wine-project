@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { FiUser } from 'react-icons/fi';
-import { RiUserLine } from 'react-icons/ri';
 
 export const LoginWrapper = styled.button`
   display: flex;

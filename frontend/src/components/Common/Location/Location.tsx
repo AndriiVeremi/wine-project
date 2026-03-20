@@ -65,11 +65,7 @@ const Location = () => {
       {isOpen && countries.length > 0 && (
         <DropdownMenu>
           {countries.map((c) => (
-            <DropdownMenuItem
-              key={c}
-              onClick={(e) => handleSelect(e, c)}
-              $active={c === country}
-            >
+            <DropdownMenuItem key={c} onClick={(e) => handleSelect(e, c)} $active={c === country}>
               {c}
             </DropdownMenuItem>
           ))}
