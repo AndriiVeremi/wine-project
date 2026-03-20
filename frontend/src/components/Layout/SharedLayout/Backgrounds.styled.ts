@@ -85,14 +85,14 @@ export const InnerDecorativeBackground = styled(BaseBackground)`
   }
 
   @media (max-width: 900px) {
-    height: 180px;
+    height: 200px;
     background-size:
       50% auto,
       50% auto;
   }
 
   @media (max-width: 767px) {
-    height: 140px;
+    height: 200px;
     background-position:
       -10px top,
       calc(100% + 10px) top;
