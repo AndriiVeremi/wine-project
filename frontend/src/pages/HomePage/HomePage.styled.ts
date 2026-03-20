@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import bgImg from '@/assets/bg-img.png';
-import reviewImg from '@/assets/review_bg-img.png';
+
+import bottomBgLeft from '@/assets/bottom-bg/mainBgLeft.png';
+import bottomBgLeftX2 from '@/assets/bottom-bg/mainBgLeftX2.png';
+import bottomBgRight from '@/assets/bottom-bg/mainBgReight.png';
+import bottomBgRightX2 from '@/assets/bottom-bg/mainBgReightX2.png';
 
 export const WineSection = styled.section`
   width: 100%;
@@ -84,10 +88,21 @@ export const RegionLink = styled(Link)`
 export const ReviewSection = styled.section`
   width: 100%;
   background-color: var(--white);
-  background-image: url(${reviewImg});
-  background-size: cover;
-  background-position: center 20px;
+
+  background-image: url(${bottomBgLeft}), url(${bottomBgRight});
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    background-image: url(${bottomBgLeftX2}), url(${bottomBgRightX2});
+  }
+
   background-repeat: no-repeat;
+  background-position:
+    left bottom,
+    right bottom;
+  background-size:
+    auto 100%,
+    auto 100%;
+
   padding: 100px 0;
   min-height: 800px;
   display: flex;
@@ -95,29 +110,28 @@ export const ReviewSection = styled.section`
   justify-content: center;
   overflow: hidden;
 
-  & > div {
-    transform: translateY(-30px);
+  @media (max-width: 1200px) {
+    background-size: contain, contain;
+  }
+
+  @media (max-width: 900px) {
+    background-size:
+      45% auto,
+      45% auto;
   }
 
   @media (max-width: 1024px) {
     min-height: 600px;
     padding: 80px 0;
-    background-position: center 15px;
-
-    & > div {
-      transform: translateY(-тpx);
-    }
   }
 
   @media (max-width: 767px) {
     margin-top: 50px;
     min-height: 450px;
     padding: 60px 0;
-    background-position: center 10px;
-
-    & > div {
-      transform: translateY(-10px);
-    }
+    background-position:
+      left -10px bottom,
+      right -10px bottom;
   }
 `;
 

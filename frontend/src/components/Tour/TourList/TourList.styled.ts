@@ -18,8 +18,4 @@ export const StyledTourListItem = styled.li`
   @media (min-width: 1280px) {
     width: calc((100% - 2 * 32px) / 3);
   }
-
-  @media (min-width: 1440px) {
-    width: calc((100% - 3 * 32px) / 4);
-  }
 `;
