@@ -20,7 +20,7 @@ export const StyledWineFilterContainer = styled.div`
 `;
 
 export const StyledDropDown = styled(Dropdown)<{ $isOpen?: boolean }>`
-  width: calc(50% - 6px); /* 2 колонки на мобілці */
+  width: calc(50% - 6px);
   height: 48px;
   text-transform: capitalize;
   flex-shrink: 0;
@@ -28,10 +28,10 @@ export const StyledDropDown = styled(Dropdown)<{ $isOpen?: boolean }>`
   z-index: ${(props) => (props.$isOpen ? 105 : 10)};
 
   @media (min-width: ${breakpoints.tablet}) {
-    width: 160px; /* Фіксована ширина на планшеті */
+    width: 160px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
-    width: 180px; /* Трохи ширше на десктопі */
+    width: 180px;
   }
 `;

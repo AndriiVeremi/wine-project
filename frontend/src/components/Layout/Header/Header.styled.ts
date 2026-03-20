@@ -121,18 +121,32 @@ export const BurgerButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 28px;
   color: var(--primary-wine);
-  padding: 5px;
-  background: none;
-  border: none;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(132, 16, 19, 0.1);
+  border-radius: 12px;
   cursor: pointer;
   flex-shrink: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  &:active {
+    transform: scale(0.95);
+    background: var(--white);
+  }
+
   @media (min-width: 1100px) {
     display: none;
   }
+
   @media (max-width: 767px) {
-    font-size: 28px;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
   }
 `;
 
