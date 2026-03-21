@@ -26,7 +26,7 @@ const Slider = <T,>({ items, renderItem }: SliderProps<T>) => {
 
   return (
     <SliderWrapper>
-      <NavButton className="prev-btn">
+      <NavButton className="prev-btn" aria-label="Previous slide">
         <FaChevronLeft size={24} />
       </NavButton>
 
@@ -52,7 +52,7 @@ const Slider = <T,>({ items, renderItem }: SliderProps<T>) => {
         })}
       </Swiper>
 
-      <NavButton className="next-btn">
+      <NavButton className="next-btn" aria-label="Next slide">
         <FaChevronRight size={24} />
       </NavButton>
     </SliderWrapper>

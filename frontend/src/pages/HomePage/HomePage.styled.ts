@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import bgImg from '@/assets/bg-img.png';
+import bgImg from '@/assets/bg-img.webp';
 
-import bottomBgLeft from '@/assets/bottom-bg/mainBgLeft.png';
-import bottomBgLeftX2 from '@/assets/bottom-bg/mainBgLeftX2.png';
-import bottomBgRight from '@/assets/bottom-bg/mainBgReight.png';
-import bottomBgRightX2 from '@/assets/bottom-bg/mainBgReightX2.png';
+import bottomBgLeft from '@/assets/bottom-bg/mainBgLeft.webp';
+import bottomBgLeftX2 from '@/assets/bottom-bg/mainBgLeftX2.webp';
+import bottomBgRight from '@/assets/bottom-bg/mainBgReight.webp';
+import bottomBgRightX2 from '@/assets/bottom-bg/mainBgReightX2.webp';
 
 export const WineSection = styled.section`
   width: 100%;

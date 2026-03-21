@@ -43,7 +43,7 @@ const MobileMenu = ({ isOpen, onClose }: Props) => {
     <>
       <Backdrop $isOpen={isOpen} onClick={onClose} />
       <MobileMenuOverlay $isOpen={isOpen}>
-        <CloseButton onClick={onClose}>
+        <CloseButton onClick={onClose} aria-label="Close menu">
           <FiX />
         </CloseButton>
 
@@ -67,21 +67,31 @@ const MobileMenu = ({ isOpen, onClose }: Props) => {
 
         <SocialList>
           <li>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
               <SocialIconWrapper>
                 <FacebookIcon />
               </SocialIconWrapper>
             </a>
           </li>
           <li>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
               <SocialIconWrapper>
                 <InstagramIcon />
               </SocialIconWrapper>
             </a>
           </li>
           <li>
-            <a href="https://t.me" target="_blank" rel="noopener noreferrer">
+            <a href="https://t.me" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
               <SocialIconWrapper>
                 <TelegramIcon />
               </SocialIconWrapper>

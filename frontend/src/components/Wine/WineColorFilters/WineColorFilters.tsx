@@ -8,10 +8,10 @@ import {
   CardTitle,
 } from '@/components/Wine/WineColorFilters/WineColorFilters.styled';
 
-import img1 from '@/assets/wine1_red.png';
-import img2 from '@/assets/wine2_orange.png';
-import img3 from '@/assets/wine3_rose.png';
-import img4 from '@/assets/wine4_white.png';
+import img1 from '@/assets/wine1_red.webp';
+import img2 from '@/assets/wine2_orange.webp';
+import img3 from '@/assets/wine3_rose.webp';
+import img4 from '@/assets/wine4_white.webp';
 
 const WineColorFilters: React.FC = () => {
   const navigate = useNavigate();

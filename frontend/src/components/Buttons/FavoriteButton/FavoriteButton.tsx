@@ -42,7 +42,12 @@ const FavoriteButton = ({ wine, className, style, size = 24, color = '#841013' }
   };
 
   return (
-    <StyledFavoriteButton className={className} style={style} onClick={handleToggle}>
+    <StyledFavoriteButton
+      className={className}
+      style={style}
+      onClick={handleToggle}
+      aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+    >
       {isFavorite ? (
         <FaHeart size={size} color={color} />
       ) : (

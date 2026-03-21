@@ -40,7 +40,7 @@ const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
   return (
     <ContactModalOverlay onClick={handleOverlayClick}>
       <ContactModalContainer>
-        <CloseBtn onClick={onClose}>
+        <CloseBtn onClick={onClose} aria-label="Close">
           <IoClose />
         </CloseBtn>
 
@@ -51,7 +51,10 @@ const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
 
         <ContactList>
           {winery.contactPhone && (
-            <ContactLink href={`tel:${winery.contactPhone}`}>
+            <ContactLink
+              href={`tel:${winery.contactPhone}`}
+              aria-label={`Call ${winery.contactPhone}`}
+            >
               <div className="icon-wrapper">
                 <FiPhone />
               </div>
@@ -61,7 +64,11 @@ const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
 
           {winery.contactEmail && (
             <div style={{ marginTop: '10px' }}>
-              <a href={`mailto:${winery.contactEmail}`} style={{ textDecoration: 'none' }}>
+              <a
+                href={`mailto:${winery.contactEmail}`}
+                style={{ textDecoration: 'none' }}
+                aria-label={`Send email to ${winery.contactEmail}`}
+              >
                 <MainButton size="medium" fullWidth>
                   <FiMail style={{ marginRight: '10px' }} />
                   Send Email to Winery
