@@ -77,7 +77,17 @@ const SharedLayout = () => {
 
       <MainContent $isHome={isHome} $hasTitle={!!pageTitle}>
         <ContentWrapper>
-          <Suspense fallback={<Loader isFullScreen={false} />}>
+          <Suspense
+            fallback={
+              isHome ? (
+                <div style={{ minHeight: '500px' }}>
+                  <Loader isFullScreen={false} />
+                </div>
+              ) : (
+                <Loader isFullScreen={false} />
+              )
+            }
+          >
             <Outlet />
           </Suspense>
         </ContentWrapper>
