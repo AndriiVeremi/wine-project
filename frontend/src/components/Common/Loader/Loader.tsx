@@ -4,12 +4,17 @@ interface LoaderProps {
   height?: number | string;
   width?: number | string;
   color?: string;
+  isFullScreen?: boolean;
 }
 
-export const Loader: React.FC<LoaderProps> = ({ height = 80, width = 80, color = '#841013' }) => {
-  return (
-    <div
-      style={{
+export const Loader: React.FC<LoaderProps> = ({
+  height = 80,
+  width = 80,
+  color = '#841013',
+  isFullScreen = true,
+}) => {
+  const containerStyle: React.CSSProperties = isFullScreen
+    ? {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -19,8 +24,18 @@ export const Loader: React.FC<LoaderProps> = ({ height = 80, width = 80, color =
         right: 0,
         bottom: 0,
         zIndex: 9999,
-      }}
-    >
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      }
+    : {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '2rem',
+        width: '100%',
+      };
+
+  return (
+    <div style={containerStyle}>
       <RevolvingDot
         visible={true}
         height={height}

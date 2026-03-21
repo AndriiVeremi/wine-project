@@ -16,11 +16,12 @@ const WineryFilter = () => {
 
   const { country } = useLocationStore();
 
-  const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery({
+  const { data: regionsRaw = [], isLoading: isLoadingRegions } = useQuery({
     queryKey: ['regions', country],
     queryFn: async () => {
+      if (!country) return [];
       const res = await getRegions(country);
-      return res.data;
+      return Array.isArray(res.data) ? res.data : [];
     },
     enabled: !!country,
   });
@@ -41,17 +42,22 @@ const WineryFilter = () => {
     }
   };
 
+  const selectedRegionName =
+    (Array.isArray(regions) ? regions : []).find((r) => r._id === region)?.name || '';
+
   return (
     <StyledWineryFilterContainer ref={filterRef}>
       <StyledDropDown
         label="Region"
-        value={regions.find((r) => r._id === region)?.name || ''}
-        options={regions.map((r) => r.name)}
+        value={selectedRegionName}
+        options={(Array.isArray(regions) ? regions : []).map((r) => r.name)}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}
         onOpen={() => handleOpen('region')}
         onSelect={(value) => {
-          const selectedRegion = regions.find((r) => r.name === value);
+          const selectedRegion = (Array.isArray(regions) ? regions : []).find(
+            (r) => r.name === value,
+          );
           setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}

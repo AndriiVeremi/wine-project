@@ -18,12 +18,14 @@ const TourFilter = () => {
   const { region, setFilter, clearFilters } = useTourFiltersStore();
   const { country } = useLocationStore();
 
-  const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
+  const { data: regionsRaw = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
     queryKey: ['regions', country],
     queryFn: async () => {
+      if (!country) return [];
       const res = await getRegions(country);
-      return res.data || [];
+      return Array.isArray(res.data) ? res.data : [];
     },
+    enabled: !!country,
   });
 
   const regions = Array.isArray(regionsRaw) ? regionsRaw : [];
@@ -42,11 +44,13 @@ const TourFilter = () => {
     }
   };
 
+  const selectedRegionName = regions.find((r) => r._id === region)?.name || '';
+
   return (
     <StyledWineFilterContainer ref={filterRef}>
       <StyledDropDown
         label="Region"
-        value={regions.find((r) => r._id === region)?.name || ''}
+        value={selectedRegionName}
         options={regions.map((r) => r.name)}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}

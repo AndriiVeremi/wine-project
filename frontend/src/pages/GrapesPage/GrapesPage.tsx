@@ -1,6 +1,4 @@
 import { useEffect } from 'react';
-import { Oval } from 'react-loader-spinner';
-
 import Container from '@/components/Common/Container';
 import GrapeList from '@/components/Grape/GrapeList/GrapeList';
 import AppPagination from '@/components/Common/AppPagination';
@@ -9,6 +7,7 @@ import { useGrapesStore } from '@/store/grape/grapesStore';
 import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { notifyError } from '@/utils/toast';
+import { Loader } from '@/components/Common/Loader';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
@@ -47,18 +46,7 @@ const GrapesPage = () => {
         placeholder="Search grape varieties..."
       />
 
-      {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
-          <Oval
-            height={80}
-            width={80}
-            color="#841013"
-            secondaryColor="#c27a7c"
-            strokeWidth={4}
-            strokeWidthSecondary={4}
-          />
-        </div>
-      )}
+      {loading && <Loader isFullScreen={false} />}
 
       {!loading && !error && grapes?.length === 0 && (
         <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
