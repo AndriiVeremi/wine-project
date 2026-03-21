@@ -47,11 +47,11 @@ import {
   AboutPageWrapper,
 } from './AboutPage.styled';
 
-import universalityImg from '@/assets/universalityImg.png';
-import reliabilityImg from '@/assets/reliabilityImg.png';
-import usabilityImg from '@/assets/usabilityImg.png';
-import transparencyImg from '@/assets/transparencyImg.png';
-import developmentImg from '@/assets/developmentImg.png';
+import universalityImg from '@/assets/universalityImg.webp';
+import reliabilityImg from '@/assets/reliabilityImg.webp';
+import usabilityImg from '@/assets/usabilityImg.webp';
+import transparencyImg from '@/assets/transparencyImg.webp';
+import developmentImg from '@/assets/developmentImg.webp';
 
 import { FiInfo, FiHeadphones, FiLayers, FiMapPin, FiStar, FiCheck } from 'react-icons/fi';
 import { GiGrapes, GiWineBottle, GiWineGlass } from 'react-icons/gi';

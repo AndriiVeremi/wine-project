@@ -134,11 +134,11 @@ const ContactsInfo = () => {
                 href={member.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                title="GitHub Profile"
+                aria-label="GitHub Profile"
               >
                 <FaGithub />
               </SocialLink>
-              <SocialLink href={`mailto:dashuk10@gmail.com`} title="Send Email">
+              <SocialLink href={`mailto:dashuk10@gmail.com`} aria-label="Send Email">
                 <FaEnvelope />
               </SocialLink>
             </ActionSection>

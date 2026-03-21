@@ -20,7 +20,7 @@ const Login = ({ onClick }: Props) => {
   };
 
   return (
-    <LoginWrapper onClick={handleLoginClick}>
+    <LoginWrapper onClick={handleLoginClick} aria-label={user ? 'Go to account' : 'Login'}>
       <UserIcon />
       <LoginText>{user ? profile?.firstName || 'User' : 'Login'}</LoginText>
     </LoginWrapper>

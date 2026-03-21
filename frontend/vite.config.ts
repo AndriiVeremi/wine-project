@@ -34,6 +34,12 @@ export default defineConfig({
             if (id.includes('swiper')) {
               return 'swiper';
             }
+            if (id.includes('styled-components')) {
+              return 'styled';
+            }
+            if (id.includes('react-icons')) {
+              return 'react-icons';
+            }
             return 'vendor';
           }
         },

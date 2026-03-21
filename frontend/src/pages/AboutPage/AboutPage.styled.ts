@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import AboutFirstImg from '@/assets/about-first.png';
-import AboutSecondImg from '@/assets/about-second.png';
+import AboutFirstImg from '@/assets/about-first.webp';
+import AboutSecondImg from '@/assets/about-second.webp';
 import { breakpoints } from '@/styles/breakpoints';
-import bgImage from '@/assets/about-bg-img.jpg';
+import bgImage from '@/assets/about-bg-img.webp';
 
 export const AboutPageWrapper = styled.div`
   padding: 80px 0;
