@@ -34,32 +34,30 @@ function App() {
   }, [setUser]);
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader isFullScreen={true} />;
   }
 
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <ErrorBoundary>
-        <Suspense fallback={<Loader />}>
-          <Routes>
-            <Route path="/" element={<SharedLayout />}>
-              <Route index element={<HomePage />} />
-              <Route path="wineries" element={<WineriesPage />} />
-              <Route path="wineries/:id" element={<WineryDetailPage />} />
-              <Route path="about" element={<AboutPage />} />
-              <Route path="wines" element={<WinesPage />} />
-              <Route path="wines/:id" element={<WineDetailPage />} />
-              <Route path="grapes" element={<GrapesPage />} />
-              <Route path="grapes/:id" element={<GrapeDetailPage />} />
-              <Route path="regions/:name" element={<RegionDetailPage />} />
-              <Route path="tours" element={<WineToursPage />} />
-              <Route path="tours/:id" element={<WineTourDetailPage />} />
-              <Route path="account" element={<AccountPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<SharedLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="wineries" element={<WineriesPage />} />
+            <Route path="wineries/:id" element={<WineryDetailPage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="wines" element={<WinesPage />} />
+            <Route path="wines/:id" element={<WineDetailPage />} />
+            <Route path="grapes" element={<GrapesPage />} />
+            <Route path="grapes/:id" element={<GrapeDetailPage />} />
+            <Route path="regions/:name" element={<RegionDetailPage />} />
+            <Route path="tours" element={<WineToursPage />} />
+            <Route path="tours/:id" element={<WineTourDetailPage />} />
+            <Route path="account" element={<AccountPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
       </ErrorBoundary>
     </>
   );

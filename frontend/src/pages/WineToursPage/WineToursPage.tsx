@@ -1,6 +1,4 @@
 import { useEffect } from 'react';
-import { Oval } from 'react-loader-spinner';
-
 import Container from '@/components/Common/Container';
 import AppPagination from '@/components/Common/AppPagination';
 
@@ -12,6 +10,7 @@ import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
+import { Loader } from '@/components/Common/Loader';
 
 const TourPage = () => {
   const tours = useToursStore((s) => s.tours);
@@ -45,18 +44,7 @@ const TourPage = () => {
         placeholder="Search tours..."
       />
 
-      {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Oval
-            height={80}
-            width={80}
-            color="#841013"
-            secondaryColor="#c27a7c"
-            strokeWidth={4}
-            strokeWidthSecondary={4}
-          />
-        </div>
-      )}
+      {loading && <Loader isFullScreen={false} />}
 
       {!loading && !error && tours.length === 0 && <p>No tours found</p>}
       {!loading && !error && tours.length > 0 && (

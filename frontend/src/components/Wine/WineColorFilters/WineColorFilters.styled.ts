@@ -64,7 +64,7 @@ export const CardImage = styled.img`
   transition: transform 0.4s ease;
 
   @media (min-width: ${breakpoints.desktop}) {
-    max-height: 85%;
+    max-height: 65%;
   }
 
   ${FilterCard}:hover & {

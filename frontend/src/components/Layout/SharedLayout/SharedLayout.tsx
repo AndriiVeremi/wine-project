@@ -1,9 +1,11 @@
+import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '@/components/Layout/Header';
 import Footer from '@/components/Layout/Footer';
 import AuthModal from '@/components/Common/AuthModal/AuthModal';
 import AIAssistant from '@/components/Common/AIAssistant/AIAssistant';
 import Container from '@/components/Common/Container';
+import { Loader } from '@/components/Common/Loader';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
   LayoutWrapper,
@@ -52,7 +54,9 @@ const SharedLayout = () => {
 
       <MainContent $isHome={isHome} $hasTitle={!!pageTitle}>
         <ContentWrapper>
-          <Outlet />
+          <Suspense fallback={<Loader isFullScreen={false} />}>
+            <Outlet />
+          </Suspense>
         </ContentWrapper>
         <BottomDecorativeBackground />
       </MainContent>

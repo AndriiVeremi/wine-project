@@ -1,6 +1,4 @@
 import { useEffect } from 'react';
-import { Oval } from 'react-loader-spinner';
-
 import WineList from '@/components/Wine/WineList/WineList';
 import Container from '@/components/Common/Container';
 
@@ -13,6 +11,7 @@ import { StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
 import { notifyError } from '@/utils/toast';
 import AppPagination from '@/components/Common/AppPagination';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
+import { Loader } from '@/components/Common/Loader';
 
 const WinesPage = () => {
   const wines = useWinesStore((s) => s.wines);
@@ -46,18 +45,7 @@ const WinesPage = () => {
         placeholder="Search wines..."
       />
 
-      {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Oval
-            height={80}
-            width={80}
-            color="#841013"
-            secondaryColor="#c27a7c"
-            strokeWidth={4}
-            strokeWidthSecondary={4}
-          />
-        </div>
-      )}
+      {loading && <Loader isFullScreen={false} />}
 
       {!loading && !error && wines?.length === 0 && <p>No wines found</p>}
       {!loading && !error && wines.length > 0 && (

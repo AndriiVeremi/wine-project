@@ -43,7 +43,7 @@ const WineriesPage = () => {
         placeholder="Search wineries..."
       />
 
-      {loading && <Loader />}
+      {loading && <Loader isFullScreen={false} />}
 
       {!loading && !error && wineries?.length === 0 && <p>No wineries found</p>}
 
