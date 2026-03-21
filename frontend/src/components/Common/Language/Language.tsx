@@ -37,8 +37,8 @@ const Language = () => {
   return (
     <LanguageWrapper ref={wrapperRef}>
       <LanguageTrigger onClick={toggleDropdown} aria-label="Select language">
-        <GlobeIcon />
-        <LangText>{currentLang}</LangText>
+        <GlobeIcon $isOpen={isOpen} />
+        <LangText $isOpen={isOpen}>{currentLang}</LangText>
         <DropDownIcon $isOpen={isOpen} />
       </LanguageTrigger>
 

@@ -11,9 +11,8 @@ export const WineSection = styled.section`
   width: 100%;
   background-color: var(--white);
   padding-bottom: 100px;
-  padding-top: 60px;
   overflow: hidden;
-
+ 
   @media (max-width: 767px) {
     padding-top: 40px;
     padding-bottom: 60px;
@@ -43,7 +42,7 @@ export const RegionTitle = styled.h2`
   text-align: center;
   font-size: 48px;
   color: var(--white);
-  margin-bottom: 60px;
+  margin-bottom: 200px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
   @media (max-width: 767px) {
@@ -147,8 +146,8 @@ export const ReviewList = styled('ul')`
 export const ReviewTitle = styled.h2`
   text-align: center;
   font-size: 38px;
+  margin-top: 30px;
   margin-bottom: 40px;
-  margin-top: 60px;
 
   @media (max-width: 767px) {
     font-size: 24px;

@@ -46,7 +46,7 @@ const WineCard = ({ wine }: WineCardProps) => {
         <WineDescription>{cleanDesc}</WineDescription>
 
         <PriceRatingRow>
-          <WinePrice>{wine.price > 0 ? `$${wine.price}` : 'Price on request'}</WinePrice>
+          <WinePrice>{wine.price > 0 ? `$ ${wine.price}` : 'Price on request'}</WinePrice>
           <RatingStars
             value={wine.averageRating ?? 0}
             showLeftValue={false}
