@@ -1,6 +1,16 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
+  /* Font display swap for CLS fix */
+  @font-face {
+    font-family: 'Montserrat';
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Montserrat Alternates';
+    font-display: swap;
+  }
+
   /* Reset */
   *,
   *::before,

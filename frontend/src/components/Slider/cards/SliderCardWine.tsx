@@ -40,7 +40,7 @@ const SliderCardWine: React.FC<WineCardProps> = ({ wine }) => {
           <span style={{ fontWeight: 'bold', color: '#333' }}>
             {wine.averageRating && wine.averageRating > 0 ? wine.averageRating : 'No rating'}
           </span>
-          <span style={{ fontSize: '12px', color: '#999', marginLeft: '4px' }}>
+          <span style={{ fontSize: '12px', color: '#666', marginLeft: '4px' }}>
             ({wine.totalReviews || 0})
           </span>
         </RatingBlock>

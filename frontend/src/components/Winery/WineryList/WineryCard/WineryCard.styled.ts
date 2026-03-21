@@ -9,12 +9,15 @@ export const StyledWineryCardDiv = styled.div`
   flex-direction: column;
   gap: 12px;
   height: 100%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(255, 234, 203, 0.6);
+    border-color: #ffeacb;
   }
 `;
 

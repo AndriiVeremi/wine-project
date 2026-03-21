@@ -41,8 +41,8 @@
 
 
   /* Typography */
-  --font-main: 'Montserrat', sans-serif;
-  --font-accent: 'Montserrat Alternates', sans-serif;
+  --font-main: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-accent: 'Montserrat Alternates', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
 
   /* Layout */
