@@ -11,7 +11,6 @@ import {
   MissionHeading3,
   MissionText,
   Section,
-  SectionWithBg,
   SectionWithImage,
   TitleStyled,
   FindSection,
@@ -32,7 +31,26 @@ import {
   AudienceImageContainer,
   AudienceIconSmall,
   AudienceIcon,
+  FutureTitle,
+  FutureSubtitle,
+  FutureList,
+  FutureItem,
+  PrinciplesTitle,
+  PrinciplesSubtitle,
+  PrinciplesWrapper,
+  PrincipleItem,
+  PrincipleImageWrapper,
+  PrincipleContent,
+  PrincipleName,
+  PrincipleText,
+  FutureText,
 } from './AboutPage.styled';
+
+import universalityImg from '@/assets/universalityImg.png';
+import reliabilityImg from '@/assets/reliabilityImg.png';
+import usabilityImg from '@/assets/usabilityImg.png';
+import transparencyImg from '@/assets/transparencyImg.png';
+import developmentImg from '@/assets/developmentImg.png';
 
 import { FiInfo, FiHeadphones, FiLayers, FiMapPin, FiStar, FiCheck } from 'react-icons/fi';
 import { GiGrapes, GiWineBottle, GiWineGlass } from 'react-icons/gi';
@@ -166,8 +184,8 @@ const AboutPage = () => {
           </FindSection>
         </Container>
       </SectionWithImage>
-      <Section>
-        <Container>
+      <Container>
+        <Section>
           <AudienceSection>
             <AudienceContent>
               <AudienceTitle>Who Is Wine Discovery For</AudienceTitle>
@@ -250,11 +268,103 @@ const AboutPage = () => {
               </AudienceText>
             </AudienceContent>
 
-            <AudienceImageContainer>{/* твоє зображення-колаж */}</AudienceImageContainer>
+            <AudienceImageContainer></AudienceImageContainer>
           </AudienceSection>
-        </Container>
-      </Section>
-      <SectionWithBg></SectionWithBg>
+        </Section>
+        <Section>
+          <PrinciplesTitle>Our Approach and Principles</PrinciplesTitle>
+          <PrinciplesSubtitle>
+            The development of Wine Discovery is guided by the following principles:
+          </PrinciplesSubtitle>
+
+          <PrinciplesWrapper>
+            <PrincipleItem>
+              <PrincipleImageWrapper>
+                <img src={universalityImg} alt="Universality" />
+              </PrincipleImageWrapper>
+
+              <PrincipleContent>
+                <PrincipleName>Universality</PrincipleName>
+                <PrincipleText>
+                  A consistent structure suitable for multiple countries and regions.
+                </PrincipleText>
+              </PrincipleContent>
+            </PrincipleItem>
+
+            <PrincipleItem>
+              <PrincipleImageWrapper>
+                <img src={reliabilityImg} alt="Reliability" />
+              </PrincipleImageWrapper>
+
+              <PrincipleContent>
+                <PrincipleName>Reliability</PrincipleName>
+                <PrincipleText>Information based on open and verifiable sources.</PrincipleText>
+              </PrincipleContent>
+            </PrincipleItem>
+
+            <PrincipleItem>
+              <PrincipleImageWrapper>
+                <img src={usabilityImg} alt="Usability" />
+              </PrincipleImageWrapper>
+
+              <PrincipleContent>
+                <PrincipleName>Usability</PrincipleName>
+                <PrincipleText>Intuitive navigation and clear filtering mechanisms.</PrincipleText>
+              </PrincipleContent>
+            </PrincipleItem>
+
+            <PrincipleItem>
+              <PrincipleImageWrapper>
+                <img src={transparencyImg} alt="Transparency" />
+              </PrincipleImageWrapper>
+
+              <PrincipleContent>
+                <PrincipleName>Transparency</PrincipleName>
+                <PrincipleText>
+                  Neutral, informative presentation without direct sales.
+                </PrincipleText>
+              </PrincipleContent>
+            </PrincipleItem>
+
+            <PrincipleItem>
+              <PrincipleImageWrapper>
+                <img src={developmentImg} alt="Continuous development" />
+              </PrincipleImageWrapper>
+
+              <PrincipleContent>
+                <PrincipleName>Continuous development</PrincipleName>
+                <PrincipleText>Gradual expansion of features and geography.</PrincipleText>
+              </PrincipleContent>
+            </PrincipleItem>
+          </PrinciplesWrapper>
+        </Section>
+        <Section>
+          <FutureTitle>Future Development</FutureTitle>
+          <FutureSubtitle>Planned directions for future development include:</FutureSubtitle>
+
+          <FutureList>
+            <FutureItem>
+              <FutureText>Expansion to additional wine-producing countries and regions;</FutureText>
+            </FutureItem>
+
+            <FutureItem>
+              <FutureText>Development of wine tours and thematic routes;</FutureText>
+            </FutureItem>
+
+            <FutureItem>
+              <FutureText>Enhancement of rating and recommendation systems;</FutureText>
+            </FutureItem>
+
+            <FutureItem>
+              <FutureText>Extended profile capabilities for wineries;</FutureText>
+            </FutureItem>
+
+            <FutureItem>
+              <FutureText>Building a community around wine culture and discovery.</FutureText>
+            </FutureItem>
+          </FutureList>
+        </Section>
+      </Container>
     </>
   );
 };

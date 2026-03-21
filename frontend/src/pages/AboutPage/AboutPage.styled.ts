@@ -31,19 +31,6 @@ export const SectionWithImage = styled(Section)`
   }
 `;
 
-export const SectionWithBg = styled.section`
-  background-color: var(--footer-cream);
-  padding: 40px 0;
-
-  @media (min-width: ${breakpoints.tablet}) {
-    padding: 48px 0;
-  }
-
-  @media (min-width: ${breakpoints.desktop}) {
-    padding: 64px 0;
-  }
-`;
-
 // about section
 export const AboutContainer = styled.div`
   @media (min-width: ${breakpoints.tablet}) {
@@ -285,20 +272,86 @@ export const FindText = styled.p`
 `;
 
 // audience section
-export const AudienceSection = styled.div``;
+export const AudienceSection = styled.div`
+  display: flex;
+  flex-direction: column;
 
-export const AudienceContent = styled.div``;
+  @media (min-width: ${breakpoints.desktop}) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+  }
+`;
 
-export const AudienceTitle = styled.h2``;
+export const AudienceContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    gap: 20px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 24px;
+  }
+`;
+
+export const AudienceTitle = styled.h2`
+  text-align: center;
+
+  @media (min-width: ${breakpoints.desktop}) {
+    text-align: left;
+  }
+`;
 
 export const AudienceText = styled.p``;
 
-export const AudienceList = styled.ul``;
+export const AudienceList = styled.ul`
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
-export const AudienceSubList = styled.ul``;
+  @media (min-width: ${breakpoints.tablet}) {
+    gap: 10px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 12px;
+  }
+`;
+
+export const AudienceSubList = styled.ul`
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    gap: 8px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 10px;
+  }
+`;
 
 export const AudienceImageContainer = styled.div`
-  background-image: url(${AboutSecondImg});
+  display: none;
+
+  @media (min-width: ${breakpoints.desktop}) {
+    display: block;
+    border-radius: 32px;
+    width: 100%;
+    max-width: 520px;
+    height: 486px;
+
+    background-image: url(${AboutSecondImg});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 `;
 
 export const AudienceItem = styled.li`
@@ -308,10 +361,17 @@ export const AudienceItem = styled.li`
 `;
 
 export const AudienceIcon = styled.div`
-  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
   color: var(--primary-wine);
-  line-height: 1;
-  margin-top: 4px;
+
+  border: 1px solid var(--primary-wine);
+  border-radius: 50%;
 `;
 
 export const AudienceSubItem = styled.li`
@@ -321,8 +381,219 @@ export const AudienceSubItem = styled.li`
 `;
 
 export const AudienceIconSmall = styled.div`
-  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   color: var(--primary-wine);
-  line-height: 1;
-  margin-top: 4px;
 `;
+
+// section principles
+
+export const PrinciplesTitle = styled.h2`
+  text-align: center;
+  margin-bottom: 16px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    margin-bottom: 24px;
+  }
+`;
+
+export const PrinciplesSubtitle = styled.p`
+  text-align: center;
+  margin-bottom: 32px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    margin-bottom: 36px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    margin-bottom: 40px;
+  }
+`;
+
+export const PrinciplesWrapper = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    gap: 40px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 48px;
+  }
+`;
+
+export const PrincipleItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    flex-direction: row;
+
+    justify-content: space-around;
+    gap: 0;
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+  }
+`;
+
+export const PrincipleImageWrapper = styled.div`
+  width: 200px;
+  height: auto;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    width: 300px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    width: 600px;
+  }
+`;
+
+export const PrincipleContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    gap: 16px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 20px;
+  }
+`;
+
+export const PrincipleName = styled.h3``;
+
+export const PrincipleText = styled.p`
+  width: 340px;
+  text-align: center;
+`;
+
+// section future
+
+export const FutureTitle = styled.h2`
+  text-align: center;
+  margin-bottom: 16px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    margin-bottom: 24px;
+  }
+`;
+
+export const FutureSubtitle = styled.p`
+  text-align: center;
+  margin-bottom: 32px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    margin-bottom: 36px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    margin-bottom: 40px;
+  }
+`;
+
+export const FutureList = styled.ol`
+  counter-reset: future-counter;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 32px;
+  }
+`;
+
+export const FutureItem = styled.li`
+  counter-increment: future-counter;
+
+  position: relative;
+  padding: 16px 16px 16px 56px;
+
+  background-color: var(--white, #fff);
+  border-radius: 12px;
+  box-shadow: var(--main-shadow, 0px 4px 10px rgba(0, 0, 0, 0.1));
+
+  @media (min-width: ${breakpoints.tablet}) {
+    padding: 18px 18px 18px 64px;
+    flex-basis: calc((100% - 24px) / 2);
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    padding: 20px 20px 20px 72px;
+    flex-basis: calc((100% - 64px) / 3);
+  }
+
+  &::after {
+    content: counter(future-counter);
+
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--footer-cream);
+    color: var(--primary-wine);
+    font-weight: 600;
+
+    border-radius: 50%;
+
+    @media (min-width: ${breakpoints.tablet}) {
+      width: 36px;
+      height: 36px;
+    }
+
+    @media (min-width: ${breakpoints.desktop}) {
+      width: 40px;
+      height: 40px;
+    }
+  }
+`;
+
+export const FutureNumber = styled.span``;
+
+export const FutureText = styled.p``;
