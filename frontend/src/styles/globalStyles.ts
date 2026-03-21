@@ -1,57 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-  /* Local fonts with preload */
-  @font-face {
-    font-family: 'Montserrat';
-    font-display: swap;
-    src: url('/fonts/montserrat-latin-400-normal.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Montserrat';
-    font-display: swap;
-    src: url('/fonts/montserrat-latin-500-normal.woff2') format('woff2');
-    font-weight: 500;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Montserrat';
-    font-display: swap;
-    src: url('/fonts/montserrat-latin-600-normal.woff2') format('woff2');
-    font-weight: 600;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Montserrat';
-    font-display: swap;
-    src: url('/fonts/montserrat-latin-700-normal.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Montserrat Alternates';
-    font-display: swap;
-    src: url('/fonts/montserrat-alternates-latin-400-normal.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Montserrat Alternates';
-    font-display: swap;
-    src: url('/fonts/montserrat-alternates-latin-500-normal.woff2') format('woff2');
-    font-weight: 500;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Montserrat Alternates';
-    font-display: swap;
-    src: url('/fonts/montserrat-alternates-latin-600-normal.woff2') format('woff2');
-    font-weight: 600;
-    font-style: normal;
-  }
-
   /* Reset */
   *,
   *::before,

@@ -19,7 +19,7 @@ import {
   HomeBgRight,
 } from './SharedLayout.styled';
 import homeBgLeftSrc from '@/assets/home-bg/home-bgLeft.webp';
-import homeBgRightSrc from '@/assets/home-bg/home-bgReight.webp';
+import homeBgRightSrc from '@/assets/home-bg/home-bgRight.webp';
 import { ROUTES } from '@/constants/routes';
 
 const SharedLayout = () => {
@@ -45,8 +45,22 @@ const SharedLayout = () => {
     <LayoutWrapper>
       {isHome && (
         <>
-          <HomeBgLeft src={homeBgLeftSrc} alt="" fetchPriority="high" />
-          <HomeBgRight src={homeBgRightSrc} alt="" fetchPriority="high" />
+          <HomeBgLeft
+            src={homeBgLeftSrc}
+            alt=""
+            fetchPriority="high"
+            loading="eager"
+            width="406"
+            height="695"
+          />
+          <HomeBgRight
+            src={homeBgRightSrc}
+            alt=""
+            fetchPriority="high"
+            loading="eager"
+            width="903"
+            height="695"
+          />
         </>
       )}
       {!isHome && <InnerDecorativeBackground />}

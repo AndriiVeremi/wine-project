@@ -35,7 +35,7 @@ const WineColorFilters: React.FC = () => {
     <FilterGrid>
       {wineColors.map((color) => (
         <FilterCard key={color.name} onClick={() => onWineClick(color.name)}>
-          <CardImage src={color.img} alt={`${color.name} wine`} />
+          <CardImage src={color.img} alt={`${color.name} wine`} width="245" height="293" />
           <CardTitle>{color.label}</CardTitle>
         </FilterCard>
       ))}
