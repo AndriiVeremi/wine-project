@@ -52,10 +52,10 @@ const Location = () => {
     <RelativeContainer ref={wrapperRef} onClick={() => setIsOpen(!isOpen)}>
       <List>
         <ListItem>
-          <LocationIcon />
+          <LocationIcon $isOpen={isOpen} />
         </ListItem>
         <ListItem>
-          <Text>{country}</Text>
+          <Text $isOpen={isOpen}>{country}</Text>
         </ListItem>
         <ListItem>
           <DropDownIcon $isOpen={isOpen} />
