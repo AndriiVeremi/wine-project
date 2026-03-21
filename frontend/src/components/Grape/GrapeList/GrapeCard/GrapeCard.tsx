@@ -1,4 +1,5 @@
 import { FaMapMarkerAlt, FaTint, FaWineBottle, FaClock } from 'react-icons/fa';
+import { CgSandClock } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import type { Grape } from '@/types/grape';
 import { stripHtml } from '@/utils/text';
@@ -66,8 +67,8 @@ const GrapeCard = ({ grape }: Props) => {
           <span>{grape.body}</span>
         </CharacteristicItem>
         <CharacteristicItem title="Aging">
-          <FaClock size={14} color="#7F7F7F" />
-          <span>{grape.agingPotential}</span>
+          <CgSandClock size={14} color="#E3900A" />
+          <span>{grape.agingPotential}.o.</span>
         </CharacteristicItem>
       </CharacteristicsContainer>
 

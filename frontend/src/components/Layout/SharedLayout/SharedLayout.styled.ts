@@ -46,4 +46,5 @@ export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>
   flex: 1;
   position: relative;
   z-index: 1;
+  padding-top: 80px;
 `;
