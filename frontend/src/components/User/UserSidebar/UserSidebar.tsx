@@ -34,12 +34,18 @@ export type AccountSection =
   | 'All Tours'
   | 'Users'
   | 'Reviews'
-  | 'About project'
   | 'Contacts';
 
 interface Props {
   currentSection: AccountSection;
   setSection: (section: AccountSection) => void;
+}
+
+interface MenuItemData {
+  name: string;
+  icon: React.ReactNode;
+  type: 'section' | 'link';
+  path?: string;
 }
 
 const AccountSidebar = ({ currentSection, setSection }: Props) => {
@@ -50,44 +56,43 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
   const isAdmin = profile?.role === 'ADMIN';
 
   const getMenuItems = () => {
-    const baseItems = [
-      { name: 'About project', icon: <FiInfo /> },
-      { name: 'Contacts', icon: <FiMail /> },
+    const commonItems: MenuItemData[] = [{ name: 'Contacts', icon: <FiMail />, type: 'section' }];
+    const linkItems: MenuItemData[] = [
+      { name: 'About project', icon: <FiInfo />, type: 'link', path: '/about' },
     ];
+
+    let items: MenuItemData[] = [];
 
     if (isAdmin) {
-      return [
-        { name: 'Personal Info', icon: <FiUser /> },
-        { name: 'All Wineries', icon: <FiHome /> },
-        { name: 'All Wines', icon: <FaWineBottle /> },
-        { name: 'All Grapes', icon: <FaLeaf /> },
-        { name: 'All Tours', icon: <FiMap /> },
-        { name: 'Users', icon: <FiUsers /> },
-        { name: 'Reviews', icon: <FiMessageSquare /> },
-        { name: 'Account Settings', icon: <FiSettings /> },
-        ...baseItems,
+      items = [
+        { name: 'Personal Info', icon: <FiUser />, type: 'section' },
+        { name: 'All Wineries', icon: <FiHome />, type: 'section' },
+        { name: 'All Wines', icon: <FaWineBottle />, type: 'section' },
+        { name: 'All Grapes', icon: <FaLeaf />, type: 'section' },
+        { name: 'All Tours', icon: <FiMap />, type: 'section' },
+        { name: 'Users', icon: <FiUsers />, type: 'section' },
+        { name: 'Reviews', icon: <FiMessageSquare />, type: 'section' },
+        { name: 'Account Settings', icon: <FiSettings />, type: 'section' },
+      ];
+    } else if (isOwner) {
+      items = [
+        { name: 'Personal Info', icon: <FiUser />, type: 'section' },
+        { name: 'My Winery', icon: <FiHome />, type: 'section' },
+        { name: 'My Wines', icon: <FaWineBottle />, type: 'section' },
+        { name: 'My Tours', icon: <FiMap />, type: 'section' },
+        { name: 'Grapes', icon: <FaLeaf />, type: 'section' },
+        { name: 'Account Settings', icon: <FiSettings />, type: 'section' },
+      ];
+    } else {
+      items = [
+        { name: 'Personal Info', icon: <FiUser />, type: 'section' },
+        { name: 'My Wishlist', icon: <FiHeart />, type: 'section' },
+        { name: 'My Reviews', icon: <FiStar />, type: 'section' },
+        { name: 'Account Settings', icon: <FiSettings />, type: 'section' },
       ];
     }
 
-    if (isOwner) {
-      return [
-        { name: 'Personal Info', icon: <FiUser /> },
-        { name: 'My Winery', icon: <FiHome /> },
-        { name: 'My Wines', icon: <FaWineBottle /> },
-        { name: 'My Tours', icon: <FiMap /> },
-        { name: 'Grapes', icon: <FaLeaf /> },
-        { name: 'Account Settings', icon: <FiSettings /> },
-        ...baseItems,
-      ];
-    }
-
-    return [
-      { name: 'Personal Info', icon: <FiUser /> },
-      { name: 'My Wishlist', icon: <FiHeart /> },
-      { name: 'My Reviews', icon: <FiStar /> },
-      { name: 'Account Settings', icon: <FiSettings /> },
-      ...baseItems,
-    ];
+    return [...items, ...commonItems, ...linkItems];
   };
 
   const items = getMenuItems();
@@ -97,13 +102,21 @@ const AccountSidebar = ({ currentSection, setSection }: Props) => {
     navigate('/');
   };
 
+  const handleItemClick = (item: MenuItemData) => {
+    if (item.type === 'link') {
+      navigate(item.path);
+    } else {
+      setSection(item.name as AccountSection);
+    }
+  };
+
   return (
     <MenuContainer>
       {items.map((item) => (
         <MenuItem
           key={item.name}
           $active={currentSection === item.name}
-          onClick={() => setSection(item.name as AccountSection)}
+          onClick={() => handleItemClick(item)}
         >
           {item.icon}
           {item.name}

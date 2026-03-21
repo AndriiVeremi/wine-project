@@ -14,6 +14,7 @@ import AccountInfo from '@/components/User/UserInfo/UserInfo';
 import AccountSettings from '@/components/User/UserSettings/UserSettings';
 import AccountReviews from '@/components/User/UserReviews/UserReviews';
 import Wishlist from '@/components/User/UserWishList/UserWishList';
+import ContactsInfo from '@/components/User/ContactsInfo/ContactsInfo';
 import Container from '@/components/Common/Container';
 import type { UserProfile } from '@/types/auth';
 import type { Winery } from '@/types/wineries';
@@ -84,10 +85,13 @@ const AccountPage = () => {
             }
           />
         );
-      case 'About project':
-        return <SectionTitle>About project</SectionTitle>;
       case 'Contacts':
-        return <SectionTitle>Contacts</SectionTitle>;
+        return (
+          <>
+            <SectionTitle>Our Team</SectionTitle>
+            <ContactsInfo />
+          </>
+        );
       default:
         return <PlaceholderText>Coming soon...</PlaceholderText>;
     }
