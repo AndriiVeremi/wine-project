@@ -41,12 +41,9 @@ interface Props {
   setSection: (section: AccountSection) => void;
 }
 
-interface MenuItemData {
-  name: string;
-  icon: React.ReactNode;
-  type: 'section' | 'link';
-  path?: string;
-}
+type MenuItemData =
+  | { name: string; icon: React.ReactNode; type: 'section' }
+  | { name: string; icon: React.ReactNode; type: 'link'; path: string };
 
 const AccountSidebar = ({ currentSection, setSection }: Props) => {
   const { profile, logout } = useAuthStore();
