@@ -19,13 +19,18 @@ const GrapeFilter = () => {
   const filters = useGrapeFiltersStore();
   const { country } = useLocationStore();
 
-  const { data: regions = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
+  const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
     queryKey: ['regions', country],
     queryFn: async () => {
+      if (!country) return [];
       const res = await getRegions(country);
-      return res.data || [];
+      return Array.isArray(res.data) ? res.data : [];
     },
+    enabled: !!country,
   });
+
+  // Iron-clad protection: always ensure regions is an array
+  const regions = Array.isArray(regionsRaw) ? regionsRaw : [];
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
@@ -40,6 +45,10 @@ const GrapeFilter = () => {
       filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
+
+  // Safe search using optional chaining and array check
+  const selectedRegionName =
+    (Array.isArray(regions) ? regions : []).find((r) => r._id === filters.region)?.name || '';
 
   return (
     <StyledWineFilterContainer ref={filterRef}>
@@ -58,17 +67,19 @@ const GrapeFilter = () => {
 
       <StyledDropDown
         label="Region"
-        value={regions.find((r) => r._id === filters.region)?.name || ''}
-        options={regions.map((r) => r.name)}
+        value={selectedRegionName}
+        options={(Array.isArray(regions) ? regions : []).map((r) => r.name)}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}
         onOpen={() => handleOpen('region')}
         onSelect={(val) => {
-          const selectedRegion = regions.find((r) => r.name === val);
+          const selectedRegion = (Array.isArray(regions) ? regions : []).find(
+            (r) => r.name === val,
+          );
           filters.setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}
-        disabled={isLoadingRegions || regions.length === 0}
+        disabled={isLoadingRegions || !Array.isArray(regions) || regions.length === 0}
       />
 
       <StyledDropDown

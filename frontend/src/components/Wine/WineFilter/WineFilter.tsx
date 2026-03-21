@@ -25,22 +25,23 @@ const WineFilter = ({ className }: PropsWineFilter) => {
 
   const { country } = useLocationStore();
 
-  const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery({
+  const { data: regionsRaw = [], isLoading: isLoadingRegions } = useQuery({
     queryKey: ['regions', country],
     queryFn: async () => {
+      if (!country) return [];
       const res = await getRegions(country);
-      return res.data;
+      return Array.isArray(res.data) ? res.data : [];
     },
     enabled: !!country,
   });
 
   const regions = Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : [];
 
-  const { data: grapesRaw, isLoading: isLoadingGrapes } = useQuery({
+  const { data: grapesRaw = [], isLoading: isLoadingGrapes } = useQuery({
     queryKey: ['grapes', region],
     queryFn: async () => {
       const res = await getGrapes({ limit: 9999, region });
-      return res.data.grapes;
+      return res.data && Array.isArray(res.data.grapes) ? res.data.grapes : [];
     },
   });
 
@@ -60,17 +61,22 @@ const WineFilter = ({ className }: PropsWineFilter) => {
     }
   };
 
+  const selectedRegionName =
+    (Array.isArray(regions) ? regions : []).find((r) => r._id === region)?.name || '';
+
   return (
     <StyledWineFilterContainer className={className} ref={filterRef}>
       <StyledDropDown
         label="Region"
-        value={regions.find((r) => r._id === region)?.name || ''}
-        options={regions.map((r) => r.name)}
+        value={selectedRegionName}
+        options={(Array.isArray(regions) ? regions : []).map((r) => r.name)}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}
         onOpen={() => handleOpen('region')}
         onSelect={(value) => {
-          const selectedRegion = regions.find((r) => r.name === value);
+          const selectedRegion = (Array.isArray(regions) ? regions : []).find(
+            (r) => r.name === value,
+          );
           setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}
@@ -106,7 +112,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
       <StyledDropDown
         label="Grape"
         value={grape}
-        options={grapes.map((g) => g.name)}
+        options={(Array.isArray(grapes) ? grapes : []).map((g) => g.name)}
         isOpen={openDropdown === 'grape'}
         $isOpen={openDropdown === 'grape'}
         onOpen={() => handleOpen('grape')}
@@ -114,7 +120,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
           setFilter('grape', value);
           setOpenDropdown(null);
         }}
-        disabled={isLoadingGrapes || regions.length === 0}
+        disabled={isLoadingGrapes}
       />
 
       <StyledDropDown

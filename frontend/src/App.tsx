@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react';
+import { useEffect, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth/authStore';
 import { onAuthStateChanged } from 'firebase/auth';
