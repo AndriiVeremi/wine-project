@@ -18,14 +18,15 @@ const TourFilter = () => {
   const { region, setFilter, clearFilters } = useTourFiltersStore();
   const { country } = useLocationStore();
 
-  const { data: regions = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
+  const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
     queryKey: ['regions', country],
     queryFn: async () => {
       const res = await getRegions(country);
-      return res.data;
+      return res.data || [];
     },
-    enabled: !!country,
   });
+
+  const regions = Array.isArray(regionsRaw) ? regionsRaw : [];
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);

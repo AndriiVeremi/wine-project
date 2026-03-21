@@ -1,24 +1,45 @@
-/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
 
-export default defineConfig(() => ({
-  plugins: [react()],
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    react(),
+    visualizer({
+      filename: 'stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/tests/setup.ts',
-    env: {
-      VITE_FIREBASE_CONFIG:
-        '{"apiKey":"test","authDomain":"test.firebaseapp.com","projectId":"test","storageBucket":"test.appspot.com","messagingSenderId":"123","appId":"1:123:web:test"}',
-      VITE_AI_ASSISTANT_ENABLED: 'false',
-      VITE_API_URL: 'http://localhost:5005/api',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('firebase')) {
+              return 'firebase';
+            }
+            if (id.includes('leaflet')) {
+              return 'leaflet';
+            }
+            if (id.includes('@tiptap')) {
+              return 'tiptap';
+            }
+            if (id.includes('swiper')) {
+              return 'swiper';
+            }
+            return 'vendor'; // all other libs
+          }
+        },
+      },
     },
+    chunkSizeWarningLimit: 600,
   },
-}));
+});

@@ -3,3 +3,4 @@ dist
 .env
 serviceAccountKey.json
 benchmark.js
+package-lock.json

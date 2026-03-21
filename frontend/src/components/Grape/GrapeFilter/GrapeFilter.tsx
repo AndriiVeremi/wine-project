@@ -23,9 +23,8 @@ const GrapeFilter = () => {
     queryKey: ['regions', country],
     queryFn: async () => {
       const res = await getRegions(country);
-      return res.data;
+      return res.data || [];
     },
-    enabled: !!country,
   });
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);

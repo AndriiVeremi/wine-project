@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 export const mockSignOut = vi.fn(() => Promise.resolve());
 export const mockSignInWithEmailAndPassword = vi.fn(() => Promise.resolve({ user: {} }));
 export const mockOnAuthStateChanged = vi.fn((_auth: unknown, callback: (user: null) => void) => {

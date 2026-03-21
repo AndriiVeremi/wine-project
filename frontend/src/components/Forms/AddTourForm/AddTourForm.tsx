@@ -137,7 +137,7 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
                 setPreviews(next.map((file) => URL.createObjectURL(file)));
               }}
               onGalleryFilesChange={(newFiles) => {
-                const next = [files[0], ...newFiles].filter(Boolean).slice(0, 5);
+                const next = [...files.slice(1), ...newFiles].filter(Boolean).slice(0, 4);
                 setFiles(next);
                 setPreviews(next.map((f) => URL.createObjectURL(f)));
               }}
