@@ -44,6 +44,7 @@ import {
   PrincipleName,
   PrincipleText,
   FutureText,
+  AboutPageWrapper,
 } from './AboutPage.styled';
 
 import universalityImg from '@/assets/universalityImg.png';
@@ -57,7 +58,7 @@ import { GiGrapes, GiWineBottle, GiWineGlass } from 'react-icons/gi';
 
 const AboutPage = () => {
   return (
-    <>
+    <AboutPageWrapper>
       <Container>
         <Section>
           <AboutContainer>
@@ -365,7 +366,7 @@ const AboutPage = () => {
           </FutureList>
         </Section>
       </Container>
-    </>
+    </AboutPageWrapper>
   );
 };
 
