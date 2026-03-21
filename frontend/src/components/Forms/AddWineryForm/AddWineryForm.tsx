@@ -160,7 +160,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               setGalleryPreviews(next.map((file) => URL.createObjectURL(file)));
             }}
             onGalleryFilesChange={(files) => {
-              const next = [gallery[0], ...files].filter(Boolean).slice(0, 5);
+              const next = [...gallery.slice(1), ...files].filter(Boolean).slice(0, 4);
               setGallery(next);
               setGalleryPreviews(next.map((f) => URL.createObjectURL(f)));
             }}

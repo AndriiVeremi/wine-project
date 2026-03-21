@@ -41,12 +41,13 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
 
   const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const filesArray = Array.from(e.target.files).slice(0, maxGalleryCount);
+      const filesArray = Array.from(e.target.files).slice(0, maxGalleryCount - 1);
       onGalleryFilesChange(filesArray);
     }
   };
 
-  const gallerySlots = Array(maxGalleryCount).fill(null);
+  const gallerySlots = Array(maxGalleryCount - 1).fill(null);
+  const showAddButton = galleryPreviews.length < maxGalleryCount - 1;
 
   return (
     <UploadGroupWrapper>
@@ -78,7 +79,7 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
               </GalleryItem>
             );
           }
-          if (index === galleryPreviews.length) {
+          if (showAddButton && index === galleryPreviews.length) {
             return (
               <AddMoreBtn key={index} onClick={() => galleryInputRef.current?.click()}>
                 <FiPlus size={20} />
@@ -87,6 +88,11 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
           }
           return <GalleryItem key={index} style={{ opacity: 0.5, borderStyle: 'dotted' }} />;
         })}
+        {showAddButton && galleryPreviews.length === gallerySlots.length && (
+          <AddMoreBtn onClick={() => galleryInputRef.current?.click()}>
+            <FiPlus size={20} />
+          </AddMoreBtn>
+        )}
       </GalleryRow>
       <input
         type="file"

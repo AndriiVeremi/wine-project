@@ -1,11 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { getWineryById } from '@/api/wineries';
 import type { Winery } from '@/types/wineries';
 import { useWinesStore } from '@/store/wine/winesStore';
 import RatingStars from '@/components/Common/RatingStars';
 import { Loader } from '@/components/Common/Loader';
-import WineryMap from '@/components/Common/Location/WineryMap';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import InfoButton from '@/components/Buttons/InfoButton/InfoButton';
@@ -32,6 +31,8 @@ import {
   SectionHeaderTitle,
   MapSection,
 } from './WineryDetailPage.styled';
+
+const WineryMap = lazy(() => import('@/components/Common/Location/WineryMap'));
 
 function getYouTubeEmbedUrl(url?: string) {
   if (!url) return null;
@@ -189,11 +190,13 @@ const WineryDetailPage = () => {
         )}
         <MapSection style={{ marginBottom: '80px' }}>
           {winery.coordinates ? (
-            <WineryMap
-              lat={winery.coordinates.lat}
-              lng={winery.coordinates.lng}
-              wineryName={winery.name}
-            />
+            <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading map...</p>}>
+              <WineryMap
+                lat={winery.coordinates.lat}
+                lng={winery.coordinates.lng}
+                wineryName={winery.name}
+              />
+            </Suspense>
           ) : (
             <div
               style={{

@@ -1,6 +1,7 @@
 .vscode/
 .GoIT_commit
 tsconfig.json
+package-lock.json
 
 # Logs
 logs
@@ -143,3 +144,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 frontend/package-lock.json
 backend/package-lock.json
+backend/src/data/seedData.prod.ts
