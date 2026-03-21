@@ -5,7 +5,7 @@ import { Logo } from './MainLogo.styled';
 const MainLogo = () => {
   return (
     <Link to="/">
-      <Logo src={main_logo} alt="Main Logo" />
+      <Logo src={main_logo} alt="Main Logo" width="160" height="60" />
     </Link>
   );
 };

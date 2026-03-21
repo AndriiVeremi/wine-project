@@ -5,16 +5,20 @@ export const StyledHeader = styled('header')`
   position: relative;
   width: 100%;
   padding: 45px 0;
+  min-height: 150px;
   background-color: transparent;
   z-index: 10;
   @media (max-width: 1279px) {
     padding: 35px 0;
+    min-height: 115px;
   }
   @media (max-width: 767px) {
     padding: 35px 0;
+    min-height: 115px;
   }
   @media (max-width: 480px) {
     padding: 30px 0;
+    min-height: 105px;
   }
 `;
 

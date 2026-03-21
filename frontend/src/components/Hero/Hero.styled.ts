@@ -3,6 +3,11 @@ import styled from 'styled-components';
 export const HeroSection = styled('section')`
   width: 100%;
   overflow: hidden;
+  min-height: 500px;
+
+  @media (max-width: 767px) {
+    min-height: 400px;
+  }
 `;
 
 export const HeroWrapper = styled('div')`

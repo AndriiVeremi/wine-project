@@ -2,18 +2,18 @@ import styled from 'styled-components';
 
 import homeBgLeft from '@/assets/home-bg/home-bgLeft.webp';
 import homeBgLeftX2 from '@/assets/home-bg/home-bgLeftX2.webp';
-import homeBgRight from '@/assets/home-bg/home-bgReight.webp';
-import homeBgRightX2 from '@/assets/home-bg/home-bgReightX2.webp';
+import homeBgRight from '@/assets/home-bg/home-bgRight.webp';
+import homeBgRightX2 from '@/assets/home-bg/home-bgRightX2.webp';
 
 import innerBgLeft from '@/assets/header-bg/headerLeft.webp';
 import innerBgLeftX2 from '@/assets/header-bg/headerLeftX2.webp';
-import innerBgRight from '@/assets/header-bg/headerReight.webp';
-import innerBgRightX2 from '@/assets/header-bg/headerReightX2.webp';
+import innerBgRight from '@/assets/header-bg/headerRight.webp';
+import innerBgRightX2 from '@/assets/header-bg/headerRightX2.webp';
 
 import bottomBgLeft from '@/assets/bottom-bg/mainBgLeft.webp';
 import bottomBgLeftX2 from '@/assets/bottom-bg/mainBgLeftX2.webp';
-import bottomBgRight from '@/assets/bottom-bg/mainBgReight.webp';
-import bottomBgRightX2 from '@/assets/bottom-bg/mainBgReightX2.webp';
+import bottomBgRight from '@/assets/bottom-bg/mainBgRight.webp';
+import bottomBgRightX2 from '@/assets/bottom-bg/mainBgRightX2.webp';
 
 const BaseBackground = styled.div`
   position: absolute;
