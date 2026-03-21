@@ -101,7 +101,7 @@ export const ReviewFooter = styled.div`
 export const ReviewDate = styled.span`
   font-size: 13px;
   font-weight: 500;
-  color: #999;
+  color: #666;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
@@ -169,5 +169,5 @@ export const EmptyState = styled.div`
   background: #fff;
   border-radius: 16px;
   border: 1px dashed #ddd;
-  color: #999;
+  color: #666;
 `;

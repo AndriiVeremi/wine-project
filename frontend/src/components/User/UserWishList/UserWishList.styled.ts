@@ -77,7 +77,7 @@ export const EmptyMessage = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  color: #999;
+  color: #666;
 
   svg {
     color: #e0e0e0;

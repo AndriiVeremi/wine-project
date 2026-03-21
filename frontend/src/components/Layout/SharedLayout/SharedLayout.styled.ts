@@ -1,10 +1,7 @@
 import styled from 'styled-components';
+import { breakpoints } from '@/styles/breakpoints';
 
-export {
-  HomeDecorativeBackground,
-  InnerDecorativeBackground,
-  BottomDecorativeBackground,
-} from './Backgrounds.styled';
+export { InnerDecorativeBackground, BottomDecorativeBackground } from './Backgrounds.styled';
 
 export const LayoutWrapper = styled.div`
   min-height: 100vh;
@@ -47,4 +44,51 @@ export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>
   position: relative;
   z-index: 1;
   padding-top: 80px;
+  min-height: 80vh;
+`;
+
+export const HomeBgLeft = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: clamp(350px, 38vw, 595px);
+  width: auto;
+  pointer-events: none;
+  z-index: 0;
+
+  @media (max-width: 1200px) {
+    height: clamp(300px, 35vw, 500px);
+  }
+
+  @media (max-width: 900px) {
+    height: 300px;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    left: -10px;
+    height: 200px;
+  }
+`;
+
+export const HomeBgRight = styled.img`
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: clamp(350px, 38vw, 595px);
+  width: auto;
+  pointer-events: none;
+  z-index: 0;
+
+  @media (max-width: 1200px) {
+    height: clamp(300px, 35vw, 500px);
+  }
+
+  @media (max-width: 900px) {
+    height: 300px;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    right: -10px;
+    height: 200px;
+  }
 `;

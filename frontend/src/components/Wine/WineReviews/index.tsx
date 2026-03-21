@@ -52,7 +52,7 @@ const ItemReviews: React.FC<Props> = ({ wineId, wineryId, tourId }) => {
   }, [wineId, wineryId, tourId]);
 
   if (loading)
-    return <p style={{ textAlign: 'center', padding: '40px', color: '#999' }}>Loading...</p>;
+    return <p style={{ textAlign: 'center', padding: '40px', color: '#666' }}>Loading...</p>;
 
   if (reviews.length === 0) {
     return (

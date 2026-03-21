@@ -81,7 +81,7 @@ export const GlobalStyle = createGlobalStyle`
   appearance: none;
   }
 
-  /* Scrollbar */
+
   ::-webkit-scrollbar {
     width: 8px;
   }

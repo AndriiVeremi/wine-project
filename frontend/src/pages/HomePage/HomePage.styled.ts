@@ -4,8 +4,8 @@ import bgImg from '@/assets/bg-img.webp';
 
 import bottomBgLeft from '@/assets/bottom-bg/mainBgLeft.webp';
 import bottomBgLeftX2 from '@/assets/bottom-bg/mainBgLeftX2.webp';
-import bottomBgRight from '@/assets/bottom-bg/mainBgReight.webp';
-import bottomBgRightX2 from '@/assets/bottom-bg/mainBgReightX2.webp';
+import bottomBgRight from '@/assets/bottom-bg/mainBgRight.webp';
+import bottomBgRightX2 from '@/assets/bottom-bg/mainBgRightX2.webp';
 
 export const WineSection = styled.section`
   width: 100%;

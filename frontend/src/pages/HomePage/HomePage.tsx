@@ -7,6 +7,7 @@ import { getWineries } from '@/api/wineries';
 import { getRegions } from '@/api/regions';
 import { useLocationStore } from '@/store/location/locationStore';
 import Hero from '@/components/Hero/Hero';
+import { Loader } from '@/components/Common/Loader';
 import {
   WineSection,
   MapSection,
@@ -85,7 +86,16 @@ const HomePage = () => {
         <Container>
           <ReviewTitle>Our Partners & Wineries</ReviewTitle>
           {isLoadingWineries ? (
-            <p style={{ textAlign: 'center' }}>Loading wineries...</p>
+            <div
+              style={{
+                height: '420px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Loader isFullScreen={false} />
+            </div>
           ) : (
             <Slider
               items={vipWineries}
