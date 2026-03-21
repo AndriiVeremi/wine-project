@@ -12,7 +12,7 @@ export const WineSection = styled.section`
   background-color: var(--white);
   padding-bottom: 100px;
   overflow: hidden;
- 
+
   @media (max-width: 767px) {
     padding-top: 40px;
     padding-bottom: 60px;
