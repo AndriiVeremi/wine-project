@@ -21,6 +21,8 @@ const RegionDetailPage = lazy(() => import('@/pages/RegionDetailPage/RegionDetai
 const WineToursPage = lazy(() => import('@/pages/WineToursPage'));
 const WineTourDetailPage = lazy(() => import('@/pages/WineTourDetailPage'));
 const AccountPage = lazy(() => import('@/pages/AccountPage'));
+const ContactsPage = lazy(() => import('@/pages/ContactsPage/ContactsPage'));
+const LegalPage = lazy(() => import('@/pages/LegalPage/LegalPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 
 function App() {
@@ -55,7 +57,11 @@ function App() {
             <Route path="tours" element={<WineToursPage />} />
             <Route path="tours/:id" element={<WineTourDetailPage />} />
             <Route path="account" element={<AccountPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="contacts" element={<ContactsPage />} />
+            <Route path="privacy" element={<LegalPage />} />
+            <Route path="terms" element={<LegalPage />} />
+            <Route path="cookies" element={<LegalPage />} />
+            <Route path="*" element={<NotFoundPage />} />{' '}
           </Route>
         </Routes>
       </ErrorBoundary>

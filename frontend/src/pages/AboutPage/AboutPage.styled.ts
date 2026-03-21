@@ -4,6 +4,14 @@ import AboutSecondImg from '@/assets/about-second.png';
 import { breakpoints } from '@/styles/breakpoints';
 import bgImage from '@/assets/about-bg-img.jpg';
 
+export const AboutPageWrapper = styled.div`
+  padding: 80px 0;
+
+  @media (max-width: 767px) {
+    padding: 40px 0;
+  }
+`;
+
 export const Section = styled.section`
   margin-bottom: 40px;
 
@@ -76,15 +84,35 @@ export const AboutInfoContainer = styled.div`
   flex-direction: column;
   gap: 16px;
 
+  h2 {
+    font-size: 28px;
+    color: var(--primary-wine);
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+  }
+
   @media (min-width: ${breakpoints.tablet}) {
     gap: 20px;
+    h2 {
+      font-size: 32px;
+    }
+    p {
+      font-size: 18px;
+    }
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     text-align: left;
     gap: 28px;
     max-width: 900px;
-    line-height: 1.6;
+    h2 {
+      font-size: 40px;
+    }
   }
 `;
 
@@ -94,39 +122,53 @@ export const OurMissionContainer = styled.div``;
 export const TitleStyled = styled.h2`
   text-align: center;
   margin-bottom: 20px;
+  font-size: 28px;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 24px;
+    font-size: 32px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 28px;
+    font-size: 40px;
   }
 `;
 
 export const MissionText = styled.p`
   margin-bottom: 24px;
   text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 28px;
+    font-size: 18px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 32px;
+    font-size: 20px;
   }
 `;
 
 export const MissionHeading3 = styled.h3`
   text-align: center;
   margin-bottom: 24px;
+  font-size: 22px;
+  color: var(--primary-wine);
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 28px;
+    font-size: 24px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 32px;
+    font-size: 28px;
   }
 `;
 
@@ -151,6 +193,13 @@ export const FeatureCard = styled.div`
   padding: 24px;
   border: 1px solid #cbcbcb;
   border-radius: 18px;
+  background: #fff;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-wine);
+  }
 
   @media (min-width: ${breakpoints.tablet}) {
     flex-basis: calc((100% - 24px) / 2);
@@ -167,21 +216,28 @@ export const FeatureIcon = styled.div`
   align-items: center;
   font-size: 64px;
   color: var(--primary-wine);
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   @media (min-width: 768px) {
-    font-size: 96px;
-    margin-bottom: 48px;
+    font-size: 72px;
+    margin-bottom: 24px;
   }
 
   @media (min-width: 1024px) {
-    font-size: 123px;
-    margin-bottom: 56px;
+    font-size: 80px;
+    margin-bottom: 30px;
   }
 `;
 
 export const FeatureText = styled.p`
   text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 16px;
+  }
 `;
 // section find
 
@@ -193,26 +249,33 @@ export const FindTitle = styled.h2`
   color: var(--white);
   text-align: center;
   margin-bottom: 24px;
+  font-size: 28px;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 28px;
+    font-size: 32px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 32px;
+    font-size: 40px;
   }
 `;
 
 export const FindHeadingSecond = styled.p`
   text-align: center;
   margin-bottom: 28px;
+  font-size: 18px;
+  font-weight: 500;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 32px;
+    font-size: 20px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 36px;
+    font-size: 22px;
   }
 `;
 
@@ -256,19 +319,25 @@ export const FindIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 64px;
+  font-size: 48px;
 
   @media (min-width: ${breakpoints.tablet}) {
-    font-size: 72px;
+    font-size: 56px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
-    font-size: 80px;
+    font-size: 64px;
   }
 `;
 
 export const FindText = styled.p`
   text-align: center;
+  font-size: 14px;
+  line-height: 1.4;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 16px;
+  }
 `;
 
 // audience section
@@ -299,13 +368,26 @@ export const AudienceContent = styled.div`
 
 export const AudienceTitle = styled.h2`
   text-align: center;
+  font-size: 28px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 32px;
+  }
 
   @media (min-width: ${breakpoints.desktop}) {
     text-align: left;
+    font-size: 40px;
   }
 `;
 
-export const AudienceText = styled.p``;
+export const AudienceText = styled.p`
+  font-size: 16px;
+  line-height: 1.6;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 18px;
+  }
+`;
 
 export const AudienceList = styled.ul`
   padding-left: 24px;
@@ -358,6 +440,11 @@ export const AudienceItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  font-size: 16px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 18px;
+  }
 `;
 
 export const AudienceIcon = styled.div`
@@ -378,6 +465,11 @@ export const AudienceSubItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  font-size: 15px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 17px;
+  }
 `;
 
 export const AudienceIconSmall = styled.div`
@@ -395,26 +487,34 @@ export const AudienceIconSmall = styled.div`
 export const PrinciplesTitle = styled.h2`
   text-align: center;
   margin-bottom: 16px;
+  font-size: 28px;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 20px;
+    font-size: 32px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 24px;
+    font-size: 40px;
   }
 `;
 
 export const PrinciplesSubtitle = styled.p`
   text-align: center;
   margin-bottom: 32px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 36px;
+    font-size: 18px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 40px;
+    font-size: 20px;
   }
 `;
 
@@ -468,7 +568,7 @@ export const PrincipleImageWrapper = styled.div`
   }
 
   @media (min-width: ${breakpoints.desktop}) {
-    width: 600px;
+    width: 500px;
   }
 `;
 
@@ -488,11 +588,29 @@ export const PrincipleContent = styled.div`
   }
 `;
 
-export const PrincipleName = styled.h3``;
+export const PrincipleName = styled.h3`
+  font-size: 22px;
+  color: var(--primary-wine);
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 26px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    font-size: 30px;
+  }
+`;
 
 export const PrincipleText = styled.p`
-  width: 340px;
+  max-width: 450px;
   text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 18px;
+  }
 `;
 
 // section future
@@ -500,26 +618,33 @@ export const PrincipleText = styled.p`
 export const FutureTitle = styled.h2`
   text-align: center;
   margin-bottom: 16px;
+  font-size: 28px;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 20px;
+    font-size: 32px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 24px;
+    font-size: 40px;
   }
 `;
 
 export const FutureSubtitle = styled.p`
   text-align: center;
   margin-bottom: 32px;
+  font-size: 16px;
+  line-height: 1.6;
 
   @media (min-width: ${breakpoints.tablet}) {
     margin-bottom: 36px;
+    font-size: 18px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     margin-bottom: 40px;
+    font-size: 20px;
   }
 `;
 
@@ -596,4 +721,11 @@ export const FutureItem = styled.li`
 
 export const FutureNumber = styled.span``;
 
-export const FutureText = styled.p``;
+export const FutureText = styled.p`
+  font-size: 15px;
+  line-height: 1.4;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    font-size: 16px;
+  }
+`;
