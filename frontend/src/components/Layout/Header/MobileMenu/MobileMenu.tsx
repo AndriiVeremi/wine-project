@@ -67,14 +67,24 @@ const MobileMenu = ({ isOpen, onClose }: Props) => {
 
         <SocialList>
           <li>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
               <SocialIconWrapper>
                 <FacebookIcon />
               </SocialIconWrapper>
             </a>
           </li>
           <li>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
               <SocialIconWrapper>
                 <InstagramIcon />
               </SocialIconWrapper>

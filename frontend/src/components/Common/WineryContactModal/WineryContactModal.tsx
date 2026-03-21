@@ -51,7 +51,10 @@ const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
 
         <ContactList>
           {winery.contactPhone && (
-            <ContactLink href={`tel:${winery.contactPhone}`} aria-label={`Call ${winery.contactPhone}`}>
+            <ContactLink
+              href={`tel:${winery.contactPhone}`}
+              aria-label={`Call ${winery.contactPhone}`}
+            >
               <div className="icon-wrapper">
                 <FiPhone />
               </div>
