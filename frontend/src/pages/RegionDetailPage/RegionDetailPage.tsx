@@ -90,7 +90,7 @@ const RegionDetailPage = () => {
 
             {region.locationAndClimate && (
               <StyledSection>
-                <h3>{region.locationAndClimate.title || 'Geographic location and climate'}</h3>
+                <h2>{region.locationAndClimate.title || 'Geographic location and climate'}</h2>
                 <p>{region.locationAndClimate.description}</p>
                 {region.locationAndClimate.features && (
                   <ul>

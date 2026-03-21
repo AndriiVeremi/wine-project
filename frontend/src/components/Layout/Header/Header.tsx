@@ -59,7 +59,7 @@ const Header = () => {
           <DesktopUserMenu>
             <UserMenu />
           </DesktopUserMenu>
-          <BurgerButton onClick={() => setIsMenuOpen(true)}>
+          <BurgerButton onClick={() => setIsMenuOpen(true)} aria-label="Open menu">
             <FiMenu />
           </BurgerButton>
         </HeaderContainer>
