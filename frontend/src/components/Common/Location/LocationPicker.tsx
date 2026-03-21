@@ -165,7 +165,7 @@ const LocationPicker = ({
               top: '50%',
               transform: 'translateY(-50%)',
               fontSize: '12px',
-              color: '#999',
+              color: '#666',
             }}
           >
             Searching...

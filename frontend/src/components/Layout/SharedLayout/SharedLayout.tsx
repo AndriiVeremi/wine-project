@@ -11,12 +11,15 @@ import {
   LayoutWrapper,
   PageTitleContainer,
   PageTitle,
-  HomeDecorativeBackground,
   InnerDecorativeBackground,
   BottomDecorativeBackground,
   MainContent,
   ContentWrapper,
+  HomeBgLeft,
+  HomeBgRight,
 } from './SharedLayout.styled';
+import homeBgLeftSrc from '@/assets/home-bg/home-bgLeft.webp';
+import homeBgRightSrc from '@/assets/home-bg/home-bgReight.webp';
 import { ROUTES } from '@/constants/routes';
 
 const SharedLayout = () => {
@@ -40,7 +43,13 @@ const SharedLayout = () => {
 
   return (
     <LayoutWrapper>
-      {isHome ? <HomeDecorativeBackground /> : <InnerDecorativeBackground />}
+      {isHome && (
+        <>
+          <HomeBgLeft src={homeBgLeftSrc} alt="" fetchPriority="high" />
+          <HomeBgRight src={homeBgRightSrc} alt="" fetchPriority="high" />
+        </>
+      )}
+      {!isHome && <InnerDecorativeBackground />}
 
       <Header />
 
