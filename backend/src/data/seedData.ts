@@ -18,6 +18,9 @@ const adjaraId = new mongoose.Types.ObjectId();
 const tbilisiId = new mongoose.Types.ObjectId();
 const guriaId = new mongoose.Types.ObjectId();
 const samtskheJavakhetiId = new mongoose.Types.ObjectId();
+const abkhaziaId = new mongoose.Types.ObjectId();
+const samegreloId = new mongoose.Types.ObjectId();
+const mtskhetaId = new mongoose.Types.ObjectId();
 const zakarpattiaId = new mongoose.Types.ObjectId();
 const odesaId = new mongoose.Types.ObjectId();
 const khersonId = new mongoose.Types.ObjectId();
@@ -97,6 +100,14 @@ export const locations = [
     type: 'region',
     parentLocation: georgiaId,
   },
+  { _id: abkhaziaId, name: 'Abkhazia', type: 'region', parentLocation: georgiaId },
+  {
+    _id: samegreloId,
+    name: 'Samegrelo-Zemo Svaneti',
+    type: 'region',
+    parentLocation: georgiaId,
+  },
+  { _id: mtskhetaId, name: 'Mtskheta-Mtianeti', type: 'region', parentLocation: georgiaId },
   { _id: zakarpattiaId, name: 'Zakarpattia', type: 'region', parentLocation: ukraineId },
   { _id: odesaId, name: 'Odesa', type: 'region', parentLocation: ukraineId },
   { _id: khersonId, name: 'Kherson', type: 'region', parentLocation: ukraineId },
@@ -694,6 +705,146 @@ export const regions = [
       title: 'Importance of Region for Georgian Winemaking',
       description: 'Emerging leader in high-quality boutique wine production in Ukraine.',
       points: ['Quality focus', 'Boutique growth', 'Estuary terroir'],
+    },
+  },
+  {
+    _id: abkhaziaId,
+    name: 'Abkhazia',
+    description:
+      'A coastal region with a subtropical climate, known for its unique maritime winemaking traditions. The humid sea air and limestone-rich soils produce elegant and aromatic wines, including the famous semi-sweet varieties.',
+    imageUrl: 'https://placehold.co/600x400/006064/FFFFFF?text=Abkhazia',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Stretching along the Black Sea coast, Abkhazia enjoys high humidity and mild temperatures, protected by the Caucasus Mountains.',
+      features: ['Maritime influence', 'Subtropical humidity', 'Mountain protection'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'Predominantly limestone and alluvial soils, which provide excellent drainage and mineral character to the grapes.',
+      mainTypes: ['Limestone', 'Alluvial'],
+      properties: ['High calcium content', 'Mineral-rich'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Abkhazian winemaking is characterized by small family vineyards and a preference for light, aromatic wines that perfectly complement the local spicy cuisine.',
+      rituals: ['Maritime harvest', 'Oak barrel aging'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Tsolikouri', description: 'Gives fresh and balanced white wines.' }],
+      red: [{ name: 'Avasirkhua', description: 'An ancient local variety producing deep reds.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Light, refreshing whites and famous naturally semi-sweet reds.',
+      styles: ['Semi-sweet Red', 'Crisp White'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Historical micro-zones along the coastline.',
+      list: ['Lykhny', 'Apsny'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'Preserves the unique maritime terroir of the Black Sea coast.',
+      points: ['Maritime viticulture', 'Unique local clones'],
+    },
+  },
+  {
+    _id: samegreloId,
+    name: 'Samegrelo-Zemo Svaneti',
+    description:
+      'A lush western region with high rainfall and deep winemaking roots. Samegrelo is the spiritual home of the Ojaleshi grape, one of Georgias oldest and most prized red varieties, traditionally grown using the Maglari method.',
+    imageUrl: 'https://placehold.co/600x400/1B5E20/FFFFFF?text=Samegrelo',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Located in the humid western lowlands, rising up to the high peaks of Svaneti. The climate is warm and very humid.',
+      features: ['High rainfall', 'Warm humidity', 'River valleys'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'Fertile alluvial soils in the lowlands and rocky, mineral-rich soils in the upper regions.',
+      mainTypes: ['Alluvial', 'Rocky'],
+      properties: ['High organic matter', 'Moisture-retentive'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Famous for "Maglari" viticulture—training vines to grow up trees. Megrelian winemaking is deeply intertwined with local folklore and festive rituals.',
+      rituals: ['Maglari vine training', 'New wine festivals'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Tsolikouri', description: 'Produces light, high-acid white wines.' }],
+      red: [
+        { name: 'Ojaleshi', description: 'The noble grape of Samegrelo, making aromatic reds.' },
+      ],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'Rich, semi-sweet Ojaleshi and refreshing, citrusy whites.',
+      styles: ['Premium Semi-sweet Red', 'Citrusy White'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Focused on the legendary Ojaleshi micro-zones.',
+      list: ['Salkhino'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'The source of some of the most aromatic semi-sweet wines in the country.',
+      points: ['Ojaleshi heritage', 'Ancient vine-training methods'],
+    },
+  },
+  {
+    _id: mtskhetaId,
+    name: 'Mtskheta-Mtianeti',
+    description:
+      'The historical heart of Georgia, surrounding the ancient capital Mtskheta. This region combines valley viticulture with high-mountain traditions, producing excellent grapes for both still and sparkling wines.',
+    imageUrl: 'https://placehold.co/600x400/BF360C/FFFFFF?text=Mtskheta',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Located at the confluence of the Mtkvari and Aragvi rivers. The climate varies from dry continental in the valleys to cool alpine in the mountains.',
+      features: ['River confluence', 'Strategic location', 'Mountain valleys'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'A mix of river-deposited alluvial soils and limestone slopes, ideal for balanced viticulture.',
+      mainTypes: ['Alluvial', 'Limestone'],
+      properties: ['Well-structured', 'Good mineral balance'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Home to some of Georgias oldest church vineyards. Winemaking here has always been closely linked to the spiritual and political life of the nation.',
+      rituals: ['Church vineyard blessings', 'Pilgrimage wine traditions'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Chinuri', description: 'Elegant variety perfect for sparkling wine.' }],
+      red: [{ name: 'Tavkveri', description: 'Used for fruity reds and sparkling roses.' }],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description: 'High-quality traditional method sparkling wines and light, fruity reds.',
+      styles: ['Traditional Sparkling', 'Fruity Red'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description: 'Includes key micro-zones for dry and sparkling wines.',
+      list: ['Atenuri'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description: 'A key region for the production of Georgian sparkling wines.',
+      points: ['Sparkling wine leader', 'Historical viticulture hub'],
     },
   },
 ];
