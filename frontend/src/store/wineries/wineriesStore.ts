@@ -65,7 +65,6 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
         msg = axiosError.response.data.errors[0].message;
       }
       set({ error: msg, loading: false });
-      throw new Error(msg);
     }
   },
 
@@ -84,7 +83,6 @@ export const useWineriesStore = create<WineriesStore>((set) => ({
         msg = axiosError.response.data.errors[0].message;
       }
       set({ error: msg, loading: false });
-      throw new Error(msg);
     }
   },
 }));
