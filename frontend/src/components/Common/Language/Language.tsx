@@ -36,19 +36,33 @@ const Language = () => {
 
   return (
     <LanguageWrapper ref={wrapperRef}>
-      <LanguageTrigger onClick={toggleDropdown} aria-label="Select language">
+      <LanguageTrigger
+        onClick={toggleDropdown}
+        aria-label="Select language"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+      >
         <GlobeIcon $isOpen={isOpen} />
         <LangText $isOpen={isOpen}>{currentLang}</LangText>
         <DropDownIcon $isOpen={isOpen} />
       </LanguageTrigger>
 
       {isOpen && (
-        <DropdownList>
+        <DropdownList role="listbox">
           {languages.map((lang) => (
             <DropdownItem
               key={lang}
               onClick={() => handleLangSelect(lang)}
               $active={lang === currentLang}
+              role="option"
+              aria-selected={lang === currentLang}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleLangSelect(lang);
+                }
+              }}
             >
               {lang}
             </DropdownItem>

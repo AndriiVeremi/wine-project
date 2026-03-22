@@ -7,7 +7,7 @@ import { getWineries } from '@/api/wineries';
 import { getRegions } from '@/api/regions';
 import { useLocationStore } from '@/store/location/locationStore';
 import Hero from '@/components/Hero/Hero';
-import { Loader } from '@/components/Common/Loader';
+import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
 import InteractiveMap from '@/components/Common/InteractiveMap/InteractiveMap';
 import {
   WineSection,
@@ -67,27 +67,38 @@ const HomePage = () => {
 
       <MapSection>
         <Container>
-          {selectedCountry ? (
-            <>
-              <RegionTitle>Discover Wine Regions of {selectedCountry}</RegionTitle>
+          <div
+            style={{
+              minHeight: '800px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            {selectedCountry ? (
+              <>
+                <RegionTitle>Discover Wine Regions of {selectedCountry}</RegionTitle>
 
-              {selectedCountry === 'Georgia' && (
-                <MapWrapperDesktop>
-                  <InteractiveMap />
-                </MapWrapperDesktop>
-              )}
+                {selectedCountry === 'Georgia' && (
+                  <MapWrapperDesktop>
+                    <InteractiveMap />
+                  </MapWrapperDesktop>
+                )}
 
-              <RegionList>
-                {regions.map((region: RegionLocation) => (
-                  <RegionLink key={region._id} to={`/regions/${region.name}`}>
-                    {region.name}
-                  </RegionLink>
-                ))}
-              </RegionList>
-            </>
-          ) : (
-            <RegionTitle>Please select a country in the Hero section to see regions</RegionTitle>
-          )}
+                <RegionList>
+                  {regions.map((region: RegionLocation) => (
+                    <RegionLink key={region._id} to={`/regions/${region.name}`}>
+                      {region.name}
+                    </RegionLink>
+                  ))}
+                </RegionList>
+              </>
+            ) : (
+              <RegionTitle>Please select a country in the Hero section to see regions</RegionTitle>
+            )}
+          </div>
         </Container>
       </MapSection>
 
@@ -97,13 +108,23 @@ const HomePage = () => {
           {isLoadingWineries ? (
             <div
               style={{
-                height: '420px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(1, 1fr)',
+                gap: '20px',
               }}
             >
-              <Loader isFullScreen={false} />
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '20px',
+                  overflow: 'hidden',
+                }}
+              >
+                <WineryCardSkeleton />
+                <WineryCardSkeleton />
+                <WineryCardSkeleton />
+                <WineryCardSkeleton />
+              </div>
             </div>
           ) : (
             <Slider

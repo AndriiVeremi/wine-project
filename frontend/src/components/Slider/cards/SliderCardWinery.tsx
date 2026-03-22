@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiMapPin, FiStar } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   CardBase,
   ImageWrapper,
@@ -23,18 +23,25 @@ interface WineryCardProps {
 }
 
 const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
-  const navigate = useNavigate();
-
   return (
     <CardBase>
       <ImageWrapper>
-        <img src={winery.logoUrl || 'https://placehold.co/400x200?text=Winery'} alt={winery.name} />
+        <img
+          src={winery.logoUrl || 'https://placehold.co/400x200?text=Winery'}
+          alt={winery.name}
+          loading="lazy"
+          width="400"
+          height="200"
+        />
       </ImageWrapper>
       <Content>
         <Title>{winery.name}</Title>
 
-        <RatingBlock>
-          <FiStar fill={winery.averageRating && winery.averageRating > 0 ? '#ffb400' : 'none'} />
+        <RatingBlock aria-label={`Rating: ${winery.averageRating || 0} out of 5 stars`}>
+          <FiStar
+            fill={winery.averageRating && winery.averageRating > 0 ? '#ffb400' : 'none'}
+            aria-hidden="true"
+          />
           <span style={{ fontWeight: 'bold', color: '#333' }}>
             {winery.averageRating && winery.averageRating > 0 ? winery.averageRating : 'No rating'}
           </span>
@@ -53,7 +60,7 @@ const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
             margin: 0,
           }}
         >
-          <FiMapPin size={14} /> {winery.region?.name || 'Georgia'}
+          <FiMapPin size={14} aria-hidden="true" /> {winery.region?.name || 'Georgia'}
         </p>
 
         <p
@@ -71,7 +78,11 @@ const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
           {winery.history || 'Discover our unique traditions and exceptional wine quality.'}
         </p>
 
-        <FooterLink onClick={() => navigate(`/wineries/${winery._id}`)}>
+        <FooterLink
+          as={Link}
+          to={`/wineries/${winery._id}`}
+          aria-label={`View details of ${winery.name}`}
+        >
           View Winery Details →
         </FooterLink>
       </Content>

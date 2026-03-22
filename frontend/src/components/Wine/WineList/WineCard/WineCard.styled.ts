@@ -14,7 +14,6 @@ export const StyledWineCardDiv = styled.div`
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   border: 1px solid #f0f0f0;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
   box-sizing: border-box;
 
   &:hover {

@@ -18,8 +18,14 @@ import {
   HomeBgLeft,
   HomeBgRight,
 } from './SharedLayout.styled';
-import homeBgLeftSrc from '@/assets/home-bg/home-bgLeft.webp';
-import homeBgRightSrc from '@/assets/home-bg/home-bgRight.webp';
+
+const homeBgLeftSrc = '/images/home-bg/home-bgLeft.webp';
+const homeBgLeftX2Src = '/images/home-bg/home-bgLeftX2.webp';
+const homeBgLeftMobileSrc = '/images/home-bg/home-bgLeft-mobile.webp';
+const homeBgRightSrc = '/images/home-bg/home-bgRight.webp';
+const homeBgRightX2Src = '/images/home-bg/home-bgRightX2.webp';
+const homeBgRightMobileSrc = '/images/home-bg/home-bgRight-mobile.webp';
+
 import { ROUTES } from '@/constants/routes';
 
 const SharedLayout = () => {
@@ -47,7 +53,9 @@ const SharedLayout = () => {
         <>
           <HomeBgLeft
             src={homeBgLeftSrc}
-            alt=""
+            srcSet={`${homeBgLeftMobileSrc} 240w, ${homeBgLeftSrc} 406w, ${homeBgLeftX2Src} 812w`}
+            sizes="(max-width: 480px) 120px, (max-width: 900px) 200px, 406px"
+            alt="Georgian wine decorative background left"
             fetchPriority="high"
             loading="eager"
             width="406"
@@ -55,7 +63,9 @@ const SharedLayout = () => {
           />
           <HomeBgRight
             src={homeBgRightSrc}
-            alt=""
+            srcSet={`${homeBgRightMobileSrc} 520w, ${homeBgRightSrc} 903w, ${homeBgRightX2Src} 1806w`}
+            sizes="(max-width: 480px) 260px, (max-width: 900px) 400px, 903px"
+            alt="Georgian wine decorative background right"
             fetchPriority="high"
             loading="eager"
             width="903"
@@ -80,7 +90,7 @@ const SharedLayout = () => {
           <Suspense
             fallback={
               isHome ? (
-                <div style={{ minHeight: '500px' }}>
+                <div style={{ minHeight: '1000px' }}>
                   <Loader isFullScreen={false} />
                 </div>
               ) : (
