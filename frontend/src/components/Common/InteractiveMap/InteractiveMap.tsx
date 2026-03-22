@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapWrapper, Tooltip } from './InteractiveMap.styled';
 import RegionPath from './RegionPath';
