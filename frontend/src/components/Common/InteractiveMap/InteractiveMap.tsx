@@ -1,22 +1,23 @@
 /* eslint-disable prettier/prettier */
 
-import React, { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapWrapper, Tooltip } from './InteractiveMap.styled';
+import RegionPath from './RegionPath';
 
 const regions = [
-  { id: 'abkhazia', name: 'Абхазія', slug: 'Abkhazia', pathIndex: 0 },
-  { id: 'samegrelo', name: 'Самегрело-Земо Сванеті', slug: 'Samegrelo', pathIndex: 1 },
-  { id: 'tbilisi', name: 'Тбілісі', slug: 'Tbilisi', pathIndex: 2 },
-  { id: 'shida-kartli', name: 'Шида Картлі', slug: 'Kartli', pathIndex: 3 },
-  { id: 'adjara', name: 'Аджарія', slug: 'Adjara', pathIndex: 4 },
-  { id: 'guria', name: 'Гурія', slug: 'Guria', pathIndex: 5 },
-  { id: 'kakheti', name: 'Кахетія', slug: 'Kakheti', pathIndex: 6 },
-  { id: 'samtskhe', name: 'Самцхе-Джавахеті', slug: 'Samtskhe-Javakheti', pathIndex: 7 },
-  { id: 'kvemo-kartli', name: 'Квемо Картлі', slug: 'Kartli', pathIndex: 8 },
-  { id: 'racha', name: 'Рача-Лечхумі', slug: 'Racha-Lechkhumi', pathIndex: 9 },
-  { id: 'mtskheta', name: 'Мцхета-Мтіанеті', slug: 'Mtskheta-Mtianeti', pathIndex: 10 },
-  { id: 'imereti', name: 'Імеретія', slug: 'Imereti', pathIndex: 11 },
+  { _id: 'abkhazia', name: 'Абхазія', slug: 'Abkhazia', pathIndex: 0 },
+  { _id: 'samegrelo', name: 'Самегрело-Земо Сванеті', slug: 'Samegrelo', pathIndex: 1 },
+  { _id: 'tbilisi', name: 'Тбілісі', slug: 'Tbilisi', pathIndex: 2 },
+  { _id: 'shida-kartli', name: 'Шида Картлі', slug: 'Kartli', pathIndex: 3 },
+  { _id: 'adjara', name: 'Аджарія', slug: 'Adjara', pathIndex: 4 },
+  { _id: 'guria', name: 'Гурія', slug: 'Guria', pathIndex: 5 },
+  { _id: 'kakheti', name: 'Кахетія', slug: 'Kakheti', pathIndex: 6 },
+  { _id: 'samtskhe', name: 'Самцхе-Джавахеті', slug: 'Samtskhe-Javakheti', pathIndex: 7 },
+  { _id: 'kvemo-kartli', name: 'Квемо Картлі', slug: 'Kartli', pathIndex: 8 },
+  { _id: 'racha', name: 'Рача-Лечхумі', slug: 'Racha-Lechkhumi', pathIndex: 9 },
+  { _id: 'mtskheta', name: 'Мцхета-Мтіанеті', slug: 'Mtskheta-Mtianeti', pathIndex: 10 },
+  { _id: 'imereti', name: 'Імеретія', slug: 'Imereti', pathIndex: 11 },
 ];
 
 const regionPaths = [
@@ -34,92 +35,61 @@ const regionPaths = [
   'M408.725 367.571L415.984 366.63L419.747 359.104L419.478 346.201L421.36 335.852L424.72 331.954L426.736 325.503L434.667 312.332L447.436 297.547L449.855 291.768L450.124 284.645L451.871 280.747L454.56 278.328L457.382 269.726L462.893 264.081L472.167 263.409L475.393 262.603L478.888 262.334L480.501 268.113V274.296L481.979 279L482.114 284.242L501.603 277.656L506.173 279.672L511.012 280.075L515.045 275.909L519.48 275.774L529.561 282.226L538.835 290.827L541.12 298.623L545.69 302.252L549.588 303.058L558.325 307.896L571.363 306.687L579.024 303.596L585.342 297.01L602.681 288.005L622.036 290.155L640.585 288.543L652.01 292.843H652.278L656.176 294.322L662.628 298.219L669.617 299.429L674.994 298.085L679.967 295.263L685.747 294.456L689.913 299.429L687.763 307.359L687.629 315.423L673.65 319.186L665.047 325.369L661.284 328.057L660.746 331.014L659.805 335.314L661.015 343.244L659.94 349.561L658.999 350.636L658.865 350.771L657.789 351.846L654.967 354.265L652.413 361.388L649.187 367.705L643.273 372.141L638.165 377.248L637.493 387.597L634.671 396.467L628.084 402.247L626.74 411.789L572.304 434.1L569.347 433.562L566.255 432.487L547.438 434.1L539.642 437.46L531.443 437.326L515.851 433.966L496.63 438.804L485.34 432.084L484.937 419.719L482.114 409.101L476.603 407.623L470.958 408.026L467.194 406.279L463.7 404.128L458.726 401.575L454.022 398.08L447.57 396.199L442.328 392.973L439.909 385.85L436.414 380.07L429.962 378.458L424.317 382.086L421.36 383.027L418 382.086L408.994 380.474L404.559 374.022L408.725 367.571Z',
 ];
 
-import mapSvgUrl from '@/assets/map.svg';
-
 const InteractiveMap = () => {
   const navigate = useNavigate();
   const [tooltip, setTooltip] = useState({ show: false, x: 0, y: 0, name: '' });
+  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
-  const handleMouseEnter = (e: React.MouseEvent, name: string) => {
-    setTooltip({
-      show: true,
-      x: e.clientX,
-      y: e.clientY,
-      name,
-    });
-  };
+  const handleMouseEnter = useCallback((regionName: string) => {
+    setHoveredRegion(regionName);
+  }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setTooltip((prev) => ({
-      ...prev,
-      x: e.clientX,
-      y: e.clientY,
-    }));
-  };
+  const handleMouseLeave = useCallback(() => {
+    setHoveredRegion(null);
+  }, []);
 
-  const handleMouseLeave = () => {
-    setTooltip((prev) => ({ ...prev, show: false }));
-  };
+  const handleTooltipMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (hoveredRegion) {
+        setTooltip({
+          show: true,
+          x: e.clientX,
+          y: e.clientY,
+          name: hoveredRegion,
+        });
+      }
+    },
+    [hoveredRegion],
+  );
 
   const handleRegionClick = (slug: string) => {
     navigate(`/regions/${encodeURIComponent(slug)}`);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent, slug: string) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleRegionClick(slug);
-    }
-  };
-
   return (
-    <MapWrapper>
-      <div style={{ position: 'relative', width: '100%', maxWidth: '1223px' }}>
-        <img
-          src={mapSvgUrl}
-          alt="Interactive Map of Georgia Regions"
-          width="1223"
-          height="625"
-          style={{ width: '100%', height: 'auto', display: 'block' }}
-          loading="lazy"
-        />
+    <MapWrapper onMouseMove={handleTooltipMouseMove} onMouseLeave={handleMouseLeave}>
+      <svg
+        width="1223"
+        height="625"
+        viewBox="0 0 1223 625"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      >
+        {regions.map((region) => (
+          <RegionPath
+            key={region._id}
+            region={region}
+            pathData={regionPaths[region.pathIndex]}
+            isHovered={hoveredRegion === region.name}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => handleRegionClick(region.slug)}
+          />
+        ))}
+      </svg>
 
-        <svg
-          width="1223"
-          height="625"
-          viewBox="0 0 1223 625"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          {regions.map((region) => (
-            <path
-              key={region.id}
-              d={regionPaths[region.pathIndex]}
-              fill="transparent"
-              stroke="transparent"
-              onMouseEnter={(e) => handleMouseEnter(e, region.name)}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => handleRegionClick(region.slug)}
-              onKeyDown={(e) => handleKeyDown(e, region.slug)}
-              className="region-interactive-path"
-              role="button"
-              tabIndex={0}
-              aria-label={`Explore wines from ${region.name} region`}
-              style={{ cursor: 'pointer', outline: 'none' }}
-            />
-          ))}
-        </svg>
-      </div>
-
-      <Tooltip $x={tooltip.x} $y={tooltip.y} $show={tooltip.show}>
+      <Tooltip $x={tooltip.x} $y={tooltip.y} $show={tooltip.show && !!hoveredRegion}>
         {tooltip.name}
       </Tooltip>
     </MapWrapper>
