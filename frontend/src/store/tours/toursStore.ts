@@ -67,7 +67,6 @@ export const useToursStore = create<ToursStore>()((set) => ({
       const axiosError = err as ApiError;
       const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
       set({ error: message, loading: false });
-      throw err;
     }
   },
 
@@ -83,7 +82,6 @@ export const useToursStore = create<ToursStore>()((set) => ({
       const axiosError = err as ApiError;
       const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
       set({ error: message, loading: false });
-      throw err;
     }
   },
 
@@ -99,7 +97,6 @@ export const useToursStore = create<ToursStore>()((set) => ({
       const axiosError = err as ApiError;
       const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
       set({ error: message, loading: false });
-      throw err;
     }
   },
 }));

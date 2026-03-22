@@ -1,6 +1,5 @@
 import axios, { type AxiosError } from 'axios';
 import { getAuth } from 'firebase/auth';
-import { notifyError } from '@/utils/toast';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -25,22 +24,7 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
     const message = (error.response?.data as { message?: string })?.message || error.message;
 
-    switch (status) {
-      case 401:
-        break;
-      case 403:
-        notifyError('Access denied');
-        break;
-      case 404:
-        break;
-      case 500:
-        notifyError('Server error. Please try again later.');
-        break;
-      default:
-        if (!error.config?.url?.includes('/auth/')) {
-          notifyError(message);
-        }
-    }
+    console.error(`API Error [${status}]:`, message);
 
     return Promise.reject(error);
   },

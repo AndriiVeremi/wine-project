@@ -7,10 +7,11 @@ import { useTourFiltersStore } from '@/store/tours/tourFiltersStore';
 import { useTourQueryParams } from '@/hooks/useTourQueryParams';
 import TourList from '@/components/Tour/TourList/TourList';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
+import TourCardSkeleton from '@/components/Common/Skeleton/TourCardSkeleton';
+import { breakpoints } from '@/styles/breakpoints';
 
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
-import { Loader } from '@/components/Common/Loader';
 
 const TourPage = () => {
   const tours = useToursStore((s) => s.tours);
@@ -44,7 +45,37 @@ const TourPage = () => {
         placeholder="Search tours..."
       />
 
-      {loading && <Loader isFullScreen={false} />}
+      {loading && (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '32px',
+            marginTop: '30px',
+          }}
+          className="tour-skeleton-grid"
+        >
+          {[...Array(6)].map((_, i) => (
+            <TourCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
+      <style>{`
+        .tour-skeleton-grid > * {
+          width: 100%;
+        }
+        @media (min-width: 768px) {
+          .tour-skeleton-grid > * {
+            width: calc((100% - 32px) / 2);
+          }
+        }
+        @media (min-width: ${breakpoints.desktop}) {
+          .tour-skeleton-grid > * {
+            width: calc((100% - 2 * 32px) / 3);
+          }
+        }
+      `}</style>
 
       {!loading && !error && tours.length === 0 && <p>No tours found</p>}
       {!loading && !error && tours.length > 0 && (

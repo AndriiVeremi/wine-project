@@ -15,7 +15,7 @@ const Location = () => {
   const setFilter = useWineriesFiltersStore((s) => s.setFilter);
   const [isOpen, setIsOpen] = useState(false);
   const [countries, setCountries] = useState<string[]>([]);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -49,7 +49,12 @@ const Location = () => {
   };
 
   return (
-    <RelativeContainer ref={wrapperRef} onClick={() => setIsOpen(!isOpen)}>
+    <RelativeContainer
+      ref={wrapperRef}
+      onClick={() => setIsOpen(!isOpen)}
+      aria-label="Select location"
+      type="button"
+    >
       <List>
         <ListItem>
           <LocationIcon $isOpen={isOpen} />

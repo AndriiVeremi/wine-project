@@ -11,7 +11,7 @@ import { StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
 import { notifyError } from '@/utils/toast';
 import AppPagination from '@/components/Common/AppPagination';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
-import { Loader } from '@/components/Common/Loader';
+import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
 
 const WinesPage = () => {
   const wines = useWinesStore((s) => s.wines);
@@ -45,7 +45,20 @@ const WinesPage = () => {
         placeholder="Search wines..."
       />
 
-      {loading && <Loader isFullScreen={false} />}
+      {loading && (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '24px',
+            marginTop: '30px',
+          }}
+        >
+          {[...Array(8)].map((_, i) => (
+            <WineCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
 
       {!loading && !error && wines?.length === 0 && <p>No wines found</p>}
       {!loading && !error && wines.length > 0 && (

@@ -25,10 +25,19 @@ const WineCard = ({ wine }: WineCardProps) => {
   const cleanDesc = stripHtml(wine.description || '');
 
   return (
-    <Link to={`/wines/${wine._id}`}>
-      <StyledWineCardDiv>
-        <StyledFavoriteButton wine={wine} size={28} />
-        <WineImage src={wine.imageUrl} alt={wine.name} />
+    <StyledWineCardDiv>
+      <StyledFavoriteButton wine={wine} size={28} />
+      <Link
+        to={`/wines/${wine._id}`}
+        style={{
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+        }}
+      >
+        <WineImage src={wine.imageUrl} alt={wine.name} loading="lazy" width="310" height="310" />
 
         <WineHeader>
           <WineTitle>{wine.name}</WineTitle>
@@ -54,8 +63,8 @@ const WineCard = ({ wine }: WineCardProps) => {
             size={14}
           />
         </PriceRatingRow>
-      </StyledWineCardDiv>
-    </Link>
+      </Link>
+    </StyledWineCardDiv>
   );
 };
 

@@ -70,8 +70,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ isLoading: false, isAuthModalOpen: false });
     } catch (err: unknown) {
       const error = err as ApiError;
-      set({ error: error.response?.data?.message || error.message, isLoading: false });
-      throw err;
+      const message = error.response?.data?.message || error.message || 'Registration failed';
+      set({ error: message, isLoading: false });
+      throw new Error(message);
     }
   },
 
@@ -82,8 +83,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ isLoading: false, isAuthModalOpen: false });
     } catch (err: unknown) {
       const error = err as ApiError;
-      set({ error: error.response?.data?.message || error.message, isLoading: false });
-      throw err;
+      const message = error.response?.data?.message || error.message || 'Login failed';
+      set({ error: message, isLoading: false });
+      throw new Error(message);
     }
   },
 
@@ -104,8 +106,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ profile: updatedProfile, isLoading: false });
     } catch (err: unknown) {
       const error = err as ApiError;
-      set({ error: error.response?.data?.message || error.message, isLoading: false });
-      throw err;
+      const message = error.response?.data?.message || error.message || 'Update failed';
+      set({ error: message, isLoading: false });
     }
   },
 }));

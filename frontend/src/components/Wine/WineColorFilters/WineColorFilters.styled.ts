@@ -21,10 +21,11 @@ export const FilterGrid = styled.div`
   }
 `;
 
-export const FilterCard = styled.div`
+export const FilterCard = styled.button`
   position: relative;
   cursor: pointer;
   background: transparent;
+  border: none;
   transition: var(--transition);
   aspect-ratio: 1 / 1.3;
   display: flex;
@@ -32,6 +33,7 @@ export const FilterCard = styled.div`
   align-items: center;
   justify-content: center;
   padding: 10px;
+  width: 100%;
 
   @media (min-width: 375px) {
     padding: 15px;

@@ -72,7 +72,6 @@ export const useGrapesStore = create<GrapesStore>()((set) => ({
     } catch (err: unknown) {
       const e = err as ApiError;
       set({ error: e.response?.data?.message || e.message, loading: false });
-      throw err;
     }
   },
 
@@ -92,7 +91,6 @@ export const useGrapesStore = create<GrapesStore>()((set) => ({
     } catch (err: unknown) {
       const e = err as ApiError;
       set({ error: e.response?.data?.message || e.message, loading: false });
-      throw err;
     }
   },
 
@@ -107,7 +105,6 @@ export const useGrapesStore = create<GrapesStore>()((set) => ({
     } catch (err: unknown) {
       const e = err as ApiError;
       set({ error: e.response?.data?.message || e.message, loading: false });
-      throw err;
     }
   },
 }));

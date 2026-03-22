@@ -46,16 +46,26 @@ const Dropdown = ({
         onClick={disabled ? undefined : onOpen}
         $active={isOpen || !!value}
         $disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-label={`Select ${label}`}
       >
         {value || label}
         <ArrowIcon $open={isOpen} size={16} />
       </Button>
 
       {isOpen && (
-        <List>
-          <Item onClick={() => handleSelect('')}>All</Item>
+        <List role="listbox">
+          <Item onClick={() => handleSelect('')} role="option" aria-selected={!value}>
+            All
+          </Item>
           {options.map((opt) => (
-            <Item key={opt} onClick={() => handleSelect(opt)}>
+            <Item
+              key={opt}
+              onClick={() => handleSelect(opt)}
+              role="option"
+              aria-selected={value === opt}
+            >
               {opt}
             </Item>
           ))}

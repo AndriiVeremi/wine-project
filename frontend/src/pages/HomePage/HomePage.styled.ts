@@ -25,7 +25,7 @@ export const MapSection = styled.section`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 1200px;
+  min-height: 800px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,8 +42,12 @@ export const RegionTitle = styled.h2`
   text-align: center;
   font-size: 48px;
   color: var(--white);
-  margin-bottom: 200px;
+  margin-bottom: 60px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 1024px) {
+    margin-bottom: 40px;
+  }
 
   @media (max-width: 767px) {
     font-size: 28px;
@@ -58,6 +62,20 @@ export const RegionList = styled.div`
   justify-content: center;
   max-width: 1000px;
   margin: 0 auto;
+
+  @media (min-width: 1025px) {
+    display: none;
+  }
+`;
+
+export const MapWrapperDesktop = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 export const RegionLink = styled(Link)`

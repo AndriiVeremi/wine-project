@@ -55,6 +55,7 @@ export const HomeBgLeft = styled.img`
   width: auto;
   pointer-events: none;
   z-index: 0;
+  object-fit: contain;
 
   @media (max-width: 1200px) {
     height: clamp(300px, 35vw, 500px);
@@ -78,6 +79,7 @@ export const HomeBgRight = styled.img`
   width: auto;
   pointer-events: none;
   z-index: 0;
+  object-fit: contain;
 
   @media (max-width: 1200px) {
     height: clamp(300px, 35vw, 500px);

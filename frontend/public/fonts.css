@@ -1,3 +1,13 @@
+/* Fallback font to match Montserrat metrics and prevent CLS */
+@font-face {
+  font-family: 'Montserrat-Fallback';
+  src: local('Arial');
+  ascent-override: 95%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
 @font-face {
   font-family: 'Montserrat';
   font-display: swap;
