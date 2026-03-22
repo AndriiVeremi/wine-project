@@ -50,8 +50,7 @@ export const ThumbnailsGrid = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   width: 100%;
-\
-  @media (min-width: ${breakpoints.tablet}) {
+  \ @media (min-width: ${breakpoints.tablet}) {
     width: calc(100% - 80px);
   }
 `;

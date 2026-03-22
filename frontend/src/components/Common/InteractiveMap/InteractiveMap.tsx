@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapWrapper, Tooltip } from './InteractiveMap.styled';

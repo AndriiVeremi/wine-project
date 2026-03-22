@@ -1,5 +1,5 @@
-import { FaMapMarkerAlt, FaTint, FaWineBottle, FaClock } from 'react-icons/fa';
-import { CgSandClock } from "react-icons/cg";
+import { FaMapMarkerAlt, FaTint, FaWineBottle } from 'react-icons/fa';
+import { CgSandClock } from 'react-icons/cg';
 import { useNavigate } from 'react-router-dom';
 import type { Grape } from '@/types/grape';
 import { stripHtml } from '@/utils/text';
