@@ -4,10 +4,13 @@ import { mockWines } from '@/tests/data/wines.mock';
 
 const BASE_URL = apiClient.defaults.baseURL;
 
+// Utility RegExps
+const WINES_LIST = new RegExp(`${BASE_URL}/wines.*$`);
+const WINES_ITEM = new RegExp(`${BASE_URL}/wines/[^/]+$`);
+
 export const winesHandlers = [
   // GET /wines (filters + pagination)
-
-  http.get(`${BASE_URL}/wines`, ({ request }) => {
+  http.get(WINES_LIST, ({ request }) => {
     const url = new URL(request.url);
     let wines = [...mockWines];
 
@@ -52,7 +55,6 @@ export const winesHandlers = [
   }),
 
   // POST /wines (create)
-
   http.post(`${BASE_URL}/wines`, async ({ request }) => {
     const form = await request.formData();
 
@@ -103,8 +105,7 @@ export const winesHandlers = [
   }),
 
   // PATCH /wines/:id (update)
-
-  http.patch(`${BASE_URL}/wines/:id`, async ({ params, request }) => {
+  http.patch(WINES_ITEM, async ({ request, params }) => {
     const form = await request.formData();
 
     return HttpResponse.json(
@@ -158,8 +159,7 @@ export const winesHandlers = [
   }),
 
   // DELETE /wines/:id
-
-  http.delete(`${BASE_URL}/wines/:id`, () => {
+  http.delete(WINES_ITEM, () => {
     return HttpResponse.json({ success: true });
   }),
 ];
