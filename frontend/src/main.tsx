@@ -3,6 +3,14 @@ import ReactDOM from 'react-dom/client';
 import App from '@/App';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/500.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/montserrat/700.css';
+import '@fontsource/montserrat-alternates/400.css';
+import '@fontsource/montserrat-alternates/600.css';
+
 import { GlobalStyle } from '@/styles/globalStyles';
 import '@/styles/vars.css';
 import '@/styles/index.css';
