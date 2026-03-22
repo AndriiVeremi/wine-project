@@ -1,22 +1,23 @@
 /* eslint-disable prettier/prettier */
 
-import React, { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapWrapper, Tooltip } from './InteractiveMap.styled';
+import RegionPath from './RegionPath';
 
 const regions = [
-  { id: 'abkhazia', name: 'Абхазія', slug: 'Abkhazia', pathIndex: 0 },
-  { id: 'samegrelo', name: 'Самегрело-Земо Сванеті', slug: 'Samegrelo', pathIndex: 1 },
-  { id: 'tbilisi', name: 'Тбілісі', slug: 'Tbilisi', pathIndex: 2 },
-  { id: 'shida-kartli', name: 'Шида Картлі', slug: 'Kartli', pathIndex: 3 },
-  { id: 'adjara', name: 'Аджарія', slug: 'Adjara', pathIndex: 4 },
-  { id: 'guria', name: 'Гурія', slug: 'Guria', pathIndex: 5 },
-  { id: 'kakheti', name: 'Кахетія', slug: 'Kakheti', pathIndex: 6 },
-  { id: 'samtskhe', name: 'Самцхе-Джавахеті', slug: 'Samtskhe-Javakheti', pathIndex: 7 },
-  { id: 'kvemo-kartli', name: 'Квемо Картлі', slug: 'Kartli', pathIndex: 8 },
-  { id: 'racha', name: 'Рача-Лечхумі', slug: 'Racha-Lechkhumi', pathIndex: 9 },
-  { id: 'mtskheta', name: 'Мцхета-Мтіанеті', slug: 'Mtskheta-Mtianeti', pathIndex: 10 },
-  { id: 'imereti', name: 'Імеретія', slug: 'Imereti', pathIndex: 11 },
+  { _id: 'abkhazia', name: 'Абхазія', slug: 'Abkhazia', pathIndex: 0 },
+  { _id: 'samegrelo', name: 'Самегрело-Земо Сванеті', slug: 'Samegrelo', pathIndex: 1 },
+  { _id: 'tbilisi', name: 'Тбілісі', slug: 'Tbilisi', pathIndex: 2 },
+  { _id: 'shida-kartli', name: 'Шида Картлі', slug: 'Kartli', pathIndex: 3 },
+  { _id: 'adjara', name: 'Аджарія', slug: 'Adjara', pathIndex: 4 },
+  { _id: 'guria', name: 'Гурія', slug: 'Guria', pathIndex: 5 },
+  { _id: 'kakheti', name: 'Кахетія', slug: 'Kakheti', pathIndex: 6 },
+  { _id: 'samtskhe', name: 'Самцхе-Джавахеті', slug: 'Samtskhe-Javakheti', pathIndex: 7 },
+  { _id: 'kvemo-kartli', name: 'Квемо Картлі', slug: 'Kartli', pathIndex: 8 },
+  { _id: 'racha', name: 'Рача-Лечхумі', slug: 'Racha-Lechkhumi', pathIndex: 9 },
+  { _id: 'mtskheta', name: 'Мцхета-Мтіанеті', slug: 'Mtskheta-Mtianeti', pathIndex: 10 },
+  { _id: 'imereti', name: 'Імеретія', slug: 'Imereti', pathIndex: 11 },
 ];
 
 const regionPaths = [
@@ -39,87 +40,58 @@ import mapSvgUrl from '@/assets/map.svg';
 const InteractiveMap = () => {
   const navigate = useNavigate();
   const [tooltip, setTooltip] = useState({ show: false, x: 0, y: 0, name: '' });
+  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
-  const handleMouseEnter = (e: React.MouseEvent, name: string) => {
-    setTooltip({
-      show: true,
-      x: e.clientX,
-      y: e.clientY,
-      name,
-    });
-  };
+  const handleMouseEnter = useCallback((regionName: string) => {
+    setHoveredRegion(regionName);
+  }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setTooltip((prev) => ({
-      ...prev,
-      x: e.clientX,
-      y: e.clientY,
-    }));
-  };
+  const handleMouseLeave = useCallback(() => {
+    setHoveredRegion(null);
+  }, []);
 
-  const handleMouseLeave = () => {
-    setTooltip((prev) => ({ ...prev, show: false }));
-  };
+  const handleTooltipMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (hoveredRegion) {
+        setTooltip({
+          show: true,
+          x: e.clientX,
+          y: e.clientY,
+          name: hoveredRegion,
+        });
+      }
+    },
+    [hoveredRegion],
+  );
 
   const handleRegionClick = (slug: string) => {
     navigate(`/regions/${encodeURIComponent(slug)}`);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent, slug: string) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleRegionClick(slug);
-    }
-  };
-
   return (
-    <MapWrapper>
-      <div style={{ position: 'relative', width: '100%', maxWidth: '1223px' }}>
-        <img
-          src={mapSvgUrl}
-          alt="Interactive Map of Georgia Regions"
-          width="1223"
-          height="625"
-          style={{ width: '100%', height: 'auto', display: 'block' }}
-          loading="lazy"
-        />
+    <MapWrapper onMouseMove={handleTooltipMouseMove} onMouseLeave={handleMouseLeave}>
+      <svg
+        width="1223"
+        height="625"
+        viewBox="0 0 1223 625"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      >
+        {regions.map((region) => (
+          <RegionPath
+            key={region._id}
+            region={region}
+            pathData={regionPaths[region.pathIndex]}
+            isHovered={hoveredRegion === region.name}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => handleRegionClick(region.slug)}
+          />
+        ))}
+      </svg>
 
-        <svg
-          width="1223"
-          height="625"
-          viewBox="0 0 1223 625"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          {regions.map((region) => (
-            <path
-              key={region.id}
-              d={regionPaths[region.pathIndex]}
-              fill="transparent"
-              stroke="transparent"
-              onMouseEnter={(e) => handleMouseEnter(e, region.name)}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onClick={() => handleRegionClick(region.slug)}
-              onKeyDown={(e) => handleKeyDown(e, region.slug)}
-              className="region-interactive-path"
-              role="button"
-              tabIndex={0}
-              aria-label={`Explore wines from ${region.name} region`}
-              style={{ cursor: 'pointer', outline: 'none' }}
-            />
-          ))}
-        </svg>
-      </div>
-
-      <Tooltip $x={tooltip.x} $y={tooltip.y} $show={tooltip.show}>
+      <Tooltip $x={tooltip.x} $y={tooltip.y} $show={tooltip.show && !!hoveredRegion}>
         {tooltip.name}
       </Tooltip>
     </MapWrapper>

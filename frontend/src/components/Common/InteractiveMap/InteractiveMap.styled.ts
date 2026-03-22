@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import mapBg from '@/assets/map.svg';
 
 export const MapWrapper = styled.div`
   width: 100%;
@@ -8,37 +9,16 @@ export const MapWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: url(${mapBg}) no-repeat center center;
+  background-size: contain;
+  aspect-ratio: 1223 / 625;
 
   svg {
     width: 100%;
-    height: auto;
-  }
-
-  .region-link {
-    outline: none;
-    transition: all 0.3s ease;
-  }
-
-  .region-path {
-    fill: #ffe4bd;
-    stroke: #841013;
-    stroke-width: 1;
-    transition: all 0.3s ease;
-    cursor: pointer;
-
-    &:hover {
-      fill: #f0c99a;
-      filter: brightness(0.95);
-    }
-  }
-
-  .label-path {
-    fill: #841013;
-    pointer-events: none;
-  }
-
-  .active-region .region-path {
-    fill: #f0c99a;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 `;
 
@@ -47,8 +27,8 @@ export const Tooltip = styled.div<{ $x: number; $y: number; $show: boolean }>`
   left: ${(props) => props.$x}px;
   top: ${(props) => props.$y}px;
   transform: translate(-50%, -130%);
-  background: rgba(132, 16, 19, 0.95);
-  color: white;
+  background: rgba(255, 228, 189, 0.95);
+  color: var(--primary-wine);
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 16px;
@@ -68,6 +48,6 @@ export const Tooltip = styled.div<{ $x: number; $y: number; $show: boolean }>`
     transform: translateX(-50%);
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid rgba(132, 16, 19, 0.95);
+    border-top: 6px solid rgba(255, 228, 189, 0.95);
   }
 `;
