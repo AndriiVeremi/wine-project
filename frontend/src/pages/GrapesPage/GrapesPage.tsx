@@ -7,7 +7,7 @@ import { useGrapesStore } from '@/store/grape/grapesStore';
 import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { notifyError } from '@/utils/toast';
-import { Loader } from '@/components/Common/Loader';
+import GrapeCardSkeleton from '@/components/Common/Skeleton/GrapeCardSkeleton';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
@@ -46,7 +46,13 @@ const GrapesPage = () => {
         placeholder="Search grape varieties..."
       />
 
-      {loading && <Loader isFullScreen={false} />}
+      {loading && (
+        <div className="skeleton-grid">
+          {[...Array(6)].map((_, i) => (
+            <GrapeCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
 
       {!loading && !error && grapes?.length === 0 && (
         <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>

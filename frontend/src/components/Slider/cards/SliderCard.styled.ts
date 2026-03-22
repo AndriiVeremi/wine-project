@@ -89,6 +89,7 @@ export const FooterLink = styled.div`
   align-items: center;
   gap: 6px;
   transition: gap 0.3s ease;
+  text-decoration: none;
 
   ${CardBase}:hover & {
     gap: 10px; /* Стрілочка відсувається при наведенні на картку */

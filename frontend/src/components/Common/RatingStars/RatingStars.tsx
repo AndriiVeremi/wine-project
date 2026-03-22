@@ -29,10 +29,10 @@ const RatingStars = ({
   });
 
   return (
-    <StarsWrapper className={className}>
+    <StarsWrapper className={className} aria-label={`Rating: ${value.toFixed(1)} out of 5 stars`}>
       {showLeftValue && <RatingTextLeft>{value.toFixed(1)}</RatingTextLeft>}
 
-      <div style={{ display: 'flex', gap: '4px' }}>
+      <div style={{ display: 'flex', gap: '4px' }} aria-hidden="true">
         {stars.map((type, i) => {
           if (type === 'full') return <FaStar key={i} size={size} color={color} />;
 

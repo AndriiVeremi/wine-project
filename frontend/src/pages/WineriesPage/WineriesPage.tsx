@@ -6,7 +6,7 @@ import { useWineryQueryParams } from '@/hooks/useWineryQueryParams';
 import WineryList from '@/components/Winery/WineryList/WineryList';
 import AppPagination from '@/components/Common/AppPagination';
 import Container from '@/components/Common/Container';
-import { Loader } from '@/components/Common/Loader';
+import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
@@ -43,7 +43,13 @@ const WineriesPage = () => {
         placeholder="Search wineries..."
       />
 
-      {loading && <Loader isFullScreen={false} />}
+      {loading && (
+        <div className="skeleton-grid">
+          {[...Array(6)].map((_, i) => (
+            <WineryCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
 
       {!loading && !error && wineries?.length === 0 && <p>No wineries found</p>}
 

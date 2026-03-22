@@ -30,9 +30,14 @@ export const DropDownIcon = styled(IoChevronDownSharp)<{ $isOpen: boolean }>`
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
 
-export const RelativeContainer = styled.div`
+export const RelativeContainer = styled.button`
   position: relative;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  display: block;
+  text-align: left;
 
   &:hover {
     ${Text}, ${LocationIcon}, ${DropDownIcon} {

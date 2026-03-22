@@ -75,7 +75,7 @@ const AIAssistant: React.FC = () => {
         <ChatWindow>
           <ChatHeader>
             <span>AI Assistant</span>
-            <CloseButton onClick={() => setIsOpen(false)}>
+            <CloseButton onClick={() => setIsOpen(false)} aria-label="Close AI assistant">
               <IoClose />
             </CloseButton>
           </ChatHeader>
@@ -92,17 +92,20 @@ const AIAssistant: React.FC = () => {
             <Input
               type="text"
               placeholder="Ask something..."
+              aria-label="Type your message to AI assistant"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
             />
-            <SendButton onClick={handleSendMessage} disabled={isLoading}>
+            <SendButton onClick={handleSendMessage} disabled={isLoading} aria-label="Send message">
               ➤
             </SendButton>
           </InputContainer>
         </ChatWindow>
       ) : (
-        <OpenButton onClick={() => setIsOpen(true)}>🍷</OpenButton>
+        <OpenButton onClick={() => setIsOpen(true)} aria-label="Open AI assistant">
+          🍷
+        </OpenButton>
       )}
     </Container>
   );

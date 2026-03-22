@@ -46,19 +46,40 @@ const Footer = () => {
             </StyledNav>
             <SocialList>
               <li>
-                <IconCircle>
-                  <FacebookIcon />
-                </IconCircle>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit our Facebook page"
+                >
+                  <IconCircle>
+                    <FacebookIcon />
+                  </IconCircle>
+                </a>
               </li>
               <li>
-                <IconCircle>
-                  <InstagramIcon />
-                </IconCircle>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit our Instagram page"
+                >
+                  <IconCircle>
+                    <InstagramIcon />
+                  </IconCircle>
+                </a>
               </li>
               <li>
-                <IconCircle>
-                  <TelegramIcon />
-                </IconCircle>
+                <a
+                  href="https://tripadvisor.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit our TripAdvisor page"
+                >
+                  <IconCircle>
+                    <TelegramIcon />
+                  </IconCircle>
+                </a>
               </li>
             </SocialList>
           </FooterContainer>
