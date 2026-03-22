@@ -4,5 +4,16 @@
             "source": "/(.*)",
             "destination": "/"
         }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "Content-Security-Policy",
+                    "value": "default-src 'self'; frame-ancestors 'none'; img-src 'self' https: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' https: data:; connect-src 'self' https://wine-project-gj1n.onrender.com"
+                }
+            ]
+        }
     ]
 }
