@@ -1,7 +1,7 @@
 export interface Region {
   _id: string;
   name: string;
-  description: string;
+  description?: string;
   imageUrl?: string;
   country?: {
     _id: string;
