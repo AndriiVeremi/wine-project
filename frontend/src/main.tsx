@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GlobalStyle } from '@/styles/globalStyles';
 import '@/styles/vars.css';
 import '@/styles/index.css';
-import '@/config/firebase';
 import { notifyError } from '@/utils/toast';
 
 window.addEventListener('unhandledrejection', (event) => {

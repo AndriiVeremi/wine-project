@@ -8,6 +8,7 @@ import { getRegions } from '@/api/regions';
 import { useLocationStore } from '@/store/location/locationStore';
 import Hero from '@/components/Hero/Hero';
 import { Loader } from '@/components/Common/Loader';
+import InteractiveMap from '@/components/Common/InteractiveMap/InteractiveMap';
 import {
   WineSection,
   MapSection,
@@ -16,6 +17,7 @@ import {
   RegionList,
   RegionLink,
   RegionTitle,
+  MapWrapperDesktop,
 } from './HomePage.styled';
 
 interface Winery {
@@ -68,6 +70,13 @@ const HomePage = () => {
           {selectedCountry ? (
             <>
               <RegionTitle>Discover Wine Regions of {selectedCountry}</RegionTitle>
+
+              {selectedCountry === 'Georgia' && (
+                <MapWrapperDesktop>
+                  <InteractiveMap />
+                </MapWrapperDesktop>
+              )}
+
               <RegionList>
                 {regions.map((region: RegionLocation) => (
                   <RegionLink key={region._id} to={`/regions/${region.name}`}>

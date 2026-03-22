@@ -13,6 +13,8 @@ export const SliderWrapper = styled.div`
     padding-top: 15px;
     padding-bottom: 40px;
     margin-top: -15px;
+    contain: layout style;
+    transform: translateZ(0);
   }
 
   .swiper-pagination {
