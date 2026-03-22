@@ -23,7 +23,41 @@ const app: Express = express();
 app.set('trust proxy', 1);
 const port = process.env.PORT;
 
-app.use(helmet());
+app.use(
+  helmet({
+    noSniff: true,
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+    },
+    frameguard: {
+      action: 'deny',
+    },
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://wine-project-three.vercel.app',
+          'http://localhost:5173',
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://fonts.googleapis.com',
+          'http://localhost:5173',
+        ],
+        imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+        connectSrc: ["'self'", 'https://wine-project-three.vercel.app', 'http://localhost:5005'],
+        frameSrc: ["'none'"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  }),
+);
 
 const allowedOrigins = [
   process.env.CORS_ORIGIN,
