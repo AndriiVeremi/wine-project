@@ -2,13 +2,13 @@ import styled, { keyframes } from 'styled-components';
 
 const pulse = keyframes`
   0% {
-    background-color: #f0f0f0;
+    background-color: #ffeacb;
   }
   50% {
-    background-color: #e0e0e0;
+    background-color: #f5ddb3;
   }
   100% {
-    background-color: #f0f0f0;
+    background-color: #ffeacb;
   }
 `;
 
