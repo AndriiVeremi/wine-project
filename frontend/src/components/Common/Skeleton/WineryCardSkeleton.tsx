@@ -4,35 +4,29 @@ import Skeleton from './Skeleton';
 const StyledWinerySkeleton = styled.div`
   background: white;
   border-radius: 20px;
-  overflow: hidden;
+  padding: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid #f0f0f0;
-  height: 420px;
-`;
-
-const Content = styled.div`
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
   gap: 12px;
-  flex: 1;
+  border: 1px solid #f0f0f0;
+  height: 100%;
+  box-sizing: border-box;
 `;
 
 const WineryCardSkeleton = () => {
   return (
     <StyledWinerySkeleton>
-      <Skeleton height="200px" $borderRadius="0" />
-      <Content>
-        <Skeleton width="80%" height="24px" />
-        <Skeleton width="40%" height="18px" />
-        <Skeleton width="30%" height="18px" />
-        <div style={{ marginTop: '5px' }}>
-          <Skeleton height="60px" />
-        </div>
-        <Skeleton width="50%" height="18px" $margin="auto 0 0 0" />
-      </Content>
+      <Skeleton height="200px" $borderRadius="12px" />
+      <div style={{ marginTop: '-4px' }}>
+        <Skeleton width="100px" height="16px" />
+      </div>
+      <Skeleton width="80%" height="24px" />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <Skeleton width="60%" height="18px" />
+        <Skeleton width="50%" height="18px" />
+      </div>
+      <Skeleton height="105px" />
     </StyledWinerySkeleton>
   );
 };

@@ -8,38 +8,54 @@ const StyledSkeletonCard = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
   height: 100%;
   border: 1px solid #f0f0f0;
   box-sizing: border-box;
 `;
 
+const SkeletonContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 20px;
+`;
+
 const WineCardSkeleton = () => {
   return (
     <StyledSkeletonCard>
-      <Skeleton height="310px" $borderRadius="12px" />
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Skeleton width="60%" height="24px" />
-        <Skeleton width="20%" height="24px" />
-      </div>
-      <Skeleton width="40%" height="18px" />
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <Skeleton width="50px" height="24px" $borderRadius="6px" />
-        <Skeleton width="50px" height="24px" $borderRadius="6px" />
-      </div>
-      <Skeleton height="40px" />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: 'auto',
-          paddingTop: '12px',
-          borderTop: '1px solid #f0f0f0',
-        }}
-      >
-        <Skeleton width="30%" height="24px" />
-        <Skeleton width="25%" height="24px" />
-      </div>
+      <SkeletonContent>
+        <Skeleton height="310px" $borderRadius="12px" />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: '8px',
+          }}
+        >
+          <Skeleton width="60%" height="24px" />
+          <Skeleton width="20%" height="24px" />
+        </div>
+        <Skeleton width="40%" height="18px" />
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+          <Skeleton width="50px" height="24px" $borderRadius="6px" />
+          <Skeleton width="50px" height="24px" $borderRadius="6px" />
+        </div>
+        <Skeleton height="40px" />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 'auto',
+            paddingTop: '12px',
+            borderTop: '1px solid var(--tertiary-gray)',
+          }}
+        >
+          <Skeleton width="30%" height="24px" />
+          <Skeleton width="25%" height="24px" />
+        </div>
+      </SkeletonContent>
     </StyledSkeletonCard>
   );
 };

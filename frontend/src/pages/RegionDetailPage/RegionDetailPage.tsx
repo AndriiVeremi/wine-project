@@ -9,7 +9,6 @@ import WineryList from '@/components/Winery/WineryList/WineryList';
 import WineList from '@/components/Wine/WineList/WineList';
 import InfoButton from '@/components/Buttons/InfoButton';
 import type { Region } from '@/types/region';
-
 import {
   StyledRegionWrapper,
   StyledRegionHero,

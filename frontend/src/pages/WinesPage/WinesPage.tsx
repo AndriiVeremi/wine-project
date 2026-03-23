@@ -1,20 +1,15 @@
 import { useEffect, lazy, Suspense, useMemo, useRef } from 'react';
-
 import Container from '@/components/Common/Container';
 import FilterClearButton from '@/components/Buttons/FilterClearButton';
 import AppPagination from '@/components/Common/AppPagination';
 import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
 import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
-
 import { SearchAndClearWrapper, StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
-
 import { useWinesStore } from '@/store/wine/winesStore';
 import { useFiltersStore } from '@/store/wine/filtersStore';
-
 import { useWineQueryParams } from '@/hooks/useWineQueryParams';
 import { useDeviceType } from '@/hooks/useDeviceType';
-
 import { notifyError } from '@/utils/toast';
 
 const WineList = lazy(() => import('@/components/Wine/WineList/WineList'));
@@ -73,7 +68,15 @@ const WinesPage = () => {
       </SearchAndClearWrapper>
 
       {loading && (
-        <SkeletonGrid $min="280px" $gap="24px" $mt="30px">
+        <SkeletonGrid
+          $columns={1}
+          $tabletColumns={2}
+          $desktopColumns={4}
+          $gap="20px"
+          $tabletGap="24px"
+          $desktopGap="30px"
+          $mt="30px"
+        >
           {[...Array(skeletonCount)].map((_, i) => (
             <WineCardSkeleton key={i} />
           ))}

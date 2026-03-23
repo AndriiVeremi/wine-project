@@ -7,6 +7,7 @@ export const SliderWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  min-height: 480px;
 
   .swiper {
     width: 100%;

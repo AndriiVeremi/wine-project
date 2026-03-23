@@ -7,6 +7,7 @@ import WineryList from '@/components/Winery/WineryList/WineryList';
 import AppPagination from '@/components/Common/AppPagination';
 import Container from '@/components/Common/Container';
 import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
+import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
@@ -44,11 +45,17 @@ const WineriesPage = () => {
       />
 
       {loading && (
-        <div className="skeleton-grid">
+        <SkeletonGrid
+          $columns={1}
+          $tabletColumns={2}
+          $desktopColumns={3}
+          $gap="20px"
+          $tabletGap="30px"
+        >
           {[...Array(6)].map((_, i) => (
             <WineryCardSkeleton key={i} />
           ))}
-        </div>
+        </SkeletonGrid>
       )}
 
       {!loading && !error && wineries?.length === 0 && <p>No wineries found</p>}
