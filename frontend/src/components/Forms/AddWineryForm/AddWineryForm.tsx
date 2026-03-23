@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { useWineriesStore } from '@/store/wineries/wineriesStore';
 import { useLocationStore } from '@/store/location/locationStore';
 import { getCountries } from '@/api/regions';
 import FormField from '@/components/Common/FormField/FormField';
-import WineryMap from '@/components/Common/Location/WineryMap';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 import WineryLogoUpload from '@/components/Common/WineryLogoUpload/WineryLogoUpload';
 import MainButton from '@/components/Buttons/MainButton';
 import { toast } from 'react-hot-toast';
 import type { Winery } from '@/types/wineries';
-import TextEditor from '@/components/Common/TextEditor/TextEditor';
+
 import {
   StyledAddWineryForm,
   FieldsGrid,
@@ -21,6 +20,10 @@ import {
   MapInstruction,
 } from './AddWineryForm.styled';
 import { ButtonWrapper } from '../AddWinesForm/AddWinesForm.styled';
+import Skeleton from '@/components/Common/Skeleton/Skeleton';
+
+const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
+const WineryMap = lazy(() => import('@/components/Common/Location/WineryMap'));
 
 const init = {
   name: '',
@@ -272,7 +275,16 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         </FullWidthWrapper>
       </FieldsGrid>
 
-      <TextEditor label="History" value={form.history} onChange={handleEditorChange} />
+      <Suspense
+        fallback={
+          <div>
+            <Skeleton height="40px" $margin="0 0 12px 0" />
+            <Skeleton height="200px" $borderRadius="8px" />
+          </div>
+        }
+      >
+        <TextEditor label="History" value={form.history} onChange={handleEditorChange} />
+      </Suspense>
 
       <div>
         <MapInstruction>Coordinates:</MapInstruction>
@@ -326,12 +338,14 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
           </MainButton>
         </div>
         <MapFieldWrapper>
-          <WineryMap
-            isEditable={true}
-            onLocationSelect={onLoc}
-            lat={coords?.lat}
-            lng={coords?.lng}
-          />
+          <Suspense fallback={<Skeleton height="300px" $borderRadius="12px" />}>
+            <WineryMap
+              isEditable={true}
+              onLocationSelect={onLoc}
+              lat={coords?.lat}
+              lng={coords?.lng}
+            />
+          </Suspense>
         </MapFieldWrapper>
       </div>
 

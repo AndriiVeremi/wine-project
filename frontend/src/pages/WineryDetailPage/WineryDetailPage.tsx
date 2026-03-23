@@ -31,6 +31,7 @@ import {
   SectionHeaderTitle,
   MapSection,
 } from './WineryDetailPage.styled';
+import Skeleton from '@/components/Common/Skeleton/Skeleton';
 
 const WineryMap = lazy(() => import('@/components/Common/Location/WineryMap'));
 
@@ -190,7 +191,13 @@ const WineryDetailPage = () => {
         )}
         <MapSection style={{ marginBottom: '80px' }}>
           {winery.coordinates ? (
-            <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading map...</p>}>
+            <Suspense
+              fallback={
+                <div style={{ width: '100%', height: '300px' }}>
+                  <Skeleton height="100%" $borderRadius="12px" />
+                </div>
+              }
+            >
               <WineryMap
                 lat={winery.coordinates.lat}
                 lng={winery.coordinates.lng}
