@@ -255,3 +255,18 @@ export const StyledTabs = styled.div`
     gap: 24px;
   }
 `;
+
+export const SkeletonGrid = styled.div`
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  justify-content: center;
+  width: 100%;
+
+  & > div {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+  }
+`;

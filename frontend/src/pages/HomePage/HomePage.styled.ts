@@ -73,6 +73,7 @@ export const MapWrapperDesktop = styled.div`
   display: flex;
   justify-content: center;
   min-height: 600px;
+  position: relative;
 
   @media (max-width: 1024px) {
     display: none;

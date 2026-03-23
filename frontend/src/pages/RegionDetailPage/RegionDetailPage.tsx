@@ -5,9 +5,14 @@ import { useWineriesStore } from '@/store/wineries/wineriesStore';
 import { useWinesStore } from '@/store/wine/winesStore';
 import { Loader } from '@/components/Common/Loader';
 import Container from '@/components/Common/Container';
-import WineryList from '@/components/Winery/WineryList/WineryList';
-import WineList from '@/components/Wine/WineList/WineList';
+import Slider from '@/components/Slider/Slider';
+import SliderCardWinery from '@/components/Slider/cards/SliderCardWinery';
+import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import InfoButton from '@/components/Buttons/InfoButton';
+import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
+import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
+import type { Wine } from '@/types/wine';
+import type { Winery } from '@/types/wineries';
 import type { Region } from '@/types/region';
 import {
   StyledRegionWrapper,
@@ -30,6 +35,7 @@ import {
   StyledTitle,
   StyledTabs,
   StyledTitleWrapper,
+  SkeletonGrid,
 } from './RegionDetailPage.styled';
 
 const RegionDetailPage = () => {
@@ -47,15 +53,7 @@ const RegionDetailPage = () => {
       try {
         setLoading(true);
         const res = await getRegionByName(name);
-        const regionData = res.data;
-        setRegion(regionData);
-
-        if (regionData?._id) {
-          await Promise.all([
-            fetchWineries({ region: regionData._id, limit: 12 }),
-            fetchWines({ region: regionData._id, limit: 12 }),
-          ]);
-        }
+        setRegion(res.data);
       } catch (err) {
         console.error('Error loading region:', err);
       } finally {
@@ -63,7 +61,26 @@ const RegionDetailPage = () => {
       }
     };
     loadRegion();
-  }, [name, fetchWineries, fetchWines]);
+  }, [name]);
+
+  useEffect(() => {
+    if (activeTab === 'wineries' && region?._id) {
+      fetchWineries({ region: region._id, limit: 12 });
+    }
+  }, [activeTab, region, fetchWineries]);
+
+  useEffect(() => {
+    if (activeTab === 'wines' && region?._id) {
+      fetchWines({ region: region._id, limit: 12 });
+    }
+  }, [activeTab, region, fetchWines]);
+
+  const getDynamicTitle = () => {
+    if (!region) return '';
+    return activeTab === 'wineries'
+      ? `Explore Wineries in ${region.name}`
+      : `Premium Wines from ${region.name}`;
+  };
 
   if (loading) return <Loader />;
   if (!region) return <Container>Region not found.</Container>;
@@ -199,7 +216,7 @@ const RegionDetailPage = () => {
         </StyledRegionGrid>
 
         <StyledWineriesWines>
-          <StyledTitle>Wineries and wines of the regions</StyledTitle>
+          <StyledTitle>{getDynamicTitle()}</StyledTitle>
 
           <StyledTabs>
             <InfoButton active={activeTab === 'wineries'} onClick={() => setActiveTab('wineries')}>
@@ -211,21 +228,44 @@ const RegionDetailPage = () => {
           </StyledTabs>
 
           {activeTab === 'wineries' ? (
-            wineriesLoading ? (
-              <Loader />
-            ) : wineries.length > 0 ? (
-              <WineryList wineries={wineries} />
+            wineriesLoading && wineries.length === 0 ? (
+              <SkeletonGrid>
+                <div>
+                  <WineryCardSkeleton />
+                  <WineryCardSkeleton />
+                  <WineryCardSkeleton />
+                  <WineryCardSkeleton />
+                </div>
+              </SkeletonGrid>
             ) : (
-              <p style={{ textAlign: 'center', color: '#666' }}>
-                No wineries found in this region.
-              </p>
+              <Slider
+                items={wineries}
+                renderItem={(winery: Winery) => <SliderCardWinery winery={winery} />}
+              />
             )
-          ) : winesLoading ? (
-            <Loader />
-          ) : wines.length > 0 ? (
-            <WineList wines={wines} />
+          ) : winesLoading && wines.length === 0 ? (
+            <SkeletonGrid>
+              <div>
+                <WineCardSkeleton />
+                <WineCardSkeleton />
+                <WineCardSkeleton />
+                <WineCardSkeleton />
+              </div>
+            </SkeletonGrid>
           ) : (
-            <p style={{ textAlign: 'center', color: '#666' }}>No wines found in this region.</p>
+            <Slider items={wines} renderItem={(wine: Wine) => <SliderCardWine wine={wine} />} />
+          )}
+
+          {activeTab === 'wineries' && !wineriesLoading && wineries.length === 0 && (
+            <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
+              No wineries found in this region.
+            </p>
+          )}
+
+          {activeTab === 'wines' && !winesLoading && wines.length === 0 && (
+            <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
+              No wines found in this region.
+            </p>
           )}
         </StyledWineriesWines>
       </StyledRegionWrapper>

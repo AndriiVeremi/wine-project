@@ -32,6 +32,7 @@ import {
   MapSection,
 } from './WineryDetailPage.styled';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
+import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
 
 const WineryMap = lazy(() => import('@/components/Common/Location/WineryMap'));
 
@@ -218,18 +219,16 @@ const WineryDetailPage = () => {
             </div>
           )}
         </MapSection>
-        {winesLoading ? (
-          <p style={{ textAlign: 'center' }}>Loading bestsellers...</p>
-        ) : (
-          wines.length > 0 && (
-            <section style={{ marginBottom: '40px' }}>
-              <SectionHeaderTitle>Bestsellers</SectionHeaderTitle>
-              <Slider
-                items={wines.slice(0, 8)}
-                renderItem={(wine) => <SliderCardWine wine={wine} />}
-              />
-            </section>
-          )
+        {(wines.length > 0 || winesLoading) && (
+          <section style={{ marginBottom: '40px' }}>
+            <SectionHeaderTitle>Bestsellers</SectionHeaderTitle>
+            <Slider
+              items={wines.slice(0, 8)}
+              isLoading={winesLoading && wines.length === 0}
+              renderSkeleton={() => <WineCardSkeleton />}
+              renderItem={(wine) => <SliderCardWine wine={wine} />}
+            />
+          </section>
         )}
       </DetailPageContainer>
     </Container>

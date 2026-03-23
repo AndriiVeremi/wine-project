@@ -36,6 +36,7 @@ import WineryContactModal from '@/components/Common/WineryContactModal/WineryCon
 import type { Winery } from '@/types/wineries';
 import Slider from '@/components/Slider/Slider';
 import SliderCardTour from '@/components/Slider/cards/SliderCardTour';
+import TourCardSkeleton from '@/components/Common/Skeleton/TourCardSkeleton';
 
 const WineTourDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -58,7 +59,7 @@ const WineTourDetailPage = () => {
     enabled: !!id,
   });
 
-  const { data: allToursData } = useQuery({
+  const { data: allToursData, isLoading: isLoadingAllTours } = useQuery({
     queryKey: ['all-tours-for-slider'],
     queryFn: () => getTours({ limit: 50 }),
     enabled: !!id,
@@ -242,10 +243,15 @@ const WineTourDetailPage = () => {
         />
       )}
 
-      {otherTours.length > 0 && (
+      {(otherTours.length > 0 || isLoadingAllTours) && (
         <SliderSection>
           <SectionHeaderTitle>More tours</SectionHeaderTitle>
-          <Slider items={otherTours} renderItem={(t) => <SliderCardTour tour={t} />} />
+          <Slider
+            items={otherTours}
+            isLoading={isLoadingAllTours && otherTours.length === 0}
+            renderSkeleton={() => <TourCardSkeleton />}
+            renderItem={(t) => <SliderCardTour tour={t} />}
+          />
         </SliderSection>
       )}
     </Container>
