@@ -30,6 +30,7 @@ export const CardLink = styled(Link)`
   display: flex;
   flex-direction: column;
   height: 100%;
+  gap: 20px;
 `;
 
 export const WineImage = styled.img`
@@ -37,7 +38,6 @@ export const WineImage = styled.img`
   height: 310px;
   object-fit: cover;
   border-radius: 12px;
-  margin-bottom: 8px;
 `;
 
 export const StyledFavoriteButton = styled(FavoriteButton)`
@@ -73,14 +73,13 @@ export const WineryName = styled.p`
   font-size: 14px;
   color: var(--secondary-gray);
   font-style: italic;
-  margin: -4px 0 4px 0;
+  margin: 0;
 `;
 
 export const TagsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 4px;
 `;
 
 export const Tag = styled.span`
