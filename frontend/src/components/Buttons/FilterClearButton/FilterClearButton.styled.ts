@@ -1,3 +1,4 @@
+import { breakpoints } from '@/styles/breakpoints';
 import styled from 'styled-components';
 
 export const StyledFilterClearButton = styled.button`
@@ -17,9 +18,10 @@ export const StyledFilterClearButton = styled.button`
   transition: var(--transition);
 
   white-space: nowrap;
-
-  &:hover {
-    color: var(--white);
-    background: var(--primary-wine);
+  @media (min-width: ${breakpoints.desktop}) {
+    &:hover {
+      color: var(--white);
+      background: var(--primary-wine);
+    }
   }
 `;

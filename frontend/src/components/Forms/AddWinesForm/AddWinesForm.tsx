@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { getWineries } from '@/api/wineries';
 import { getGrapes } from '@/api/grapes';
 import toast from 'react-hot-toast';
@@ -18,7 +18,9 @@ import {
 } from './AddWinesForm.styled';
 import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
 import { useWinesStore } from '@/store/wine/winesStore';
-import TextEditor from '@/components/Common/TextEditor/TextEditor';
+import Skeleton from '@/components/Common/Skeleton/Skeleton';
+
+const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 
 const initData = {
   name: '',
@@ -341,11 +343,20 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
             onChange={onInput}
             isTextarea
           />
-          <TextEditor
-            label="Detailed Description"
-            value={vals.description}
-            onChange={(v: string) => setVals((p) => ({ ...p, description: v }))}
-          />
+          <Suspense
+            fallback={
+              <div>
+                <Skeleton height="40px" $margin="0 0 12px 0" />
+                <Skeleton height="200px" $borderRadius="8px" />
+              </div>
+            }
+          >
+            <TextEditor
+              label="Detailed Description"
+              value={vals.description}
+              onChange={(v: string) => setVals((p) => ({ ...p, description: v }))}
+            />
+          </Suspense>
         </FullWidthWrapper>
 
         <ButtonWrapper>

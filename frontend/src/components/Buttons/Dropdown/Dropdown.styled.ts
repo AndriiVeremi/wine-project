@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FiChevronDown } from 'react-icons/fi';
+import { breakpoints } from '@/styles/breakpoints';
 
 export const Wrapper = styled.div<{ $disabled?: boolean }>`
   position: relative;
@@ -24,12 +25,34 @@ export const Button = styled.button<{ $active: boolean; $disabled?: boolean }>`
   &:hover {
     background: var(--filter-active-bg);
   }
+
+  .dropdown-label {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+  }
 `;
 
 export const ArrowIcon = styled(FiChevronDown)<{ $open: boolean }>`
   color: var(--brown-icon);
   transition: var(--transition);
   transform: rotate(${({ $open }) => ($open ? '180deg' : '0deg')});
+
+  width: 16px;
+  height: 16px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 export const List = styled.ul`
@@ -43,6 +66,21 @@ export const List = styled.ul`
   box-shadow: var(--main-shadow);
   z-index: 10;
   overflow: hidden;
+  padding: 0;
+`;
+
+export const ScrollWrapper = styled.div`
+  overflow-y: auto;
+
+  max-height: 200px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    max-height: 260px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    max-height: 320px;
+  }
 `;
 
 export const Item = styled.li`

@@ -22,10 +22,13 @@ export const MapWrapper = styled.div`
   }
 `;
 
-export const Tooltip = styled.div<{ $x: number; $y: number; $show: boolean }>`
+export const Tooltip = styled.div.attrs<{ $x: number; $y: number; $show: boolean }>((props) => ({
+  style: {
+    left: `${props.$x}px`,
+    top: `${props.$y}px`,
+  },
+}))`
   position: fixed;
-  left: ${(props) => props.$x}px;
-  top: ${(props) => props.$y}px;
   transform: translate(-50%, -130%);
   background: rgba(255, 228, 189, 0.95);
   color: var(--primary-wine);

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import type { Wine } from '@/types/wine';
 import {
   StyledWineCardDiv,
@@ -13,31 +12,31 @@ import {
   Tag,
   PriceRatingRow,
   WinePrice,
+  CardLink,
 } from './WineCard.styled';
 import RatingStars from '@/components/Common/RatingStars';
 import { stripHtml } from '@/utils/text';
 
 interface WineCardProps {
   wine: Wine;
+  isFirst?: boolean;
 }
 
-const WineCard = ({ wine }: WineCardProps) => {
+const WineCard = ({ wine, isFirst }: WineCardProps) => {
   const cleanDesc = stripHtml(wine.description || '');
 
   return (
     <StyledWineCardDiv>
       <StyledFavoriteButton wine={wine} size={28} />
-      <Link
-        to={`/wines/${wine._id}`}
-        style={{
-          textDecoration: 'none',
-          color: 'inherit',
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-        }}
-      >
-        <WineImage src={wine.imageUrl} alt={wine.name} loading="lazy" width="310" height="310" />
+      <CardLink to={`/wines/${wine._id}`}>
+        <WineImage
+          src={wine.imageUrl}
+          alt={wine.name}
+          loading={isFirst ? 'eager' : 'lazy'}
+          fetchPriority={isFirst ? 'high' : 'auto'}
+          width="310"
+          height="310"
+        />
 
         <WineHeader>
           <WineTitle>{wine.name}</WineTitle>
@@ -63,7 +62,7 @@ const WineCard = ({ wine }: WineCardProps) => {
             size={14}
           />
         </PriceRatingRow>
-      </Link>
+      </CardLink>
     </StyledWineCardDiv>
   );
 };

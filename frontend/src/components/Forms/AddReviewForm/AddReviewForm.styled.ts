@@ -4,7 +4,6 @@ export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 40px;
   padding: 30px;
   background: #fff;
   border-radius: 16px;

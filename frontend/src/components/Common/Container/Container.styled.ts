@@ -17,12 +17,12 @@ export const StyledContainer = styled.div`
   }
 
   @media (min-width: ${breakpoints.desktop}) {
-    max-width: 1200px;
+    max-width: 1280px;
     padding: 0 30px;
   }
 
   @media (min-width: ${breakpoints.largeDesktop}) {
-    max-width: 1400px;
+    max-width: 1440px;
     padding: 0 40px;
   }
 `;

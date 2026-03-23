@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/Buttons/MainButton';
 import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
-import TextEditor from '@/components/Common/TextEditor/TextEditor';
+
 import type { Tour } from '@/types/tours';
 import {
   AddTourWrapper,
@@ -18,6 +18,9 @@ import {
 } from './AddTourForm.styled';
 import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
 import { useToursStore } from '@/store/tours/toursStore';
+import Skeleton from '@/components/Common/Skeleton/Skeleton';
+
+const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 
 const init = {
   name: '',
@@ -195,11 +198,20 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
         </TopSection>
 
         <FullWidthWrapper>
-          <TextEditor
-            label="Description"
-            value={form.description}
-            onChange={(v: string) => setForm((prev) => ({ ...prev, description: v }))}
-          />
+          <Suspense
+            fallback={
+              <div>
+                <Skeleton height="40px" $margin="0 0 12px 0" />
+                <Skeleton height="200px" $borderRadius="8px" />
+              </div>
+            }
+          >
+            <TextEditor
+              label="Description"
+              value={form.description}
+              onChange={(v: string) => setForm((prev) => ({ ...prev, description: v }))}
+            />
+          </Suspense>
         </FullWidthWrapper>
 
         <ButtonWrapper>

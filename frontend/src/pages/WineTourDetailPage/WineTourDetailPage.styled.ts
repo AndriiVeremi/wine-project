@@ -7,40 +7,54 @@ export const TourDetailContainer = styled.div`
   @media (min-width: ${breakpoints.desktop}) {
     flex-direction: row;
     align-items: flex-start;
-    gap: 48px;
+    gap: 68px;
   }
 `;
 export const MainContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
+
+  @media (min-width: ${breakpoints.desktop}) {
+    flex: 2;
+  }
 `;
+
 export const GallerySection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
 `;
+
 export const MainBanner = styled.div`
   width: 100%;
   height: 300px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--main-shadow);
+
+  @media (min-width: ${breakpoints.tablet}) {
+    height: 450px;
+  }
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  @media (min-width: ${breakpoints.tablet}) {
-    height: 450px;
-  }
 `;
+
 export const ThumbnailsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
+  width: 100%;
+  \ @media (min-width: ${breakpoints.tablet}) {
+    width: calc(100% - 80px);
+  }
 `;
+
 export const Thumbnail = styled.div<{ $active: boolean }>`
   aspect-ratio: 1 / 1;
   border-radius: 12px;
@@ -57,11 +71,13 @@ export const Thumbnail = styled.div<{ $active: boolean }>`
     opacity: 0.8;
   }
 `;
+
 export const TourHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
+
 export const TourTitle = styled.h1`
   font-size: 32px;
   font-weight: 700;
@@ -71,6 +87,7 @@ export const TourTitle = styled.h1`
     font-size: 42px;
   }
 `;
+
 export const TourSubtitle = styled.div`
   display: flex;
   align-items: center;
@@ -78,6 +95,7 @@ export const TourSubtitle = styled.div`
   color: var(--secondary-gray);
   font-size: 16px;
 `;
+
 export const SpecsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -86,9 +104,6 @@ export const SpecsGrid = styled.div`
   background: var(--white);
   border-radius: 20px;
   border: 1px solid var(--tertiary-gray);
-  @media (min-width: ${breakpoints.tablet}) {
-    grid-template-columns: repeat(4, 1fr);
-  }
 `;
 export const SpecItem = styled.div`
   display: flex;
@@ -96,6 +111,7 @@ export const SpecItem = styled.div`
   gap: 8px;
   align-items: center;
   text-align: center;
+
   .icon {
     width: 40px;
     height: 40px;
@@ -123,6 +139,7 @@ export const DescriptionBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
   h2 {
     font-size: 24px;
     font-weight: 700;
@@ -138,8 +155,12 @@ export const Sidebar = styled.aside`
   width: 100%;
   position: sticky;
   top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+
   @media (min-width: ${breakpoints.desktop}) {
-    width: 380px;
+    flex: 1;
   }
 `;
 export const BookingCard = styled.div`

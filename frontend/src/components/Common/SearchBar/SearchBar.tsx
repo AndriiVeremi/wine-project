@@ -19,8 +19,8 @@ const SearchBar = ({ value, onChange, onSearch, placeholder, className }: Search
         onChange={(e) => onChange(e.target.value)}
       />
 
-      <SearchButton onClick={onSearch}>
-        <FiSearch size={24} />
+      <SearchButton onClick={onSearch} aria-label="Search">
+        <FiSearch />
       </SearchButton>
     </SearchBarWrapper>
   );
