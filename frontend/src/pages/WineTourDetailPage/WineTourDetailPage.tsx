@@ -91,21 +91,6 @@ const WineTourDetailPage = () => {
     <Container>
       <TourDetailContainer>
         <MainContent>
-          <TourHeader>
-            <TourSubtitle>
-              <RatingStars
-                value={tour.averageRating}
-                reviews={tour.totalReviews}
-                showRightReviews
-              />
-              <span>•</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <FiMapPin /> {(winery?.region as { name?: string })?.name || 'Georgia'}
-              </span>
-            </TourSubtitle>
-            <TourTitle>{tour.name}</TourTitle>
-          </TourHeader>
-
           <GallerySection>
             <MainBanner>
               <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={tour.name} />
@@ -125,39 +110,6 @@ const WineTourDetailPage = () => {
               </ThumbnailsGrid>
             )}
           </GallerySection>
-
-          <SpecsGrid>
-            <SpecItem>
-              <div className="icon">
-                <FiClock />
-              </div>
-              <div className="label">Duration</div>
-              <div className="value">{tour.duration} Hours</div>
-            </SpecItem>
-            <SpecItem>
-              <div className="icon">
-                <FiUsers />
-              </div>
-              <div className="label">Group Size</div>
-              <div className="value">
-                {tour.groupSize.min}-{tour.groupSize.max} Pers.
-              </div>
-            </SpecItem>
-            <SpecItem>
-              <div className="icon">
-                <FiMapPin />
-              </div>
-              <div className="label">Region</div>
-              <div className="value">{(winery?.region as { name?: string })?.name || 'Local'}</div>
-            </SpecItem>
-            <SpecItem>
-              <div className="icon">
-                <FiShield />
-              </div>
-              <div className="label">Safety</div>
-              <div className="value">Certified</div>
-            </SpecItem>
-          </SpecsGrid>
 
           <DescriptionBox>
             <h2>About this tour</h2>
@@ -202,6 +154,21 @@ const WineTourDetailPage = () => {
         </MainContent>
 
         <Sidebar>
+          <TourHeader>
+            <TourTitle>{tour.name}</TourTitle>
+            <TourSubtitle>
+              <RatingStars
+                value={tour.averageRating}
+                reviews={tour.totalReviews}
+                showRightReviews
+              />
+              <span>•</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <FiMapPin /> {(winery?.region as { name?: string })?.name || 'Georgia'}
+              </span>
+            </TourSubtitle>
+          </TourHeader>
+
           <BookingCard>
             <PriceRow>
               <div className="label">Price per person</div>
@@ -231,6 +198,39 @@ const WineTourDetailPage = () => {
               No hidden fees. Instant confirmation.
             </p>
           </BookingCard>
+
+          <SpecsGrid>
+            <SpecItem>
+              <div className="icon">
+                <FiClock />
+              </div>
+              <div className="label">Duration</div>
+              <div className="value">{tour.duration} Hours</div>
+            </SpecItem>
+            <SpecItem>
+              <div className="icon">
+                <FiUsers />
+              </div>
+              <div className="label">Group Size</div>
+              <div className="value">
+                {tour.groupSize.min}-{tour.groupSize.max} Pers.
+              </div>
+            </SpecItem>
+            <SpecItem>
+              <div className="icon">
+                <FiMapPin />
+              </div>
+              <div className="label">Region</div>
+              <div className="value">{(winery?.region as { name?: string })?.name || 'Local'}</div>
+            </SpecItem>
+            <SpecItem>
+              <div className="icon">
+                <FiShield />
+              </div>
+              <div className="label">Safety</div>
+              <div className="value">Certified</div>
+            </SpecItem>
+          </SpecsGrid>
         </Sidebar>
       </TourDetailContainer>
 
