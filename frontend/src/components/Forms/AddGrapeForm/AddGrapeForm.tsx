@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { toast } from 'react-hot-toast';
 import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 import MainButton from '@/components/Buttons/MainButton';
 import type { Grape } from '@/types/grape';
-import TextEditor from '@/components/Common/TextEditor/TextEditor';
+
 import {
   AddGrapeWrapper,
   TopSection,
@@ -21,6 +21,9 @@ import {
 } from './AddGrapeForm.styled';
 import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
 import { useGrapesStore } from '@/store/grape/grapesStore';
+import Skeleton from '@/components/Common/Skeleton/Skeleton';
+
+const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 
 const acidOpts = [
   { value: 'Low', label: 'Low' },
@@ -265,11 +268,20 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
               tags={vals.foodPairing}
               onUpdate={(t) => setVals((p) => ({ ...p, foodPairing: t }))}
             />
-            <TextEditor
-              label="Full Variety History"
-              value={vals.description}
-              onChange={(v: string) => setVals((p) => ({ ...p, description: v }))}
-            />
+            <Suspense
+              fallback={
+                <div>
+                  <Skeleton height="40px" $margin="0 0 12px 0" />
+                  <Skeleton height="200px" $borderRadius="8px" />
+                </div>
+              }
+            >
+              <TextEditor
+                label="Full Variety History"
+                value={vals.description}
+                onChange={(v: string) => setVals((p) => ({ ...p, description: v }))}
+              />
+            </Suspense>
           </FullWidthWrapper>
         </FormGrid>
 
