@@ -18,11 +18,14 @@ interface WineryCardProps {
     history?: string;
     averageRating?: number;
     totalReviews?: number;
-    region?: { name: string };
+    region?: string | { name: string };
   };
 }
 
 const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
+  const regionName =
+    typeof winery.region === 'string' ? winery.region : winery.region?.name || 'Georgia';
+
   return (
     <CardBase>
       <ImageWrapper>
@@ -60,7 +63,7 @@ const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
             margin: 0,
           }}
         >
-          <FiMapPin size={14} aria-hidden="true" /> {winery.region?.name || 'Georgia'}
+          <FiMapPin size={14} aria-hidden="true" /> {regionName}
         </p>
 
         <p
