@@ -1,4 +1,5 @@
 import FavoriteButton from '@/components/Buttons/FavoriteButton';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const StyledWineCardDiv = styled.div`
@@ -23,10 +24,18 @@ export const StyledWineCardDiv = styled.div`
   }
 `;
 
+export const CardLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
 export const WineImage = styled.img`
   width: 100%;
   height: 310px;
-  object-fit: cover; /* Змінив на cover, щоб заповнити весь простір без полосок */
+  object-fit: cover;
   border-radius: 12px;
   margin-bottom: 8px;
 `;

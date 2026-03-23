@@ -1,8 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useMemo, forwardRef } from 'react';
 import { StyledDropDown, StyledWineFilterContainer } from './WineFilter.styled';
 import { useFiltersStore } from '@/store/wine/filtersStore';
 import { useLocationStore } from '@/store/location/locationStore';
-import FilterClearButton from '../../Buttons/FilterClearButton';
 import type { WineColor, WineSweetness } from '@/types/wine';
 import { useQuery } from '@tanstack/react-query';
 import { getRegions } from '@/api/regions';
@@ -19,9 +18,15 @@ interface RegionOption {
   name: string;
 }
 
-const WineFilter = ({ className }: PropsWineFilter) => {
-  const { region, sweetness, color, grape, minRating, vintage, setFilter, clearFilters } =
-    useFiltersStore();
+const WineFilter = forwardRef<HTMLDivElement, PropsWineFilter>(({ className }, ref) => {
+  const region = useFiltersStore((s) => s.region);
+  const sweetness = useFiltersStore((s) => s.sweetness);
+  const color = useFiltersStore((s) => s.color);
+  const grape = useFiltersStore((s) => s.grape);
+  const minRating = useFiltersStore((s) => s.minRating);
+  const vintage = useFiltersStore((s) => s.vintage);
+
+  const setFilter = useFiltersStore((s) => s.setFilter);
 
   const { country } = useLocationStore();
 
@@ -35,7 +40,12 @@ const WineFilter = ({ className }: PropsWineFilter) => {
     enabled: !!country,
   });
 
-  const regions = Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : [];
+  const regions = useMemo(
+    () => (Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : []),
+    [regionsRaw],
+  );
+
+  const regionOptions = useMemo(() => regions.map((r) => r.name), [regions]);
 
   const { data: grapesRaw = [], isLoading: isLoadingGrapes } = useQuery({
     queryKey: ['grapes', region],
@@ -45,38 +55,34 @@ const WineFilter = ({ className }: PropsWineFilter) => {
     },
   });
 
-  const grapes = Array.isArray(grapesRaw) ? (grapesRaw as Grape[]) : [];
+  const grapes = useMemo(
+    () => (Array.isArray(grapesRaw) ? (grapesRaw as Grape[]) : []),
+    [grapesRaw],
+  );
+
+  const grapeOptions = useMemo(() => grapes.map((g) => g.name), [grapes]);
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const filterRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = (id: string) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
-  const handleClear = () => {
-    clearFilters();
-    if (window.innerWidth < 768 && filterRef.current) {
-      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const selectedRegionName =
-    (Array.isArray(regions) ? regions : []).find((r) => r._id === region)?.name || '';
+  const selectedRegionName = useMemo(() => {
+    return regions.find((r) => r._id === region)?.name || '';
+  }, [regions, region]);
 
   return (
-    <StyledWineFilterContainer className={className} ref={filterRef}>
+    <StyledWineFilterContainer className={className} ref={ref}>
       <StyledDropDown
         label="Region"
         value={selectedRegionName}
-        options={(Array.isArray(regions) ? regions : []).map((r) => r.name)}
+        options={regionOptions}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}
         onOpen={() => handleOpen('region')}
         onSelect={(value) => {
-          const selectedRegion = (Array.isArray(regions) ? regions : []).find(
-            (r) => r.name === value,
-          );
+          const selectedRegion = regions.find((r) => r.name === value);
           setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}
@@ -112,7 +118,7 @@ const WineFilter = ({ className }: PropsWineFilter) => {
       <StyledDropDown
         label="Grape"
         value={grape}
-        options={(Array.isArray(grapes) ? grapes : []).map((g) => g.name)}
+        options={grapeOptions}
         isOpen={openDropdown === 'grape'}
         $isOpen={openDropdown === 'grape'}
         onOpen={() => handleOpen('grape')}
@@ -148,10 +154,8 @@ const WineFilter = ({ className }: PropsWineFilter) => {
           setOpenDropdown(null);
         }}
       />
-
-      <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
     </StyledWineFilterContainer>
   );
-};
+});
 
 export default WineFilter;
