@@ -9,9 +9,9 @@ interface WineListProps {
 const WineList = ({ wines }: WineListProps) => {
   return (
     <StyledWineList>
-      {wines.map((wine) => (
+      {wines.map((wine, index) => (
         <StyledWineListItem key={wine._id}>
-          <WineCard wine={wine} />
+          <WineCard wine={wine} isFirst={index === 0} />
         </StyledWineListItem>
       ))}
     </StyledWineList>
