@@ -8,6 +8,7 @@ import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
+import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
 import {
   DetailContainer,
   HeroSection,
@@ -226,15 +227,16 @@ const GrapeDetailPage = () => {
         </div>
       </DetailContainer>
 
-      {winesLoading ? (
-        <p style={{ textAlign: 'center', padding: '40px' }}>Searching for varietal wines...</p>
-      ) : (
-        wines.length > 0 && (
-          <SliderSection>
-            <SectionHeaderTitle>Wines of {data.name}</SectionHeaderTitle>
-            <Slider items={wines.slice(0, 8)} renderItem={(w) => <SliderCardWine wine={w} />} />
-          </SliderSection>
-        )
+      {(wines.length > 0 || winesLoading) && (
+        <SliderSection>
+          <SectionHeaderTitle>Wines of {data.name}</SectionHeaderTitle>
+          <Slider
+            items={wines.slice(0, 8)}
+            isLoading={winesLoading && wines.length === 0}
+            renderSkeleton={() => <WineCardSkeleton />}
+            renderItem={(w) => <SliderCardWine wine={w} />}
+          />
+        </SliderSection>
       )}
     </Container>
   );

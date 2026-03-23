@@ -8,6 +8,7 @@ import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
 import Container from '@/components/Common/Container';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
+import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
 import { getWines } from '@/api/wines';
 import type { Wine } from '@/types/wine';
 import {
@@ -123,19 +124,17 @@ const WineDetailPage = () => {
       </StyledWinePageDiv>
 
       <SliderSection>
-        {topWines.length > 0 && (
+        {(topWines.length > 0 || isTopWinesLoading) && (
           <>
             <SliderTitle>
               Top Rated {wine.color} {wine.sweetness} Wines
             </SliderTitle>
-            {isTopWinesLoading ? (
-              <p style={{ textAlign: 'center' }}>Loading similar wines...</p>
-            ) : (
-              <Slider
-                items={topWines.slice(0, 8)}
-                renderItem={(wineItem: Wine) => <SliderCardWine wine={wineItem} />}
-              />
-            )}
+            <Slider
+              items={topWines.slice(0, 8)}
+              isLoading={isTopWinesLoading && topWines.length === 0}
+              renderSkeleton={() => <WineCardSkeleton />}
+              renderItem={(wineItem: Wine) => <SliderCardWine wine={wineItem} />}
+            />
           </>
         )}
       </SliderSection>
