@@ -72,9 +72,52 @@ export const MapWrapperDesktop = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  min-height: 600px;
 
   @media (max-width: 1024px) {
     display: none;
+  }
+`;
+
+export const MapContainer = styled.div`
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  @media (max-width: 767px) {
+    min-height: 600px;
+  }
+`;
+
+export const MapPlaceholder = styled.div`
+  width: 100%;
+  height: 600px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+
+  &::after {
+    content: 'Loading Map...';
+    color: var(--white);
+    font-size: 1.2rem;
+  }
+`;
+
+export const SkeletonGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+  overflow: hidden;
+
+  & > div {
+    display: flex;
+    gap: 20px;
   }
 `;
 

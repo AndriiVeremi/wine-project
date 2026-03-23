@@ -5,9 +5,10 @@ import AppPagination from '@/components/Common/AppPagination';
 import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useGrapesStore } from '@/store/grape/grapesStore';
 import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
+import GrapeCardSkeleton from '@/components/Common/Skeleton/GrapeCardSkeleton';
+import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { notifyError } from '@/utils/toast';
-import GrapeCardSkeleton from '@/components/Common/Skeleton/GrapeCardSkeleton';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
@@ -47,11 +48,17 @@ const GrapesPage = () => {
       />
 
       {loading && (
-        <div className="skeleton-grid">
+        <SkeletonGrid
+          $columns={1}
+          $tabletColumns={2}
+          $desktopColumns={3}
+          $gap="20px"
+          $tabletGap="30px"
+        >
           {[...Array(6)].map((_, i) => (
             <GrapeCardSkeleton key={i} />
           ))}
-        </div>
+        </SkeletonGrid>
       )}
 
       {!loading && !error && grapes?.length === 0 && (

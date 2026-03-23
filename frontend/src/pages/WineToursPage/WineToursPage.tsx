@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
 import Container from '@/components/Common/Container';
 import AppPagination from '@/components/Common/AppPagination';
-
 import { useToursStore } from '@/store/tours/toursStore';
 import { useTourFiltersStore } from '@/store/tours/tourFiltersStore';
 import { useTourQueryParams } from '@/hooks/useTourQueryParams';
 import TourList from '@/components/Tour/TourList/TourList';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import TourCardSkeleton from '@/components/Common/Skeleton/TourCardSkeleton';
-import { breakpoints } from '@/styles/breakpoints';
-
+import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
 
@@ -46,36 +44,12 @@ const TourPage = () => {
       />
 
       {loading && (
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '32px',
-            marginTop: '30px',
-          }}
-          className="tour-skeleton-grid"
-        >
+        <SkeletonGrid $columns={1} $tabletColumns={2} $desktopColumns={3} $gap="32px" $mt="30px">
           {[...Array(6)].map((_, i) => (
             <TourCardSkeleton key={i} />
           ))}
-        </div>
+        </SkeletonGrid>
       )}
-
-      <style>{`
-        .tour-skeleton-grid > * {
-          width: 100%;
-        }
-        @media (min-width: 768px) {
-          .tour-skeleton-grid > * {
-            width: calc((100% - 32px) / 2);
-          }
-        }
-        @media (min-width: ${breakpoints.desktop}) {
-          .tour-skeleton-grid > * {
-            width: calc((100% - 2 * 32px) / 3);
-          }
-        }
-      `}</style>
 
       {!loading && !error && tours.length === 0 && <p>No tours found</p>}
       {!loading && !error && tours.length > 0 && (

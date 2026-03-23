@@ -1,8 +1,7 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '@/components/Layout/Header';
 import Footer from '@/components/Layout/Footer';
-import AuthModal from '@/components/Common/AuthModal/AuthModal';
 import AIAssistant from '@/components/Common/AIAssistant/AIAssistant';
 import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
@@ -18,6 +17,9 @@ import {
   HomeBgLeft,
   HomeBgRight,
 } from './SharedLayout.styled';
+
+// Lazy load AuthModal
+const AuthModal = lazy(() => import('@/components/Common/AuthModal/AuthModal'));
 
 const homeBgLeftSrc = '/images/home-bg/home-bgLeft.webp';
 const homeBgLeftX2Src = '/images/home-bg/home-bgLeftX2.webp';
@@ -108,7 +110,11 @@ const SharedLayout = () => {
 
       {user && aiAssistantEnabled && <AIAssistant />}
 
-      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} initialTab={authModalView} />
+      <Suspense fallback={null}>
+        {isAuthModalOpen && (
+          <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} initialTab={authModalView} />
+        )}
+      </Suspense>
     </LayoutWrapper>
   );
 };

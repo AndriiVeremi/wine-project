@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { lazy, Suspense } from 'react';
 import Container from '@/components/Common/Container';
 import WineColorFilters from '@/components/Wine/WineColorFilters/WineColorFilters';
 import Slider from '@/components/Slider/Slider';
@@ -8,7 +9,6 @@ import { getRegions } from '@/api/regions';
 import { useLocationStore } from '@/store/location/locationStore';
 import Hero from '@/components/Hero/Hero';
 import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
-import InteractiveMap from '@/components/Common/InteractiveMap/InteractiveMap';
 import {
   WineSection,
   MapSection,
@@ -18,7 +18,13 @@ import {
   RegionLink,
   RegionTitle,
   MapWrapperDesktop,
+  MapContainer,
+  MapPlaceholder,
+  SkeletonGrid,
 } from './HomePage.styled';
+
+// Lazy load heavy interactive map
+const InteractiveMap = lazy(() => import('@/components/Common/InteractiveMap/InteractiveMap'));
 
 interface Winery {
   _id: string;
@@ -67,23 +73,16 @@ const HomePage = () => {
 
       <MapSection>
         <Container>
-          <div
-            style={{
-              minHeight: '800px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
-            }}
-          >
+          <MapContainer>
             {selectedCountry ? (
               <>
                 <RegionTitle>Discover Wine Regions of {selectedCountry}</RegionTitle>
 
                 {selectedCountry === 'Georgia' && (
                   <MapWrapperDesktop>
-                    <InteractiveMap />
+                    <Suspense fallback={<MapPlaceholder />}>
+                      <InteractiveMap />
+                    </Suspense>
                   </MapWrapperDesktop>
                 )}
 
@@ -98,7 +97,7 @@ const HomePage = () => {
             ) : (
               <RegionTitle>Please select a country in the Hero section to see regions</RegionTitle>
             )}
-          </div>
+          </MapContainer>
         </Container>
       </MapSection>
 
@@ -106,26 +105,14 @@ const HomePage = () => {
         <Container>
           <ReviewTitle>Our Partners & Wineries</ReviewTitle>
           {isLoadingWineries ? (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(1, 1fr)',
-                gap: '20px',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '20px',
-                  overflow: 'hidden',
-                }}
-              >
+            <SkeletonGrid>
+              <div>
                 <WineryCardSkeleton />
                 <WineryCardSkeleton />
                 <WineryCardSkeleton />
                 <WineryCardSkeleton />
               </div>
-            </div>
+            </SkeletonGrid>
           ) : (
             <Slider
               items={vipWineries}
