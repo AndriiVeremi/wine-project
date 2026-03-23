@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Wrapper, Button, List, Item, ArrowIcon } from './Dropdown.styled';
+import { Wrapper, Button, List, Item, ArrowIcon, ScrollWrapper } from './Dropdown.styled';
 
 interface DropdownProps {
   label: string;
@@ -50,25 +50,27 @@ const Dropdown = ({
         aria-expanded={isOpen}
         aria-label={`Select ${label}`}
       >
-        {value || label}
-        <ArrowIcon $open={isOpen} size={16} />
+        <span className="dropdown-label">{value || label}</span>
+        <ArrowIcon $open={isOpen} />
       </Button>
 
       {isOpen && (
         <List role="listbox">
-          <Item onClick={() => handleSelect('')} role="option" aria-selected={!value}>
-            All
-          </Item>
-          {options.map((opt) => (
-            <Item
-              key={opt}
-              onClick={() => handleSelect(opt)}
-              role="option"
-              aria-selected={value === opt}
-            >
-              {opt}
+          <ScrollWrapper>
+            <Item onClick={() => handleSelect('')} role="option" aria-selected={!value}>
+              All
             </Item>
-          ))}
+            {options.map((opt) => (
+              <Item
+                key={opt}
+                onClick={() => handleSelect(opt)}
+                role="option"
+                aria-selected={value === opt}
+              >
+                {opt}
+              </Item>
+            ))}
+          </ScrollWrapper>
         </List>
       )}
     </Wrapper>
