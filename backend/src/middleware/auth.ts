@@ -26,16 +26,22 @@ export const authMiddleware = async (
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
     req.user = decodedToken;
 
-    const mongoUser = await User.findOne({ firebaseUid: decodedToken.uid });
+    let mongoUser = await User.findOne({ firebaseUid: decodedToken.uid });
 
-    if (mongoUser) {
-      req.userId = mongoUser._id.toString();
-      req.userRole = mongoUser.role;
-    } else {
-      console.warn(`Firebase user ${decodedToken.uid} found, but no corresponding MongoDB user.`);
-      res.status(401).send({ message: 'Unauthorized: User profile not found.' });
-      return;
+    if (!mongoUser) {
+      console.log(`Creating new MongoDB profile for Firebase user: ${decodedToken.uid}`);
+      const nameParts = (decodedToken.name || 'New User').split(' ');
+      mongoUser = await User.create({
+        firebaseUid: decodedToken.uid,
+        firstName: nameParts[0] || 'New',
+        lastName: nameParts.slice(1).join(' ') || 'User',
+        email: decodedToken.email || `user_${decodedToken.uid}@temporary.com`,
+        role: 'USER',
+      });
     }
+
+    req.userId = mongoUser._id.toString();
+    req.userRole = mongoUser.role;
 
     next();
   } catch (error) {
