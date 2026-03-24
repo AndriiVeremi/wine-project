@@ -5,7 +5,7 @@ import { mockGetUserProfile, mockRegisterUser } from '../__mocks__/authApi';
 
 vi.mock('@/api/authApi', () => ({
   getUserProfile: (...args: unknown[]) => mockGetUserProfile(...args),
-  registerUser: (...args: unknown[]) => mockRegisterUser(...args),
+  registerUserApi: (...args: unknown[]) => mockRegisterUser(...args),
   updateUserApi: vi.fn(),
 }));
 

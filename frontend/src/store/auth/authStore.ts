@@ -53,6 +53,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   fetchProfile: async () => {
+    const { user } = get();
+    if (!user) return;
+
     try {
       const res = await getUserProfile();
       set({ profile: res.data, isLoading: false, error: null });
