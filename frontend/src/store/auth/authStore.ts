@@ -26,15 +26,6 @@ interface AuthState {
   updateUser: (data: Partial<UserProfile>) => Promise<void>;
 }
 
-interface ApiError {
-  message?: string;
-  response?: {
-    data?: {
-      message?: string;
-    };
-  };
-}
-
 const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
   if (typeof error === 'object' && error !== null) {

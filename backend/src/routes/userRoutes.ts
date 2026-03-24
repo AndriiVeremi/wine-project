@@ -3,7 +3,12 @@ import * as userController from '@/controllers/userController';
 import { getUserReviews } from '@/controllers/reviewController';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
-import { registerSchema, loginSchema, addFavoriteSchema, updateProfileSchema } from '@/schemas/userSchemas';
+import {
+  registerSchema,
+  loginSchema,
+  addFavoriteSchema,
+  updateProfileSchema,
+} from '@/schemas/userSchemas';
 import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
@@ -42,7 +47,9 @@ router.post('/register', validateBody(registerSchema), userController.registerUs
  *       200:
  *         description: OK
  */
-router.post('/login', validateBody(loginSchema), (req, res) => res.status(200).json({ message: 'Validation successful' }));
+router.post('/login', validateBody(loginSchema), (req, res) =>
+  res.status(200).json({ message: 'Validation successful' }),
+);
 
 /**
  * @swagger
