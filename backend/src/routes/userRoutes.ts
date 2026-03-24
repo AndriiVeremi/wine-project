@@ -3,7 +3,7 @@ import * as userController from '@/controllers/userController';
 import { getUserReviews } from '@/controllers/reviewController';
 import { authMiddleware, roleMiddleware } from '@/middleware/auth';
 import validateBody from '@/middleware/validateBody';
-import { registerSchema, addFavoriteSchema, updateProfileSchema } from '@/schemas/userSchemas';
+import { registerSchema, loginSchema, addFavoriteSchema, updateProfileSchema } from '@/schemas/userSchemas';
 import { isValidId } from '@/middleware/isValidId';
 
 const router = Router();
@@ -31,6 +31,18 @@ const router = Router();
  *         description: Created
  */
 router.post('/register', validateBody(registerSchema), userController.registerUser);
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     tags: [Users]
+ *     summary: Login user (validation only, actual login on client)
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.post('/login', validateBody(loginSchema), (req, res) => res.status(200).json({ message: 'Validation successful' }));
 
 /**
  * @swagger
