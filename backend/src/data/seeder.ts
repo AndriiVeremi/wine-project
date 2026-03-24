@@ -16,8 +16,11 @@ const seedFilePath = isProd ? './seedData.prod' : './seedData';
 
 const loadSeedData = async () => {
   try {
+    console.log(`Attempting to load seed data from: ${seedFilePath}`);
     return await import(seedFilePath);
-  } catch (error) {
+  } catch (error: unknown) {
+    const err = error as { message?: string };
+    console.error(`Failed to load ${seedFilePath}: ${err.message}`);
     if (isProd) {
       console.warn('Production seed data not found, falling back to default.');
       return await import('./seedData');

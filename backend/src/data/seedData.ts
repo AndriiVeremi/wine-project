@@ -1,15 +1,13 @@
 import mongoose from 'mongoose';
 
-const user1Id = new mongoose.Types.ObjectId();
-const user2Id = new mongoose.Types.ObjectId();
-const user3Id = new mongoose.Types.ObjectId();
-const user4Id = new mongoose.Types.ObjectId();
-const user5Id = new mongoose.Types.ObjectId();
+// User IDs
 const owner1Id = new mongoose.Types.ObjectId();
 
+// Country IDs
 const georgiaId = new mongoose.Types.ObjectId();
 const ukraineId = new mongoose.Types.ObjectId();
 
+// Region IDs
 const kakhetiId = new mongoose.Types.ObjectId();
 const imeretiId = new mongoose.Types.ObjectId();
 const rachaId = new mongoose.Types.ObjectId();
@@ -26,6 +24,7 @@ const odesaId = new mongoose.Types.ObjectId();
 const khersonId = new mongoose.Types.ObjectId();
 const mykolaivId = new mongoose.Types.ObjectId();
 
+// Winery IDs
 const win1Id = new mongoose.Types.ObjectId();
 const win2Id = new mongoose.Types.ObjectId();
 const win3Id = new mongoose.Types.ObjectId();
@@ -36,7 +35,9 @@ const win7Id = new mongoose.Types.ObjectId();
 const win8Id = new mongoose.Types.ObjectId();
 const win9Id = new mongoose.Types.ObjectId();
 const win10Id = new mongoose.Types.ObjectId();
+const win11Id = new mongoose.Types.ObjectId();
 
+// Grape IDs
 const saperaviId = new mongoose.Types.ObjectId();
 const rkatsiteliId = new mongoose.Types.ObjectId();
 const kisiId = new mongoose.Types.ObjectId();
@@ -48,11 +49,17 @@ const shavkapitoId = new mongoose.Types.ObjectId();
 const krakhunaId = new mongoose.Types.ObjectId();
 const tsitskaId = new mongoose.Types.ObjectId();
 const chinuriId = new mongoose.Types.ObjectId();
+const ojaleshiId = new mongoose.Types.ObjectId();
 const usakhelouriId = new mongoose.Types.ObjectId();
 const goruliMtsvaneId = new mongoose.Types.ObjectId();
 const budeshuriId = new mongoose.Types.ObjectId();
 const cabernetSauvignonId = new mongoose.Types.ObjectId();
+const janiId = new mongoose.Types.ObjectId();
+const avasirkhuaId = new mongoose.Types.ObjectId();
+const kachichiId = new mongoose.Types.ObjectId();
+const meskhuriMtsvaneId = new mongoose.Types.ObjectId();
 
+// Wine IDs
 const wine1Id = new mongoose.Types.ObjectId();
 const wine2Id = new mongoose.Types.ObjectId();
 const wine3Id = new mongoose.Types.ObjectId();
@@ -83,6 +90,7 @@ const wine27Id = new mongoose.Types.ObjectId();
 const wine28Id = new mongoose.Types.ObjectId();
 const wine29Id = new mongoose.Types.ObjectId();
 const wine30Id = new mongoose.Types.ObjectId();
+const wine31Id = new mongoose.Types.ObjectId();
 
 export const locations = [
   { _id: georgiaId, name: 'Georgia', type: 'country' },
@@ -103,7 +111,7 @@ export const locations = [
   { _id: abkhaziaId, name: 'Abkhazia', type: 'region', parentLocation: georgiaId },
   {
     _id: samegreloId,
-    name: 'Samegrelo-Zemo Svaneti',
+    name: 'Samegrelo',
     type: 'region',
     parentLocation: georgiaId,
   },
@@ -119,7 +127,7 @@ export const regions = [
     _id: kakhetiId,
     name: 'Kakheti',
     description:
-      'The cradle of Georgian wine culture. This eastern region is famous for its ancient qvevri winemaking tradition and produces the majority of Georgia premium wines. The unique terroir with diverse microclimates creates ideal conditions for both red and white grape varieties.',
+      "The cradle of Georgian wine culture. This eastern region is famous for its ancient qvevri winemaking tradition and produces the majority of Georgia's premium wines. The unique terroir with diverse microclimates creates ideal conditions for both red and white grape varieties.",
     imageUrl: 'https://placehold.co/600x400/841013/FFFFFF?text=Kakheti',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
@@ -147,7 +155,7 @@ export const regions = [
         { name: 'Mtsvane Kakhuri', description: 'Produces aromatic, elegant white wines.' },
       ],
       red: [
-        { name: 'Saperavi', description: 'Georgias premier red grape, deep and robust.' },
+        { name: 'Saperavi', description: "Georgia's premier red grape, deep and robust." },
         { name: 'Cabernet Sauvignon', description: 'Successfully adapted international variety.' },
       ],
     },
@@ -160,13 +168,13 @@ export const regions = [
     pdo: {
       title: 'Protected Designations of Origin (PDO)',
       description:
-        'Kakheti hosts most of Georgias PDOs, ensuring quality and authenticity of regional styles.',
+        "Kakheti hosts most of Georgia's PDOs, ensuring quality and authenticity of regional styles.",
       list: ['Mukuzani', 'Tsinandali', 'Kindzmarauli', 'Napareuli', 'Teliani'],
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
       description:
-        'Kakheti is the heart of the industry, producing over 70% of Georgia total wine volume and housing its most historic estates.',
+        "Kakheti is the heart of the industry, producing over 70% of Georgia's total wine volume and housing its most historic estates.",
       points: [
         'Economic powerhouse',
         'Historical winemaking center',
@@ -255,7 +263,7 @@ export const regions = [
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
       description:
-        'Racha is famous for its naturally semi-sweet wines, a tradition born from the cool climate which naturally stops fermentation, preserving the grapes natural sweetness.',
+        "Racha is famous for its naturally semi-sweet wines, a tradition born from the cool climate which naturally stops fermentation, preserving the grapes' natural sweetness.",
       rituals: ['Mountain viticulture', 'Late harvest', 'Small family estates'],
     },
     grape: {
@@ -288,7 +296,7 @@ export const regions = [
       points: [
         'Home to iconic semi-sweet wines',
         'Extreme viticulture leader',
-        'Source of Georgias rarest grapes',
+        "Source of Georgia's rarest grapes",
       ],
     },
   },
@@ -331,7 +339,7 @@ export const regions = [
     typicalWines: {
       title: 'Typical Wines of the Region',
       description:
-        'Known for Georgias best traditional method sparkling wines and elegant, mineral-driven natural wines.',
+        "Known for Georgia's best traditional method sparkling wines and elegant, mineral-driven natural wines.",
       styles: ['Traditional Sparkling', 'Natural White & Amber', 'Elegant Light Red'],
     },
     pdo: {
@@ -448,89 +456,109 @@ export const regions = [
     _id: guriaId,
     name: 'Guria',
     description:
-      'A small but significant region in western Georgia known for rare indigenous varieties. Guria produces distinctive wines from Tsolikouri and other local grapes.',
+      'A historic coastal region in western Georgia with a humid subtropical climate. Guria is famous for its unique "Maglari" viticulture—where vines climb trees—and its rare Chkhaveri grape, which produces some of the most elegant rose and sparkling wines in the country.',
     imageUrl: 'https://placehold.co/600x400/2E7D32/FFFFFF?text=Guria',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
       description:
-        'A humid region in western Georgia with a subtropical maritime climate, influenced by the Black Sea.',
-      features: ['Subtropical humidity', 'Maritime influence', 'Lush vegetation'],
+        'A humid region in western Georgia with a subtropical maritime climate, influenced by the Black Sea. The humidity and mild temperatures allow for very late harvests, sometimes extending into December.',
+      features: ['Subtropical humidity', 'Black Sea influence', 'Late harvest (up to December)'],
     },
     soils: {
       title: 'Soils of Region',
       description:
-        'Red and yellow soils predominate, providing good conditions for local varietals.',
-      mainTypes: ['Red Soil', 'Alluvial'],
-      properties: ['Moist', 'Mineral-rich'],
+        'Red and yellow podzolic soils predominate, rich in iron and other minerals, which contribute to the unique character of local varieties like Chkhaveri and Jani.',
+      mainTypes: ['Red Soil', 'Yellow Podzolic', 'Alluvial'],
+      properties: ['Iron-rich', 'Mineral-dense', 'Well-drained on slopes'],
     },
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
       description:
-        'Guria has a unique tradition of polyphonic singing associated with the harvest.',
-      rituals: ['Harvest songs', 'Traditional pressing', 'Local wine festivals'],
+        'Guria winemaking is deeply tied to polyphonic singing. Historically, the region was influenced by the Scottish brothers Marr in the 19th century, who helped modernize local viticulture and preserve the rare Chkhaveri grape.',
+      rituals: ['Maglari vine training', 'Polyphonic harvest songs', 'Late-winter Rtveli'],
     },
     grape: {
       title: 'Main Grape Varieties of Region',
-      white: [{ name: 'Tsolikouri', description: 'The main white grape of the region.' }],
-      red: [{ name: 'Jani', description: 'A rare and prized local red variety.' }],
+      white: [
+        { name: 'Tsolikouri', description: 'Adapts well to the humid climate.' },
+        { name: 'Sakmiela', description: 'A rare, highly aromatic local white variety.' },
+      ],
+      red: [
+        { name: 'Chkhaveri', description: 'The crown jewel, used for white, rose, and sparkling.' },
+        { name: 'Jani', description: 'A rare red variety with high sugar and extract.' },
+      ],
     },
     typicalWines: {
       title: 'Typical Wines of the Region',
-      description: 'Known for high-quality dry and semi-sweet wines.',
-      styles: ['Light White', 'Rare Red'],
+      description: 'Known for high-quality, elegant dry and naturally sparkling wines.',
+      styles: ['Elegant Rose', 'Aromatic White', 'Classic Method Sparkling'],
     },
     pdo: {
       title: 'Protected Designations of Origin (PDO)',
-      description: 'Developing PDOs based on local micro-zones.',
-      list: ['Chkhaveri zones'],
+      description: 'Developing PDOs based on local micro-zones and unique grape varietals.',
+      list: ['Chkhaveri micro-zones', 'Bakhvi'],
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
-      description: 'Crucial for preserving rare western Georgian grape varieties.',
-      points: ['Biodiversity', 'Cultural heritage', 'Unique terroir'],
+      description:
+        'Crucial for preserving rare western Georgian grape varieties and extreme coastal viticulture.',
+      points: ['Biodiversity leader', 'Maritime terroir pioneer', 'Unique cultural heritage'],
     },
   },
   {
     _id: samtskheJavakhetiId,
     name: 'Samtskhe-Javakheti',
     description:
-      'A southern highland region with a continental climate ideal for wine production. The region is known for producing robust wines with high acidity from varieties adapted to harsh winters.',
+      'One of the highest wine-growing regions in the world, Meskheti is the land of ancient rock-cut terraces. After centuries of neglect, this region is undergoing a miraculous revival, uncovering 400-year-old vines and producing mineral-rich wines from volcanic soils.',
     imageUrl: 'https://placehold.co/600x400/6D4C41/FFFFFF?text=Samtskhe',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
       description:
-        'A high-altitude plateau with a harsh continental climate and significant temperature fluctuations.',
-      features: ['High altitude', 'Extreme temperatures', 'Volcanic plateau'],
+        'A high-altitude volcanic plateau (900-1700m) with a harsh continental climate and significant temperature fluctuations. The vineyards are mostly located on southern-facing terraces to capture maximum sunlight.',
+      features: [
+        'High altitude (up to 1700m)',
+        'Extreme diurnal temperature shifts',
+        'Ancient terraces (Oroko)',
+      ],
     },
     soils: {
       title: 'Soils of Region',
-      description: 'Volcanic and stony soils provide unique mineral profiles.',
-      mainTypes: ['Volcanic', 'Stony'],
-      properties: ['Mineral-dense', 'Well-drained'],
+      description:
+        'Volcanic and stony soils provide unique mineral profiles that are unparalleled in other Georgian regions.',
+      mainTypes: ['Volcanic', 'Stony', 'Calcareous'],
+      properties: ['Mineral-dense', 'Well-drained', 'High heat retention'],
     },
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
-      description: 'Revival of ancient terrace viticulture in high-altitude zones.',
-      rituals: ['Terrace restoration', 'Mountain harvest', 'Ancient cellar finds'],
+      description:
+        'Famous for "Oroko"—ancient stone terraces built into the mountains. Meskheti has a tradition of "wild viticulture," where ancient vines survived for centuries in forests and on high-altitude slopes.',
+      rituals: ['Terrace restoration', 'Mountain harvest', 'Discovery of ancient forest vines'],
     },
     grape: {
       title: 'Main Grape Varieties of Region',
-      white: [{ name: 'Tamris Vazi', description: 'An ancient variety being rediscovered.' }],
-      red: [{ name: 'Saperavi Budeshuriseburi', description: 'Adapted to higher altitudes.' }],
+      white: [
+        { name: 'Meskhuri Mtsvane', description: 'Distinct from Kakhuri Mtsvane, very mineral.' },
+        { name: 'Tamris Vazi', description: 'An ancient variety being rediscovered.' },
+      ],
+      red: [
+        { name: 'Saperavi Meskhuri', description: 'A local, high-altitude clone of Saperavi.' },
+        { name: 'Kharistvala', description: 'A rare, thick-skinned red variety.' },
+      ],
     },
     typicalWines: {
       title: 'Typical Wines of the Region',
-      description: 'Mineral-driven wines with high acidity and aging potential.',
-      styles: ['High-acid White', 'Mineral Red'],
+      description: 'Mineral-driven wines with high acidity and extreme aging potential.',
+      styles: ['High-acid Mineral White', 'Structured Ghetto Red', 'Terrace Blends'],
     },
     pdo: {
       title: 'Protected Designations of Origin (PDO)',
-      description: 'Focusing on unique high-altitude micro-zones.',
-      list: ['Vardzia zones'],
+      description: 'Focusing on unique high-altitude micro-zones and terrace viticulture.',
+      list: ['Vardzia Terraces', 'Akhaltsikhe'],
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
-      description: 'Leading the way in high-altitude and terrace viticulture research.',
+      description:
+        'Leading the way in high-altitude and terrace viticulture research and historical revival.',
       points: ['Historical revival', 'Extreme viticulture', 'Unique mineral terroir'],
     },
   },
@@ -538,7 +566,7 @@ export const regions = [
     _id: zakarpattiaId,
     name: 'Zakarpattia',
     description:
-      'Ukraines most famous wine region, located in the southwestern Carpathian mountains. The unique microclimate and volcanic soils create ideal conditions for producing premium wines, particularly from indigenous grape varieties.',
+      "Ukraine's most famous wine region, located in the southwestern Carpathian mountains. The unique microclimate and volcanic soils create ideal conditions for producing premium wines, particularly from indigenous grape varieties.",
     imageUrl: 'https://placehold.co/600x400/8B4513/FFFFFF?text=Zakarpattia',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
@@ -597,7 +625,7 @@ export const regions = [
     },
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
-      description: 'Home to some of Ukraines largest and most historic wineries.',
+      description: "Home to some of Ukraine's largest and most historic wineries.",
       rituals: ['Sea-side festivals', 'Industrial-scale harvest', 'Wine tourism'],
     },
     grape: {
@@ -711,7 +739,7 @@ export const regions = [
     _id: abkhaziaId,
     name: 'Abkhazia',
     description:
-      'A coastal region with a subtropical climate, known for its unique maritime winemaking traditions. The humid sea air and limestone-rich soils produce elegant and aromatic wines, including the famous semi-sweet varieties.',
+      'A legendary maritime region where the Black Sea meets the Caucasus. Abkhazia has a long history of producing light, aromatic wines that benefit from the limestone-rich coastal soils and high humidity, creating a unique "maritime" terroir.',
     imageUrl: 'https://placehold.co/600x400/006064/FFFFFF?text=Abkhazia',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
@@ -734,8 +762,14 @@ export const regions = [
     },
     grape: {
       title: 'Main Grape Varieties of Region',
-      white: [{ name: 'Tsolikouri', description: 'Gives fresh and balanced white wines.' }],
-      red: [{ name: 'Avasirkhua', description: 'An ancient local variety producing deep reds.' }],
+      white: [
+        { name: 'Avasirkhua', description: 'The most famous white grape of Abkhazia.' },
+        { name: 'Tsolikouri', description: 'Gives fresh and balanced white wines.' },
+      ],
+      red: [
+        { name: 'Kachichi', description: 'Produces deep, structured red wines.' },
+        { name: 'Amlakhu', description: 'A rare variety used for premium reds.' },
+      ],
     },
     typicalWines: {
       title: 'Typical Wines of the Region',
@@ -745,7 +779,7 @@ export const regions = [
     pdo: {
       title: 'Protected Designations of Origin (PDO)',
       description: 'Historical micro-zones along the coastline.',
-      list: ['Lykhny', 'Apsny'],
+      list: ['Lykhny', 'Apsny', 'Anakopia'],
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
@@ -755,34 +789,35 @@ export const regions = [
   },
   {
     _id: samegreloId,
-    name: 'Samegrelo-Zemo Svaneti',
+    name: 'Samegrelo',
     description:
-      'A lush western region with high rainfall and deep winemaking roots. Samegrelo is the spiritual home of the Ojaleshi grape, one of Georgias oldest and most prized red varieties, traditionally grown using the Maglari method.',
+      "The heart of ancient Colchis, Samegrelo is a lush western region where winemaking dates back to antiquity. It is the spiritual home of the Ojaleshi grape, one of Georgia's oldest and most prized red varieties, traditionally grown using the Maglari method.",
     imageUrl: 'https://placehold.co/600x400/1B5E20/FFFFFF?text=Samegrelo',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
       description:
-        'Located in the humid western lowlands, rising up to the high peaks of Svaneti. The climate is warm and very humid.',
+        'Located in the humid western lowlands, rising up to the high peaks of Svaneti. The climate is warm and very humid, with the best vineyards situated in the Martvili and Senaki districts.',
       features: ['High rainfall', 'Warm humidity', 'River valleys'],
     },
     soils: {
       title: 'Soils of Region',
       description:
         'Fertile alluvial soils in the lowlands and rocky, mineral-rich soils in the upper regions.',
-      mainTypes: ['Alluvial', 'Rocky'],
+      mainTypes: ['Alluvial', 'Rocky', 'Limestone'],
       properties: ['High organic matter', 'Moisture-retentive'],
     },
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
       description:
-        'Famous for "Maglari" viticulture—training vines to grow up trees. Megrelian winemaking is deeply intertwined with local folklore and festive rituals.',
-      rituals: ['Maglari vine training', 'New wine festivals'],
+        'Famous for "Maglari" viticulture—training vines to grow up trees. Megrelian winemaking is deeply intertwined with local folklore and festive rituals, with fermentation traditionally occurring in "Churi" (local qvevri).',
+      rituals: ['Maglari vine training', 'Churi fermentation', 'Late-autumn harvest'],
     },
     grape: {
       title: 'Main Grape Varieties of Region',
       white: [{ name: 'Tsolikouri', description: 'Produces light, high-acid white wines.' }],
       red: [
-        { name: 'Ojaleshi', description: 'The noble grape of Samegrelo, making aromatic reds.' },
+        { name: 'Ojaleshi', description: 'The noble grape of Samegrelo, spicy and deep.' },
+        { name: 'Koloshi', description: 'A rare, dark-skinned local variety being rediscovered.' },
       ],
     },
     typicalWines: {
@@ -797,109 +832,78 @@ export const regions = [
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
-      description: 'The source of some of the most aromatic semi-sweet wines in the country.',
-      points: ['Ojaleshi heritage', 'Ancient vine-training methods'],
+      description:
+        'The source of some of the most aromatic semi-sweet wines and ancient viticulture methods.',
+      points: ['Ojaleshi heritage', 'Ancient vine-training methods', 'Colchian roots'],
     },
   },
   {
     _id: mtskhetaId,
     name: 'Mtskheta-Mtianeti',
     description:
-      'The historical heart of Georgia, surrounding the ancient capital Mtskheta. This region combines valley viticulture with high-mountain traditions, producing excellent grapes for both still and sparkling wines.',
+      "Centered around the ancient capital Mtskheta, this region is the historic gateway of Georgian Christianity and wine. It is a premier location for elegant, high-acid wines and is the heart of Georgia's traditional-method sparkling wine production.",
     imageUrl: 'https://placehold.co/600x400/BF360C/FFFFFF?text=Mtskheta',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
       description:
-        'Located at the confluence of the Mtkvari and Aragvi rivers. The climate varies from dry continental in the valleys to cool alpine in the mountains.',
+        'Located at the confluence of the Mtkvari and Aragvi rivers. The region benefits from river-valley microclimates and limestone-rich slopes.',
       features: ['River confluence', 'Strategic location', 'Mountain valleys'],
     },
     soils: {
       title: 'Soils of Region',
       description:
-        'A mix of river-deposited alluvial soils and limestone slopes, ideal for balanced viticulture.',
+        'A mix of river-deposited alluvial soils and limestone slopes, ideal for balanced viticulture and high-acid sparkling wines.',
       mainTypes: ['Alluvial', 'Limestone'],
       properties: ['Well-structured', 'Good mineral balance'],
     },
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
       description:
-        'Home to some of Georgias oldest church vineyards. Winemaking here has always been closely linked to the spiritual and political life of the nation.',
+        "Home to some of Georgia's oldest church vineyards. Winemaking here has always been closely linked to the spiritual and political life of the nation, with a focus on refined, celebratory styles.",
       rituals: ['Church vineyard blessings', 'Pilgrimage wine traditions'],
     },
     grape: {
       title: 'Main Grape Varieties of Region',
-      white: [{ name: 'Chinuri', description: 'Elegant variety perfect for sparkling wine.' }],
-      red: [{ name: 'Tavkveri', description: 'Used for fruity reds and sparkling roses.' }],
+      white: [
+        { name: 'Chinuri', description: 'Elegant variety perfect for sparkling wine.' },
+        {
+          name: 'Goruli Mtsvane',
+          description: 'Aromatic and structured, often blended with Chinuri.',
+        },
+      ],
+      red: [
+        { name: 'Shavkapito', description: 'Produces elegant, mineral reds with herbal notes.' },
+        { name: 'Tavkveri', description: 'Used for fruity reds and sparkling roses.' },
+      ],
     },
     typicalWines: {
       title: 'Typical Wines of the Region',
-      description: 'High-quality traditional method sparkling wines and light, fruity reds.',
-      styles: ['Traditional Sparkling', 'Fruity Red'],
+      description:
+        'High-quality traditional method sparkling wines and elegant, mineral-driven still wines.',
+      styles: ['Traditional Sparkling', 'Elegant Amber', 'Light-bodied Dry Red'],
     },
     pdo: {
       title: 'Protected Designations of Origin (PDO)',
       description: 'Includes key micro-zones for dry and sparkling wines.',
-      list: ['Atenuri'],
+      list: ['Atenuri (Sparkling PDO)', 'Mukhrani'],
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
-      description: 'A key region for the production of Georgian sparkling wines.',
-      points: ['Sparkling wine leader', 'Historical viticulture hub'],
+      description:
+        'A key region for the production of Georgian sparkling wines and historical continuity.',
+      points: ['Sparkling wine leader', 'Historical viticulture hub', 'Center for innovation'],
     },
   },
 ];
 
 export const users = [
   {
-    _id: user1Id,
-    firebaseUid: 'u1',
-    firstName: 'Nino',
-    lastName: 'Tsereteli',
-    email: 'nino@test.com',
-    role: 'USER',
-  },
-  {
-    _id: user2Id,
-    firebaseUid: 'u2',
-    firstName: 'Giorgi',
-    lastName: 'Makharadze',
-    email: 'giorgi@test.com',
-    role: 'USER',
-  },
-  {
     _id: owner1Id,
     firebaseUid: 'o1',
-    firstName: 'Irakli',
-    lastName: 'Gvazava',
-    email: 'owner@test.com',
-    role: 'WINERY_OWNER',
-  },
-  {
-    _id: user3Id,
-    firebaseUid: 'user3-uid',
-    firstName: 'Tamta',
-    lastName: 'Lashkhi',
-    email: 'user3@example.com',
-    role: 'USER',
-    favoriteWines: [wine5Id, wine7Id],
-  },
-  {
-    _id: user4Id,
-    firebaseUid: 'user4-uid',
-    firstName: 'Zaza',
-    lastName: 'Pachulia',
-    email: 'user4@example.com',
-    role: 'USER',
-    favoriteWines: [wine11Id, wine12Id],
-  },
-  {
-    _id: user5Id,
-    firebaseUid: 'user5-uid',
-    firstName: 'Lali',
-    lastName: 'Kapanadze',
-    email: 'user5@example.com',
-    role: 'USER',
-    favoriteWines: [wine15Id, wine19Id],
+    firstName: 'Admin',
+    lastName: 'User',
+    email: 'admin@test.com',
+    role: 'ADMIN',
   },
 ];
 
@@ -919,7 +923,7 @@ export const wineries = [
     contactPhone: '+99532123456',
     averageRating: 4.9,
     history:
-      'Premium boutique winery specializing in traditional qvevri wines. Shumi Estate combines ancient methods with modern precision to create exceptional expressions of Kakheti terroir.',
+      "Premium boutique winery specializing in traditional qvevri wines. Shumi Estate combines ancient methods with modern precision to create exceptional expressions of Kakheti's terroir.",
   },
   {
     _id: win2Id,
@@ -987,7 +991,7 @@ export const wineries = [
     contactPhone: '+99522234567',
     averageRating: 4.6,
     history:
-      'Dedicated to preserving the rare Chkhaveri grape variety. This boutique winery produces elegant roses that showcase Adjara unique maritime terroir.',
+      "Dedicated to preserving the rare Chkhaveri grape variety. This boutique winery produces elegant roses that showcase Adjara's unique maritime terroir.",
   },
   {
     _id: win6Id,
@@ -1004,7 +1008,7 @@ export const wineries = [
     contactPhone: '+99532234567',
     averageRating: 4.5,
     history:
-      'One of Georgias largest and most historic wine companies, founded in 1962. Tbilvino produces consistent quality wines accessible to every wine lover.',
+      "One of Georgia's largest and most historic wine companies, founded in 1962. Tbilvino produces consistent quality wines accessible to every wine lover.",
   },
   {
     _id: win7Id,
@@ -1073,6 +1077,23 @@ export const wineries = [
     averageRating: 4.3,
     history:
       'Modern Ukrainian winery near the Black Sea, known for producing quality wines from international and local grape varieties.',
+  },
+  {
+    _id: win11Id,
+    name: 'Obene',
+    owner: owner1Id,
+    country: georgiaId,
+    region: samegreloId,
+    address: 'Martvili, Samegrelo',
+    coordinates: { lat: 42.41, lng: 42.37 },
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    isVip: true,
+    logoUrl: 'https://placehold.co/400x400/1B5E20/FFFFFF?text=Obene',
+    contactEmail: 'obene@ge',
+    contactPhone: '+995555123456',
+    averageRating: 4.9,
+    history:
+      'A boutique winery in the heart of Samegrelo (Martvili), dedicated to the revival of ancient Colchian viticulture. Obene is world-renowned for its exceptional Ojaleshi, produced using both traditional churi and modern methods.',
   },
 ];
 
@@ -1161,14 +1182,68 @@ export const grapes = [
     _id: chkhaveriId,
     name: 'Chkhaveri',
     type: 'rose',
-    regions: [adjaraId],
+    regions: [adjaraId, guriaId],
     description:
-      'A rare pink grape variety from Adjara creating elegant rose wines. Chkhaveri produces delicate wines with subtle strawberry and floral notes.',
+      "A rare pink grape variety from Adjara and Guria creating elegant rose and white wines. Chkhaveri produces delicate wines with subtle strawberry and floral notes, and it's a staple of maritime viticulture.",
     acidity: 'Med',
     body: 'Light',
     aromas: ['Strawberry', 'Rose', 'Citrus'],
     agingPotential: '3y',
     imageUrls: ['https://placehold.co/400x600/F48FB1/333333?text=Chkhaveri'],
+  },
+  {
+    _id: janiId,
+    name: 'Jani',
+    type: 'red',
+    regions: [guriaId],
+    description:
+      "One of the most prized and rare red grape varieties of Guria. Jani produces deep, complex red wines with high sugar content and excellent extraction, often cited as the pinnacle of Guria's ancient viticulture.",
+    acidity: 'Med',
+    body: 'Full',
+    tannins: 'High',
+    aromas: ['Black Cherry', 'Spices', 'Wild Berry'],
+    agingPotential: '15y',
+    imageUrls: ['https://placehold.co/400x600/8E24AA/FFFFFF?text=Jani'],
+  },
+  {
+    _id: avasirkhuaId,
+    name: 'Avasirkhua',
+    type: 'white',
+    regions: [abkhaziaId],
+    description:
+      'The premier white grape of Abkhazia, known for producing aromatic and structured white wines. Avasirkhua thrives in the maritime limestone soils and creates wines with distinct herbal and citrus characters.',
+    acidity: 'High',
+    body: 'Med',
+    aromas: ['Citrus', 'White Flower', 'Herb'],
+    agingPotential: '5y',
+    imageUrls: ['https://placehold.co/400x600/D4E157/333333?text=Avasirkhua'],
+  },
+  {
+    _id: kachichiId,
+    name: 'Kachichi',
+    type: 'red',
+    regions: [abkhaziaId],
+    description:
+      'A legendary red variety of Abkhazia, known for its deep, almost black color and intense tannins. Kachichi produces full-bodied wines with dark fruit flavors that age gracefully.',
+    acidity: 'Med',
+    body: 'Full',
+    tannins: 'High',
+    aromas: ['Blackcurrant', 'Earth', 'Tobacco'],
+    agingPotential: '12y',
+    imageUrls: ['https://placehold.co/400x600/311B92/FFFFFF?text=Kachichi'],
+  },
+  {
+    _id: meskhuriMtsvaneId,
+    name: 'Meskhuri Mtsvane',
+    type: 'white',
+    regions: [samtskheJavakhetiId],
+    description:
+      'A unique high-altitude white variety from Samtskhe-Javakheti (Meskheti). Distinct from Kakhuri Mtsvane, it is highly adapted to the volcanic terroir and produces mineral-driven wines with high acidity.',
+    acidity: 'High',
+    body: 'Med',
+    aromas: ['Mineral', 'Green Apple', 'Lemon'],
+    agingPotential: '8y',
+    imageUrls: ['https://placehold.co/400x600/AFB42B/333333?text=Meskhuri'],
   },
   {
     _id: shavkapitoId,
@@ -1222,6 +1297,20 @@ export const grapes = [
     aromas: ['Citrus', 'Green Apple', 'Floral'],
     agingPotential: '5y',
     imageUrls: ['https://placehold.co/400x600/CFD8DC/333333?text=Chinuri'],
+  },
+  {
+    _id: ojaleshiId,
+    name: 'Ojaleshi',
+    type: 'red',
+    regions: [samegreloId],
+    description:
+      'One of the oldest Georgian red grape varieties from Samegrelo. Ojaleshi produces premium red wines with a distinctive spicy aroma, often crafted in naturally semi-sweet styles. It is known for its high quality and deep cultural roots in Colchis.',
+    acidity: 'Med',
+    body: 'Full',
+    tannins: 'Med',
+    aromas: ['Red Berry', 'Spices', 'Pepper'],
+    agingPotential: '10y',
+    imageUrls: ['https://placehold.co/400x600/2E7D32/FFFFFF?text=Ojaleshi'],
   },
   {
     _id: usakhelouriId,
@@ -1498,7 +1587,7 @@ export const wines = [
     vintage: 2021,
     grape: saperaviId,
     description:
-      'A modern expression of Georgias signature red for everyday enjoyment. This approachable Saperavi offers juicy berry flavors.',
+      "A modern expression of Georgia's signature red for everyday enjoyment. This approachable Saperavi offers juicy berry flavors.",
     imageUrl: 'https://placehold.co/400x600/8B0000/FFFFFF?text=Tbilvino+Saperavi',
     color: 'red',
     sweetness: 'dry',
@@ -1526,7 +1615,7 @@ export const wines = [
     vintage: 2022,
     grape: saperaviId,
     description:
-      'Georgias beloved semi-sweet red in its classic style. This Kindzmarauli displays luscious cherry and berry flavors with balanced sweetness.',
+      "Georgia's beloved semi-sweet red in its classic style. This Kindzmarauli displays luscious cherry and berry flavors with balanced sweetness.",
     imageUrl: 'https://placehold.co/400x600/B71C1C/FFFFFF?text=Tbilvino+Kindzmarauli',
     color: 'red',
     sweetness: 'semi-sweet',
@@ -1638,7 +1727,7 @@ export const wines = [
     vintage: 2021,
     grape: rkatsiteliId,
     description:
-      'An elegant white from Zakarpattia volcanic soils. This crisp wine displays bright citrus and mineral notes unique to the region.',
+      "An elegant white from Zakarpattia's volcanic soils. This crisp wine displays bright citrus and mineral notes unique to the region.",
     imageUrl: 'https://placehold.co/400x600/FFF59D/333333?text=Uzhgorod+White',
     color: 'white',
     sweetness: 'dry',
@@ -1701,96 +1790,110 @@ export const wines = [
     averageRating: 4.3,
     price: 380,
   },
+  {
+    _id: wine31Id,
+    winery: win11Id,
+    name: 'Obene Ojaleshi',
+    vintage: 2021,
+    grape: ojaleshiId,
+    description:
+      'A legendary semi-sweet red wine from the heart of Samegrelo. This deep ruby Ojaleshi reveals complex spicy aromas with notes of wild berries and mountain pepper.',
+    imageUrl: 'https://placehold.co/400x600/1B5E20/FFFFFF?text=Obene+Ojaleshi',
+    color: 'red',
+    sweetness: 'semi-sweet',
+    averageRating: 4.9,
+    price: 1850,
+  },
 ];
 
 export const reviews = [
   {
     wineId: wine1Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Exceptional Saperavi! Deep color, rich flavor, and beautiful finish.',
   },
   {
     wineId: wine1Id,
-    userId: user2Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'One of the best wines I have ever tasted. True Georgian heritage.',
   },
   {
     wineId: wine2Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 4,
     comment: 'Crisp and refreshing. Perfect for summer evenings.',
   },
   {
     wineId: wine3Id,
-    userId: user2Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Amazing amber wine! Complex flavors that keep evolving.',
   },
   {
     wineId: wine4Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Pure expression of nature. You can taste the authenticity.',
   },
   {
     wineId: wine6Id,
-    userId: user2Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Incredible aromatic complexity. Khikhvi is definitely a grape to watch.',
   },
   {
     wineId: wine7Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Worth the premium price. This is world-class wine from Racha.',
   },
   {
     wineId: wine10Id,
-    userId: user2Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Revolutionary natural wine. Cloudy, raw, and absolutely delicious.',
   },
   {
     wineId: wine13Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 4,
     comment: 'Delicate and elegant. Perfect for a summer terrace.',
   },
   {
     wineId: wine16Id,
-    userId: user2Id,
+    userId: owner1Id,
     rating: 4,
     comment: 'Excellent everyday wine. Great value for quality.',
   },
   {
     wineId: wine19Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Family legacy in every bottle. Outstanding quality.',
   },
   {
     wineId: wine22Id,
-    userId: user2Id,
+    userId: owner1Id,
     rating: 5,
     comment: 'Royal quality! A wine for special occasions.',
   },
   {
     wineId: wine25Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 4,
     comment: 'Surprisingly good Ukrainian Cabernet. Great potential.',
   },
   {
     wineId: wine26Id,
-    userId: user2Id,
+    userId: owner1Id,
     rating: 4,
     comment: 'Beautiful expression of Zakarpattia terroir.',
   },
   {
     wineId: wine28Id,
-    userId: user1Id,
+    userId: owner1Id,
     rating: 4,
     comment: 'Solid Ukrainian wine. Shows promising development.',
   },
@@ -1811,7 +1914,7 @@ export const tours = [
     winery: win3Id,
     name: 'Racha Mountain Wine Tour',
     description:
-      'An exclusive journey to Georgias highest altitude vineyards in Racha. Visit family wineries producing rare Aleksandrouli and Mujuretuli wines at 1200 meters elevation.',
+      "An exclusive journey to Georgia's highest altitude vineyards in Racha. Visit family wineries producing rare Aleksandrouli and Mujuretuli wines at 1200 meters elevation.",
     duration: 240,
     price: 350,
     images: ['https://placehold.co/600x400/5D4037/FFFFFF?text=Racha+Tour'],
