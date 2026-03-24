@@ -23,16 +23,19 @@ export const StyledRegionHero = styled.section`
 
 export const StyledRegionImg = styled.div`
   width: 100%;
-  aspect-ratio: 16 / 10;
+  max-height: 740px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
   img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-height: 740px;
     object-fit: cover;
+    display: block;
   }
 `;
 

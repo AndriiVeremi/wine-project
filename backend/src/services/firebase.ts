@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import dotenv from 'dotenv';
+import 'multer';
 
 dotenv.config();
 

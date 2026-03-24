@@ -9,6 +9,13 @@ import { getRegions } from '@/api/regions';
 import { useLocationStore } from '@/store/location/locationStore';
 import Hero from '@/components/Hero/Hero';
 import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
+
+// Import assets to get the correct hashed URLs
+import homeBgLeft from '@/assets/home-bg/home-bgLeft.webp';
+import homeBgLeftX2 from '@/assets/home-bg/home-bgLeftX2.webp';
+import homeBgRight from '@/assets/home-bg/home-bgRight.webp';
+import homeBgRightX2 from '@/assets/home-bg/home-bgRightX2.webp';
+
 import {
   WineSection,
   MapSection,
@@ -63,6 +70,26 @@ const HomePage = () => {
 
   return (
     <>
+      {/* 
+        Hidden images for instant preloading. 
+        This is the most reliable way to fix LCP issues and avoid "preloaded but not used" warnings 
+        when using background-images in Styled Components.
+      */}
+      <div style={{ display: 'none', visibility: 'hidden' }}>
+        <img
+          src={homeBgLeft}
+          srcSet={`${homeBgLeft} 1x, ${homeBgLeftX2} 2x`}
+          alt=""
+          fetchPriority="high"
+        />
+        <img
+          src={homeBgRight}
+          srcSet={`${homeBgRight} 1x, ${homeBgRightX2} 2x`}
+          alt=""
+          fetchPriority="high"
+        />
+      </div>
+
       <Hero />
 
       <WineSection>

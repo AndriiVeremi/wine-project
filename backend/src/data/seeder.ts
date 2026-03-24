@@ -8,6 +8,9 @@ import Location from '@/models/locationModel';
 import Grape from '@/models/grapeModel';
 import Region from '@/models/regionModel';
 import Tour from '@/models/tourModel';
+import { firebaseAdmin } from '@/services/firebase';
+import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -21,10 +24,6 @@ const loadSeedData = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string };
     console.error(`Failed to load ${seedFilePath}: ${err.message}`);
-    if (isProd) {
-      console.warn('Production seed data not found, falling back to default.');
-      return await import('./seedData');
-    }
     throw error;
   }
 };
@@ -43,6 +42,22 @@ const connectDB = async () => {
     console.error(`Error connecting to DB: ${error.message}`);
     process.exit(1);
   }
+};
+
+const uploadAndGetPublicUrl = async (localPath: string, destination: string): Promise<string> => {
+  const bucket = firebaseAdmin.storage().bucket();
+
+  await bucket.upload(localPath, {
+    destination,
+    public: true,
+    metadata: {
+      cacheControl: 'public, max-age=31536000',
+    },
+  });
+
+  await bucket.file(destination).makePublic();
+
+  return `https://storage.googleapis.com/${bucket.name}/${destination}`;
 };
 
 const importData = async () => {
@@ -66,39 +81,89 @@ const importData = async () => {
       await Location.create(item);
     }
 
-    console.log('Importing regions...');
+    console.log('Importing regions with automatic image upload...');
+    const regionsDir = path.join(__dirname, '../../public/seeds/regions');
+    const extensions = ['.png', '.jpg', '.jpeg', '.webp'];
+
     for (const item of regions) {
+      const baseFileName = item.name.toLowerCase().replace(/\s+/g, '-');
+      let foundPath = '';
+      let foundExt = '';
+
+      for (const ext of extensions) {
+        const testPath = path.join(regionsDir, baseFileName + ext);
+        if (fs.existsSync(testPath)) {
+          foundPath = testPath;
+          foundExt = ext;
+          break;
+        }
+      }
+
+      if (foundPath) {
+        console.log(`Uploading image for region: ${item.name}...`);
+        try {
+          const destination = `regions/${baseFileName}${foundExt}`;
+          item.imageUrl = await uploadAndGetPublicUrl(foundPath, destination);
+        } catch (uploadErr) {
+          console.error(`Failed to upload image for ${item.name}:`, uploadErr);
+        }
+      }
       await Region.create(item);
     }
 
-    console.log('Importing users...');
-    for (const item of users) {
-      await User.create(item);
-    }
+    console.log('Importing grapes with automatic image upload...');
+    const grapesDir = path.join(__dirname, '../../public/seeds/grapes');
 
-    console.log('Importing wineries...');
-    for (const item of wineries) {
-      await Winery.create(item);
-    }
-
-    console.log('Importing grapes...');
     for (const item of grapes) {
+      const baseFileName = item.name.toLowerCase().replace(/\s+/g, '-');
+      let foundPath = '';
+      let foundExt = '';
+
+      for (const ext of extensions) {
+        const testPath = path.join(grapesDir, baseFileName + ext);
+        if (fs.existsSync(testPath)) {
+          foundPath = testPath;
+          foundExt = ext;
+          break;
+        }
+      }
+
+      if (foundPath) {
+        console.log(`Uploading image for grape: ${item.name}...`);
+        try {
+          const destination = `grapes/${baseFileName}${foundExt}`;
+          const publicUrl = await uploadAndGetPublicUrl(foundPath, destination);
+          item.imageUrls = [publicUrl];
+        } catch (uploadErr) {
+          console.error(`Failed to upload image for ${item.name}:`, uploadErr);
+        }
+      }
       await Grape.create(item);
     }
 
-    console.log('Importing wines...');
-    for (const item of wines) {
-      await Wine.create(item);
+    if (users && users.length) {
+      console.log('Importing users...');
+      for (const item of users) await User.create(item);
     }
 
-    console.log('Importing tours...');
-    for (const item of tours) {
-      await Tour.create(item);
+    if (wineries && wineries.length) {
+      console.log('Importing wineries...');
+      for (const item of wineries) await Winery.create(item);
     }
 
-    console.log('Importing reviews...');
-    for (const item of reviews) {
-      await Review.create(item);
+    if (wines && wines.length) {
+      console.log('Importing wines...');
+      for (const item of wines) await Wine.create(item);
+    }
+
+    if (tours && tours.length) {
+      console.log('Importing tours...');
+      for (const item of tours) await Tour.create(item);
+    }
+
+    if (reviews && reviews.length) {
+      console.log('Importing reviews...');
+      for (const item of reviews) await Review.create(item);
     }
 
     console.log('Data Imported successfully!');

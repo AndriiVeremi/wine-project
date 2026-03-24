@@ -95,13 +95,13 @@ const teamMembers = [
   },
   {
     name: 'Andrii Popov',
-    role: 'Backend Developer, Frontend Developer',
+    role: 'Backend Developer, Frontend Developer, QA Engineer',
     github: 'https://github.com/Andrii0207',
     initials: 'AP',
   },
   {
     name: 'Vladyslav Mazurkevych',
-    role: 'Backend Developer, Frontend Developer',
+    role: 'Backend Developer, Frontend Developer, QA Engineer',
     github: 'https://github.com/mazurkevych30',
     initials: 'VM',
   },
