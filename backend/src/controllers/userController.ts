@@ -21,7 +21,7 @@ export const updateUserProfile = ctrlWrapper(
   },
 );
 
-export const registerUser = async (req: express.Request, res: express.Response) => {
+export const registerUser = ctrlWrapper(async (req: express.Request, res: express.Response) => {
   const { email, password, firstName, lastName, role } = req.body;
   const allowedRoles = ['USER', 'WINERY_OWNER'];
   const assignedRole = allowedRoles.includes(role) ? role : 'USER';
@@ -81,7 +81,7 @@ export const registerUser = async (req: express.Request, res: express.Response) 
 
     throw new HttpError('User registration error', 500);
   }
-};
+});
 
 export const getUserFavorites = ctrlWrapper(
   async (req: AuthenticatedRequest, res: express.Response) => {

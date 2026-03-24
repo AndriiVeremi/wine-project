@@ -1,13 +1,9 @@
 import apiClient from '@/api/axios';
 import type { IRegisterData, UserProfile } from '@/types/auth';
 
-export const registerUser = async (userData: IRegisterData) => {
+export const registerUserApi = async (userData: IRegisterData) => {
   const response = await apiClient.post('/users/register', userData);
   return response.data;
-};
-
-export const loginUser = async (email: string, pass: string) => {
-  return { email, pass };
 };
 
 export const getUserProfile = async () => {

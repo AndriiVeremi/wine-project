@@ -9,6 +9,11 @@ export const registerSchema = Joi.object({
   role: Joi.string().valid('USER', 'WINERY_OWNER').default('USER'),
 });
 
+export const loginSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+  password: Joi.string().min(6).required(),
+});
+
 export const addFavoriteSchema = Joi.object({
   wineId: Joi.string().required(),
 });
