@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiX } from 'react-icons/fi';
 import { HiCamera } from 'react-icons/hi2';
 import toast from 'react-hot-toast';
 import {
@@ -14,7 +14,8 @@ interface GalleryUploadProps {
   mainPreview: string | null;
   galleryPreviews: string[];
   onMainFileChange: (file: File) => void;
-  onGalleryFilesChange: (files: File[]) => void;
+  onGalleryFileChange: (file: File, index: number) => void;
+  onRemoveGalleryFile?: (index: number) => void;
   maxGalleryCount?: number;
 }
 
@@ -22,11 +23,13 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
   mainPreview,
   galleryPreviews,
   onMainFileChange,
-  onGalleryFilesChange,
-  maxGalleryCount = 5,
+  onGalleryFileChange,
+  onRemoveGalleryFile,
+  maxGalleryCount = 5, // 1 main + 4 gallery
 }) => {
   const mainInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
+  const activeIndexRef = useRef<number | null>(null);
 
   const handleMainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -39,15 +42,25 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
     }
   };
 
+  const handleGalleryClick = (index: number) => {
+    activeIndexRef.current = index;
+    galleryInputRef.current?.click();
+  };
+
   const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files).slice(0, maxGalleryCount - 1);
-      onGalleryFilesChange(filesArray);
+    const file = e.target.files?.[0];
+    if (file && activeIndexRef.current !== null) {
+      if (file.size > 5000000) {
+        toast.error('File too big (max 5MB)');
+        return;
+      }
+      onGalleryFileChange(file, activeIndexRef.current);
+      e.target.value = ''; // Reset input
     }
   };
 
-  const gallerySlots = Array(maxGalleryCount - 1).fill(null);
-  const showAddButton = galleryPreviews.length < maxGalleryCount - 1;
+  const gallerySlotsCount = maxGalleryCount - 1;
+  const slots = Array.from({ length: gallerySlotsCount });
 
   return (
     <UploadGroupWrapper>
@@ -70,35 +83,40 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
       />
 
       <GalleryRow>
-        {gallerySlots.map((_, index) => {
+        {slots.map((_, index) => {
           const preview = galleryPreviews[index];
-          if (preview) {
-            return (
-              <GalleryItem key={index}>
-                <img src={preview} alt={`Gallery ${index}`} />
-              </GalleryItem>
-            );
-          }
-          if (showAddButton && index === galleryPreviews.length) {
-            return (
-              <AddMoreBtn key={index} onClick={() => galleryInputRef.current?.click()}>
-                <FiPlus size={20} />
-              </AddMoreBtn>
-            );
-          }
-          return <GalleryItem key={index} style={{ opacity: 0.5, borderStyle: 'dotted' }} />;
+          return (
+            <GalleryItem key={index} $hasImage={!!preview}>
+              {preview ? (
+                <>
+                  <img src={preview} alt={`Gallery ${index}`} />
+                  {onRemoveGalleryFile && (
+                    <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRemoveGalleryFile(index);
+                      }}
+                    >
+                      <FiX size={14} />
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="empty-slot" onClick={() => handleGalleryClick(index)}>
+                  <FiPlus size={20} />
+                </div>
+              )}
+            </GalleryItem>
+          );
         })}
-        {showAddButton && galleryPreviews.length === gallerySlots.length && (
-          <AddMoreBtn onClick={() => galleryInputRef.current?.click()}>
-            <FiPlus size={20} />
-          </AddMoreBtn>
-        )}
       </GalleryRow>
+
       <input
         type="file"
         ref={galleryInputRef}
         accept="image/*"
-        multiple
         onChange={handleGalleryChange}
         style={{ display: 'none' }}
       />

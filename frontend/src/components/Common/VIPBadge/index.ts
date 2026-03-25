@@ -1,1 +1,1 @@
-export { default } from '@/components/Common/VIPBadge/VIPBadge';
+export { default } from './VIPBadge';
