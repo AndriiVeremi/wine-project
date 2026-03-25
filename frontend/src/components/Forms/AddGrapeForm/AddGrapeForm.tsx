@@ -145,11 +145,6 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
     setMainPre(URL.createObjectURL(f));
   };
 
-  const onExtra = (fs: File[]) => {
-    setExtraImgs(fs);
-    setExtraPre(fs.map((f) => URL.createObjectURL(f)));
-  };
-
   const onInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
