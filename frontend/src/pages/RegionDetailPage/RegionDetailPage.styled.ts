@@ -35,10 +35,8 @@ export const StyledRegionImg = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fdfcfc;
   cursor: pointer;
   transition: transform 0.3s ease;
-  border: 1px solid #f0f0f0;
 
   &:hover {
     transform: scale(1.01);
