@@ -7,7 +7,6 @@ import {
   MainPhotoContainer,
   GalleryRow,
   GalleryItem,
-  AddMoreBtn,
 } from './GalleryUpload.styled';
 
 interface GalleryUploadProps {
