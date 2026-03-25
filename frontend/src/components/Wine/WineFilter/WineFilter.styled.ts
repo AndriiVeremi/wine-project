@@ -25,7 +25,7 @@ export const StyledWineFilterContainer = styled.div`
 
 export const StyledDropDown = styled(Dropdown)<{ $isOpen?: boolean }>`
   flex-basis: calc((100% - 12px) / 2);
-  height: 48px;
+  height: 50px;
   text-transform: capitalize;
   flex-shrink: 0;
   position: relative;

@@ -46,11 +46,10 @@ export const SearchButton = styled.button`
   border-radius: 28px;
   border: 1px solid var(--primary-wine);
   background: var(--white);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
+  background-color: #fff;
   color: var(--primary-wine);
   transition:
     transform var(--transition),

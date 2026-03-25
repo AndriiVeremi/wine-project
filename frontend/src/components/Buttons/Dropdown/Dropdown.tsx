@@ -50,14 +50,22 @@ const Dropdown = ({
         aria-expanded={isOpen}
         aria-label={`Select ${label}`}
       >
-        <span className="dropdown-label">{value || label}</span>
+        <span className="dropdown-label">
+          <span className="label-name">{label}</span>
+          <span className="current-value">{value || 'All'}</span>
+        </span>
         <ArrowIcon $open={isOpen} />
       </Button>
 
       {isOpen && (
         <List role="listbox">
           <ScrollWrapper>
-            <Item onClick={() => handleSelect('')} role="option" aria-selected={!value}>
+            <Item
+              onClick={() => handleSelect('')}
+              role="option"
+              aria-selected={!value}
+              $selected={!value}
+            >
               All
             </Item>
             {options.map((opt) => (
@@ -66,6 +74,7 @@ const Dropdown = ({
                 onClick={() => handleSelect(opt)}
                 role="option"
                 aria-selected={value === opt}
+                $selected={value === opt}
               >
                 {opt}
               </Item>
