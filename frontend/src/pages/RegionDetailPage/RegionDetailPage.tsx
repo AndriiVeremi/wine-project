@@ -36,6 +36,9 @@ import {
   StyledTabs,
   StyledTitleWrapper,
   SkeletonGrid,
+  StyledImageModalOverlay,
+  StyledModalImage,
+  StyledCloseModal,
 } from './RegionDetailPage.styled';
 
 const RegionDetailPage = () => {
@@ -43,9 +46,28 @@ const RegionDetailPage = () => {
   const [region, setRegion] = useState<Region | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'wineries' | 'wines'>('wineries');
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const { wineries, fetchWineries, loading: wineriesLoading } = useWineriesStore();
   const { wines, fetch: fetchWines, loading: winesLoading } = useWinesStore();
+
+  useEffect(() => {
+    if (isImageModalOpen) {
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100%';
+      document.body.style.paddingRight = `${scrollBarWidth}px`; // Prevent layout shift
+    } else {
+      document.body.style.overflow = 'auto';
+      document.body.style.height = 'auto';
+      document.body.style.paddingRight = '0px';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+      document.body.style.height = 'auto';
+      document.body.style.paddingRight = '0px';
+    };
+  }, [isImageModalOpen]);
 
   useEffect(() => {
     const loadRegion = async () => {
@@ -82,6 +104,9 @@ const RegionDetailPage = () => {
       : `Premium Wines from ${region.name}`;
   };
 
+  const handleOpenModal = () => setIsImageModalOpen(true);
+  const handleCloseModal = () => setIsImageModalOpen(false);
+
   if (loading) return <Loader />;
   if (!region) return <Container>Region not found.</Container>;
 
@@ -89,7 +114,7 @@ const RegionDetailPage = () => {
     <Container>
       <StyledRegionWrapper>
         <StyledRegionHero>
-          <StyledRegionImg>
+          <StyledRegionImg onClick={handleOpenModal}>
             {region.imageUrl ? (
               <img src={region.imageUrl} alt={region.name} />
             ) : (
@@ -119,6 +144,17 @@ const RegionDetailPage = () => {
             )}
           </StyledRegionInfo>
         </StyledRegionHero>
+
+        {isImageModalOpen && region.imageUrl && (
+          <StyledImageModalOverlay onClick={handleCloseModal}>
+            <StyledCloseModal onClick={handleCloseModal}>&times;</StyledCloseModal>
+            <StyledModalImage
+              src={region.imageUrl}
+              alt={region.name}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </StyledImageModalOverlay>
+        )}
 
         <StyledRegionGrid>
           <StyledColumn>

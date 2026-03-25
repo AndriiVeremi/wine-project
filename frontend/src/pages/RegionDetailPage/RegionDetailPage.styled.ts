@@ -13,29 +13,94 @@ export const StyledRegionHero = styled.section`
   gap: 30px;
   margin-bottom: 50px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakpoints.tablet}) {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 48px;
+    gap: 32px;
     align-items: start;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 48px;
   }
 `;
 
 export const StyledRegionImg = styled.div`
   width: 100%;
-  max-height: 740px;
+  height: auto;
+  min-height: 250px;
+  max-height: 350px;
   border-radius: 20px;
   overflow: hidden;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  background: #fdfcfc;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border: 1px solid #f0f0f0;
+
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    max-height: 500px;
+    min-height: 400px;
+  }
 
   img {
     width: 100%;
-    height: auto;
-    max-height: 740px;
-    object-fit: cover;
+    height: 100%;
+    max-height: 350px;
+    object-fit: contain;
     display: block;
+
+    @media (min-width: ${breakpoints.tablet}) {
+      max-height: 500px;
+    }
+  }
+`;
+
+export const StyledImageModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  cursor: zoom-out;
+  padding: 20px;
+`;
+
+export const StyledModalImage = styled.img`
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  cursor: default;
+`;
+
+export const StyledCloseModal = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 10px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #841013;
   }
 `;
 
@@ -135,9 +200,13 @@ export const StyledRegionGrid = styled.div`
   flex-direction: column;
   gap: 40px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakpoints.tablet}) {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
     gap: 48px;
   }
 `;

@@ -43,8 +43,12 @@ export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>
   flex: 1;
   position: relative;
   z-index: 1;
-  padding-top: 80px;
+  padding-top: 20px;
   min-height: 80vh;
+
+  @media (min-width: ${breakpoints.desktop}) {
+    padding-top: 80px;
+  }
 `;
 
 export const HomeBgLeft = styled.img`
