@@ -158,14 +158,35 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
             mainPreview={galleryPreviews[0] || null}
             galleryPreviews={galleryPreviews.slice(1)}
             onMainFileChange={(f) => {
-              const next = [f, ...gallery.slice(1)];
-              setGallery(next);
-              setGalleryPreviews(next.map((file) => URL.createObjectURL(file)));
+              const newGallery = [...gallery];
+              newGallery[0] = f;
+              setGallery(newGallery);
+
+              const newPreviews = [...galleryPreviews];
+              newPreviews[0] = URL.createObjectURL(f);
+              setGalleryPreviews(newPreviews);
             }}
-            onGalleryFilesChange={(files) => {
-              const next = [...gallery.slice(1), ...files].filter(Boolean).slice(0, 4);
-              setGallery(next);
-              setGalleryPreviews(next.map((f) => URL.createObjectURL(f)));
+            onGalleryFileChange={(file, index) => {
+              // index is 0..3 for the 4 small slots, but in our gallery array index 0 is main
+              // so we use index + 1
+              const galleryIndex = index + 1;
+              const newGallery = [...gallery];
+              newGallery[galleryIndex] = file;
+              setGallery(newGallery);
+
+              const newPreviews = [...galleryPreviews];
+              newPreviews[galleryIndex] = URL.createObjectURL(file);
+              setGalleryPreviews(newPreviews);
+            }}
+            onRemoveGalleryFile={(index) => {
+              const galleryIndex = index + 1;
+              const newGallery = [...gallery];
+              newGallery.splice(galleryIndex, 1);
+              setGallery(newGallery);
+
+              const newPreviews = [...galleryPreviews];
+              newPreviews.splice(galleryIndex, 1);
+              setGalleryPreviews(newPreviews);
             }}
           />
           <div style={{ marginTop: '20px' }}>

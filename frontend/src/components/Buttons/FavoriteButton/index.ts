@@ -1,1 +1,1 @@
-export { default } from '@/components/Buttons/FavoriteButton/FavoriteButton';
+export { default } from './FavoriteButton';

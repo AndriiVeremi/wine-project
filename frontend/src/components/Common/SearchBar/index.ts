@@ -1,1 +1,1 @@
-export { default } from '@/components/Common/SearchBar/SearchBar';
+export { default } from './SearchBar';

@@ -145,11 +145,6 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
     setMainPre(URL.createObjectURL(f));
   };
 
-  const onExtra = (fs: File[]) => {
-    setExtraImgs(fs);
-    setExtraPre(fs.map((f) => URL.createObjectURL(f)));
-  };
-
   const onInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
@@ -196,8 +191,26 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
               mainPreview={mainPre}
               galleryPreviews={extraPres}
               onMainFileChange={onMain}
-              onGalleryFilesChange={onExtra}
-              maxGalleryCount={4}
+              onGalleryFileChange={(file, index) => {
+                const galleryIndex = index; // extraPres is galleryPreviews.slice(1) in wineries, but here extraPres is the whole gallery array slice(1)
+                const newFiles = [...extraImgs];
+                newFiles[galleryIndex] = file;
+                setExtraImgs(newFiles);
+
+                const newPreviews = [...extraPres];
+                newPreviews[galleryIndex] = URL.createObjectURL(file);
+                setExtraPre(newPreviews);
+              }}
+              onRemoveGalleryFile={(index) => {
+                const newFiles = [...extraImgs];
+                newFiles.splice(index, 1);
+                setExtraImgs(newFiles);
+
+                const newPreviews = [...extraPres];
+                newPreviews.splice(index, 1);
+                setExtraPre(newPreviews);
+              }}
+              maxGalleryCount={5}
             />
           </PhotoSide>
           <InfoSide>

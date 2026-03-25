@@ -1,1 +1,1 @@
-export { default } from '@/components/Buttons/FilterClearButton/FilterClearButton';
+export { default } from './FilterClearButton';

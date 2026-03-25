@@ -135,14 +135,33 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
               mainPreview={previews[0] || null}
               galleryPreviews={previews.slice(1)}
               onMainFileChange={(f) => {
-                const next = [f, ...files.slice(1)];
-                setFiles(next);
-                setPreviews(next.map((file) => URL.createObjectURL(file)));
+                const nextFiles = [...files];
+                nextFiles[0] = f;
+                setFiles(nextFiles);
+
+                const nextPreviews = [...previews];
+                nextPreviews[0] = URL.createObjectURL(f);
+                setPreviews(nextPreviews);
               }}
-              onGalleryFilesChange={(newFiles) => {
-                const next = [...files.slice(1), ...newFiles].filter(Boolean).slice(0, 4);
-                setFiles(next);
-                setPreviews(next.map((f) => URL.createObjectURL(f)));
+              onGalleryFileChange={(file, index) => {
+                const galleryIndex = index + 1;
+                const nextFiles = [...files];
+                nextFiles[galleryIndex] = file;
+                setFiles(nextFiles);
+
+                const nextPreviews = [...previews];
+                nextPreviews[galleryIndex] = URL.createObjectURL(file);
+                setPreviews(nextPreviews);
+              }}
+              onRemoveGalleryFile={(index) => {
+                const galleryIndex = index + 1;
+                const nextFiles = [...files];
+                nextFiles.splice(galleryIndex, 1);
+                setFiles(nextFiles);
+
+                const nextPreviews = [...previews];
+                nextPreviews.splice(galleryIndex, 1);
+                setPreviews(nextPreviews);
               }}
             />
           </PhotoSide>

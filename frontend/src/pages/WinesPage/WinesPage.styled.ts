@@ -11,19 +11,19 @@ export const SearchAndClearWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 
   @media (min-width: ${breakpoints.tablet}) {
     flex-direction: row;
     align-items: center;
     gap: 16px;
-    margin-bottom: 32px;
+    margin-bottom: 60px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     flex-direction: row;
     align-items: center;
     gap: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 80px;
   }
 `;

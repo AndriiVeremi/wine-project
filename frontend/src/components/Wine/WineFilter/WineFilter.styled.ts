@@ -8,25 +8,24 @@ export const StyledWineFilterContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   width: 100%;
   position: relative;
   z-index: 100;
 
   @media (min-width: ${breakpoints.tablet}) {
     gap: 16px;
-    margin-bottom: 24px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
     gap: 20px;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
   }
 `;
 
 export const StyledDropDown = styled(Dropdown)<{ $isOpen?: boolean }>`
   flex-basis: calc((100% - 12px) / 2);
-  height: 48px;
+  height: 50px;
   text-transform: capitalize;
   flex-shrink: 0;
   position: relative;

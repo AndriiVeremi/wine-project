@@ -11,7 +11,7 @@ import {
 } from '@/components/Layout/Header/Header.styled';
 import MainLogo from '@/components/Common/MainLogo';
 import UserMenu from '@/components/User/UserMenu';
-import MobileMenu from './MobileMenu';
+import MobileMenu from './MobileMenu/MobileMenu';
 import { FiMenu } from 'react-icons/fi';
 
 const Header = () => {

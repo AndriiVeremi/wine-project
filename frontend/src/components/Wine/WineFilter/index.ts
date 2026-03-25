@@ -1,1 +1,1 @@
-export { default } from '@/components/Wine/WineFilter/WineFilter';
+export { default } from './WineFilter';

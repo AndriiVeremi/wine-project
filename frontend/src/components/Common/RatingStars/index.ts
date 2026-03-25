@@ -1,1 +1,1 @@
-export { default } from '@/components/Common/RatingStars/RatingStars';
+export { default } from './RatingStars';

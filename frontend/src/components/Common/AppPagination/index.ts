@@ -1,1 +1,1 @@
-export { default } from '@/components/Common/AppPagination/AppPagination';
+export { default } from './AppPagination';

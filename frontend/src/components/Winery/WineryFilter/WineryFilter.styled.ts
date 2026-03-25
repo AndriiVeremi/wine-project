@@ -21,7 +21,7 @@ export const StyledWineryFilterContainer = styled.div`
 
 export const StyledDropDown = styled(Dropdown)<{ $isOpen?: boolean }>`
   width: calc(50% - 6px);
-  height: 48px;
+  height: 50px;
   flex-shrink: 0;
   position: relative;
   z-index: ${(props) => (props.$isOpen ? 105 : 10)};

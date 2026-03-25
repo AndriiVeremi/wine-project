@@ -4,7 +4,6 @@ import { breakpoints } from '@/styles/breakpoints';
 export const SearchBarWrapper = styled.div`
   width: 100%;
   position: relative;
-
   background: var(--filter-active-bg);
   padding: 14px 20px;
   border-radius: 28px;
@@ -43,16 +42,14 @@ export const SearchButton = styled.button`
   top: 0;
   right: 0;
   height: 100%;
-
   width: 60px;
   border-radius: 28px;
   border: 1px solid var(--primary-wine);
   background: var(--white);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
+  background-color: #fff;
   color: var(--primary-wine);
   transition:
     transform var(--transition),
