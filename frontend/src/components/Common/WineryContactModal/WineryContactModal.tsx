@@ -21,7 +21,6 @@ interface Props {
 }
 
 const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
-  // Забороняємо скрол при відкритій модалці
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add('no-scroll');

@@ -192,7 +192,7 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
               galleryPreviews={extraPres}
               onMainFileChange={onMain}
               onGalleryFileChange={(file, index) => {
-                const galleryIndex = index; // extraPres is galleryPreviews.slice(1) in wineries, but here extraPres is the whole gallery array slice(1)
+                const galleryIndex = index;
                 const newFiles = [...extraImgs];
                 newFiles[galleryIndex] = file;
                 setExtraImgs(newFiles);

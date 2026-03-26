@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getWineryById } from '@/api/wineries';
 import type { Winery } from '@/types/wineries';
 import { useWinesStore } from '@/store/wine/winesStore';
+import { useAuthStore } from '@/store/auth/authStore';
 import RatingStars from '@/components/Common/RatingStars';
 import { Loader } from '@/components/Common/Loader';
 import Slider from '@/components/Slider/Slider';
@@ -10,8 +11,10 @@ import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import InfoButton from '@/components/Buttons/InfoButton/InfoButton';
 import ItemReviews from '@/components/Wine/WineReviews';
 import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
-import { HiMapPin, HiGlobeAlt, HiEnvelope, HiPhone } from 'react-icons/hi2';
+import { HiMapPin, HiGlobeAlt, HiEnvelope, HiPhone, HiPencilSquare } from 'react-icons/hi2';
 import Container from '@/components/Common/Container';
+import AuthModal from '@/components/Common/AuthModal/AuthModal';
+import AddWinery from '@/components/Forms/AddWineryForm/AddWineryForm';
 import {
   DetailPageContainer,
   HeroSection,
@@ -51,6 +54,9 @@ const WineryDetailPage = () => {
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [refresh, setRefresh] = useState(0);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const { profile } = useAuthStore();
   const { wines, fetch, loading: winesLoading } = useWinesStore();
 
   const loadWinery = useCallback(async () => {
@@ -59,7 +65,7 @@ const WineryDetailPage = () => {
       const response = await getWineryById(id);
       setWinery(response.data);
     } catch (err) {
-      console.error(err);
+      console.error('Failed to load winery:', err);
     }
   }, [id]);
 
@@ -87,6 +93,14 @@ const WineryDetailPage = () => {
       </Container>
     );
 
+  const isAdmin = profile?.role === 'ADMIN';
+  const ownerId =
+    typeof winery.owner === 'object'
+      ? (winery.owner as unknown as { _id: string })?._id
+      : winery.owner;
+  const isOwner = profile?._id === ownerId;
+  const canEdit = isAdmin || isOwner;
+
   const galleryImages = [...(winery.logoUrl ? [winery.logoUrl] : []), ...(winery.galleryUrl || [])];
   if (galleryImages.length === 0) galleryImages.push('/assets/winery-placeholder.png');
   const thumbnails = galleryImages.slice(0, 4);
@@ -112,7 +126,32 @@ const WineryDetailPage = () => {
             </ThumbnailsGrid>
           </GalleryWrapper>
           <WineryInfoBlock>
-            <WineryNameTitle>{winery.name}</WineryNameTitle>
+            <div
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
+            >
+              <WineryNameTitle>{winery.name}</WineryNameTitle>
+              {canEdit && (
+                <button
+                  onClick={() => setIsEditModalOpen(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: '1px solid #841013',
+                    background: 'white',
+                    color: '#841013',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <HiPencilSquare size={20} />
+                  EDIT
+                </button>
+              )}
+            </div>
             <WineryHeaderRow>
               <WineryLogoInHeader>
                 <img src={winery.logoUrl || '/assets/winery-placeholder.png'} alt="Logo" />
@@ -231,6 +270,24 @@ const WineryDetailPage = () => {
           </section>
         )}
       </DetailPageContainer>
+
+      {isEditModalOpen && (
+        <AuthModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          title="Edit Winery"
+        >
+          <div style={{ padding: '20px', maxHeight: '80vh', overflowY: 'auto' }}>
+            <AddWinery
+              wineryData={winery}
+              onSuccess={() => {
+                setIsEditModalOpen(false);
+                loadWinery();
+              }}
+            />
+          </div>
+        </AuthModal>
+      )}
     </Container>
   );
 };

@@ -70,7 +70,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       await registerUserApi(data);
-      // Automatically log in after successful registration
       await get().login(data.email, data.password);
     } catch (err: unknown) {
       const errorMessage = getErrorMessage(err);
@@ -83,7 +82,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       await signInWithEmailAndPassword(auth, email, pass);
-      // onAuthStateChanged in App.tsx will call setUser
       set({ isAuthModalOpen: false });
     } catch (err: unknown) {
       const errorMessage = getErrorMessage(err);

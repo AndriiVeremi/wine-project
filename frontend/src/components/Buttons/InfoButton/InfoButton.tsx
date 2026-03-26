@@ -4,7 +4,7 @@ interface MainButtonProps {
   children: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
-  active?: boolean; // Додаємо пропс для активного стану
+  active?: boolean;
 }
 
 const InfoButton: React.FC<MainButtonProps> = ({

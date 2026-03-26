@@ -24,7 +24,7 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
   onMainFileChange,
   onGalleryFileChange,
   onRemoveGalleryFile,
-  maxGalleryCount = 5, // 1 main + 4 gallery
+  maxGalleryCount = 5,
 }) => {
   const mainInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
@@ -33,10 +33,7 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
   const handleMainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5000000) {
-        toast.error('File too big (max 5MB)');
-        return;
-      }
+      if (file.size > 5000000) return toast.error('File too big (max 5MB)');
       onMainFileChange(file);
     }
   };
@@ -49,17 +46,13 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
   const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && activeIndexRef.current !== null) {
-      if (file.size > 5000000) {
-        toast.error('File too big (max 5MB)');
-        return;
-      }
+      if (file.size > 5000000) return toast.error('File too big (max 5MB)');
       onGalleryFileChange(file, activeIndexRef.current);
-      e.target.value = ''; // Reset input
+      e.target.value = '';
     }
   };
 
-  const gallerySlotsCount = maxGalleryCount - 1;
-  const slots = Array.from({ length: gallerySlotsCount });
+  const slots = Array.from({ length: maxGalleryCount - 1 });
 
   return (
     <UploadGroupWrapper>
@@ -69,7 +62,7 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
         ) : (
           <>
             <HiCamera size={40} color="#aaa" />
-            <span>Main image</span>
+            <span>Головне фото</span>
           </>
         )}
       </MainPhotoContainer>

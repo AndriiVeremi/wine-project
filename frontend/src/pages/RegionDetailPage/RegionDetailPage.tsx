@@ -56,7 +56,7 @@ const RegionDetailPage = () => {
       const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = 'hidden';
       document.body.style.height = '100%';
-      document.body.style.paddingRight = `${scrollBarWidth}px`; // Prevent layout shift
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
     } else {
       document.body.style.overflow = 'auto';
       document.body.style.height = 'auto';

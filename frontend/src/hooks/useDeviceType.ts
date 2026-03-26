@@ -12,8 +12,8 @@ export const useDeviceType = () => {
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  const tablet = parsePx(breakpoints.tablet); // 768
-  const desktop = parsePx(breakpoints.desktop); // 1280
+  const tablet = parsePx(breakpoints.tablet);
+  const desktop = parsePx(breakpoints.desktop);
 
   const isMobile = width < tablet;
   const isTablet = width >= tablet && width < desktop;

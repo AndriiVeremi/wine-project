@@ -8,7 +8,6 @@ import { Loader } from '@/components/Common/Loader';
 import SharedLayout from '@/components/Layout/SharedLayout';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
 
-// Lazy loading pages
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const WineriesPage = lazy(() => import('@/pages/WineriesPage'));
 const WineryDetailPage = lazy(() => import('@/pages/WineryDetailPage/WineryDetailPage'));

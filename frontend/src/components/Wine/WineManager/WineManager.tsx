@@ -130,7 +130,7 @@ const WineManager = ({ wineryId }: Props) => {
         setActiveWine(null);
         setView('add');
       }}
-      onEdit={isAdmin ? undefined : goEdit}
+      onEdit={goEdit}
       onRemove={killWine}
       getId={(w) => w._id}
       emptyIcon={<FaWineBottle />}
