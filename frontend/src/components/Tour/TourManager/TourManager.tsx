@@ -131,7 +131,7 @@ const TourManager = ({ wineryId }: Props) => {
         setEditingTour(null);
         setView('add');
       }}
-      onEdit={isAdmin ? undefined : handleEdit}
+      onEdit={handleEdit}
       onRemove={handleRemove}
       getId={(t) => t._id}
       emptyIcon={<FiMap />}

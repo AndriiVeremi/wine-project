@@ -15,7 +15,8 @@ import AddWinery from '@/components/Forms/AddWineryForm/AddWineryForm';
 import toast from 'react-hot-toast';
 
 const AdminWineries = () => {
-  const [view, setView] = useState<'list' | 'add'>('list');
+  const [view, setView] = useState<'list' | 'add' | 'edit'>('list');
+  const [editingWinery, setEditingWinery] = useState<Winery | null>(null);
   const [items, setItems] = useState<Winery[]>([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -41,6 +42,11 @@ const AdminWineries = () => {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const handleEdit = (winery: Winery) => {
+    setEditingWinery(winery);
+    setView('edit');
+  };
 
   const onRemove = async (id: string) => {
     if (!window.confirm('Delete this winery?')) return;
@@ -110,16 +116,17 @@ const AdminWineries = () => {
     },
   ];
 
-  if (view === 'add') {
+  if (view !== 'list') {
     return (
       <ManagerWrapper>
         <Header>
-          <SectionTitle>New Winery</SectionTitle>
+          <SectionTitle>{view === 'add' ? 'New Winery' : 'Edit Winery'}</SectionTitle>
           <MainButton type="button" onClick={() => setView('list')}>
             BACK
           </MainButton>
         </Header>
         <AddWinery
+          wineryData={editingWinery}
           onSuccess={() => {
             setView('list');
             loadData();
@@ -141,7 +148,11 @@ const AdminWineries = () => {
       search={search}
       onSearch={setSearch}
       onPage={setPage}
-      onAdd={() => setView('add')}
+      onAdd={() => {
+        setEditingWinery(null);
+        setView('add');
+      }}
+      onEdit={handleEdit}
       onRemove={onRemove}
       getId={(w) => w._id}
       emptyIcon={<FiHome />}

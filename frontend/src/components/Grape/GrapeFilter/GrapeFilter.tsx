@@ -29,7 +29,6 @@ const GrapeFilter = () => {
     enabled: !!country,
   });
 
-  // Iron-clad protection: always ensure regions is an array
   const regions = Array.isArray(regionsRaw) ? regionsRaw : [];
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -46,7 +45,6 @@ const GrapeFilter = () => {
     }
   };
 
-  // Safe search using optional chaining and array check
   const selectedRegionName =
     (Array.isArray(regions) ? regions : []).find((r) => r._id === filters.region)?.name || '';
 

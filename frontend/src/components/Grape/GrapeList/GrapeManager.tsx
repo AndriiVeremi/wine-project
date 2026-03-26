@@ -134,7 +134,7 @@ const GrapeManager = ({ wineryId }: Props) => {
         setEditingGrape(null);
         setView('add');
       }}
-      onEdit={isAdmin ? undefined : handleEdit}
+      onEdit={handleEdit}
       onRemove={handleRemove}
       getId={(g) => g._id}
       emptyIcon={<FaLeaf />}

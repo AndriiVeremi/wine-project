@@ -147,8 +147,13 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
     const id = toast.loading('Saving wine...');
     try {
       const fd = new FormData();
+
+      const allowedFields = Object.keys(initData);
+
       Object.entries(vals).forEach(([k, v]) => {
+        if (!allowedFields.includes(k)) return;
         if (!v && !['winery', 'grape', 'name', 'color', 'sweetness'].includes(k)) return;
+
         if (k === 'tastingNotes' || k === 'foodPairing') {
           const arr = String(v)
             .split(',')
@@ -159,6 +164,7 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
           fd.append(k, String(v));
         }
       });
+
       if (img) fd.append('image', img);
 
       if (wineData?._id) await update(wineData._id, fd);

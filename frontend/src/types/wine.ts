@@ -22,6 +22,7 @@ export interface WineQueryParams {
 export interface WineryInfo {
   _id: string;
   name: string;
+  owner?: string | { _id: string };
   isVip?: boolean;
   logoUrl?: string;
   country?: {

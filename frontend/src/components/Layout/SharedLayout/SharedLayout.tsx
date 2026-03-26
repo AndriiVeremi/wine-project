@@ -18,7 +18,6 @@ import {
   HomeBgRight,
 } from './SharedLayout.styled';
 
-// Lazy load AuthModal
 const AuthModal = lazy(() => import('@/components/Common/AuthModal/AuthModal'));
 
 const homeBgLeftSrc = '/images/home-bg/home-bgLeft.webp';

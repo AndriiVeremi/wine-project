@@ -22,7 +22,6 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ url, onSave }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Basic size check
     if (file.size > 5000000) {
       toast.error('Image is too big (max 5MB)');
       return;

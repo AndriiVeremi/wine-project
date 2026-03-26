@@ -51,6 +51,7 @@ const WineryDetailPage = () => {
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [refresh, setRefresh] = useState(0);
+
   const { wines, fetch, loading: winesLoading } = useWinesStore();
 
   const loadWinery = useCallback(async () => {
@@ -59,7 +60,7 @@ const WineryDetailPage = () => {
       const response = await getWineryById(id);
       setWinery(response.data);
     } catch (err) {
-      console.error(err);
+      console.error('Failed to load winery:', err);
     }
   }, [id]);
 

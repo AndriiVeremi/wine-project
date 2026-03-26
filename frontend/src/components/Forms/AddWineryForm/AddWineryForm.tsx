@@ -167,8 +167,6 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               setGalleryPreviews(newPreviews);
             }}
             onGalleryFileChange={(file, index) => {
-              // index is 0..3 for the 4 small slots, but in our gallery array index 0 is main
-              // so we use index + 1
               const galleryIndex = index + 1;
               const newGallery = [...gallery];
               newGallery[galleryIndex] = file;

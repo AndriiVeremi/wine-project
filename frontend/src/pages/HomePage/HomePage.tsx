@@ -10,7 +10,6 @@ import { useLocationStore } from '@/store/location/locationStore';
 import Hero from '@/components/Hero/Hero';
 import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
 
-// Import assets to get the correct hashed URLs
 import homeBgLeft from '@/assets/home-bg/home-bgLeft.webp';
 import homeBgLeftX2 from '@/assets/home-bg/home-bgLeftX2.webp';
 import homeBgRight from '@/assets/home-bg/home-bgRight.webp';
@@ -30,7 +29,6 @@ import {
   SkeletonGrid,
 } from './HomePage.styled';
 
-// Lazy load heavy interactive map
 const InteractiveMap = lazy(() => import('@/components/Common/InteractiveMap/InteractiveMap'));
 
 interface Winery {

@@ -16,7 +16,6 @@ apiClient.interceptors.request.use(async (config: PerformanceConfig) => {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  // Add timestamp for performance tracking
   config.metadata = { startTime: performance.now() };
 
   if (user) {
@@ -29,7 +28,6 @@ apiClient.interceptors.request.use(async (config: PerformanceConfig) => {
 
 apiClient.interceptors.response.use(
   (response) => {
-    // Calculate performance metric
     const config = response.config as PerformanceConfig;
     if (config.metadata) {
       const duration = performance.now() - config.metadata.startTime;
