@@ -45,8 +45,6 @@ const mtsvaneId = new mongoose.Types.ObjectId();
 const khikhviId = new mongoose.Types.ObjectId();
 const tavkveriId = new mongoose.Types.ObjectId();
 const chkhaveriId = new mongoose.Types.ObjectId();
-const shavkapitoId = new mongoose.Types.ObjectId();
-const krakhunaId = new mongoose.Types.ObjectId();
 const tsitskaId = new mongoose.Types.ObjectId();
 const chinuriId = new mongoose.Types.ObjectId();
 const ojaleshiId = new mongoose.Types.ObjectId();
@@ -54,10 +52,6 @@ const usakhelouriId = new mongoose.Types.ObjectId();
 const goruliMtsvaneId = new mongoose.Types.ObjectId();
 const budeshuriId = new mongoose.Types.ObjectId();
 const cabernetSauvignonId = new mongoose.Types.ObjectId();
-const janiId = new mongoose.Types.ObjectId();
-const avasirkhuaId = new mongoose.Types.ObjectId();
-const kachichiId = new mongoose.Types.ObjectId();
-const meskhuriMtsvaneId = new mongoose.Types.ObjectId();
 
 // Wine IDs
 const wine1Id = new mongoose.Types.ObjectId();
@@ -967,9 +961,7 @@ export const wineries = [
     contactEmail: 'contact@mikaber.ge',
     contactPhone: '+99543212345',
     averageRating: 4.7,
-    whereToBuy: [
-      { name: 'Racha Wine House', url: 'https://rachawines.ge' },
-    ],
+    whereToBuy: [{ name: 'Racha Wine House', url: 'https://rachawines.ge' }],
     history:
       'Nestled in the high mountains of Racha, Mikaber specializes in the noble Aleksandrouli and Mujuretuli grapes. Our vineyards sit at 800-1000 meters altitude, where cool nights ensure slow ripening and exceptional aromatic complexity in our wines.',
   },
@@ -1010,9 +1002,7 @@ export const wineries = [
     contactEmail: 'info@chkhaverihouse.ge',
     contactPhone: '+99522234567',
     averageRating: 4.6,
-    whereToBuy: [
-      { name: 'Batumi Wine Exchange', url: '#' },
-    ],
+    whereToBuy: [{ name: 'Batumi Wine Exchange', url: '#' }],
     history:
       'Chkhaveri House is dedicated to the preservation of the rare Chkhaveri grape. Our maritime vineyards benefit from the Black Sea breeze, which imparts a unique salinity and freshness to our delicate rose and white wines.',
   },
@@ -1053,9 +1043,7 @@ export const wineries = [
     contactEmail: 'family@dakishvili.ge',
     contactPhone: '+99533234567',
     averageRating: 4.9,
-    whereToBuy: [
-      { name: 'Wine Gallery', url: 'https://winegallery.ge' },
-    ],
+    whereToBuy: [{ name: 'Wine Gallery', url: 'https://winegallery.ge' }],
     history:
       'With three generations of winemaking expertise, the Dakishvili family produces some of the most sought-after boutique wines in Georgia. Our Viticulturist and Winemaker, Temur Dakishvili, focuses on low-yield vineyards and long skin contact in qvevri.',
   },
@@ -1140,9 +1128,7 @@ export const wineries = [
     contactEmail: 'obene@ge',
     contactPhone: '+995555123456',
     averageRating: 4.9,
-    whereToBuy: [
-      { name: 'Small Winemakers Shop', url: '#' },
-    ],
+    whereToBuy: [{ name: 'Small Winemakers Shop', url: '#' }],
     history:
       'Obene is a heart project dedicated to reviving the Ojaleshi grape in its ancestral home of Samegrelo. We use the traditional Maglari method where vines climb trees, and ferment our wines in "churi" — the western Georgian equivalent of qvevri.',
   },
@@ -1174,7 +1160,12 @@ export const grapes = [
     alsoKnownAs: ['Topoli'],
     description:
       'One of the oldest and most widely planted white grape varieties in Georgia. Known for its versatility, it can be used for crisp dry whites, traditional qvevri amber wines, and even sparkling wines. Its name literally means "red vine" due to the reddish hue of its stems.',
-    characteristics: ['Floral notes', 'Fresh acidity', 'Versatile winemaking', 'High sugar accumulation'],
+    characteristics: [
+      'Floral notes',
+      'Fresh acidity',
+      'Versatile winemaking',
+      'High sugar accumulation',
+    ],
     foodPairing: ['Poultry', 'Walnut sauce (Satsivi)', 'Fresh vegetables', 'Kachapuri'],
     acidity: 'Medium-High',
     body: 'Medium',
@@ -1190,7 +1181,12 @@ export const grapes = [
     alsoKnownAs: ['Kisi Kakhuri'],
     description:
       'An ancient aromatic white grape variety that was nearly extinct. It is now experiencing a remarkable renaissance. Kisi produces complex wines that combine the floral elegance of Mtsvane with the structure of Rkatsiteli.',
-    characteristics: ['Intense aroma', 'Exotic fruit notes', 'Great for qvevri', 'Elegant structure'],
+    characteristics: [
+      'Intense aroma',
+      'Exotic fruit notes',
+      'Great for qvevri',
+      'Elegant structure',
+    ],
     foodPairing: ['Spicy Asian cuisine', 'Roasted chicken', 'Seafood', 'Fruit salads'],
     acidity: 'Medium',
     body: 'Full',
@@ -1253,7 +1249,7 @@ export const grapes = [
     regions: [adjaraId, guriaId],
     alsoKnownAs: ['Chkhaveri Rose'],
     description:
-      "A rare pink-skinned grape variety from the maritime regions of Adjara and Guria. It is traditionally grown using the Maglari method. Chkhaveri creates some of the most delicate and sophisticated rose and white wines in Georgia.",
+      'A rare pink-skinned grape variety from the maritime regions of Adjara and Guria. It is traditionally grown using the Maglari method. Chkhaveri creates some of the most delicate and sophisticated rose and white wines in Georgia.',
     characteristics: ['Maritime salinity', 'Light body', 'Elegant rose hue', 'High freshness'],
     foodPairing: ['Oysters', 'Grilled shrimp', 'Light poultry', 'Vegetable tempura'],
     acidity: 'Medium-High',
@@ -1286,7 +1282,12 @@ export const grapes = [
     regions: [rachaId],
     description:
       'The "nameless" grape from Racha, considered one of the most prestigious and expensive varieties in Georgia. It grows on extremely steep slopes and produces intense, velvety wines with legendary aromatic complexity.',
-    characteristics: ['Velvety texture', 'Ultra-premium', 'Limited production', 'Mountain character'],
+    characteristics: [
+      'Velvety texture',
+      'Ultra-premium',
+      'Limited production',
+      'Mountain character',
+    ],
     foodPairing: ['Fine dining red meat', 'Truffles', 'Dark chocolate', 'Quiet contemplation'],
     acidity: 'Medium',
     body: 'Full',
@@ -1371,7 +1372,12 @@ export const wines = [
     volume: 750,
     servingTemperature: '14-16°C',
     decanting: true,
-    foodPairing: ['Satsivi (Chicken in Walnut Sauce)', 'Roasted Vegetables', 'Spicy Pork', 'Hard Cheeses'],
+    foodPairing: [
+      'Satsivi (Chicken in Walnut Sauce)',
+      'Roasted Vegetables',
+      'Spicy Pork',
+      'Hard Cheeses',
+    ],
     inStock: true,
   },
   {
@@ -1931,7 +1937,12 @@ export const wines = [
     volume: 750,
     servingTemperature: '12-14°C',
     decanting: false,
-    foodPairing: ['Spicy Megrelian Kuchmachi', 'Roasted Walnuts', 'Strong Cheeses', 'Chocolate Desserts'],
+    foodPairing: [
+      'Spicy Megrelian Kuchmachi',
+      'Roasted Walnuts',
+      'Strong Cheeses',
+      'Chocolate Desserts',
+    ],
     inStock: true,
   },
 ];
