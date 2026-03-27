@@ -90,7 +90,7 @@ const teamMembers = [
   {
     name: 'Andrii Veremii',
     role: 'Team Lead, Scrum Master, Backend Developer, Frontend Developer',
-    github: 'https://github.com/AndriiVeremii',
+    github: 'https://github.com/AndriiVeremi',
     initials: 'AV',
   },
   {

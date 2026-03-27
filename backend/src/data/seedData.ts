@@ -11,7 +11,8 @@ const ukraineId = new mongoose.Types.ObjectId();
 const kakhetiId = new mongoose.Types.ObjectId();
 const imeretiId = new mongoose.Types.ObjectId();
 const rachaId = new mongoose.Types.ObjectId();
-const kartliId = new mongoose.Types.ObjectId();
+const shidaKartliId = new mongoose.Types.ObjectId();
+const kvemoKartliId = new mongoose.Types.ObjectId();
 const adjaraId = new mongoose.Types.ObjectId();
 const tbilisiId = new mongoose.Types.ObjectId();
 const guriaId = new mongoose.Types.ObjectId();
@@ -36,6 +37,11 @@ const win8Id = new mongoose.Types.ObjectId();
 const win9Id = new mongoose.Types.ObjectId();
 const win10Id = new mongoose.Types.ObjectId();
 const win11Id = new mongoose.Types.ObjectId();
+const win12Id = new mongoose.Types.ObjectId();
+const win13Id = new mongoose.Types.ObjectId();
+const win14Id = new mongoose.Types.ObjectId();
+const win15Id = new mongoose.Types.ObjectId();
+const win16Id = new mongoose.Types.ObjectId();
 
 // Grape IDs
 const saperaviId = new mongoose.Types.ObjectId();
@@ -85,6 +91,11 @@ const wine28Id = new mongoose.Types.ObjectId();
 const wine29Id = new mongoose.Types.ObjectId();
 const wine30Id = new mongoose.Types.ObjectId();
 const wine31Id = new mongoose.Types.ObjectId();
+const wine32Id = new mongoose.Types.ObjectId();
+const wine33Id = new mongoose.Types.ObjectId();
+const wine34Id = new mongoose.Types.ObjectId();
+const wine35Id = new mongoose.Types.ObjectId();
+const wine36Id = new mongoose.Types.ObjectId();
 
 export const locations = [
   { _id: georgiaId, name: 'Georgia', type: 'country' },
@@ -92,7 +103,8 @@ export const locations = [
   { _id: kakhetiId, name: 'Kakheti', type: 'region', parentLocation: georgiaId },
   { _id: imeretiId, name: 'Imereti', type: 'region', parentLocation: georgiaId },
   { _id: rachaId, name: 'Racha-Lechkhumi', type: 'region', parentLocation: georgiaId },
-  { _id: kartliId, name: 'Kartli', type: 'region', parentLocation: georgiaId },
+  { _id: shidaKartliId, name: 'Shida Kartli', type: 'region', parentLocation: georgiaId },
+  { _id: kvemoKartliId, name: 'Kvemo Kartli', type: 'region', parentLocation: georgiaId },
   { _id: adjaraId, name: 'Adjara', type: 'region', parentLocation: georgiaId },
   { _id: tbilisiId, name: 'Tbilisi', type: 'region', parentLocation: georgiaId },
   { _id: guriaId, name: 'Guria', type: 'region', parentLocation: georgiaId },
@@ -295,29 +307,33 @@ export const regions = [
     },
   },
   {
-    _id: kartliId,
-    name: 'Kartli',
+    _id: shidaKartliId,
+    name: 'Shida Kartli',
     description:
-      'The central region surrounding Tbilisi, offering diverse microclimates and soils. Kartli has emerged as a center for natural and orange wines, with many small producers experimenting with ancient varieties.',
-    imageUrl: 'https://placehold.co/600x400/455A64/FFFFFF?text=Kartli',
+      'The central heart of Georgia, Shida Kartli is home to the ancient cave city of Uplistsikhe and is the premier region for high-quality sparkling wines and elegant, mineral-driven still whites. The region’s diverse landscape, from river valleys to mountain slopes, provides ideal conditions for slow-ripening indigenous grapes.',
+    imageUrl: '/seeds/regions/shida kartli.webp',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
       description:
-        'Located in central Georgia, Kartli includes the Mtkvari River valley. The climate is continental with hot summers and cold winters, influenced by both eastern and western air masses.',
-      features: ['Central Georgia', 'River Valley influence', 'Varied microclimates'],
+        'Located in central Georgia, it includes the Mtkvari River valley. The climate is moderately continental, with hot summers and relatively mild winters. The unique river valley microclimate is essential for preserving the acidity in white grapes.',
+      features: ['Central Georgia', 'Mtkvari Valley', 'Continental Influence'],
     },
     soils: {
       title: 'Soils of Region',
       description:
-        'Diverse soils include alluvial deposits along the rivers and sandy, limestone-rich soils on the slopes. This variety allows for a wide range of wine styles from sparkling to robust reds.',
-      mainTypes: ['Alluvial', 'Sandy', 'Limestone'],
-      properties: ['Well-drained', 'Diverse mineral content', 'Balanced fertility'],
+        'The soils are diverse, ranging from alluvial deposits along the rivers to limestone and clay-rich soils on the slopes, which impart a distinct mineral character to the wines.',
+      mainTypes: ['Alluvial', 'Limestone', 'Clay'],
+      properties: ['Well-drained', 'Mineral-rich', 'Balanced structure'],
     },
     cultureAndTraditions: {
       title: 'Winemaking Culture and Traditions',
       description:
-        'Kartli is a hub for the modern Georgian natural wine movement. It has a long history of sparkling wine production and is famous for its unique vertical-press traditions.',
-      rituals: ['Natural wine movement', 'Sparkling wine heritage', 'City-edge viticulture'],
+        'Shida Kartli has a centuries-old tradition of producing elegant white and sparkling wines. It is also a center for the modern natural wine movement, where ancient methods are being rediscovered by young winemakers.',
+      rituals: [
+        'Ancient vertical-press tradition',
+        'Sparkling wine heritage',
+        'Uplistsikhe wine cellars',
+      ],
     },
     grape: {
       title: 'Main Grape Varieties of Region',
@@ -326,29 +342,84 @@ export const regions = [
         { name: 'Goruli Mtsvane', description: 'Produces aromatic, floral wines.' },
       ],
       red: [
-        { name: 'Tavkveri', description: 'Versatile red used for still and sparkling rose.' },
-        { name: 'Shavkapito', description: 'An ancient variety producing elegant, mineral reds.' },
+        { name: 'Shavkapito', description: 'Produces elegant, mineral reds with herbal notes.' },
       ],
     },
     typicalWines: {
       title: 'Typical Wines of the Region',
       description:
-        "Known for Georgia's best traditional method sparkling wines and elegant, mineral-driven natural wines.",
-      styles: ['Traditional Sparkling', 'Natural White & Amber', 'Elegant Light Red'],
+        'Famous for its traditional method sparkling wines and light, aromatic still whites.',
+      styles: ['Traditional Sparkling (Atenuri)', 'Elegant White', 'Light Red'],
     },
     pdo: {
       title: 'Protected Designations of Origin (PDO)',
       description: 'Contains key micro-zones for sparkling and specialized still wines.',
-      list: ['Atenuri', 'Bolnisi'],
+      list: ['Atenuri'],
     },
     regionImportance: {
       title: 'Importance of Region for Georgian Winemaking',
       description:
-        'Kartli bridges the gap between traditional heritage and modern innovation, serving as the experimental heart of Georgian wine.',
+        'Shida Kartli is the experimental heart of Georgia, bridging the gap between historical heritage and modern sparkling wine production.',
       points: [
-        'Leader in natural wine',
-        'Center for sparkling production',
-        'Historical cultural hub',
+        'Leader in sparkling wine',
+        'Home to rare endemic varieties',
+        'Strategic historical hub',
+      ],
+    },
+  },
+  {
+    _id: kvemoKartliId,
+    name: 'Kvemo Kartli',
+    description:
+      'A southern region of significant historical importance, Kvemo Kartli is where some of the world’s oldest winemaking evidence was found. Today, it is a thriving region producing robust reds and characterful white wines, particularly around the town of Bolnisi.',
+    imageUrl: '/seeds/regions/kvemo kartli.webp',
+    locationAndClimate: {
+      title: 'Geographic Location and Climate',
+      description:
+        'Located in south-central Georgia, the climate is slightly drier and warmer than Shida Kartli, favoring the development of full-bodied red wines.',
+      features: ['Southern Georgia', 'Dry Steppe influence', 'Warmer temperatures'],
+    },
+    soils: {
+      title: 'Soils of Region',
+      description:
+        'The region is characterized by fertile black soils (chernozem) and volcanic layers, which contribute to the concentration and structure of the wines.',
+      mainTypes: ['Chernozem', 'Volcanic', 'Clay'],
+      properties: ['High fertility', 'Heat-retentive', 'Mineral-dense'],
+    },
+    cultureAndTraditions: {
+      title: 'Winemaking Culture and Traditions',
+      description:
+        'Bolnisi has a unique winemaking heritage influenced by the 19th-century German settlers (Swabians) who combined European techniques with Georgian qvevri traditions.',
+      rituals: ['German-Georgian fusion traditions', 'Qvevri fermentation', 'Community Rtveli'],
+    },
+    grape: {
+      title: 'Main Grape Varieties of Region',
+      white: [{ name: 'Rkatsiteli', description: 'Produces structured and full-bodied whites.' }],
+      red: [
+        { name: 'Saperavi', description: 'Gives deep, powerful reds with great aging potential.' },
+        { name: 'Tavkveri', description: 'Used for fruity reds and roses.' },
+      ],
+    },
+    typicalWines: {
+      title: 'Typical Wines of the Region',
+      description:
+        'Renowned for its robust, full-bodied reds and traditional qvevri wines from the Bolnisi micro-zone.',
+      styles: ['Full-bodied Saperavi', 'Qvevri Amber', 'Fruity Rose'],
+    },
+    pdo: {
+      title: 'Protected Designations of Origin (PDO)',
+      description:
+        'Home to the prestigious Bolnisi PDO, recognized for its high-quality standards.',
+      list: ['Bolnisi'],
+    },
+    regionImportance: {
+      title: 'Importance of Region for Georgian Winemaking',
+      description:
+        'Kvemo Kartli represents the deep historical roots of global viticulture and the successful integration of different winemaking cultures.',
+      points: [
+        'Discovery site of 8,000-year-old wine',
+        'Center for German-Georgian winemaking',
+        'Key producer of structured reds',
       ],
     },
   },
@@ -970,7 +1041,7 @@ export const wineries = [
     name: "Ilya's Wine",
     owner: owner1Id,
     country: georgiaId,
-    region: kartliId,
+    region: kvemoKartliId,
     address: 'Kiketi Village, Kartli',
     coordinates: { lat: 41.71, lng: 44.63 },
     websiteUrl: 'https://ilyawine.ge',
@@ -1052,7 +1123,7 @@ export const wineries = [
     name: 'Chateau Mukhrani',
     owner: owner1Id,
     country: georgiaId,
-    region: kartliId,
+    region: shidaKartliId,
     address: 'Mukhrani, Kartli',
     coordinates: { lat: 41.93, lng: 44.58 },
     websiteUrl: 'https://chateaumukhrani.com',
@@ -1132,6 +1203,101 @@ export const wineries = [
     history:
       'Obene is a heart project dedicated to reviving the Ojaleshi grape in its ancestral home of Samegrelo. We use the traditional Maglari method where vines climb trees, and ferment our wines in "churi" — the western Georgian equivalent of qvevri.',
   },
+  {
+    _id: win12Id,
+    name: "Baia's Wine",
+    owner: owner1Id,
+    country: georgiaId,
+    region: imeretiId,
+    address: 'Obcha Village, Imereti',
+    coordinates: { lat: 42.17, lng: 42.83 },
+    websiteUrl: 'https://baiaswine.com',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    isVip: true,
+    logoUrl: 'https://placehold.co/400x400/006633/FFFFFF?text=Baia',
+    contactEmail: 'info@baiaswine.com',
+    contactPhone: '+995599123456',
+    averageRating: 4.9,
+    whereToBuy: [{ name: '8000 Vintages', url: '#' }],
+    history:
+      'Run by young winemaker Baia Abuladze, this winery has become a symbol of the new generation of Georgian winemaking. Located in the village of Obcha, the estate focuses on traditional Imeretian varieties like Tsitska, Tsolikouri, and Krakhuna, produced with a woman’s touch and deep respect for nature.',
+  },
+  {
+    _id: win13Id,
+    name: 'Iberieli',
+    owner: owner1Id,
+    country: georgiaId,
+    region: guriaId,
+    address: 'Bakhvi Village, Guria',
+    coordinates: { lat: 41.92, lng: 42.01 },
+    websiteUrl: 'https://iberieli.ge',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    isVip: false,
+    logoUrl: 'https://placehold.co/400x400/2E7D32/FFFFFF?text=Iberieli',
+    contactEmail: 'zurab@iberieli.ge',
+    contactPhone: '+995591234567',
+    averageRating: 4.8,
+    whereToBuy: [{ name: 'Natural Wine Bar Tbilisi', url: '#' }],
+    history:
+      'Iberieli is a family winery owned by Zurab Topuridze. The name comes from the ancient Georgian tribes, the Iberians. They are pioneers in reviving the winemaking traditions of Guria, especially the rare Chkhaveri grape, produced in Qvevri according to ancient family methods.',
+  },
+  {
+    _id: win14Id,
+    name: "Natenadze's Wine Cellar",
+    owner: owner1Id,
+    country: georgiaId,
+    region: samtskheJavakhetiId,
+    address: 'Akhaltsikhe, Meskheti',
+    coordinates: { lat: 41.64, lng: 42.98 },
+    websiteUrl: 'https://meskhuri.com',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    isVip: true,
+    logoUrl: 'https://placehold.co/400x400/6D4C41/FFFFFF?text=Natenadze',
+    contactEmail: 'george@natenadze.ge',
+    contactPhone: '+995595123456',
+    averageRating: 5.0,
+    whereToBuy: [{ name: 'Fine Wine Selections', url: '#' }],
+    history:
+      'Giorgi Natenadze is a legendary figure who spends his time foraging for ancient, wild vines in the high mountains of Meskheti. Some of the vines he uses are over 400 years old. His wines are true "archaeological" treasures, reflecting the unique volcanic terroir of the region.',
+  },
+  {
+    _id: win15Id,
+    name: "Iago's Wine",
+    owner: owner1Id,
+    country: georgiaId,
+    region: mtskhetaId,
+    address: 'Chardakhi Village, Mtskheta',
+    coordinates: { lat: 41.93, lng: 44.67 },
+    websiteUrl: 'https://iago.ge',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    isVip: true,
+    logoUrl: 'https://placehold.co/400x400/BF360C/FFFFFF?text=Iago',
+    contactEmail: 'iago@iago.ge',
+    contactPhone: '+995599345678',
+    averageRating: 4.9,
+    whereToBuy: [{ name: 'G.Vino', url: '#' }],
+    history:
+      'Iago Bitarishvili is one of the most respected natural winemakers in Georgia. He was the first to receive bio-certification in the country. His winery in Chardakhi focuses exclusively on one grape variety — Chinuri — produced in Qvevri according to a 300-year-old family tradition.',
+  },
+  {
+    _id: win16Id,
+    name: 'Anakopia Estate',
+    owner: owner1Id,
+    country: georgiaId,
+    region: abkhaziaId,
+    address: 'New Athos, Abkhazia',
+    coordinates: { lat: 43.08, lng: 40.81 },
+    websiteUrl: 'https://anakopia.wine',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    isVip: false,
+    logoUrl: 'https://placehold.co/400x400/006064/FFFFFF?text=Anakopia',
+    contactEmail: 'info@anakopia.ge',
+    contactPhone: '+995555789012',
+    averageRating: 4.4,
+    whereToBuy: [{ name: 'Local Coastal Shops', url: '#' }],
+    history:
+      'Located near the historic Anakopia Fortress, this estate carries on the maritime winemaking traditions of the Black Sea coast. They specialize in light, aromatic wines that benefit from the limestone-rich soils and the cooling sea breeze.',
+  },
 ];
 
 export const grapes = [
@@ -1156,7 +1322,7 @@ export const grapes = [
     _id: rkatsiteliId,
     name: 'Rkatsiteli',
     type: 'white',
-    regions: [kakhetiId, kartliId],
+    regions: [kakhetiId, shidaKartliId, kvemoKartliId],
     alsoKnownAs: ['Topoli'],
     description:
       'One of the oldest and most widely planted white grape varieties in Georgia. Known for its versatility, it can be used for crisp dry whites, traditional qvevri amber wines, and even sparkling wines. Its name literally means "red vine" due to the reddish hue of its stems.',
@@ -1230,7 +1396,7 @@ export const grapes = [
     _id: tavkveriId,
     name: 'Tavkveri',
     type: 'red',
-    regions: [kartliId],
+    regions: [shidaKartliId, kvemoKartliId],
     description:
       'A versatile red grape from the Kartli region. It is unique because it only has female flowers and requires other varieties nearby for pollination. It produces fresh, fruit-forward reds and vibrant roses.',
     characteristics: ['Fruit-forward', 'Soft tannins', 'Versatile styles', 'Vibrant acidity'],
@@ -1943,6 +2109,106 @@ export const wines = [
       'Strong Cheeses',
       'Chocolate Desserts',
     ],
+    inStock: true,
+  },
+  {
+    _id: wine32Id,
+    winery: win12Id,
+    name: "Baia's Tsolikouri",
+    vintage: 2022,
+    grape: tsitskaId,
+    description:
+      'A fresh and vibrant white wine from Imereti. This Tsolikouri is made with traditional methods, showing notes of yellow fruits, citrus, and a long mineral finish.',
+    imageUrl: 'https://placehold.co/400x600/006633/FFFFFF?text=Baia+Tsolikouri',
+    color: 'white',
+    sweetness: 'dry',
+    averageRating: 4.9,
+    price: 850,
+    alcohol: '12.5%',
+    volume: 750,
+    servingTemperature: '10-12°C',
+    decanting: false,
+    foodPairing: ['Imeretian Khachapuri', 'Grilled Poultry', 'River Fish'],
+    inStock: true,
+  },
+  {
+    _id: wine33Id,
+    winery: win13Id,
+    name: 'Iberieli Chkhaveri Amber',
+    vintage: 2021,
+    grape: chkhaveriId,
+    description:
+      'A unique amber wine from the rare Chkhaveri grape of Guria. Fermented in Qvevri, it offers a complex profile of dried apricot, tea leaves, and wild honey.',
+    imageUrl: 'https://placehold.co/400x600/FF8F00/FFFFFF?text=Iberieli+Chkhaveri',
+    color: 'orange',
+    sweetness: 'dry',
+    averageRating: 4.8,
+    price: 1200,
+    alcohol: '12.0%',
+    volume: 750,
+    servingTemperature: '14-16°C',
+    decanting: true,
+    foodPairing: ['Roasted Pork', 'Spicy Salads', 'Smoked Cheese'],
+    inStock: true,
+  },
+  {
+    _id: wine34Id,
+    winery: win14Id,
+    name: 'Natenadze Meskhuri Red',
+    vintage: 2019,
+    grape: saperaviId,
+    description:
+      'An extraordinary red wine made from wild and ancient vines found in the Meskheti mountains. Deep, volcanic, and unlike any other wine in the world.',
+    imageUrl: 'https://placehold.co/400x600/4A148C/FFFFFF?text=Natenadze+Red',
+    color: 'red',
+    sweetness: 'dry',
+    averageRating: 5.0,
+    price: 3500,
+    alcohol: '13.5%',
+    volume: 750,
+    servingTemperature: '18-20°C',
+    decanting: true,
+    foodPairing: ['Game Meat', 'Truffle Dishes', 'Aged Steaks'],
+    inStock: true,
+  },
+  {
+    _id: wine35Id,
+    winery: win15Id,
+    name: "Iago's Chinuri",
+    vintage: 2022,
+    grape: chinuriId,
+    description:
+      'A benchmark natural wine from Mtskheta. 100% Chinuri fermented in Qvevri with skin contact. Notes of mint, wild herbs, and white pears.',
+    imageUrl: 'https://placehold.co/400x600/ECEFF1/333333?text=Iago+Chinuri',
+    color: 'white',
+    sweetness: 'dry',
+    averageRating: 4.9,
+    price: 1100,
+    alcohol: '12.0%',
+    volume: 750,
+    servingTemperature: '12-14°C',
+    decanting: false,
+    foodPairing: ['Vegetarian Cuisine', 'Walnut Sauces', 'Light Poultry'],
+    inStock: true,
+  },
+  {
+    _id: wine36Id,
+    winery: win16Id,
+    name: 'Anakopia Coastal Red',
+    vintage: 2021,
+    grape: saperaviId,
+    description:
+      'A light and approachable red wine from the Abkhazian coast. It balances the richness of the fruit with a refreshing maritime salinity.',
+    imageUrl: 'https://placehold.co/400x600/8B0000/FFFFFF?text=Anakopia+Red',
+    color: 'red',
+    sweetness: 'semi-sweet',
+    averageRating: 4.3,
+    price: 550,
+    alcohol: '11.5%',
+    volume: 750,
+    servingTemperature: '14-16°C',
+    decanting: false,
+    foodPairing: ['Fruit Platters', 'Mild Spicy Dishes', 'Soft Cheeses'],
     inStock: true,
   },
 ];
