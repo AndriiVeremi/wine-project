@@ -311,7 +311,7 @@ export const regions = [
     name: 'Shida Kartli',
     description:
       'The central heart of Georgia, Shida Kartli is home to the ancient cave city of Uplistsikhe and is the premier region for high-quality sparkling wines and elegant, mineral-driven still whites. The region’s diverse landscape, from river valleys to mountain slopes, provides ideal conditions for slow-ripening indigenous grapes.',
-    imageUrl: '/seeds/regions/shida kartli.webp',
+    imageUrl: '/seeds/regions/shida-kartli.webp',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
       description:
@@ -372,7 +372,7 @@ export const regions = [
     name: 'Kvemo Kartli',
     description:
       'A southern region of significant historical importance, Kvemo Kartli is where some of the world’s oldest winemaking evidence was found. Today, it is a thriving region producing robust reds and characterful white wines, particularly around the town of Bolnisi.',
-    imageUrl: '/seeds/regions/kvemo kartli.webp',
+    imageUrl: '/seeds/regions/kvemo-kartli.webp',
     locationAndClimate: {
       title: 'Geographic Location and Climate',
       description:
@@ -2318,6 +2318,36 @@ export const tours = [
     groupSize: { min: 2, max: 12 },
   },
   {
+    winery: win1Id,
+    name: 'Shumi Museum & Tasting',
+    description:
+      'A specialized visit to the Shumi Wine Museum, home to over 300 rare grape varieties. The tour includes a professional tasting of reserve wines and a masterclass in bread baking (Shoti).',
+    duration: 120,
+    price: 150,
+    images: ['https://placehold.co/600x400/841013/FFFFFF?text=Shumi+Museum'],
+    groupSize: { min: 1, max: 20 },
+  },
+  {
+    winery: win2Id,
+    name: 'Kateni Artisanal Cellar Visit',
+    description:
+      'An intimate look into the life of an artisanal winemaker. See how we bury qvevris and age our natural wines without any additives. Tasting directly from the qvevri included.',
+    duration: 90,
+    price: 120,
+    images: ['https://placehold.co/600x400/31343C/FFFFFF?text=Kateni+Cellar'],
+    groupSize: { min: 2, max: 6 },
+  },
+  {
+    winery: win2Id,
+    name: 'Natural Wine & Organic Farm Lunch',
+    description:
+      'Enjoy a farm-to-table lunch paired with our natural wines. Learn about organic viticulture and enjoy the peaceful atmosphere of our Kakhetian estate.',
+    duration: 180,
+    price: 250,
+    images: ['https://placehold.co/600x400/31343C/FFFFFF?text=Kateni+Farm'],
+    groupSize: { min: 2, max: 10 },
+  },
+  {
     winery: win3Id,
     name: 'Racha Mountain Wine Tour',
     description:
@@ -2326,6 +2356,16 @@ export const tours = [
     price: 350,
     images: ['https://placehold.co/600x400/5D4037/FFFFFF?text=Racha+Tour'],
     groupSize: { min: 2, max: 8 },
+  },
+  {
+    winery: win3Id,
+    name: 'Khvanchkara Secrets',
+    description:
+      'Discover the history of the legendary Khvanchkara wine. Visit the micro-zone, meet local growers, and taste authentic semi-sweet red wines in a mountain setting.',
+    duration: 150,
+    price: 180,
+    images: ['https://placehold.co/600x400/5D4037/FFFFFF?text=Khvanchkara+Secrets'],
+    groupSize: { min: 2, max: 12 },
   },
   {
     winery: win4Id,
@@ -2338,14 +2378,54 @@ export const tours = [
     groupSize: { min: 2, max: 10 },
   },
   {
-    winery: win9Id,
-    name: 'Carpathian Wine Journey',
+    winery: win4Id,
+    name: 'Heritage Qvevri Workshop',
     description:
-      'Discover Ukrainian winemaking in the beautiful Carpathian mountains. Visit historic wineries and taste premium wines from Zakarpattia region.',
-    duration: 180,
-    price: 150,
-    images: ['https://placehold.co/600x400/8B4513/FFFFFF?text=Carpathian+Tour'],
-    groupSize: { min: 2, max: 12 },
+      'A deep dive into the history of Kartli winemaking. Learn about the unique clay used for qvevris and taste wines from our 300-year-old heritage jars.',
+    duration: 120,
+    price: 140,
+    images: ['https://placehold.co/600x400/455A64/FFFFFF?text=Heritage+Qvevri'],
+    groupSize: { min: 1, max: 8 },
+  },
+  {
+    winery: win5Id,
+    name: 'Adjarian Coastal Tasting',
+    description:
+      'A refreshing afternoon at our maritime winery. Taste the unique Chkhaveri rose while enjoying the sea breeze and learning about mountain-maritime viticulture.',
+    duration: 120,
+    price: 95,
+    images: ['https://placehold.co/600x400/0277BD/FFFFFF?text=Adjara+Tasting'],
+    groupSize: { min: 2, max: 15 },
+  },
+  {
+    winery: win5Id,
+    name: 'Chkhaveri Harvest Festival',
+    description:
+      'Join us for the late-autumn harvest of the rare Chkhaveri grape. Help pick the grapes and enjoy a festive coastal meal with traditional Adjarian music.',
+    duration: 360,
+    price: 300,
+    images: ['https://placehold.co/600x400/0277BD/FFFFFF?text=Chkhaveri+Harvest'],
+    groupSize: { min: 4, max: 20 },
+  },
+  {
+    winery: win6Id,
+    name: 'Tbilvino Urban Winery Tour',
+    description:
+      'Go behind the scenes of one of Georgia’s largest wine exporters. See the modern production lines and taste a wide range of regional styles right in the capital.',
+    duration: 90,
+    price: 60,
+    images: ['https://placehold.co/600x400/37474F/FFFFFF?text=Tbilvino+Urban'],
+    groupSize: { min: 1, max: 30 },
+  },
+  {
+    winery: win6Id,
+    name: 'Professional Sommelier Tasting',
+    description:
+      'An advanced tasting session led by our head sommelier. Compare wines from across Georgia and learn about the technical aspects of modern Georgian winemaking.',
+    duration: 120,
+    price: 110,
+    images: ['https://placehold.co/600x400/37474F/FFFFFF?text=Sommelier+Tasting'],
+    groupSize: { min: 2, max: 10 },
   },
   {
     winery: win7Id,
@@ -2356,5 +2436,115 @@ export const tours = [
     price: 280,
     images: ['https://placehold.co/600x400/8D6E63/FFFFFF?text=Qvevri+Tour'],
     groupSize: { min: 2, max: 6 },
+  },
+  {
+    winery: win7Id,
+    name: 'Vertical Tasting of Saperavi',
+    description:
+      'Taste Saperavi across different vintages and aging styles. Understand the incredible aging potential of Georgia’s flagship red grape under the guidance of Temur Dakishvili.',
+    duration: 120,
+    price: 190,
+    images: ['https://placehold.co/600x400/8D6E63/FFFFFF?text=Saperavi+Vertical'],
+    groupSize: { min: 2, max: 8 },
+  },
+  {
+    winery: win8Id,
+    name: 'Royal Estate Tour',
+    description:
+      'Experience the grandeur of the Mukhrani royal estate. Tour the restored palace, the state-of-the-art winery, and the historic underground cellars.',
+    duration: 120,
+    price: 160,
+    images: ['https://placehold.co/600x400/B71C1C/FFFFFF?text=Royal+Estate'],
+    groupSize: { min: 1, max: 25 },
+  },
+  {
+    winery: win8Id,
+    name: 'Palace Horse Riding & Wine',
+    description:
+      'Enjoy a scenic horse ride through the royal vineyards followed by a premium tasting and lunch at the palace restaurant.',
+    duration: 240,
+    price: 380,
+    images: ['https://placehold.co/600x400/B71C1C/FFFFFF?text=Horse+Ride'],
+    groupSize: { min: 2, max: 6 },
+  },
+  {
+    winery: win9Id,
+    name: 'Carpathian Wine Journey',
+    description:
+      'Discover Ukrainian winemaking in the beautiful Carpathian mountains. Visit historic wineries and taste premium wines from Zakarpattia region.',
+    duration: 180,
+    price: 150,
+    images: ['https://placehold.co/600x400/8B4513/FFFFFF?text=Carpathian+Tour'],
+    groupSize: { min: 2, max: 12 },
+  },
+  {
+    winery: win10Id,
+    name: 'Black Sea Wine & Yacht',
+    description:
+      'A luxury experience combining Odesa’s finest wines with a sunset yacht cruise along the Black Sea coast. Taste crisp whites and sparkling wines on the water.',
+    duration: 180,
+    price: 450,
+    images: ['https://placehold.co/600x400/87CEEB/333333?text=Odesa+Yacht'],
+    groupSize: { min: 2, max: 8 },
+  },
+  {
+    winery: win11Id,
+    name: 'Colchian Rainforest Viticulture',
+    description:
+      'Visit the lush rainforests of Samegrelo to see the ancient Maglari vines growing up trees. A unique botanical and oenological experience in Martvili.',
+    duration: 210,
+    price: 220,
+    images: ['https://placehold.co/600x400/1B5E20/FFFFFF?text=Samegrelo+Forest'],
+    groupSize: { min: 2, max: 10 },
+  },
+  {
+    winery: win12Id,
+    name: 'Imeretian Hospitality with Baia',
+    description:
+      'A warm family experience in the village of Obcha. Taste Baia’s award-winning wines paired with authentic Imeretian cuisine prepared by the Abuladze family.',
+    duration: 180,
+    price: 180,
+    images: ['https://placehold.co/600x400/006633/FFFFFF?text=Baia+Hospitality'],
+    groupSize: { min: 2, max: 12 },
+  },
+  {
+    winery: win13Id,
+    name: 'Iberieli Qvevri Exploration',
+    description:
+      'Learn about the Gurian tradition of "Churi" (local qvevri). An educational tour through our family vineyards and cellar focusing on biodiversity.',
+    duration: 120,
+    price: 130,
+    images: ['https://placehold.co/600x400/2E7D32/FFFFFF?text=Iberieli+Churi'],
+    groupSize: { min: 2, max: 8 },
+  },
+  {
+    winery: win14Id,
+    name: 'Ancient Wild Vines Expedition',
+    description:
+      'Join Giorgi Natenadze on a mini-expedition to find wild vines in the Meskhetian mountains. A rugged tour for true adventurers and wine lovers.',
+    duration: 300,
+    price: 500,
+    images: ['https://placehold.co/600x400/6D4C41/FFFFFF?text=Wild+Vines'],
+    groupSize: { min: 2, max: 4 },
+  },
+  {
+    winery: win15Id,
+    name: 'The Art of Chinuri',
+    description:
+      'A specialized session with Iago Bitarishvili focusing on his 300-year-old family cellar and the unique characteristics of the Chinuri grape.',
+    duration: 120,
+    price: 140,
+    images: ['https://placehold.co/600x400/BF360C/FFFFFF?text=Iago+Art'],
+    groupSize: { min: 1, max: 10 },
+  },
+  {
+    winery: win16Id,
+    name: 'Anakopia Fortress & Cellar',
+    description:
+      'Combine a visit to the historic Anakopia Fortress with a tasting of our maritime wines. Learn about the ancient history of Abkhazia through its wine culture.',
+    duration: 150,
+    price: 85,
+    images: ['https://placehold.co/600x400/006064/FFFFFF?text=Anakopia+History'],
+    groupSize: { min: 2, max: 20 },
   },
 ];

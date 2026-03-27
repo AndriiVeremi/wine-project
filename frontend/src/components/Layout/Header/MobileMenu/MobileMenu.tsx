@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FiX } from 'react-icons/fi';
 import {
@@ -25,6 +26,31 @@ interface Props {
 const MobileMenu = ({ isOpen, onClose }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const originalStyleBody = window.getComputedStyle(document.body).overflow;
+    const originalStyleHtml = window.getComputedStyle(document.documentElement).overflow;
+    const originalHeightBody = document.body.style.height;
+    const originalHeightHtml = document.documentElement.style.height;
+
+    if (isOpen) {
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.height = '100%';
+      document.documentElement.style.height = '100%';
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
+    }
+
+    return () => {
+      document.body.style.overflow = originalStyleBody;
+      document.documentElement.style.overflow = originalStyleHtml;
+      document.body.style.height = originalHeightBody;
+      document.documentElement.style.height = originalHeightHtml;
+      document.body.style.paddingRight = '0px';
+    };
+  }, [isOpen]);
 
   const handleNavigate = (path: string) => {
     navigate(path);
