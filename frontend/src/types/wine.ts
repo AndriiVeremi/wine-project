@@ -38,6 +38,16 @@ export interface WineryInfo {
 export interface GrapeInfo {
   _id: string;
   name: string;
+  type?: 'red' | 'white' | 'rose';
+  description?: string;
+  characteristics?: string[];
+  foodPairing?: string[];
+  imageUrls?: string[];
+  acidity?: string;
+  body?: string;
+  tannins?: string;
+  aromas?: string[];
+  agingPotential?: string;
 }
 
 export interface Wine {

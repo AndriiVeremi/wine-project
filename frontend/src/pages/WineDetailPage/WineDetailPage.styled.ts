@@ -119,6 +119,60 @@ export const WineDescriptionContent = styled.div`
     margin-right: 8px;
   }
 `;
+
+export const WineProfileGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin: 30px 0;
+  padding: 20px;
+  background: var(--bg-main);
+  border-radius: 12px;
+
+  @media (min-width: ${breakpoints.tablet}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+export const ProfileItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--secondary-gray);
+    letter-spacing: 0.5px;
+  }
+
+  .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-gray);
+  }
+`;
+
+export const ServingSection = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+`;
+
+export const ServingItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary-gray);
+  font-size: 15px;
+
+  svg {
+    color: var(--primary-wine);
+  }
+`;
 export const SliderSection = styled.section`
   margin-top: 60px;
   margin-bottom: 80px;

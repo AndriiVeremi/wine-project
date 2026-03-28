@@ -72,6 +72,32 @@ export const Title = styled.h3`
   letter-spacing: -0.02em;
 `;
 
+export const WineryName = styled.p`
+  font-size: 13px;
+  color: var(--secondary-gray);
+  margin: 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const WineMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #888;
+  text-transform: capitalize;
+
+  span.dot {
+    width: 4px;
+    height: 4px;
+    background: #ccc;
+    border-radius: 50%;
+  }
+`;
+
 export const RatingBlock = styled.div`
   display: flex;
   align-items: center;
