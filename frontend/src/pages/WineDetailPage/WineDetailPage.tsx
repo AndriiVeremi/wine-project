@@ -110,6 +110,7 @@ const WineDetailPage = () => {
           ) : (
             <>
               <WineReviews key={refreshReviews} wineId={wine._id} />
+              <div style={{ height: '40px' }} />
               <AddReviewForm
                 wineId={wine._id}
                 onReviewAdded={() => {

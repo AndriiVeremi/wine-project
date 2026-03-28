@@ -198,11 +198,10 @@ const WineTourDetailPage = () => {
             <DescriptionBox>
               <h2>Reviews</h2>
               <ItemReviews tourId={id} key={reviewsKey} />
-            </DescriptionBox>
-
-            <DescriptionBox>
-              <h2>Leave a review</h2>
-              <AddReviewForm tourId={id} onReviewAdded={handleReviewAdded} />
+              <div style={{ marginTop: '40px' }}>
+                <h2 style={{ marginBottom: '20px' }}>Leave a review</h2>
+                <AddReviewForm tourId={id} onReviewAdded={handleReviewAdded} />
+              </div>
             </DescriptionBox>
           </MainContent>
 

@@ -9,9 +9,9 @@ export const HeroSection = styled.section`
   flex-direction: column;
   gap: 40px;
   margin-bottom: 60px;
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakpoints.desktop}) {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     grid-template-areas:
       'gallery info'
       'gallery video';
@@ -25,7 +25,7 @@ export const GalleryWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   order: 2;
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakpoints.desktop}) {
     grid-area: gallery;
     order: unset;
   }
@@ -44,7 +44,7 @@ export const MainBanner = styled.div`
   @media (min-width: ${breakpoints.tablet}) {
     height: 450px;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakpoints.desktop}) {
     height: 584px;
   }
 `;
@@ -83,7 +83,7 @@ export const WineryInfoBlock = styled.div`
   border-radius: 16px;
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakpoints.desktop}) {
     grid-area: info;
     order: unset;
     padding: 32px;
@@ -166,9 +166,28 @@ export const InfoRow = styled.div`
 `;
 export const TabButtonsWrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+
+  button {
+    width: 100%;
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    flex-direction: row;
+    gap: 24px;
+    button {
+      width: auto;
+      min-width: 350px;
+    }
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
+    button {
+      min-width: 316px;
+    }
+  }
 `;
 export const DescriptionText = styled.div`
   font-size: 16px;

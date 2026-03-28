@@ -52,6 +52,7 @@ const khikhviId = new mongoose.Types.ObjectId();
 const tavkveriId = new mongoose.Types.ObjectId();
 const chkhaveriId = new mongoose.Types.ObjectId();
 const tsitskaId = new mongoose.Types.ObjectId();
+const tsolikouriId = new mongoose.Types.ObjectId();
 const chinuriId = new mongoose.Types.ObjectId();
 const ojaleshiId = new mongoose.Types.ObjectId();
 const usakhelouriId = new mongoose.Types.ObjectId();
@@ -1478,6 +1479,36 @@ export const grapes = [
     agingPotential: '10-20 years',
     imageUrls: ['https://placehold.co/400x600/722F37/FFFFFF?text=Cabernet'],
   },
+  {
+    _id: tsitskaId,
+    name: 'Tsitska',
+    type: 'white',
+    regions: [imeretiId],
+    description:
+      'A leading white grape from Imereti, known for producing light, fresh wines with floral and citrus notes. It is often used for high-quality sparkling wines and is a key component of classic Imeretian blends.',
+    characteristics: ['Fresh acidity', 'Floral elegance', 'Citrus profile', 'Great for sparkling'],
+    foodPairing: ['Grilled trout', 'Khachapuri', 'Fresh greens', 'Goat cheese'],
+    acidity: 'High',
+    body: 'Light',
+    aromas: ['Wildflower', 'Lemon zest', 'Green apple'],
+    agingPotential: '3-5 years',
+    imageUrls: ['https://placehold.co/400x600/FFF59D/333333?text=Tsitska'],
+  },
+  {
+    _id: tsolikouriId,
+    name: 'Tsolikouri',
+    type: 'white',
+    regions: [imeretiId, rachaId],
+    description:
+      'The most widely planted white grape in Western Georgia. It produces versatile wines ranging from crisp and dry to naturally semi-sweet (like Tvishi). It is known for its full body, balanced acidity, and distinct mineral character.',
+    characteristics: ['Versatile styles', 'Mineral finish', 'Full body', 'Late ripening'],
+    foodPairing: ['Poultry with walnut sauce', 'Fried fish', 'Megrelian cuisine', 'Soft cheeses'],
+    acidity: 'Medium-High',
+    body: 'Full',
+    aromas: ['Yellow plum', 'Citrus blossom', 'White peach', 'Honey'],
+    agingPotential: '5-8 years',
+    imageUrls: ['https://placehold.co/400x600/F0F4C3/333333?text=Tsolikouri'],
+  },
 ];
 
 export const wines = [
@@ -2116,7 +2147,7 @@ export const wines = [
     winery: win12Id,
     name: "Baia's Tsolikouri",
     vintage: 2022,
-    grape: tsitskaId,
+    grape: tsolikouriId,
     description:
       'A fresh and vibrant white wine from Imereti. This Tsolikouri is made with traditional methods, showing notes of yellow fruits, citrus, and a long mineral finish.',
     imageUrl: 'https://placehold.co/400x600/006633/FFFFFF?text=Baia+Tsolikouri',

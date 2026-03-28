@@ -98,11 +98,13 @@ const WineryDetailPage = () => {
   return (
     <Container>
       <DetailPageContainer>
+        <WineryNameTitle style={{ marginBottom: '32px' }}>{winery.name}</WineryNameTitle>
         <HeroSection>
           <GalleryWrapper>
             <MainBanner>
               <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={winery.name} />
             </MainBanner>
+            {/* ... rest of gallery ... */}
             <ThumbnailsGrid>
               {thumbnails.map((url, index) => (
                 <Thumbnail
@@ -116,7 +118,6 @@ const WineryDetailPage = () => {
             </ThumbnailsGrid>
           </GalleryWrapper>
           <WineryInfoBlock>
-            <WineryNameTitle>{winery.name}</WineryNameTitle>
             <WineryHeaderRow>
               <WineryLogoInHeader>
                 <img src={winery.logoUrl || '/assets/winery-placeholder.png'} alt="Logo" />
@@ -185,6 +186,7 @@ const WineryDetailPage = () => {
         ) : (
           <div style={{ marginBottom: '80px' }}>
             <ItemReviews key={refresh} wineryId={winery._id} />
+            <div style={{ height: '40px' }} />
             <AddReviewForm
               wineryId={winery._id}
               onReviewAdded={() => {

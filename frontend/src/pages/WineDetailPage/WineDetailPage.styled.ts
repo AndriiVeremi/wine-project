@@ -70,12 +70,16 @@ export const WineDetailPageTabs = styled.div`
     gap: 24px;
     button {
       width: auto;
+      min-width: 350px;
     }
   }
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: tabs;
     order: unset;
     margin-top: 40px;
+    button {
+      min-width: 316px;
+    }
   }
 `;
 export const WineDescriptionContent = styled.div`

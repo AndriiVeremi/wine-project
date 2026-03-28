@@ -98,17 +98,17 @@ const WineOverview = ({ wine }: Props) => {
 
         <CharacteristicItem>
           <span>Winery:</span>
-          <span>{wine.winery.name}</span>
+          <span>{wine.winery?.name ?? '—'}</span>
         </CharacteristicItem>
 
         <CharacteristicItem>
           <span>Region:</span>
-          <span>{wine.winery.region?.name ?? '—'}</span>
+          <span>{wine.winery?.region?.name ?? '—'}</span>
         </CharacteristicItem>
 
         <CharacteristicItem>
           <span>Grape Variety:</span>
-          <span>{wine.grape.name}</span>
+          <span>{wine.grape?.name ?? '—'}</span>
         </CharacteristicItem>
 
         <CharacteristicItem>
