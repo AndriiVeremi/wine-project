@@ -52,13 +52,18 @@ const Language = () => {
           {languages.map((lang) => (
             <DropdownItem
               key={lang}
-              onClick={() => handleLangSelect(lang)}
+              onClick={() => lang === 'En' && handleLangSelect(lang)}
               $active={lang === currentLang}
               role="option"
               aria-selected={lang === currentLang}
-              tabIndex={0}
+              style={{
+                opacity: lang !== 'En' ? 0.4 : 1,
+                cursor: lang !== 'En' ? 'not-allowed' : 'pointer',
+                pointerEvents: lang !== 'En' ? 'none' : 'auto',
+              }}
+              tabIndex={lang === 'En' ? 0 : -1}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (lang === 'En' && (e.key === 'Enter' || e.key === ' ')) {
                   e.preventDefault();
                   handleLangSelect(lang);
                 }

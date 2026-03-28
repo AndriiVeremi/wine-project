@@ -38,7 +38,7 @@
 
 | Учасник | Роль | GitHub |
 | :--- | :--- | :--- |
-| **Andrii Veremii** | Team Lead, Scrum Master, Fullstack Developer | [AndriiVeremii](https://github.com/AndriiVeremii) |
+| **Andrii Veremii** | Team Lead, Scrum Master, Fullstack Developer | [AndriiVeremii](https://github.com/AndriiVeremi) |
 | **Andrii Popov** | Fullstack Developer, QA Engineer | [Andrii0207](https://github.com/Andrii0207) |
 | **Vladyslav Mazurkevych** | Fullstack Developer, QA Engineer | [mazurkevych30](https://github.com/mazurkevych30) |
 | **Ihor Dykyi** | UI/UX Designer, PM, Fullstack Developer, QA | [jure-s](https://github.com/jure-s) |

@@ -4,12 +4,21 @@ export const TourDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  margin-bottom: 80px;
+`;
+
+export const MainContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
   @media (min-width: ${breakpoints.desktop}) {
     flex-direction: row;
     align-items: flex-start;
     gap: 68px;
   }
 `;
+
 export const MainContent = styled.div`
   flex: 1;
   display: flex;
@@ -50,7 +59,8 @@ export const ThumbnailsGrid = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   width: 100%;
-  \ @media (min-width: ${breakpoints.tablet}) {
+
+  @media (min-width: ${breakpoints.tablet}) {
     width: calc(100% - 80px);
   }
 `;
@@ -164,14 +174,19 @@ export const Sidebar = styled.aside`
   }
 `;
 export const BookingCard = styled.div`
+  display: none;
   background: var(--white);
   border-radius: 24px;
   padding: 32px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--tertiary-gray);
-  display: flex;
   flex-direction: column;
   gap: 24px;
+
+  @media (min-width: ${breakpoints.desktop}) {
+    display: flex;
+  }
+
   button {
     align-self: center;
     width: 100%;

@@ -23,8 +23,8 @@ export const StyledWineryCardDiv = styled.div`
 
 export const WineryLogo = styled.img`
   width: 100%;
-  height: 200px;
-  object-fit: contain;
+  height: 300px;
+  object-fit: cover;
   border-radius: 12px;
   background-color: #f9f9f9;
   margin-bottom: 8px;

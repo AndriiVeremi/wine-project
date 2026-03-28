@@ -119,8 +119,7 @@ export const WineryLogoInHeader = styled.div`
   flex-shrink: 0;
   border-radius: 12px;
   overflow: hidden;
-  background: #f9f9f9;
-  border: 1px solid #eee;
+
   @media (min-width: ${breakpoints.tablet}) {
     width: 150px;
     height: 150px;

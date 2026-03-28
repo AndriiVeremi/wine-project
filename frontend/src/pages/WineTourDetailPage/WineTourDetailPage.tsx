@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import {
   TourDetailContainer,
+  MainContentWrapper,
   MainContent,
   GallerySection,
   MainBanner,
@@ -91,169 +92,173 @@ const WineTourDetailPage = () => {
   return (
     <Container>
       <TourDetailContainer>
-        <MainContent>
-          <GallerySection>
-            <MainBanner>
-              <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={tour.name} />
-            </MainBanner>
+        <TourHeader>
+          <TourTitle>{tour.name}</TourTitle>
+          <TourSubtitle>
+            <RatingStars value={tour.averageRating} reviews={tour.totalReviews} showRightReviews />
+            <span>•</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <FiMapPin /> {(winery?.region as { name?: string })?.name || 'Georgia'}
+            </span>
+          </TourSubtitle>
+        </TourHeader>
 
-            {galleryImages.length > 1 && (
-              <ThumbnailsGrid>
-                {galleryImages.map((url, index) => (
-                  <Thumbnail
-                    key={index}
-                    $active={activeImageIdx === index}
-                    onClick={() => setActiveImageIdx(index)}
-                  >
-                    <img src={url} alt={`Thumbnail ${index + 1}`} />
-                  </Thumbnail>
-                ))}
-              </ThumbnailsGrid>
-            )}
-          </GallerySection>
+        <MainContentWrapper>
+          <MainContent>
+            <GallerySection>
+              <MainBanner>
+                <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={tour.name} />
+              </MainBanner>
 
-          <DescriptionBox>
-            <h2>About this tour</h2>
-            <p>{tour.description}</p>
-          </DescriptionBox>
+              {galleryImages.length > 1 && (
+                <ThumbnailsGrid>
+                  {galleryImages.map((url, index) => (
+                    <Thumbnail
+                      key={index}
+                      $active={activeImageIdx === index}
+                      onClick={() => setActiveImageIdx(index)}
+                    >
+                      <img src={url} alt={`Thumbnail ${index + 1}`} />
+                    </Thumbnail>
+                  ))}
+                </ThumbnailsGrid>
+              )}
+            </GallerySection>
 
-          <MobileBookingCard>
-            <PriceRow>
-              <div className="label">Price per person</div>
-              <div className="amount">${tour.price}</div>
-            </PriceRow>
+            <SpecsGrid style={{ marginTop: '20px', marginBottom: '10px' }}>
+              <SpecItem>
+                <div className="icon">
+                  <FiClock />
+                </div>
+                <div className="label">Duration</div>
+                <div className="value">{tour.duration} Hours</div>
+              </SpecItem>
+              <SpecItem>
+                <div className="icon">
+                  <FiUsers />
+                </div>
+                <div className="label">Group Size</div>
+                <div className="value">
+                  {tour.groupSize.min}-{tour.groupSize.max} Pers.
+                </div>
+              </SpecItem>
+              <SpecItem>
+                <div className="icon">
+                  <FiMapPin />
+                </div>
+                <div className="label">Region</div>
+                <div className="value">
+                  {(winery?.region as { name?: string })?.name || 'Local'}
+                </div>
+              </SpecItem>
+              <SpecItem>
+                <div className="icon">
+                  <FiShield />
+                </div>
+                <div className="label">Safety</div>
+                <div className="value">Certified</div>
+              </SpecItem>
+            </SpecsGrid>
 
-            <FeatureList>
-              <FeatureItem>
-                <FiCheckCircle /> Professional wine guide
-              </FeatureItem>
-              <FeatureItem>
-                <FiCheckCircle /> Tasting of 5 premium wines
-              </FeatureItem>
-              <FeatureItem>
-                <FiCheckCircle /> Traditional Georgian snacks
-              </FeatureItem>
-              <FeatureItem>
-                <FiCheckCircle /> Free cancellation (24h)
-              </FeatureItem>
-            </FeatureList>
-
-            <MainButton size="large" onClick={handleBookingClick}>
-              Book This Tour
-            </MainButton>
-          </MobileBookingCard>
-
-          <DescriptionBox>
-            <h2>Reviews</h2>
-            <ItemReviews tourId={id} key={reviewsKey} />
-          </DescriptionBox>
-
-          <DescriptionBox>
-            <h2>Leave a review</h2>
-            <AddReviewForm tourId={id} onReviewAdded={handleReviewAdded} />
-          </DescriptionBox>
-        </MainContent>
-
-        <Sidebar>
-          <TourHeader>
-            <TourTitle>{tour.name}</TourTitle>
-            <TourSubtitle>
-              <RatingStars
-                value={tour.averageRating}
-                reviews={tour.totalReviews}
-                showRightReviews
+            <DescriptionBox>
+              <h2>About this tour</h2>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: tour.description || 'No description available.',
+                }}
               />
-              <span>•</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <FiMapPin /> {(winery?.region as { name?: string })?.name || 'Georgia'}
-              </span>
-            </TourSubtitle>
-          </TourHeader>
+            </DescriptionBox>
 
-          <BookingCard>
-            <PriceRow>
-              <div className="label">Price per person</div>
-              <div className="amount">${tour.price}</div>
-            </PriceRow>
+            <MobileBookingCard>
+              <PriceRow>
+                <div className="label">Price per person</div>
+                <div className="amount">${tour.price}</div>
+              </PriceRow>
 
-            <FeatureList>
-              <FeatureItem>
-                <FiCheckCircle /> Professional wine guide
-              </FeatureItem>
-              <FeatureItem>
-                <FiCheckCircle /> Tasting of 5 premium wines
-              </FeatureItem>
-              <FeatureItem>
-                <FiCheckCircle /> Traditional Georgian snacks
-              </FeatureItem>
-              <FeatureItem>
-                <FiCheckCircle /> Free cancellation (24h)
-              </FeatureItem>
-            </FeatureList>
+              <FeatureList>
+                <FeatureItem>
+                  <FiCheckCircle /> Professional wine guide
+                </FeatureItem>
+                <FeatureItem>
+                  <FiCheckCircle /> Tasting of 5 premium wines
+                </FeatureItem>
+                <FeatureItem>
+                  <FiCheckCircle /> Traditional Georgian snacks
+                </FeatureItem>
+                <FeatureItem>
+                  <FiCheckCircle /> Free cancellation (24h)
+                </FeatureItem>
+              </FeatureList>
 
-            <MainButton size="large" onClick={handleBookingClick}>
-              Book This Tour
-            </MainButton>
+              <MainButton size="large" onClick={handleBookingClick}>
+                Book This Tour
+              </MainButton>
+            </MobileBookingCard>
 
-            <p style={{ fontSize: '12px', color: 'var(--secondary-gray)', textAlign: 'center' }}>
-              No hidden fees. Instant confirmation.
-            </p>
-          </BookingCard>
+            <DescriptionBox>
+              <h2>Reviews</h2>
+              <ItemReviews tourId={id} key={reviewsKey} />
+            </DescriptionBox>
 
-          <SpecsGrid>
-            <SpecItem>
-              <div className="icon">
-                <FiClock />
-              </div>
-              <div className="label">Duration</div>
-              <div className="value">{tour.duration} Hours</div>
-            </SpecItem>
-            <SpecItem>
-              <div className="icon">
-                <FiUsers />
-              </div>
-              <div className="label">Group Size</div>
-              <div className="value">
-                {tour.groupSize.min}-{tour.groupSize.max} Pers.
-              </div>
-            </SpecItem>
-            <SpecItem>
-              <div className="icon">
-                <FiMapPin />
-              </div>
-              <div className="label">Region</div>
-              <div className="value">{(winery?.region as { name?: string })?.name || 'Local'}</div>
-            </SpecItem>
-            <SpecItem>
-              <div className="icon">
-                <FiShield />
-              </div>
-              <div className="label">Safety</div>
-              <div className="value">Certified</div>
-            </SpecItem>
-          </SpecsGrid>
-        </Sidebar>
-      </TourDetailContainer>
+            <DescriptionBox>
+              <h2>Leave a review</h2>
+              <AddReviewForm tourId={id} onReviewAdded={handleReviewAdded} />
+            </DescriptionBox>
+          </MainContent>
 
-      {winery && (
-        <WineryContactModal
-          winery={winery}
-          isOpen={isContactModalOpen}
-          onClose={() => setIsContactModalOpen(false)}
-        />
-      )}
+          <Sidebar>
+            <BookingCard>
+              <PriceRow>
+                <div className="label">Price per person</div>
+                <div className="amount">${tour.price}</div>
+              </PriceRow>
 
-      {(otherTours.length > 0 || isLoadingAllTours) && (
-        <SliderSection>
-          <SectionHeaderTitle>More tours</SectionHeaderTitle>
-          <Slider
-            items={otherTours}
-            isLoading={isLoadingAllTours && otherTours.length === 0}
-            renderSkeleton={() => <TourCardSkeleton />}
-            renderItem={(t) => <SliderCardTour tour={t} />}
+              <FeatureList>
+                <FeatureItem>
+                  <FiCheckCircle /> Professional wine guide
+                </FeatureItem>
+                <FeatureItem>
+                  <FiCheckCircle /> Tasting of 5 premium wines
+                </FeatureItem>
+                <FeatureItem>
+                  <FiCheckCircle /> Traditional Georgian snacks
+                </FeatureItem>
+                <FeatureItem>
+                  <FiCheckCircle /> Free cancellation (24h)
+                </FeatureItem>
+              </FeatureList>
+
+              <MainButton size="large" onClick={handleBookingClick}>
+                Book This Tour
+              </MainButton>
+
+              <p style={{ fontSize: '12px', color: 'var(--secondary-gray)', textAlign: 'center' }}>
+                No hidden fees. Instant confirmation.
+              </p>
+            </BookingCard>
+          </Sidebar>
+        </MainContentWrapper>
+
+        {winery && (
+          <WineryContactModal
+            winery={winery}
+            isOpen={isContactModalOpen}
+            onClose={() => setIsContactModalOpen(false)}
           />
-        </SliderSection>
-      )}
+        )}
+
+        {(otherTours.length > 0 || isLoadingAllTours) && (
+          <SliderSection>
+            <SectionHeaderTitle>More tours</SectionHeaderTitle>
+            <Slider
+              items={otherTours}
+              isLoading={isLoadingAllTours && otherTours.length === 0}
+              renderSkeleton={() => <TourCardSkeleton />}
+              renderItem={(t) => <SliderCardTour tour={t} />}
+            />
+          </SliderSection>
+        )}
+      </TourDetailContainer>
     </Container>
   );
 };

@@ -17,7 +17,7 @@ const StyledWinerySkeleton = styled.div`
 const WineryCardSkeleton = () => {
   return (
     <StyledWinerySkeleton>
-      <Skeleton height="200px" $borderRadius="12px" />
+      <Skeleton height="300px" $borderRadius="12px" />
       <div style={{ marginTop: '-4px' }}>
         <Skeleton width="100px" height="16px" />
       </div>
