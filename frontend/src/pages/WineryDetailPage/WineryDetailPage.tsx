@@ -98,7 +98,6 @@ const WineryDetailPage = () => {
   return (
     <Container>
       <DetailPageContainer>
-        <WineryNameTitle style={{ marginBottom: '32px' }}>{winery.name}</WineryNameTitle>
         <HeroSection>
           <GalleryWrapper>
             <MainBanner>
@@ -118,6 +117,7 @@ const WineryDetailPage = () => {
             </ThumbnailsGrid>
           </GalleryWrapper>
           <WineryInfoBlock>
+            <WineryNameTitle>{winery.name}</WineryNameTitle>
             <WineryHeaderRow>
               <WineryLogoInHeader>
                 <img src={winery.logoUrl || '/assets/winery-placeholder.png'} alt="Logo" />
