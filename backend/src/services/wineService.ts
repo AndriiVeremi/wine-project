@@ -176,7 +176,7 @@ export class WineService {
           { path: 'region', select: 'name' },
         ],
       })
-      .populate('grape', 'name')
+      .populate('grape')
       .exec();
 
     if (!wine) {

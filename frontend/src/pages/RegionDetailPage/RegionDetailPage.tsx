@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams } from 'react-router-dom';
 import { getRegionByName } from '@/api/regions';
 import { useWineriesStore } from '@/store/wineries/wineriesStore';
@@ -53,19 +54,12 @@ const RegionDetailPage = () => {
 
   useEffect(() => {
     if (isImageModalOpen) {
-      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100%';
-      document.body.style.paddingRight = `${scrollBarWidth}px`;
+      document.body.classList.add('no-scroll');
     } else {
-      document.body.style.overflow = 'auto';
-      document.body.style.height = 'auto';
-      document.body.style.paddingRight = '0px';
+      document.body.classList.remove('no-scroll');
     }
     return () => {
-      document.body.style.overflow = 'auto';
-      document.body.style.height = 'auto';
-      document.body.style.paddingRight = '0px';
+      document.body.classList.remove('no-scroll');
     };
   }, [isImageModalOpen]);
 
@@ -145,16 +139,19 @@ const RegionDetailPage = () => {
           </StyledRegionInfo>
         </StyledRegionHero>
 
-        {isImageModalOpen && region.imageUrl && (
-          <StyledImageModalOverlay onClick={handleCloseModal}>
-            <StyledCloseModal onClick={handleCloseModal}>&times;</StyledCloseModal>
-            <StyledModalImage
-              src={region.imageUrl}
-              alt={region.name}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </StyledImageModalOverlay>
-        )}
+        {isImageModalOpen &&
+          region.imageUrl &&
+          createPortal(
+            <StyledImageModalOverlay onClick={handleCloseModal}>
+              <StyledCloseModal onClick={handleCloseModal}>&times;</StyledCloseModal>
+              <StyledModalImage
+                src={region.imageUrl}
+                alt={region.name}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </StyledImageModalOverlay>,
+            document.body,
+          )}
 
         <StyledRegionGrid>
           <StyledColumn>

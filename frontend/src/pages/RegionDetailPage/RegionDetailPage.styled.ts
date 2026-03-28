@@ -70,7 +70,7 @@ export const StyledImageModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  z-index: 10000;
   cursor: zoom-out;
   padding: 20px;
 `;

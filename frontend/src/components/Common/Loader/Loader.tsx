@@ -1,4 +1,5 @@
 import { RevolvingDot } from 'react-loader-spinner';
+import { StyledLoaderContainer, LoaderWrapper } from './Loader.styled';
 
 interface LoaderProps {
   height?: number | string;
@@ -13,36 +14,17 @@ export const Loader: React.FC<LoaderProps> = ({
   color = '#841013',
   isFullScreen = true,
 }) => {
-  const containerStyle: React.CSSProperties = isFullScreen
-    ? {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 9999,
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      }
-    : {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '2rem',
-        width: '100%',
-      };
-
   return (
-    <div style={containerStyle}>
-      <RevolvingDot
-        visible={true}
-        height={height}
-        width={width}
-        color={color}
-        ariaLabel="revolving-dot-loading"
-      />
-    </div>
+    <StyledLoaderContainer $isFullScreen={isFullScreen}>
+      <LoaderWrapper>
+        <RevolvingDot
+          visible={true}
+          height={height}
+          width={width}
+          color={color}
+          ariaLabel="revolving-dot-loading"
+        />
+      </LoaderWrapper>
+    </StyledLoaderContainer>
   );
 };
