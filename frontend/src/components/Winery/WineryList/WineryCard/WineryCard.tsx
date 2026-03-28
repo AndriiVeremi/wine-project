@@ -30,11 +30,16 @@ const WineryCard = ({ winery }: WineryCardProps) => {
     e.stopPropagation();
   };
 
+  const mainImage =
+    winery.galleryUrl && winery.galleryUrl.length > 0
+      ? winery.galleryUrl[0]
+      : winery.logoUrl || '/assets/winery-placeholder.png';
+
   return (
     <StyledWineryCardDiv onClick={handleCardClick}>
       {winery.isVip && <VIPBadge size={60} style={{ position: 'absolute', top: 0, left: 0 }} />}
 
-      <WineryLogo src={winery.logoUrl || '/assets/winery-placeholder.png'} alt={winery.name} />
+      <WineryLogo src={mainImage} alt={winery.name} />
 
       <RatingWrapper>
         <RatingStars

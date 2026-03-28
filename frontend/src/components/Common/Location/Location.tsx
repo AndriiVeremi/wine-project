@@ -42,6 +42,7 @@ const Location = () => {
 
   const handleSelect = (e: React.MouseEvent, c: string) => {
     e.stopPropagation();
+    if (c === 'Ukraine') return;
     setCountry(c);
     setFilter('country', c);
     setFilter('region', '');
@@ -70,8 +71,16 @@ const Location = () => {
       {isOpen && countries.length > 0 && (
         <DropdownMenu>
           {countries.map((c) => (
-            <DropdownMenuItem key={c} onClick={(e) => handleSelect(e, c)} $active={c === country}>
-              {c}
+            <DropdownMenuItem
+              key={c}
+              onClick={(e) => handleSelect(e, c)}
+              $active={c === country}
+              style={{
+                opacity: c === 'Ukraine' ? 0.4 : 1,
+                cursor: c === 'Ukraine' ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {c} {c === 'Ukraine' && '(Coming soon)'}
             </DropdownMenuItem>
           ))}
         </DropdownMenu>

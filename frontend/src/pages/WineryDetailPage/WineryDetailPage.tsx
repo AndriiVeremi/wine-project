@@ -88,8 +88,11 @@ const WineryDetailPage = () => {
       </Container>
     );
 
-  const galleryImages = [...(winery.logoUrl ? [winery.logoUrl] : []), ...(winery.galleryUrl || [])];
-  if (galleryImages.length === 0) galleryImages.push('/assets/winery-placeholder.png');
+  const galleryImages =
+    winery.galleryUrl && winery.galleryUrl.length > 0
+      ? winery.galleryUrl
+      : [winery.logoUrl || '/assets/winery-placeholder.png'];
+
   const thumbnails = galleryImages.slice(0, 4);
 
   return (
