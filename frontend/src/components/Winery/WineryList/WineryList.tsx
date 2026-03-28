@@ -13,8 +13,8 @@ const WineryList = ({ wineries }: WineryListProps) => {
 
   return (
     <StyledWineryList>
-      {wineries.map((winery) => (
-        <li key={winery._id}>
+      {wineries.map((winery, index) => (
+        <li key={`${winery._id}-${index}`}>
           <WineryCard winery={winery} />
         </li>
       ))}
