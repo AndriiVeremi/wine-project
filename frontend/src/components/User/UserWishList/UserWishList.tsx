@@ -1,21 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFavoritesStore } from '@/store/user/useFavoritesStore';
+import { useFavorites, useFavoriteMutations } from '@/hooks/queries/useFavorites';
 import { FiHeart } from 'react-icons/fi';
 import TableManager, { type Column } from '@/components/Common/TableManager/TableManager';
 import { ItemImg } from '@/components/Common/TableManager/TableManager.styled';
 import type { Wine } from '@/types/wine';
 
 const UserWishList = () => {
-  const { favorites, isLoading, fetchFavorites, toggleFavorite } = useFavoritesStore();
+  const { data: favorites = [], isLoading } = useFavorites();
+  const { toggleFavorite } = useFavoriteMutations();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const limit = 10;
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchFavorites();
-  }, [fetchFavorites]);
 
   const filtered = favorites.filter(
     (w) =>
@@ -78,9 +75,8 @@ const UserWishList = () => {
       search={search}
       onSearch={setSearch}
       onPage={setPage}
-      onRemove={(id) => {
-        const item = favorites.find((f) => f._id === id);
-        if (item) toggleFavorite(item);
+      onRemove={async (id) => {
+        await toggleFavorite({ wineId: id, isFavorite: true });
       }}
       getId={(w) => w._id}
       emptyIcon={<FiHeart />}

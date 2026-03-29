@@ -1,6 +1,6 @@
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { StyledFavoriteButton } from './FavoriteButton.styled';
-import { useFavoritesStore } from '@/store/user/useFavoritesStore';
+import { useFavorites, useFavoriteMutations } from '@/hooks/queries/useFavorites';
 import type { Wine } from '@/types/wine';
 import { useAuthStore } from '@/store/auth/authStore';
 
@@ -13,17 +13,19 @@ interface Props {
 }
 
 const FavoriteButton = ({ wine, className, style, size = 24, color = '#841013' }: Props) => {
-  const isFavorite = useFavoritesStore((s) => s.isFavorite(wine._id));
+  const { data: favorites = [] } = useFavorites();
+  const { toggleFavorite } = useFavoriteMutations();
+
+  const isFavorite = favorites.some((f) => f._id === wine._id);
   const user = useAuthStore((s) => s.user);
   const openAuthModal = useAuthStore((s) => s.openAuthModal);
-  const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
 
-  const handleToggle = (e: React.MouseEvent) => {
+  const handleToggle = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
     if (user) {
-      toggleFavorite(wine);
+      await toggleFavorite({ wineId: wine._id, isFavorite });
     } else {
       openAuthModal('login');
     }

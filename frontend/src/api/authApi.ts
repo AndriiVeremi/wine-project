@@ -10,7 +10,7 @@ export const getUserProfile = async () => {
   return await apiClient.get<UserProfile>('/users/me');
 };
 
-export const updateUserApi = async (data: Partial<UserProfile>) => {
+export const updateUserApi = async (data: FormData | Partial<UserProfile>) => {
   const response = await apiClient.patch<UserProfile>('/users/me', data);
   return response.data;
 };

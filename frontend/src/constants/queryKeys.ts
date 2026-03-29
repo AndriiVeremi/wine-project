@@ -26,4 +26,7 @@ export const QUERY_KEYS = {
   auth: {
     profile: (uid?: string) => ['auth', 'profile', uid] as const,
   },
+  favorites: {
+    all: ['favorites'] as const,
+  },
 };
