@@ -19,10 +19,11 @@
 - **AI Integration:** Google Generative AI (Gemini API)
 
 ### Frontend
-- **Framework:** React
+- **Framework:** React 19
 - **Build Tool:** Vite
 - **Language:** TypeScript
-- **State Management:** Zustand, React Query
+- **State Management:** TanStack Query (серверний стейт), Zustand (клієнтський стейт)
+- **Forms:** React Hook Form + Zod
 - **Styling:** Styled Components
 - **Rich Text:** Tiptap
 - **Maps:** Leaflet
@@ -132,24 +133,20 @@ backend/tests/
 ### Frontend
 ```
 frontend/src/
-├── api/             # Взаємодія з API
-├── assets/          # Статичні файли (зображення, іконки)
+├── api/             # Ендпоінти API (Axios інстанс)
+├── assets/          # Статичні файли
 ├── components/      # React-компоненти
-│   ├── common/      # Загальні компоненти
-│   ├── forms/       # Компоненти форм
-│   ├── layout/      # Компоненти розмітки (header, footer)
-│   └── modals/      # Модальні вікна
-├── config/          # Конфігурація (Firebase)
+│   ├── common/      # Спільні (Skeleton, FormField)
+│   ├── forms/       # Форми (React Hook Form)
+│   └── .../         # Доменні блоки (Wine, Winery)
+├── constants/       # Query Keys, дані мапи, константи
 ├── hooks/           # Кастомні хуки
-├── pages/           # Компоненти сторінок
-├── store/           # Глобальний стейт (Zustand)
-├── styles/          # Глобальні стилі
-├── tests/           # Тести
-├── types/           # TypeScript типи
-├── App.css          # Стилі основного компонента
-├── App.tsx          # Основний компонент застосунку
-├── index.css        # Глобальні стилі
-└── main.tsx         # Точка входу застосунку
+│   ├── queries/     # TanStack Query хуки
+│   └── .../         # Утилітарні хуки
+├── pages/           # Сторінки
+├── store/           # Zustand сторі (Client UI State)
+├── types/           # TypeScript типи (уніфіковані)
+└── utils/           # Форматування, тости, допомога
 ```
 
 

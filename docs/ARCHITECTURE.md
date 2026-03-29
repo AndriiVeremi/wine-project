@@ -33,30 +33,33 @@ Wine Project побудований за архітектурою **клієнт
 | **Vite** | Збірка та dev-сервер |
 | **TypeScript** | Типізація |
 | **React Router** | Маршрутизація |
-| **React Query** | Серверний стейт, кешування |
-| **Zustand** | Клієнтський стейт |
+| **TanStack Query** | Серверний стейт, кешування, синхронізація |
+| **Zustand** | Клієнтський UI-стейт (фільтри, авторизація) |
+| **React Hook Form** | Керування формами та валідація |
+| **Zod** | Схеми валідації даних |
 | **styled-components** | Стилізація |
 | **Firebase SDK** | Автентифікація |
-| **Axios** | HTTP-клієнт |
+| **Axios** | HTTP-клієнт з кешуванням токенів |
 | **Leaflet** | Мапи |
 | **Tiptap** | Rich Text Editor |
 
 ### Структура
 ```
 frontend/src/
-├── api/              # API-клієнти
+├── api/              # API-клієнти (Axios інстанс та ендпоінти)
 ├── components/       # React-компоненти
-│   ├── common/       # Перевикористовувані
-│   ├── forms/        # Форми
+│   ├── common/       # Перевикористовувані (Skeleton, FormField тощо)
+│   ├── forms/        # Форми на базі React Hook Form
 │   ├── layout/       # Шаблон (Header, Footer)
-│   └── .../          # Доменні компоненти
-├── config/           # Firebase конфіг
+│   └── .../          # Доменні компоненти (Wine, Winery, Tour)
+├── constants/        # Константи, Query Keys, дані мапи
 ├── hooks/            # Кастомні хуки
-├── pages/            # Сторінки
-├── store/            # Zustand сторі
-├── types/            # TypeScript типи
-├── constants/        # Константи
-└── tests/            # Тести
+│   ├── queries/      # Хуки TanStack Query (useWines, useProfile тощо)
+│   └── .../          # Утилітарні хуки (useDebounce, useScrollLock)
+├── pages/            # Сторінки додатку
+├── store/            # Zustand сторі (Client-side state)
+├── types/            # TypeScript типи (уніфіковані, DRY)
+└── utils/            # Утиліти (форматування, обробка помилок)
 ```
 
 ### Маршрутизація
@@ -132,8 +135,8 @@ backend/src/
 ```
 1. Користувач вводить email/password на фронтенді
 2. Firebase Auth створює токен
-3. Токен зберігається у Firebase SDK
-4. При API-запитах токен відправляється в заголовку
+3. Токен кешується у пам'яті (memory variable) та автоматично оновлюється через `onIdTokenChanged`
+4. Axios Interceptor синхронно додає кешований токен у заголовок Authorization
 5. Backend перевіряє токен через Firebase Admin SDK
 6. Firebase Admin повертає decoded token з UID
 ```
