@@ -107,7 +107,6 @@ const WineryDetailPage = () => {
             <MainBanner>
               <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={winery.name} />
             </MainBanner>
-            {/* ... rest of gallery ... */}
             <ThumbnailsGrid>
               {thumbnails.map((url, index) => (
                 <Thumbnail

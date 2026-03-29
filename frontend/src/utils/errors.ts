@@ -2,7 +2,9 @@ import type { AxiosError } from 'axios';
 import type { ApiError } from '@/types/api';
 
 export const getApiErrorMessage = (err: unknown): string => {
-  const error = err as AxiosError<ApiError['response'] extends { data: infer D } ? D : any>;
+  const error = err as AxiosError<
+    ApiError['response'] extends { data: infer D } ? D : Record<string, unknown>
+  >;
 
   const data = error.response?.data;
 

@@ -96,7 +96,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
         err &&
         typeof err === 'object' &&
         'code' in err &&
-        (err as any).code === 'auth/requires-recent-login'
+        (err as { code: string }).code === 'auth/requires-recent-login'
       ) {
         toast.error('Please logout and login again to change password (security rule)');
       } else {

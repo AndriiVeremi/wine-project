@@ -31,13 +31,11 @@ const WineDetailSkeleton = () => {
         </div>
       </StyledDetailSkeleton>
 
-      {/* Tabs */}
       <div style={{ display: 'flex', gap: '20px', margin: '40px 0 20px 0' }}>
         <Skeleton width="120px" height="40px" $borderRadius="30px" />
         <Skeleton width="120px" height="40px" $borderRadius="30px" />
       </div>
 
-      {/* Content */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <Skeleton width="100%" height="20px" />
         <Skeleton width="100%" height="20px" />

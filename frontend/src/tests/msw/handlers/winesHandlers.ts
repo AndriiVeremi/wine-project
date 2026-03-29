@@ -11,7 +11,6 @@ export const winesHandlers = [
     const url = new URL(request.url);
     let wines = [...mockWines];
 
-
     const color = url.searchParams.get('color');
     if (color) {
       wines = wines.filter((w) => w.color === color);

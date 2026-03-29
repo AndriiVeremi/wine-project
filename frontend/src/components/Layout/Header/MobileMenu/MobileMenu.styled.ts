@@ -15,7 +15,7 @@ export const MobileMenuOverlay = styled.div<{ $isOpen: boolean }>`
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  padding: 50px 0 0; /* Padding top only */
+  padding: 50px 0 0;
   overflow: hidden;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
   border-left: 1px solid var(--tertiary-gray);
@@ -89,12 +89,12 @@ export const MenuLink = styled.button<{ $active?: boolean }>`
 export const UserMenuMobile = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically in the middle section */
+  justify-content: center;
   gap: 20px;
   margin: 0 16px;
   padding: 25px 0;
   border-top: 1px solid var(--tertiary-gray);
-  flex: 1; /* Takes all available middle space */
+  flex: 1;
 `;
 
 export const SocialList = styled.ul`
@@ -102,7 +102,7 @@ export const SocialList = styled.ul`
   justify-content: center;
   gap: 20px;
   margin: 0 16px;
-  padding: 25px 0; /* Padding top and bottom (symmetrical) */
+  padding: 25px 0;
   border-top: 1px solid var(--tertiary-gray);
 `;
 
