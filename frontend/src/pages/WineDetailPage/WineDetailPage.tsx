@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { useWineDetailStore } from '@/store/wine/wineDetailsStore';
+import { useWine, useWines } from '@/hooks/queries/useWines';
 import WineOverview from '@/components/Wine/WineOverview/WineOverview';
 import WineReviews from '@/components/Wine/WineReviews';
 import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
@@ -9,7 +8,6 @@ import Container from '@/components/Common/Container';
 import Slider from '@/components/Slider/Slider';
 import SliderCardWine from '@/components/Slider/cards/SliderCardWine';
 import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
-import { getWines } from '@/api/wines';
 import type { Wine } from '@/types/wine';
 import {
   StyledWinePageDiv,
@@ -29,40 +27,38 @@ import InfoButton from '@/components/Buttons/InfoButton';
 import { FiThermometer, FiWind, FiTruck } from 'react-icons/fi';
 import { HiOutlineLightBulb } from 'react-icons/hi2';
 
+import { getFoodEmoji } from '@/utils/wineHelpers';
+
 const WineDetailPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   const [refreshReviews, setRefreshReviews] = useState(0);
 
-  const wine = useWineDetailStore((s) => s.wine);
-  const loading = useWineDetailStore((s) => s.loading);
-  const error = useWineDetailStore((s) => s.error);
-  const fetchWine = useWineDetailStore((s) => s.fetchWine);
+  const { data: wineData, isLoading: loading, error } = useWine(id);
+  const wine = wineData?.data;
 
-  const { data: topWinesData, isLoading: isTopWinesLoading } = useQuery({
-    queryKey: ['top-wines', wine?.color, wine?.sweetness],
-    queryFn: () =>
-      getWines({
-        limit: 11,
-        sortBy: 'averageRating_desc',
-        color: wine?.color,
-        sweetness: wine?.sweetness,
-      }),
-    enabled: !!wine,
-  });
+  const { data: topWinesData, isLoading: isTopWinesLoading } = useWines(
+    wine
+      ? {
+          limit: 11,
+          sortBy: 'averageRating_desc',
+          color: wine.color,
+          sweetness: wine.sweetness,
+        }
+      : {},
+  );
 
   const topWines =
     topWinesData?.data?.wines?.filter((w: Wine) => w._id !== wine?._id).slice(0, 10) || [];
 
   useEffect(() => {
     if (id) {
-      fetchWine(id);
       window.scrollTo(0, 0);
     }
-  }, [id, fetchWine]);
+  }, [id]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error instanceof Error ? error.message : 'Failed to load'}</p>;
   if (!wine) return <p>Wine not found</p>;
 
   return (
@@ -153,7 +149,32 @@ const WineDetailPage = () => {
               </WineProfileGrid>
 
               <div className="description-title">Food Pairing</div>
-              <p style={{ marginTop: '10px' }}>{wine.foodPairing?.join(', ') || '—'}</p>
+              <div
+                style={{
+                  marginTop: '10px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                }}
+              >
+                {wine.foodPairing?.map((food: string) => (
+                  <span
+                    key={food}
+                    style={{
+                      background: '#f8fafc',
+                      padding: '4px 12px',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      border: '1px solid #f1f5f9',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <span style={{ fontSize: '18px' }}>{getFoodEmoji(food)}</span> {food}
+                  </span>
+                )) || '—'}
+              </div>
 
               <ServingSection>
                 <ServingItem title="Serving Temperature">
@@ -194,7 +215,6 @@ const WineDetailPage = () => {
                 onReviewAdded={() => {
                   setRefreshReviews((prev) => prev + 1);
                   setActiveTab('reviews');
-                  if (id) fetchWine(id);
                 }}
               />
             </>
@@ -210,7 +230,7 @@ const WineDetailPage = () => {
             </SliderTitle>
             <Slider
               items={topWines.slice(0, 8)}
-              isLoading={isTopWinesLoading && topWines.length === 0}
+              isLoading={isTopWinesLoading}
               renderSkeleton={() => <WineCardSkeleton />}
               renderItem={(wineItem: Wine) => <SliderCardWine wine={wineItem} />}
             />

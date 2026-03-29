@@ -2,7 +2,8 @@ import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { getWineryById } from '@/api/wineries';
 import type { Winery } from '@/types/wineries';
-import { useWinesStore } from '@/store/wine/winesStore';
+import type { Wine } from '@/types/wine';
+import { useWines } from '@/hooks/queries/useWines';
 import RatingStars from '@/components/Common/RatingStars';
 import { Loader } from '@/components/Common/Loader';
 import Slider from '@/components/Slider/Slider';
@@ -52,7 +53,11 @@ const WineryDetailPage = () => {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [refresh, setRefresh] = useState(0);
 
-  const { wines, fetch, loading: winesLoading } = useWinesStore();
+  const { data: winesData, isLoading: winesLoading } = useWines(
+    id ? { wineryId: id, limit: 10 } : {},
+  );
+
+  const wines = winesData?.data?.wines || [];
 
   const loadWinery = useCallback(async () => {
     if (!id) return;
@@ -70,7 +75,6 @@ const WineryDetailPage = () => {
       try {
         setLoading(true);
         await loadWinery();
-        await fetch({ wineryId: id, limit: 10 });
       } catch {
         setError('Failed to load data');
       } finally {
@@ -78,7 +82,7 @@ const WineryDetailPage = () => {
       }
     };
     loadAll();
-  }, [id, fetch, loadWinery]);
+  }, [id, loadWinery]);
 
   if (loading) return <Loader isFullScreen={false} />;
   if (error || !winery)
@@ -230,9 +234,9 @@ const WineryDetailPage = () => {
             <SectionHeaderTitle>Bestsellers</SectionHeaderTitle>
             <Slider
               items={wines.slice(0, 8)}
-              isLoading={winesLoading && wines.length === 0}
+              isLoading={winesLoading}
               renderSkeleton={() => <WineCardSkeleton />}
-              renderItem={(wine) => <SliderCardWine wine={wine} />}
+              renderItem={(wine: Wine) => <SliderCardWine wine={wine} />}
             />
           </section>
         )}

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useWinesStore } from '@/store/wine/winesStore';
 import { useAuthStore } from '@/store/auth/authStore';
 import { FaWineBottle } from 'react-icons/fa';
 import MainButton from '@/components/Buttons/MainButton';
 import AddWine from '@/components/Forms/AddWinesForm/AddWinesForm';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useWines, useWineMutations } from '@/hooks/queries/useWines';
 import type { Wine } from '@/types/wine';
 import TableManager, { type Column } from '@/components/Common/TableManager/TableManager';
 import {
@@ -13,7 +13,6 @@ import {
   Header,
 } from '@/components/Common/TableManager/TableManager.styled';
 import { SectionTitle } from '@/pages/AccountPage/AccountPage.styled';
-import toast from 'react-hot-toast';
 
 interface Props {
   wineryId?: string;
@@ -26,17 +25,21 @@ const WineManager = ({ wineryId }: Props) => {
   const [page, setPage] = useState(1);
   const findText = useDebounce(search, 500);
 
-  const { wines, fetch, remove, loading, totalPages, total } = useWinesStore();
-  const { user, profile } = useAuthStore();
+  const { profile } = useAuthStore();
   const isAdmin = profile?.role === 'ADMIN';
 
-  useEffect(() => {
-    if (user?.uid && (wineryId || isAdmin)) {
-      fetch({ limit: 10, page, wineryId, name: findText });
-    } else if (user?.uid && !isAdmin && !wineryId) {
-      useWinesStore.setState({ wines: [], total: 0, totalPages: 0 });
-    }
-  }, [user?.uid, page, wineryId, findText, fetch, isAdmin]);
+  const { data, isLoading } = useWines({
+    limit: 10,
+    page,
+    wineryId: wineryId || undefined,
+    name: findText || undefined,
+  });
+
+  const { deleteWine } = useWineMutations();
+
+  const wines = data?.data?.wines || [];
+  const total = data?.data?.totalCount || 0;
+  const totalPages = data?.data?.totalPages || 1;
 
   useEffect(() => {
     setPage(1);
@@ -64,16 +67,12 @@ const WineManager = ({ wineryId }: Props) => {
   const killWine = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this wine?')) return;
     try {
-      await remove(id);
-      toast.success('Wine deleted');
-
+      await deleteWine(id);
       if (wines.length === 1 && page > 1) {
         setPage(page - 1);
-      } else {
-        fetch({ limit: 10, page, wineryId, name: findText });
       }
     } catch {
-      toast.error('Failed to delete');
+      // Error handled by hook
     }
   };
 
@@ -89,7 +88,7 @@ const WineManager = ({ wineryId }: Props) => {
     { header: 'Year', render: (w) => w.vintage },
     {
       header: 'Price',
-      render: (w) => <span style={{ color: '#b22222', fontWeight: 700 }}>${w.price}</span>,
+      render: (w) => <span style={{ color: '#b22222', fontWeight: 700 }}>₾{w.price}</span>,
     },
   ];
 
@@ -107,7 +106,6 @@ const WineManager = ({ wineryId }: Props) => {
           wineData={activeWine}
           onSuccess={() => {
             setView('list');
-            fetch({ limit: 10, page, wineryId, name: findText });
           }}
         />
       </ManagerWrapper>
@@ -119,7 +117,7 @@ const WineManager = ({ wineryId }: Props) => {
       title={isAdmin ? 'Global Wine Database' : 'My Wine Production'}
       data={wines}
       columns={cols}
-      loading={loading}
+      loading={isLoading}
       total={total}
       totalPages={totalPages}
       page={page}

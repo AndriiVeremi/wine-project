@@ -10,11 +10,13 @@ export const HeroSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 40px;
+  margin-bottom: 40px;
 
   @media (min-width: ${breakpoints.desktop}) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
+    margin-bottom: 60px;
   }
 `;
 

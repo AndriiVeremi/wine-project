@@ -17,7 +17,7 @@ import {
   GroupSizeWrapper,
 } from './AddTourForm.styled';
 import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
-import { useToursStore } from '@/store/tours/toursStore';
+import { useTourMutations } from '@/hooks/queries/useTours';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
@@ -41,8 +41,9 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
   const [form, setForm] = useState(init);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const { add, update } = useToursStore();
+
+  const { addTour, updateTour, isAdding, isUpdating } = useTourMutations();
+  const loading = isAdding || isUpdating;
 
   useEffect(() => {
     if (tourData) {
@@ -82,7 +83,6 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
       return toast.error('Invalid group size');
     }
 
-    setLoading(true);
     const tid = toast.loading('Saving...');
 
     try {
@@ -110,10 +110,10 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
       files.forEach((f) => data.append('images', f));
 
       if (tourData?._id) {
-        await update(tourData._id, data);
+        await updateTour({ id: tourData._id, data });
         toast.success('Updated', { id: tid });
       } else {
-        await add(data);
+        await addTour(data);
         toast.success('Added', { id: tid });
       }
 
@@ -121,8 +121,6 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error';
       toast.error(msg, { id: tid });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -177,7 +175,7 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
 
             <FormGrid>
               <FormField
-                label="Price ($)"
+                label="Price (₾)"
                 id="price"
                 type="number"
                 value={form.price}

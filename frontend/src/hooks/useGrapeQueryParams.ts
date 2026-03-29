@@ -7,14 +7,16 @@ export const useGrapeQueryParams = () => {
   const region = useGrapeFiltersStore((s) => s.region);
   const body = useGrapeFiltersStore((s) => s.body);
   const acidity = useGrapeFiltersStore((s) => s.acidity);
+  const page = useGrapeFiltersStore((s) => s.page);
 
   return useMemo(() => {
     return {
+      page,
       search: name || undefined,
       type: type || undefined,
       region: region || undefined,
       body: body || undefined,
       acidity: acidity || undefined,
     };
-  }, [name, type, region, body, acidity]);
+  }, [name, type, region, body, acidity, page]);
 };

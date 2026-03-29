@@ -2,8 +2,9 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaClock, FaWineGlassAlt } from 'react-icons/fa';
 import { getGrapeById } from '@/api/grapes';
-import { useWinesStore } from '@/store/wine/winesStore';
+import { useWines } from '@/hooks/queries/useWines';
 import type { Grape } from '@/types/grape';
+import type { Wine } from '@/types/wine';
 import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
 import Slider from '@/components/Slider/Slider';
@@ -34,32 +35,19 @@ import {
   SectionHeaderTitle,
 } from './GrapeDetailPage.styled';
 
-const calcProgress = (val: string): number => {
-  if (val === 'Low' || val === 'Light') return 25;
-  if (val === 'Medium') return 50;
-  if (val === 'High' || val === 'Full-bodied') return 75;
-  if (val === 'Very High') return 100;
-  return 0;
-};
-
-const getFoodEmoji = (text: string): string => {
-  const low = text.toLowerCase();
-  if (low.includes('cheese')) return '🧀';
-  if (low.includes('meat') || low.includes('beef') || low.includes('steak')) return '🥩';
-  if (low.includes('poultry') || low.includes('chicken')) return '🍗';
-  if (low.includes('fish') || low.includes('seafood')) return '🐟';
-  if (low.includes('salad') || low.includes('vegetable')) return '🥗';
-  if (low.includes('dessert') || low.includes('fruit') || low.includes('sweet')) return '🍰';
-  if (low.includes('pasta') || low.includes('pizza')) return '🍝';
-  return '🍽️';
-};
+import { calcProgress, getFoodEmoji } from '@/utils/wineHelpers';
 
 const GrapeDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<Grape | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeIdx, setActiveIdx] = useState(0);
-  const { wines, fetch, loading: winesLoading } = useWinesStore();
+
+  const { data: winesData, isLoading: winesLoading } = useWines(
+    data?.name ? { grape: data.name, limit: 10 } : {},
+  );
+
+  const wines = winesData?.data?.wines || [];
 
   const loadData = useCallback(async () => {
     if (!id) return;
@@ -76,12 +64,6 @@ const GrapeDetailPage = () => {
   useEffect(() => {
     loadData();
   }, [loadData]);
-
-  useEffect(() => {
-    if (data?.name) {
-      fetch({ grape: data.name, limit: 10 });
-    }
-  }, [data?.name, fetch]);
 
   if (loading) return <Loader />;
   if (!data)
@@ -232,9 +214,9 @@ const GrapeDetailPage = () => {
           <SectionHeaderTitle>Wines of {data.name}</SectionHeaderTitle>
           <Slider
             items={wines.slice(0, 8)}
-            isLoading={winesLoading && wines.length === 0}
+            isLoading={winesLoading}
             renderSkeleton={() => <WineCardSkeleton />}
-            renderItem={(w) => <SliderCardWine wine={w} />}
+            renderItem={(w: Wine) => <SliderCardWine wine={w} />}
           />
         </SliderSection>
       )}

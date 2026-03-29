@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useGrapesStore } from '@/store/grape/grapesStore';
 import { useAuthStore } from '@/store/auth/authStore';
 import { FaLeaf } from 'react-icons/fa';
 import MainButton from '@/components/Buttons/MainButton';
 import AddGrape from '@/components/Forms/AddGrapeForm/AddGrapeForm';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useGrapes, useGrapeMutations } from '@/hooks/queries/useGrapes';
 import type { Grape } from '@/types/grape';
 import TableManager, { type Column } from '@/components/Common/TableManager/TableManager';
 import {
@@ -13,7 +13,6 @@ import {
   Header,
 } from '@/components/Common/TableManager/TableManager.styled';
 import { SectionTitle } from '@/pages/AccountPage/AccountPage.styled';
-import toast from 'react-hot-toast';
 
 interface Props {
   wineryId?: string;
@@ -26,22 +25,21 @@ const GrapeManager = ({ wineryId }: Props) => {
   const [page, setPage] = useState(1);
   const debouncedSearch = useDebounce(search, 500);
 
-  const { grapes, fetchGrapes, removeGrape, loading, totalPages, totalCount } = useGrapesStore();
-  const { user, profile } = useAuthStore();
+  const { data, isLoading } = useGrapes({
+    limit: 10,
+    page,
+    search: debouncedSearch,
+    wineryId,
+  });
+
+  const { deleteGrape } = useGrapeMutations();
+
+  const { profile } = useAuthStore();
   const isAdmin = profile?.role === 'ADMIN';
 
-  useEffect(() => {
-    if (user?.uid && (wineryId || isAdmin)) {
-      fetchGrapes({
-        limit: 10,
-        page: page,
-        search: debouncedSearch,
-        wineryId,
-      });
-    } else if (user?.uid && !isAdmin && !wineryId) {
-      useGrapesStore.setState({ grapes: [], totalCount: 0, totalPages: 0 });
-    }
-  }, [user?.uid, page, debouncedSearch, fetchGrapes, wineryId, isAdmin]);
+  const grapes = data?.data?.grapes || [];
+  const totalCount = data?.data?.totalCount || 0;
+  const totalPages = data?.data?.totalPages || 1;
 
   useEffect(() => {
     setPage(1);
@@ -68,13 +66,7 @@ const GrapeManager = ({ wineryId }: Props) => {
 
   const handleRemove = async (id: string) => {
     if (window.confirm('Delete?')) {
-      try {
-        await removeGrape(id);
-        toast.success('Deleted');
-        fetchGrapes({ limit: 10, page, search: debouncedSearch, wineryId });
-      } catch {
-        toast.error('Failed');
-      }
+      await deleteGrape(id);
     }
   };
 
@@ -111,7 +103,6 @@ const GrapeManager = ({ wineryId }: Props) => {
           grapeData={editingGrape}
           onSuccess={() => {
             setView('list');
-            fetchGrapes({ limit: 10, page, search: debouncedSearch, wineryId });
           }}
         />
       </ManagerWrapper>
@@ -123,7 +114,7 @@ const GrapeManager = ({ wineryId }: Props) => {
       title={isAdmin ? 'All Grapes' : 'My Grapes'}
       data={grapes}
       columns={columns}
-      loading={loading}
+      loading={isLoading}
       total={totalCount}
       totalPages={totalPages}
       page={page}

@@ -40,7 +40,7 @@ const TourCard = ({ tour }: PropsTourCard) => {
           </InfoRow>
 
           <PriceRatingRow>
-            <Price>$ {tour.price} / person</Price>
+            <Price>₾ {tour.price} / person</Price>
             <StyledTourRatingStars value={tour.averageRating} size={14} />
           </PriceRatingRow>
         </TourCardInfo>

@@ -6,8 +6,8 @@ import type { WineColor, WineSweetness } from '@/types/wine';
 import { useQuery } from '@tanstack/react-query';
 import { getRegions } from '@/api/regions';
 import { COLOR_OPTIONS, SWEETNESS_OPTIONS } from '@/constants/wine';
-import { getGrapes } from '@/api/grapes';
-import type { Grape } from '@/types/grape';
+import { useGrapes } from '@/hooks/queries/useGrapes';
+import { QUERY_KEYS } from '@/constants/queryKeys';
 
 interface PropsWineFilter {
   className?: string;
@@ -31,7 +31,7 @@ const WineFilter = forwardRef<HTMLDivElement, PropsWineFilter>(({ className }, r
   const { country } = useLocationStore();
 
   const { data: regionsRaw = [], isLoading: isLoadingRegions } = useQuery({
-    queryKey: ['regions', country],
+    queryKey: QUERY_KEYS.regions.byCountry(country),
     queryFn: async () => {
       if (!country) return [];
       const res = await getRegions(country);
@@ -47,20 +47,15 @@ const WineFilter = forwardRef<HTMLDivElement, PropsWineFilter>(({ className }, r
 
   const regionOptions = useMemo(() => regions.map((r) => r.name), [regions]);
 
-  const { data: grapesRaw = [], isLoading: isLoadingGrapes } = useQuery({
-    queryKey: ['grapes', region],
-    queryFn: async () => {
-      const res = await getGrapes({ limit: 9999, region });
-      return res.data && Array.isArray(res.data.grapes) ? res.data.grapes : [];
-    },
+  const { data: grapesData, isLoading: isLoadingGrapes } = useGrapes({
+    limit: 9999,
+    region: region || undefined,
   });
 
-  const grapes = useMemo(
-    () => (Array.isArray(grapesRaw) ? (grapesRaw as Grape[]) : []),
-    [grapesRaw],
+  const grapeOptions = useMemo(
+    () => (grapesData?.data?.grapes || []).map((g: { name: string }) => g.name),
+    [grapesData],
   );
-
-  const grapeOptions = useMemo(() => grapes.map((g) => g.name), [grapes]);
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 

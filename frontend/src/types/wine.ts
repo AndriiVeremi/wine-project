@@ -17,6 +17,7 @@ export interface WineQueryParams {
   sortBy?: string;
   page?: number;
   limit?: number;
+  [key: string]: unknown;
 }
 
 export interface WineryInfo {

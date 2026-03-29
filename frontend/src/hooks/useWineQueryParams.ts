@@ -11,9 +11,11 @@ export const useWineQueryParams = (): WineQueryParams => {
   const minRating = useFiltersStore((s) => s.minRating);
   const vintage = useFiltersStore((s) => s.vintage);
   const name = useFiltersStore((s) => s.name);
+  const page = useFiltersStore((s) => s.page);
 
   return useMemo(() => {
     return {
+      page,
       region: region ? region.toLowerCase() : undefined,
       sweetness: sweetness ? (sweetness.toLowerCase() as WineSweetness) : undefined,
       color: color ? (color.toLowerCase() as WineColor) : undefined,
@@ -23,5 +25,5 @@ export const useWineQueryParams = (): WineQueryParams => {
       vintage: vintage ? Number(vintage) : undefined,
       name: name || undefined,
     };
-  }, [region, sweetness, color, grape, wineryId, minRating, vintage, name]);
+  }, [region, sweetness, color, grape, wineryId, minRating, vintage, name, page]);
 };

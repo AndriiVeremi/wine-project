@@ -2,6 +2,7 @@ import type { WineColor, WineSweetness } from '@/types/wine';
 import { create } from 'zustand';
 
 interface FiltersState {
+  page: number;
   country: string;
   region: string;
   sweetness: WineSweetness | '';
@@ -14,7 +15,7 @@ interface FiltersState {
   nameInput: string;
   name: string;
 
-  setFilter: (key: keyof FiltersState, value: string) => void;
+  setFilter: (key: keyof FiltersState, value: string | number) => void;
 
   setNameInput: (value: string) => void;
   applyName: () => void;
@@ -23,6 +24,7 @@ interface FiltersState {
 }
 
 export const useFiltersStore = create<FiltersState>()((set) => ({
+  page: 1,
   country: '',
   region: '',
   sweetness: '',
@@ -39,6 +41,8 @@ export const useFiltersStore = create<FiltersState>()((set) => ({
     set((state) => ({
       ...state,
       [key]: value,
+      // Reset page to 1 when any filter other than page changes
+      page: key === 'page' ? (value as number) : 1,
     })),
 
   setNameInput: (value) => set({ nameInput: value }),
@@ -46,10 +50,12 @@ export const useFiltersStore = create<FiltersState>()((set) => ({
   applyName: () =>
     set((state) => ({
       name: state.nameInput,
+      page: 1,
     })),
 
   clearFilters: () =>
     set({
+      page: 1,
       country: '',
       region: '',
       sweetness: '',

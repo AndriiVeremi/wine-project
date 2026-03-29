@@ -1,6 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { getWineries } from '@/api/wineries';
-import { getGrapes } from '@/api/grapes';
+import React, { useState, useEffect, Suspense, lazy, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/Buttons/MainButton';
 import FormField from '@/components/Common/FormField/FormField';
@@ -17,7 +15,9 @@ import {
   CheckboxWrapper,
 } from './AddWinesForm.styled';
 import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
-import { useWinesStore } from '@/store/wine/winesStore';
+import { useWineMutations } from '@/hooks/queries/useWines';
+import { useWineries } from '@/hooks/queries/useWineries';
+import { useGrapes } from '@/hooks/queries/useGrapes';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
@@ -60,10 +60,14 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
   const [img, setImg] = useState<File | null>(null);
   const [view, setView] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [wineryList, setWineryList] = useState<{ _id: string; name: string }[]>([]);
-  const [grapeList, setGrapeList] = useState<{ _id: string; name: string }[]>([]);
 
-  const { add, update } = useWinesStore();
+  const { addWine, updateWine } = useWineMutations();
+
+  const { data: wineriesData } = useWineries({ limit: 100 });
+  const { data: grapesData } = useGrapes({ limit: 1000 });
+
+  const wineryList = useMemo(() => wineriesData?.data?.wineries || [], [wineriesData]);
+  const grapeList = useMemo(() => grapesData?.data?.grapes || [], [grapesData]);
 
   useEffect(() => {
     if (wineData) {
@@ -92,30 +96,18 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
   }, [wineData, wineryId]);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const [w, g] = await Promise.all([getWineries({ limit: 100 }), getGrapes({ limit: 1000 })]);
-        const wList = w.data.wineries || w.data;
-        setWineryList(wList);
-        setGrapeList(g.data.grapes || g.data);
-
-        if (wineryId && !wineData) {
-          const item = wList.find((x: { _id: string }) => x._id === wineryId);
-          if (item) {
-            setVals((p) => ({
-              ...p,
-              country: item.country?.name || p.country,
-              region: item.region?.name || p.region,
-              manufacturer: item.name || p.manufacturer,
-            }));
-          }
-        }
-      } catch (e) {
-        console.log(e);
+    if (wineryId && !wineData && wineryList.length > 0) {
+      const item = wineryList.find((x: { _id: string }) => x._id === wineryId);
+      if (item) {
+        setVals((p) => ({
+          ...p,
+          country: (item.country as unknown as { name: string })?.name || p.country,
+          region: (item.region as unknown as { name: string })?.name || p.region,
+          manufacturer: item.name || p.manufacturer,
+        }));
       }
-    };
-    getData();
-  }, [wineryId, wineData]);
+    }
+  }, [wineryId, wineData, wineryList]);
 
   const onFile = (files: File[]) => {
     if (files.length > 0) {
@@ -167,8 +159,8 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
 
       if (img) fd.append('image', img);
 
-      if (wineData?._id) await update(wineData._id, fd);
-      else await add(fd);
+      if (wineData?._id) await updateWine({ id: wineData._id, data: fd });
+      else await addWine(fd);
 
       toast.success('Saved successfully!', { id });
       if (onSuccess) onSuccess();
@@ -203,7 +195,10 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
                 value={vals.winery}
                 onChange={onInput}
                 required
-                options={wineryList.map((w) => ({ value: w._id, label: w.name }))}
+                options={wineryList.map((w: { _id: string; name: string }) => ({
+                  value: w._id,
+                  label: w.name,
+                }))}
               />
               <FormField
                 label="Vintage Year"
@@ -220,10 +215,13 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
                 value={vals.grape}
                 onChange={onInput}
                 required
-                options={grapeList.map((g) => ({ value: g._id, label: g.name }))}
+                options={grapeList.map((g: { _id: string; name: string }) => ({
+                  value: g._id,
+                  label: g.name,
+                }))}
               />
               <FormField
-                label="Price per Bottle ($)"
+                label="Price per Bottle (₾)"
                 id="price"
                 type="number"
                 value={vals.price}
