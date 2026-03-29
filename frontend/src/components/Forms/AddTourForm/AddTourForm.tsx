@@ -83,7 +83,6 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
       return toast.error('Invalid group size');
     }
 
-    setLoading(true);
     const tid = toast.loading('Saving...');
 
     try {

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getWines, addWine, updateWine, deleteWine } from '@/api/wines';
+import { getWines, addWine, updateWine, deleteWine, getWineById } from '@/api/wines';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import type { WineQueryParams } from '@/types/wine';
 import toast from 'react-hot-toast';

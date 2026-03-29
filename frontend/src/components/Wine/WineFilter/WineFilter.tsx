@@ -53,7 +53,7 @@ const WineFilter = forwardRef<HTMLDivElement, PropsWineFilter>(({ className }, r
   });
 
   const grapeOptions = useMemo(
-    () => (grapesData?.data?.grapes || []).map((g) => g.name),
+    () => (grapesData?.data?.grapes || []).map((g: { name: string }) => g.name),
     [grapesData],
   );
 

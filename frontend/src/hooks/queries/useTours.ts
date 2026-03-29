@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getTours, getTourById, addTour, updateTour, deleteTour } from '@/api/tours';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import type { ToursQueryParams } from '@/types/tour';
+import type { ToursQueryParams } from '@/types/tours';
 import toast from 'react-hot-toast';
 
 export const useTours = (params: ToursQueryParams) => {

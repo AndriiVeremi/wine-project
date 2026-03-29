@@ -215,7 +215,7 @@ const GrapeDetailPage = () => {
             items={wines.slice(0, 8)}
             isLoading={winesLoading}
             renderSkeleton={() => <WineCardSkeleton />}
-            renderItem={(w) => <SliderCardWine wine={w} />}
+            renderItem={(w: Wine) => <SliderCardWine wine={w} />}
           />
         </SliderSection>
       )}

@@ -22,3 +22,14 @@ export interface Grape {
   agingPotential: string;
   winery?: string | Winery;
 }
+
+export interface GrapesQueryParams {
+  search?: string;
+  type?: string;
+  region?: string;
+  body?: string;
+  acidity?: string;
+  page?: number;
+  limit?: number;
+  wineryId?: string;
+}
