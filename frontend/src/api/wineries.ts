@@ -1,12 +1,12 @@
 import apiClient from './axios';
 import type { Winery, WineriesQueryParams } from '@/types/wineries';
 
-export const getWineries = (params?: WineriesQueryParams) => {
-  return apiClient.get('/wineries', { params });
+export const getWineries = (params: WineriesQueryParams, signal?: AbortSignal) => {
+  return apiClient.get('/wineries', { params, signal });
 };
 
-export const getWineryById = (id: string) => {
-  return apiClient.get(`/wineries/${id}`);
+export const getWineryById = (id: string, signal?: AbortSignal) => {
+  return apiClient.get(`/wineries/${id}`, { signal });
 };
 
 export const addWinery = (data: FormData | Partial<Winery>) => {

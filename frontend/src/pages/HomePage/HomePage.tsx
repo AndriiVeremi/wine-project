@@ -68,11 +68,6 @@ const HomePage = () => {
 
   return (
     <>
-      {/* 
-        Hidden images for instant preloading. 
-        This is the most reliable way to fix LCP issues and avoid "preloaded but not used" warnings 
-        when using background-images in Styled Components.
-      */}
       <div style={{ display: 'none', visibility: 'hidden' }}>
         <img
           src={homeBgLeft}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/store/auth/authStore';
+import { useProfile } from '@/hooks/queries/useAuth';
 import { FiMap } from 'react-icons/fi';
 import MainButton from '@/components/Buttons/MainButton';
 import AddTour from '@/components/Forms/AddTourForm/AddTourForm';
@@ -34,7 +34,7 @@ const TourManager = ({ wineryId }: Props) => {
 
   const { deleteTour } = useTourMutations();
 
-  const { profile } = useAuthStore();
+  const { data: profile } = useProfile();
   const isAdmin = profile?.role === 'ADMIN';
 
   const tours = toursData?.data?.tours || [];

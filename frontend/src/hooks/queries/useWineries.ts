@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 export const useWineries = (params: WineriesQueryParams) => {
   return useQuery({
     queryKey: QUERY_KEYS.wineries.list(params),
-    queryFn: () => getWineries(params),
+    queryFn: ({ signal }) => getWineries(params, signal),
   });
 };
 

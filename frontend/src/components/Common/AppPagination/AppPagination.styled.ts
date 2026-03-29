@@ -50,7 +50,6 @@ export const CurrentPage = styled.span`
   font-size: 16px;
 `;
 
-// Для сумісності
 export const PaginationPageButton = styled.button<{ $active: boolean }>`
   display: none;
 `;

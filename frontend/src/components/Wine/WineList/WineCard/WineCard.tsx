@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { Wine } from '@/types/wine';
 import {
   StyledWineCardDiv,
@@ -22,7 +23,7 @@ interface WineCardProps {
   isFirst?: boolean;
 }
 
-const WineCard = ({ wine, isFirst }: WineCardProps) => {
+const WineCard = memo(({ wine, isFirst }: WineCardProps) => {
   const cleanDesc = stripHtml(wine.description || '');
 
   return (
@@ -65,6 +66,6 @@ const WineCard = ({ wine, isFirst }: WineCardProps) => {
       </CardLink>
     </StyledWineCardDiv>
   );
-};
+});
 
 export default WineCard;

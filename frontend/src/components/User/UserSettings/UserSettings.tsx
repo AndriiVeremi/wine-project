@@ -3,11 +3,10 @@ import { FiStar } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { updatePassword } from 'firebase/auth';
 import { auth } from '@/config/firebase';
-import apiClient from '@/api/axios';
 import MainButton from '@/components/Buttons/MainButton';
 import UserAvatar from '@/components/User/UserAvatar';
 import FormField from '@/components/Common/FormField/FormField';
-import { useAuthStore } from '@/store/auth/authStore';
+import { useProfileMutations } from '@/hooks/queries/useAuth';
 import type { UserProfile } from '@/types/auth';
 import {
   AccountSettingsContainer,
@@ -21,11 +20,10 @@ import {
 
 interface AccountSettingsProps {
   info: UserProfile | null;
-  updateData: (updated: Partial<UserProfile>) => void;
 }
 
-const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) => {
-  const { updateUser } = useAuthStore();
+const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
+  const { updateProfile } = useProfileMutations();
   const [editing, setEditing] = useState(false);
   const [inputs, setInputs] = useState({
     firstName: info?.firstName || '',
@@ -67,17 +65,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
         firstName: inputs.firstName.trim(),
         lastName: inputs.lastName.trim(),
         phone: inputs.phone,
-        birthDate: inputs.birthDate || null,
+        birthDate: inputs.birthDate || undefined,
         address: inputs.address,
       };
 
-      const response = await apiClient.patch('/users/me', updatePayload);
-
-      updateData(response.data);
-      updateUser({
-        firstName: response.data.firstName,
-        lastName: response.data.lastName,
-      });
+      await updateProfile(updatePayload);
 
       if (inputs.newPassword !== '') {
         if (inputs.newPassword !== inputs.confirmPassword) {
@@ -99,13 +91,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
       }
 
       setEditing(false);
-      toast.success('Profile updated successfully!');
     } catch (err: unknown) {
       if (
         err &&
         typeof err === 'object' &&
         'code' in err &&
-        err.code === 'auth/requires-recent-login'
+        (err as { code: string }).code === 'auth/requires-recent-login'
       ) {
         toast.error('Please logout and login again to change password (security rule)');
       } else {
@@ -115,10 +106,14 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info, updateData }) =
     }
   };
 
+  const onAvatarUpdate = (updated: Partial<UserProfile>) => {
+    updateProfile(updated);
+  };
+
   return (
     <AccountSettingsContainer>
       <LeftColumn>
-        <UserAvatar url={info?.avatarUrl} onSave={updateData} />
+        <UserAvatar url={info?.avatarUrl} onSave={onAvatarUpdate} />
         <UserNameSection>
           <UserName>
             {info?.firstName} {info?.lastName}

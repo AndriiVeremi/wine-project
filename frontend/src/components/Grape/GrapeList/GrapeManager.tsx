@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/store/auth/authStore';
+import { useProfile } from '@/hooks/queries/useAuth';
 import { FaLeaf } from 'react-icons/fa';
 import MainButton from '@/components/Buttons/MainButton';
 import AddGrape from '@/components/Forms/AddGrapeForm/AddGrapeForm';
@@ -34,7 +34,7 @@ const GrapeManager = ({ wineryId }: Props) => {
 
   const { deleteGrape } = useGrapeMutations();
 
-  const { profile } = useAuthStore();
+  const { data: profile } = useProfile();
   const isAdmin = profile?.role === 'ADMIN';
 
   const grapes = data?.data?.grapes || [];

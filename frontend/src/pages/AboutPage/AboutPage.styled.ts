@@ -39,7 +39,6 @@ export const SectionWithImage = styled(Section)`
   }
 `;
 
-// about section
 export const AboutContainer = styled.div`
   @media (min-width: ${breakpoints.tablet}) {
     display: flex;
@@ -116,7 +115,6 @@ export const AboutInfoContainer = styled.div`
   }
 `;
 
-// our mission section
 export const OurMissionContainer = styled.div``;
 
 export const TitleStyled = styled.h2`
@@ -239,7 +237,6 @@ export const FeatureText = styled.p`
     font-size: 16px;
   }
 `;
-// section find
 
 export const FindSection = styled.div`
   color: var(--white);
@@ -340,7 +337,6 @@ export const FindText = styled.p`
   }
 `;
 
-// audience section
 export const AudienceSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -482,8 +478,6 @@ export const AudienceIconSmall = styled.div`
   color: var(--primary-wine);
 `;
 
-// section principles
-
 export const PrinciplesTitle = styled.h2`
   text-align: center;
   margin-bottom: 16px;
@@ -612,8 +606,6 @@ export const PrincipleText = styled.p`
     font-size: 18px;
   }
 `;
-
-// section future
 
 export const FutureTitle = styled.h2`
   text-align: center;

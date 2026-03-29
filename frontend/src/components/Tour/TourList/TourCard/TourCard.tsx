@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { FiClock, FiUsers } from 'react-icons/fi';
 import type { Tour } from '@/types/tours';
 import { Link } from 'react-router-dom';
@@ -19,7 +20,7 @@ interface PropsTourCard {
   tour: Tour;
 }
 
-const TourCard = ({ tour }: PropsTourCard) => {
+const TourCard = memo(({ tour }: PropsTourCard) => {
   return (
     <Link to={`/tours/${tour._id}`}>
       <StyledTourCardDiv>
@@ -47,6 +48,6 @@ const TourCard = ({ tour }: PropsTourCard) => {
       </StyledTourCardDiv>
     </Link>
   );
-};
+});
 
 export default TourCard;

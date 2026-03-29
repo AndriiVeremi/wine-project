@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { FaMapMarkerAlt, FaTint, FaWineBottle } from 'react-icons/fa';
 import { CgSandClock } from 'react-icons/cg';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +19,7 @@ interface Props {
   grape: Grape;
 }
 
-const GrapeCard = ({ grape }: Props) => {
+const GrapeCard = memo(({ grape }: Props) => {
   const navigate = useNavigate();
   const regions = grape.regions?.map((r) => r.name).join(', ') || 'Global';
   const img = grape.imageUrls?.[0] || '/assets/grape-placeholder.png';
@@ -75,6 +76,6 @@ const GrapeCard = ({ grape }: Props) => {
       <GrapeDescription>{stripHtml(grape.description || '')}</GrapeDescription>
     </StyledGrapeCardDiv>
   );
-};
+});
 
 export default GrapeCard;

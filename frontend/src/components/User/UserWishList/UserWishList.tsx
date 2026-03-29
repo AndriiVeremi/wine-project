@@ -4,7 +4,7 @@ import { useFavoritesStore } from '@/store/user/useFavoritesStore';
 import { FiHeart } from 'react-icons/fi';
 import TableManager, { type Column } from '@/components/Common/TableManager/TableManager';
 import { ItemImg } from '@/components/Common/TableManager/TableManager.styled';
-import type { WishlistWine } from '@/types/wine';
+import type { Wine } from '@/types/wine';
 
 const UserWishList = () => {
   const { favorites, isLoading, fetchFavorites, toggleFavorite } = useFavoritesStore();
@@ -30,13 +30,13 @@ const UserWishList = () => {
     setPage(1);
   }, [search]);
 
-  const columns: Column<WishlistWine>[] = [
+  const columns: Column<Wine>[] = [
     {
       header: 'Image',
       render: (w) => (
         <ItemImg
           src={w.imageUrl}
-          onClick={() => navigate(`/wines/${w.id}`)}
+          onClick={() => navigate(`/wines/${w._id}`)}
           style={{ cursor: 'pointer' }}
         />
       ),
@@ -45,7 +45,7 @@ const UserWishList = () => {
       header: 'Wine Name',
       render: (w) => (
         <span
-          onClick={() => navigate(`/wines/${w.id}`)}
+          onClick={() => navigate(`/wines/${w._id}`)}
           style={{ cursor: 'pointer', fontWeight: 500 }}
         >
           {w.name}
@@ -79,10 +79,10 @@ const UserWishList = () => {
       onSearch={setSearch}
       onPage={setPage}
       onRemove={(id) => {
-        const item = favorites.find((f) => f.id === id);
+        const item = favorites.find((f) => f._id === id);
         if (item) toggleFavorite(item);
       }}
-      getId={(w) => w.id}
+      getId={(w) => w._id}
       emptyIcon={<FiHeart />}
       emptyTitle="Your wishlist is empty"
       emptyText="Save some wines to see them here."

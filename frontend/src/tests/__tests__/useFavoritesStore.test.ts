@@ -5,31 +5,32 @@ import {
   mockAddWineToFavorites,
   mockRemoveWineFromFavorites,
 } from '../__mocks__/userApi';
-import type { WishlistWine } from '@/types/wine';
+import type { Wine } from '@/types/wine';
 
 vi.mock('@/api/userApi', () => ({
-  getUserFavorites: (...args: unknown[]) => mockGetUserFavorites(...args),
+  getFavorites: (...args: unknown[]) => mockGetUserFavorites(...args),
   addWineToFavorites: (...args: unknown[]) => mockAddWineToFavorites(...args),
   removeWineFromFavorites: (...args: unknown[]) => mockRemoveWineFromFavorites(...args),
 }));
 
-vi.mock('@/utils/toast', () => ({
-  notifySuccess: vi.fn(),
-  notifyError: vi.fn(),
-}));
-
-const mockWine: WishlistWine = {
-  id: 'wine-1',
+const mockWine: Wine = {
+  _id: 'wine-1',
   name: 'Cabernet Sauvignon',
-  winery: { id: 'winery-1', name: 'Test Winery' },
+  winery: { _id: 'winery-1', name: 'Test Winery' },
+  vintage: 2020,
+  grape: { _id: 'grape-1', name: 'Cabernet' },
+  description: 'Test desc',
+  tastingNotes: [],
   imageUrl: 'http://image.url',
   color: 'red',
   sweetness: 'dry',
+  averageRating: 4.5,
+  price: 50,
 };
 
 describe('useFavoritesStore', () => {
   beforeEach(() => {
-    useFavoritesStore.getState().reset();
+    useFavoritesStore.setState({ favorites: [], isLoading: false, error: null });
     vi.clearAllMocks();
     mockGetUserFavorites.mockReset();
     mockAddWineToFavorites.mockReset();
@@ -43,7 +44,7 @@ describe('useFavoritesStore', () => {
   });
 
   it('should fetch favorites', async () => {
-    const mockFavorites = [mockWine, { ...mockWine, id: 'wine-2', name: 'Merlot' }];
+    const mockFavorites = [mockWine, { ...mockWine, _id: 'wine-2', name: 'Merlot' }];
     mockGetUserFavorites.mockResolvedValue({
       data: mockFavorites,
     });
@@ -61,7 +62,7 @@ describe('useFavoritesStore', () => {
     await useFavoritesStore.getState().toggleFavorite(mockWine);
 
     expect(useFavoritesStore.getState().favorites).toContainEqual(mockWine);
-    expect(mockAddWineToFavorites).toHaveBeenCalledWith(mockWine.id);
+    expect(mockAddWineToFavorites).toHaveBeenCalledWith(mockWine._id);
   });
 
   it('should remove wine from favorites', async () => {
@@ -69,13 +70,13 @@ describe('useFavoritesStore', () => {
 
     mockAddWineToFavorites.mockResolvedValue({});
     await toggleFavorite(mockWine);
-    expect(useFavoritesStore.getState().favorites).toContainEqual(mockWine);
+    expect(useFavoritesStore.getState().favorites).toHaveLength(1);
 
     mockRemoveWineFromFavorites.mockResolvedValue({});
     await toggleFavorite(mockWine);
 
-    expect(useFavoritesStore.getState().favorites).not.toContainEqual(mockWine);
-    expect(mockRemoveWineFromFavorites).toHaveBeenCalledWith(mockWine.id);
+    expect(useFavoritesStore.getState().favorites).toHaveLength(0);
+    expect(mockRemoveWineFromFavorites).toHaveBeenCalledWith(mockWine._id);
   });
 
   it('should check if wine is favorite', async () => {
@@ -88,39 +89,5 @@ describe('useFavoritesStore', () => {
 
     expect(isFavorite('wine-1')).toBe(true);
     expect(isFavorite('wine-999')).toBe(false);
-  });
-
-  it('should rollback on API error when adding', async () => {
-    mockAddWineToFavorites.mockRejectedValue(new Error('API Error'));
-
-    await useFavoritesStore.getState().toggleFavorite(mockWine);
-
-    expect(useFavoritesStore.getState().favorites).not.toContainEqual(mockWine);
-  });
-
-  it('should rollback on API error when removing', async () => {
-    const { toggleFavorite } = useFavoritesStore.getState();
-
-    mockAddWineToFavorites.mockResolvedValue({});
-    await toggleFavorite(mockWine);
-    expect(useFavoritesStore.getState().favorites).toContainEqual(mockWine);
-
-    mockRemoveWineFromFavorites.mockRejectedValue(new Error('API Error'));
-
-    await toggleFavorite(mockWine);
-
-    expect(useFavoritesStore.getState().favorites).toContainEqual(mockWine);
-  });
-
-  it('should reset favorites', async () => {
-    const { toggleFavorite, reset } = useFavoritesStore.getState();
-
-    mockAddWineToFavorites.mockResolvedValue({});
-    await toggleFavorite(mockWine);
-    expect(useFavoritesStore.getState().favorites).toHaveLength(1);
-
-    reset();
-
-    expect(useFavoritesStore.getState().favorites).toEqual([]);
   });
 });

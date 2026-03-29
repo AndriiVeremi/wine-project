@@ -5,25 +5,24 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { auth } from '@/config/firebase';
-import { getUserProfile, registerUserApi, updateUserApi } from '@/api/authApi';
-import type { UserProfile, IRegisterData } from '@/types/auth';
+import { registerUserApi } from '@/api/authApi';
+import type { IRegisterData } from '@/types/auth';
 
 interface AuthState {
   user: FirebaseUser | null;
-  profile: UserProfile | null;
+  isInitialized: boolean;
   isLoading: boolean;
   error: string | null;
   isAuthModalOpen: boolean;
   authModalView: 'login' | 'register';
-  setUser: (user: FirebaseUser | null) => Promise<void>;
-  fetchProfile: () => Promise<void>;
+
+  setUser: (user: FirebaseUser | null) => void;
   register: (data: IRegisterData) => Promise<void>;
   login: (email: string, pass: string) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
   openAuthModal: (view: 'login' | 'register') => void;
   closeAuthModal: () => void;
-  updateUser: (data: Partial<UserProfile>) => Promise<void>;
 }
 
 const getErrorMessage = (error: unknown): string => {
@@ -37,33 +36,14 @@ const getErrorMessage = (error: unknown): string => {
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
-  profile: null,
-  isLoading: true,
+  isInitialized: false,
+  isLoading: false,
   error: null,
   isAuthModalOpen: false,
   authModalView: 'login',
 
-  setUser: async (user) => {
-    set({ user, isLoading: !!user }); // Keep loading if we have a user and need to fetch profile
-    if (user) {
-      await get().fetchProfile();
-    } else {
-      set({ profile: null, isLoading: false });
-    }
-  },
-
-  fetchProfile: async () => {
-    const { user } = get();
-    if (!user) return;
-
-    try {
-      const res = await getUserProfile();
-      set({ profile: res.data, isLoading: false, error: null });
-    } catch (err: unknown) {
-      const errorMessage = getErrorMessage(err);
-      console.error('Failed to fetch user profile:', errorMessage);
-      set({ error: errorMessage, isLoading: false });
-    }
+  setUser: (user) => {
+    set({ user, isInitialized: true });
   },
 
   register: async (data) => {
@@ -82,7 +62,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       await signInWithEmailAndPassword(auth, email, pass);
-      set({ isAuthModalOpen: false });
+      set({ isAuthModalOpen: false, isLoading: false });
     } catch (err: unknown) {
       const errorMessage = getErrorMessage(err);
       set({ error: errorMessage, isLoading: false });
@@ -94,7 +74,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoading: true });
     try {
       await firebaseSignOut(auth);
-      set({ user: null, profile: null, isLoading: false });
+      set({ user: null, isLoading: false });
     } catch (err) {
       console.error('Logout error:', err);
       set({ isLoading: false });
@@ -105,15 +85,4 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   openAuthModal: (view) => set({ isAuthModalOpen: true, authModalView: view, error: null }),
   closeAuthModal: () => set({ isAuthModalOpen: false, error: null }),
-
-  updateUser: async (data) => {
-    set({ isLoading: true, error: null });
-    try {
-      const updatedProfile = await updateUserApi(data);
-      set({ profile: updatedProfile, isLoading: false });
-    } catch (err: unknown) {
-      const errorMessage = getErrorMessage(err);
-      set({ error: errorMessage, isLoading: false });
-    }
-  },
 }));

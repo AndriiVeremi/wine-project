@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { memo } from 'react';
 import type { Winery } from '@/types/wineries';
 import {
   StyledWineryCardDiv,
@@ -18,7 +19,7 @@ interface WineryCardProps {
   winery: Winery;
 }
 
-const WineryCard = ({ winery }: WineryCardProps) => {
+const WineryCard = memo(({ winery }: WineryCardProps) => {
   const navigate = useNavigate();
   const cleanHistory = stripHtml(winery.history || '');
 
@@ -67,6 +68,6 @@ const WineryCard = ({ winery }: WineryCardProps) => {
       <WineryInfo>{cleanHistory || 'No history available.'}</WineryInfo>
     </StyledWineryCardDiv>
   );
-};
+});
 
 export default WineryCard;

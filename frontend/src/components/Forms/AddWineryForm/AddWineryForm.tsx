@@ -1,4 +1,8 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import type { SubmitHandler, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { useWineryMutations } from '@/hooks/queries/useWineries';
 import { useLocationStore } from '@/store/location/locationStore';
 import { getCountries } from '@/api/regions';
@@ -8,6 +12,7 @@ import WineryLogoUpload from '@/components/Common/WineryLogoUpload/WineryLogoUpl
 import MainButton from '@/components/Buttons/MainButton';
 import { toast } from 'react-hot-toast';
 import type { Winery } from '@/types/wineries';
+import type { ApiError } from '@/types/api';
 
 import {
   StyledAddWineryForm,
@@ -25,7 +30,31 @@ import Skeleton from '@/components/Common/Skeleton/Skeleton';
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 const WineryMap = lazy(() => import('@/components/Common/Location/WineryMap'));
 
-const init = {
+const winerySchema = z.object({
+  name: z.string().min(2, 'Name is too short'),
+  contactEmail: z.string().email('Invalid email address'),
+  contactPhone: z.string().min(7, 'Phone number is too short'),
+  address: z.string().min(5, 'Address must be at least 5 characters'),
+  websiteUrl: z.string().url('Invalid URL format').optional().or(z.literal('')),
+  videoUrl: z.string().url('Invalid URL format').optional().or(z.literal('')),
+  history: z
+    .string()
+    .min(10, 'History must be at least 10 characters')
+    .optional()
+    .or(z.literal('')),
+  country: z.string().min(1, 'Please select a country'),
+  region: z.string().min(1, 'Please select a region'),
+  coordinates: z
+    .object({
+      lat: z.number(),
+      lng: z.number(),
+    })
+    .nullable(),
+});
+
+type WineryFormValues = z.infer<typeof winerySchema>;
+
+const defaultValues: WineryFormValues = {
   name: '',
   contactEmail: '',
   contactPhone: '',
@@ -35,6 +64,7 @@ const init = {
   history: '',
   country: '',
   region: '',
+  coordinates: null,
 };
 
 interface Props {
@@ -47,17 +77,44 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
   const loading = isAdding || isUpdating;
   const { fetchRegions, regions } = useLocationStore();
 
-  const [form, setForm] = useState(init);
   const [countries, setCountries] = useState<{ _id: string; name: string }[]>([]);
   const [logo, setLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [gallery, setGallery] = useState<File[]>([]);
   const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
-  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (logoPreview && logoPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(logoPreview);
+      }
+      galleryPreviews.forEach((url) => {
+        if (url && url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, [logoPreview, galleryPreviews]);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<WineryFormValues>({
+    resolver: zodResolver(winerySchema),
+    defaultValues,
+  });
+
+  const selectedCountryId = watch('country');
+  const coords = watch('coordinates');
 
   useEffect(() => {
     if (wineryData) {
-      setForm({
+      reset({
         name: wineryData.name || '',
         contactEmail: wineryData.contactEmail || '',
         contactPhone: wineryData.contactPhone || '',
@@ -67,91 +124,82 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         history: wineryData.history || '',
         country:
           typeof wineryData.country === 'object'
-            ? (wineryData.country as unknown as { _id: string })._id
-            : wineryData.country || '',
+            ? (wineryData.country as { _id: string })._id
+            : wineryData.country,
         region:
           typeof wineryData.region === 'object'
-            ? (wineryData.region as unknown as { _id: string })._id
-            : wineryData.region || '',
+            ? (wineryData.region as { _id: string })._id
+            : wineryData.region,
+        coordinates: wineryData.coordinates || null,
       });
       if (wineryData.logoUrl) setLogoPreview(wineryData.logoUrl);
       if (wineryData.galleryUrl) setGalleryPreviews(wineryData.galleryUrl);
-      if (wineryData.coordinates) setCoords(wineryData.coordinates);
     }
-  }, [wineryData]);
+  }, [wineryData, reset]);
 
   useEffect(() => {
-    const load = async () => {
+    const loadData = async () => {
       try {
         const res = await getCountries();
-        const loadedCountries = res.data;
-        setCountries(loadedCountries);
-
-        if (form.country) {
-          const item = loadedCountries.find(
-            (c: { _id: string; name: string }) => c._id === form.country,
-          );
-          if (item) fetchRegions(item.name);
-        }
+        setCountries(res.data);
       } catch (err) {
         console.error('Failed to load countries', err);
       }
     };
-    load();
-  }, [fetchRegions, form.country]);
+    loadData();
+  }, []);
 
-  const onInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value, id } = e.target;
-    setForm((prev) => ({ ...prev, [name || id]: value }));
-  };
+  useEffect(() => {
+    if (selectedCountryId && countries.length > 0) {
+      const country = countries.find((c) => c._id === selectedCountryId);
+      if (country) fetchRegions(country.name);
+    }
+  }, [selectedCountryId, countries, fetchRegions]);
 
-  const onLoc = (lat: number, lng: number) => {
-    setCoords({ lat, lng });
-  };
+  const onSubmit: SubmitHandler<WineryFormValues> = async (vals) => {
+    if (!vals.coordinates) return toast.error('Select location on map');
 
-  const handleEditorChange = (value: string) => {
-    setForm((prev) => ({ ...prev, history: value }));
-  };
+    const tid = toast.loading('Saving winery...');
+    const fd = new FormData();
 
-  const save = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!coords) return toast.error('Select location on map');
-    if (form.history && form.history.length < 10) return toast.error('History: min 10 chars');
-    if (form.address.length < 5) return toast.error('Address: min 5 chars');
-
-    const data = new FormData();
-    Object.entries(form).forEach(([key, val]) => {
-      if ((key === 'websiteUrl' || key === 'videoUrl') && !val) return;
-
-      let sendVal = String(val);
-      if (key === 'contactPhone') {
-        sendVal = sendVal.replace(/\s+/g, '');
+    Object.entries(vals).forEach(([key, val]) => {
+      if (!val && (key === 'websiteUrl' || key === 'videoUrl')) return;
+      if (key === 'coordinates') {
+        fd.append(key, JSON.stringify(val));
+      } else if (key === 'contactPhone') {
+        fd.append(key, String(val).replace(/\s+/g, ''));
+      } else {
+        fd.append(key, String(val));
       }
-      data.append(key, sendVal);
     });
 
-    data.append('coordinates', JSON.stringify(coords));
-    if (logo) data.append('logo', logo);
-    gallery.forEach((f) => data.append('images', f));
+    if (logo) fd.append('logo', logo);
+    gallery.forEach((f) => fd.append('images', f));
 
     try {
       if (wineryData?._id) {
-        await updateWinery({ id: wineryData._id, data });
-        toast.success('Updated!');
+        await updateWinery({ id: wineryData._id, data: fd });
       } else {
-        await addWinery(data);
-        toast.success('Registered!');
+        await addWinery(fd);
       }
+      toast.success('Winery saved successfully!', { id: tid });
       if (onSuccess) onSuccess();
-    } catch (err) {
-      console.error('Failed to save winery', err);
+    } catch (err: unknown) {
+      const error = err as ApiError;
+      toast.error(error.response?.data?.message || error.message || 'Failed to save', { id: tid });
     }
   };
 
+  const handleReset = () => {
+    reset(defaultValues);
+    setLogo(null);
+    setLogoPreview(null);
+    setGallery([]);
+    setGalleryPreviews([]);
+  };
+
   return (
-    <StyledAddWineryForm onSubmit={save}>
+    <StyledAddWineryForm onSubmit={handleSubmit(onSubmit as unknown as SubmitHandler<FieldValues>)}>
       <TopSection>
         <PhotoSide>
           <GalleryUpload
@@ -161,17 +209,13 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               const newGallery = [...gallery];
               newGallery[0] = f;
               setGallery(newGallery);
-
-              const newPreviews = [...galleryPreviews];
-              newPreviews[0] = URL.createObjectURL(f);
-              setGalleryPreviews(newPreviews);
+              setGalleryPreviews((prev) => [URL.createObjectURL(f), ...prev.slice(1)]);
             }}
             onGalleryFileChange={(file, index) => {
               const galleryIndex = index + 1;
               const newGallery = [...gallery];
               newGallery[galleryIndex] = file;
               setGallery(newGallery);
-
               const newPreviews = [...galleryPreviews];
               newPreviews[galleryIndex] = URL.createObjectURL(file);
               setGalleryPreviews(newPreviews);
@@ -181,7 +225,6 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               const newGallery = [...gallery];
               newGallery.splice(galleryIndex, 1);
               setGallery(newGallery);
-
               const newPreviews = [...galleryPreviews];
               newPreviews.splice(galleryIndex, 1);
               setGalleryPreviews(newPreviews);
@@ -201,48 +244,29 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         <InfoSide>
           <FormField
             label="Winery Name"
-            id="name"
-            name="name"
-            value={form.name}
-            onChange={onInput}
+            {...register('name')}
+            error={errors.name?.message}
             required
           />
-
           <FormField
             label="Email"
-            id="contactEmail"
-            name="contactEmail"
             type="email"
-            value={form.contactEmail}
-            onChange={onInput}
+            {...register('contactEmail')}
+            error={errors.contactEmail?.message}
             required
-            placeholder="email@example.com"
           />
           <FormField
             label="Phone"
-            id="contactPhone"
-            name="contactPhone"
-            value={form.contactPhone}
-            onChange={onInput}
+            {...register('contactPhone')}
+            error={errors.contactPhone?.message}
             required
-            placeholder="+1234567890 (start with +)"
           />
           <FormField
             label="Website"
-            id="websiteUrl"
-            name="websiteUrl"
-            value={form.websiteUrl}
-            onChange={onInput}
-            placeholder="https://..."
+            {...register('websiteUrl')}
+            error={errors.websiteUrl?.message}
           />
-          <FormField
-            label="Video"
-            id="videoUrl"
-            name="videoUrl"
-            value={form.videoUrl}
-            onChange={onInput}
-            placeholder="https://..."
-          />
+          <FormField label="Video" {...register('videoUrl')} error={errors.videoUrl?.message} />
         </InfoSide>
       </TopSection>
 
@@ -250,10 +274,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label>Country</label>
           <select
-            name="country"
-            value={form.country}
-            onChange={onInput}
-            required
+            {...register('country')}
             style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
           >
             <option value="">Select Country</option>
@@ -263,15 +284,15 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               </option>
             ))}
           </select>
+          {errors.country && (
+            <span style={{ color: 'red', fontSize: '12px' }}>{errors.country.message}</span>
+          )}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label>Region</label>
           <select
-            name="region"
-            value={form.region}
-            onChange={onInput}
-            required
-            disabled={!form.country}
+            {...register('region')}
+            disabled={!selectedCountryId}
             style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
           >
             <option value="">Select Region</option>
@@ -281,28 +302,28 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               </option>
             ))}
           </select>
+          {errors.region && (
+            <span style={{ color: 'red', fontSize: '12px' }}>{errors.region.message}</span>
+          )}
         </div>
         <FullWidthWrapper>
           <FormField
             label="Address"
-            id="address"
-            name="address"
-            value={form.address}
-            onChange={onInput}
+            {...register('address')}
+            error={errors.address?.message}
             required
           />
         </FullWidthWrapper>
       </FieldsGrid>
 
-      <Suspense
-        fallback={
-          <div>
-            <Skeleton height="40px" $margin="0 0 12px 0" />
-            <Skeleton height="200px" $borderRadius="8px" />
-          </div>
-        }
-      >
-        <TextEditor label="History" value={form.history} onChange={handleEditorChange} />
+      <Suspense fallback={<Skeleton height="240px" />}>
+        <Controller
+          name="history"
+          control={control}
+          render={({ field }) => (
+            <TextEditor label="History" value={field.value || ''} onChange={field.onChange} />
+          )}
+        />
       </Suspense>
 
       <div>
@@ -311,56 +332,31 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
           <div style={{ flex: 1 }}>
             <FormField
               label="Latitude"
-              id="lat"
-              name="lat"
               type="number"
               step="any"
               value={coords?.lat || ''}
-              onChange={(e) => {
-                const val = e.target.value;
-                setCoords((prev) => ({
-                  lng: prev?.lng || 0,
-                  lat: val ? parseFloat(val) : NaN,
-                }));
-              }}
-              placeholder="e.g. 50.4501"
+              onChange={(e) =>
+                setValue('coordinates', { lng: coords?.lng || 0, lat: parseFloat(e.target.value) })
+              }
             />
           </div>
           <div style={{ flex: 1 }}>
             <FormField
               label="Longitude"
-              id="lng"
-              name="lng"
               type="number"
               step="any"
               value={coords?.lng || ''}
-              onChange={(e) => {
-                const val = e.target.value;
-                setCoords((prev) => ({
-                  lat: prev?.lat || 0,
-                  lng: val ? parseFloat(val) : NaN,
-                }));
-              }}
-              placeholder="e.g. 30.5234"
+              onChange={(e) =>
+                setValue('coordinates', { lat: coords?.lat || 0, lng: parseFloat(e.target.value) })
+              }
             />
           </div>
-          <MainButton
-            type="button"
-            onClick={() => {
-              if (coords?.lat && coords?.lng) {
-                setCoords({ lat: coords.lat, lng: coords.lng });
-              }
-            }}
-            style={{ marginBottom: '0', height: '42px' }}
-          >
-            CENTER MAP
-          </MainButton>
         </div>
         <MapFieldWrapper>
-          <Suspense fallback={<Skeleton height="300px" $borderRadius="12px" />}>
+          <Suspense fallback={<Skeleton height="300px" />}>
             <WineryMap
               isEditable={true}
-              onLocationSelect={onLoc}
+              onLocationSelect={(lat, lng) => setValue('coordinates', { lat, lng })}
               lat={coords?.lat}
               lng={coords?.lng}
             />
@@ -383,17 +379,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
           </>
         ) : (
           <>
-            <MainButton
-              type="button"
-              onClick={() => {
-                setForm(init);
-                setLogo(null);
-                setLogoPreview(null);
-                setGallery([]);
-                setGalleryPreviews([]);
-                setCoords(null);
-              }}
-            >
+            <MainButton type="button" onClick={handleReset}>
               RESET
             </MainButton>
             <MainButton type="submit" disabled={loading}>

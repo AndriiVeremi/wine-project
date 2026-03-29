@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-  /* Reset */
   *,
   *::before,
   *::after {
@@ -15,7 +14,6 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
     overflow-x: hidden;
     width: 100%;
-    /* Глобальне стабілізування прокрутки */
     scrollbar-gutter: stable;
   }
 
@@ -56,7 +54,7 @@ export const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
     color: inherit;
-    transition: var(--transition);
+    transition: var(--transition-fast);
   }
 
   button, input, textarea, select {
@@ -69,7 +67,7 @@ export const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: pointer;
-    transition: var(--transition);
+    transition: var(--transition-fast);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -93,26 +91,5 @@ export const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar-thumb {
     background-color: var(--primary-wine);
     border-radius: 4px;
-  }
-
-  .skeleton-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    margin-top: 30px;
-  }
-  
-  @media (min-width: 768px) {
-    .skeleton-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
-    }
-  }
-  
-  @media (min-width: 1280px) {
-    .skeleton-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-    }
   }
 `;

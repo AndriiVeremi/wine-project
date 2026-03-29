@@ -1,9 +1,13 @@
-import React, { useState, useEffect, Suspense, lazy, useMemo } from 'react';
+import React, { useEffect, Suspense, lazy, useMemo } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import type { SubmitHandler, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/Buttons/MainButton';
 import FormField from '@/components/Common/FormField/FormField';
 import ImageUpload from '@/components/Common/ImageUpload/ImageUpload';
-import type { Wine, WineColor, WineSweetness } from '@/types/wine';
+import type { Wine } from '@/types/wine';
 import {
   AddWineWrapper,
   ButtonWrapper,
@@ -19,16 +23,49 @@ import { useWineMutations } from '@/hooks/queries/useWines';
 import { useWineries } from '@/hooks/queries/useWineries';
 import { useGrapes } from '@/hooks/queries/useGrapes';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
+import type { ApiError } from '@/types/api';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 
-const initData = {
+const wineSchema = z.object({
+  name: z.string().min(2, 'Name is too short'),
+  winery: z.string().min(1, 'Please select a winery'),
+  vintage: z
+    .number()
+    .min(1800)
+    .max(new Date().getFullYear() + 1),
+  grape: z.string().min(1, 'Please select a grape variety'),
+  color: z.enum(['red', 'white', 'rose', 'orange']),
+  sweetness: z.enum(['dry', 'semi-dry', 'semi-sweet', 'sweet']),
+  price: z.number().min(0),
+  description: z.string().optional(),
+  tastingNotes: z.string().optional(),
+  alcohol: z.string().optional(),
+  volume: z.number().optional(),
+  boxQuantity: z.number().optional(),
+  hasPackaging: z.boolean().optional(),
+  decanting: z.boolean().optional(),
+  bottleDiameter: z.string().optional(),
+  servingTemperature: z.string().optional(),
+  foodPairing: z.string().optional(),
+  supplier: z.string().optional(),
+  suffix: z.string().optional(),
+  inStock: z.boolean().optional(),
+  region: z.string().optional(),
+  country: z.string().optional(),
+  manufacturer: z.string().optional(),
+  buyLink: z.string().optional(),
+});
+
+type WineFormValues = z.infer<typeof wineSchema>;
+
+const defaultValues: WineFormValues = {
   name: '',
   winery: '',
   vintage: new Date().getFullYear(),
   grape: '',
-  color: 'red' as WineColor,
-  sweetness: 'dry' as WineSweetness,
+  color: 'red',
+  sweetness: 'dry',
   price: 0,
   description: '',
   tastingNotes: '',
@@ -56,12 +93,8 @@ interface Props {
 }
 
 const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
-  const [vals, setVals] = useState(initData);
-  const [img, setImg] = useState<File | null>(null);
-  const [view, setView] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-
-  const { addWine, updateWine } = useWineMutations();
+  const { addWine, updateWine, isAdding, isUpdating } = useWineMutations();
+  const busy = isAdding || isUpdating;
 
   const { data: wineriesData } = useWineries({ limit: 100 });
   const { data: grapesData } = useGrapes({ limit: 1000 });
@@ -69,82 +102,90 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
   const wineryList = useMemo(() => wineriesData?.data?.wineries || [], [wineriesData]);
   const grapeList = useMemo(() => grapesData?.data?.grapes || [], [grapesData]);
 
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<WineFormValues>({
+    resolver: zodResolver(wineSchema),
+    defaultValues,
+  });
+
+  const selectedWineryId = watch('winery');
+  const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [imagePreview, setImagePreview] = React.useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview && imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
+
   useEffect(() => {
     if (wineData) {
-      setVals({
-        ...initData,
-        ...wineData,
-        winery:
-          typeof wineData.winery === 'object'
-            ? (wineData.winery as { _id: string })._id
-            : wineData.winery,
-        grape:
-          typeof wineData.grape === 'object'
-            ? (wineData.grape as { _id: string })._id
-            : wineData.grape,
-        tastingNotes: Array.isArray(wineData.tastingNotes)
-          ? wineData.tastingNotes.join(', ')
-          : wineData.tastingNotes || '',
-        foodPairing: Array.isArray(wineData.foodPairing)
-          ? wineData.foodPairing.join(', ')
-          : wineData.foodPairing || '',
-      });
-      if (wineData.imageUrl) setView(wineData.imageUrl);
+      const initialValues: WineFormValues = {
+        name: wineData.name,
+        winery: typeof wineData.winery === 'object' ? wineData.winery._id : wineData.winery,
+        vintage: wineData.vintage,
+        grape: typeof wineData.grape === 'object' ? wineData.grape._id : wineData.grape,
+        color: wineData.color,
+        sweetness: wineData.sweetness,
+        price: wineData.price,
+        description: wineData.description,
+        tastingNotes: Array.isArray(wineData.tastingNotes) ? wineData.tastingNotes.join(', ') : '',
+        alcohol: wineData.alcohol,
+        volume: wineData.volume,
+        boxQuantity: wineData.boxQuantity,
+        hasPackaging: wineData.hasPackaging,
+        decanting: wineData.decanting,
+        bottleDiameter: wineData.bottleDiameter,
+        servingTemperature: wineData.servingTemperature,
+        foodPairing: Array.isArray(wineData.foodPairing) ? wineData.foodPairing.join(', ') : '',
+        supplier: wineData.supplier,
+        suffix: wineData.suffix,
+        inStock: wineData.inStock,
+        buyLink: wineData.buyLink,
+      };
+      reset(initialValues);
+      if (wineData.imageUrl) setImagePreview(wineData.imageUrl);
     } else if (wineryId) {
-      setVals((p) => ({ ...p, winery: wineryId }));
+      setValue('winery', wineryId);
     }
-  }, [wineData, wineryId]);
+  }, [wineData, wineryId, reset, setValue]);
 
   useEffect(() => {
-    if (wineryId && !wineData && wineryList.length > 0) {
-      const item = wineryList.find((x: { _id: string }) => x._id === wineryId);
-      if (item) {
-        setVals((p) => ({
-          ...p,
-          country: (item.country as unknown as { name: string })?.name || p.country,
-          region: (item.region as unknown as { name: string })?.name || p.region,
-          manufacturer: item.name || p.manufacturer,
-        }));
+    if (selectedWineryId && !wineData && wineryList.length > 0) {
+      const winery = wineryList.find(
+        (w: {
+          _id: string;
+          country?: { name: string } | string;
+          region?: { name: string } | string;
+          name: string;
+        }) => w._id === selectedWineryId,
+      );
+      if (winery) {
+        const cName = typeof winery.country === 'object' ? winery.country.name : '';
+        const rName = typeof winery.region === 'object' ? winery.region.name : '';
+        setValue('country', cName);
+        setValue('region', rName);
+        setValue('manufacturer', winery.name || '');
       }
     }
-  }, [wineryId, wineData, wineryList]);
+  }, [selectedWineryId, wineData, wineryList, setValue]);
 
-  const onFile = (files: File[]) => {
-    if (files.length > 0) {
-      setImg(files[0]);
-      setView(URL.createObjectURL(files[0]));
-    }
-  };
-
-  const onInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    const { id, value, type } = e.target as
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | HTMLSelectElement;
-    let final: string | number | boolean = value;
-    if (type === 'checkbox') {
-      final = (e.target as HTMLInputElement).checked;
-    }
-    if (['price', 'vintage', 'volume', 'boxQuantity'].includes(id)) {
-      final = value === '' ? 0 : Number(value);
-    }
-    setVals((p) => ({ ...p, [id]: final }));
-  };
-
-  const saveWine = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setBusy(true);
-    const id = toast.loading('Saving wine...');
+  const onSubmit: SubmitHandler<WineFormValues> = async (vals) => {
+    const tid = toast.loading('Saving wine...');
     try {
       const fd = new FormData();
 
-      const allowedFields = Object.keys(initData);
-
       Object.entries(vals).forEach(([k, v]) => {
-        if (!allowedFields.includes(k)) return;
-        if (!v && !['winery', 'grape', 'name', 'color', 'sweetness'].includes(k)) return;
+        if (v === undefined || v === null) return;
 
         if (k === 'tastingNotes' || k === 'foodPairing') {
           const arr = String(v)
@@ -157,44 +198,50 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
         }
       });
 
-      if (img) fd.append('image', img);
+      if (imageFile) fd.append('image', imageFile);
 
-      if (wineData?._id) await updateWine({ id: wineData._id, data: fd });
-      else await addWine(fd);
+      if (wineData?._id) {
+        await updateWine({ id: wineData._id, data: fd });
+      } else {
+        await addWine(fd);
+      }
 
-      toast.success('Saved successfully!', { id });
+      toast.success('Saved successfully!', { id: tid });
       if (onSuccess) onSuccess();
-    } catch (err) {
-      const error = err as { response?: { data?: { message?: string } } };
-      toast.error(error.response?.data?.message || 'Something went wrong', { id });
-    } finally {
-      setBusy(false);
+    } catch (err: unknown) {
+      const error = err as ApiError;
+      toast.error(error.response?.data?.message || error.message || 'Something went wrong', {
+        id: tid,
+      });
+    }
+  };
+
+  const onFile = (files: File[]) => {
+    if (files.length > 0) {
+      setImageFile(files[0]);
+      setImagePreview(URL.createObjectURL(files[0]));
     }
   };
 
   return (
     <AddWineWrapper>
-      <FormContainer onSubmit={saveWine}>
+      <FormContainer onSubmit={handleSubmit(onSubmit as unknown as SubmitHandler<FieldValues>)}>
         <TopSection>
           <PhotoSide>
-            <ImageUpload previews={view ? [view] : []} onFilesChange={onFile} maxFiles={1} />
+            <ImageUpload
+              previews={imagePreview ? [imagePreview] : []}
+              onFilesChange={onFile}
+              maxFiles={1}
+            />
           </PhotoSide>
           <InfoSide>
             <FormGrid>
-              <FormField
-                label="Wine Name"
-                id="name"
-                value={vals.name}
-                onChange={onInput}
-                required
-              />
+              <FormField label="Wine Name" {...register('name')} error={errors.name?.message} />
               <FormField
                 label="Winery"
-                id="winery"
                 isSelect
-                value={vals.winery}
-                onChange={onInput}
-                required
+                {...register('winery')}
+                error={errors.winery?.message}
                 options={wineryList.map((w: { _id: string; name: string }) => ({
                   value: w._id,
                   label: w.name,
@@ -202,19 +249,15 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
               />
               <FormField
                 label="Vintage Year"
-                id="vintage"
                 type="number"
-                value={vals.vintage}
-                onChange={onInput}
-                required
+                {...register('vintage', { valueAsNumber: true })}
+                error={errors.vintage?.message}
               />
               <FormField
                 label="Grape Variety"
-                id="grape"
                 isSelect
-                value={vals.grape}
-                onChange={onInput}
-                required
+                {...register('grape')}
+                error={errors.grape?.message}
                 options={grapeList.map((g: { _id: string; name: string }) => ({
                   value: g._id,
                   label: g.name,
@@ -222,18 +265,14 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
               />
               <FormField
                 label="Price per Bottle (₾)"
-                id="price"
                 type="number"
-                value={vals.price}
-                onChange={onInput}
-                required
+                {...register('price', { valueAsNumber: true })}
+                error={errors.price?.message}
               />
               <FormField
                 label="Wine Color"
-                id="color"
                 isSelect
-                value={vals.color}
-                onChange={onInput}
+                {...register('color')}
                 required
                 options={[
                   { value: 'red', label: 'Red' },
@@ -244,10 +283,8 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
               />
               <FormField
                 label="Sweetness"
-                id="sweetness"
                 isSelect
-                value={vals.sweetness}
-                onChange={onInput}
+                {...register('sweetness')}
                 required
                 options={[
                   { value: 'dry', label: 'Dry' },
@@ -256,12 +293,7 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
                   { value: 'sweet', label: 'Sweet' },
                 ]}
               />
-              <FormField
-                label="Alcohol content (%)"
-                id="alcohol"
-                value={vals.alcohol}
-                onChange={onInput}
-              />
+              <FormField label="Alcohol content (%)" {...register('alcohol')} />
             </FormGrid>
           </InfoSide>
         </TopSection>
@@ -269,65 +301,56 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
         <FormGrid>
           <FormField
             label="Volume (ml)"
-            id="volume"
             type="number"
-            value={vals.volume}
-            onChange={onInput}
+            {...register('volume', { valueAsNumber: true })}
           />
           <FormField
             label="Items per Box"
-            id="boxQuantity"
             type="number"
-            value={vals.boxQuantity}
-            onChange={onInput}
+            {...register('boxQuantity', { valueAsNumber: true })}
           />
-          <FormField
-            label="Bottle Diameter"
-            id="bottleDiameter"
-            value={vals.bottleDiameter}
-            onChange={onInput}
+          <FormField label="Bottle Diameter" {...register('bottleDiameter')} />
+          <FormField label="Serving Temperature" {...register('servingTemperature')} />
+          <Controller
+            name="hasPackaging"
+            control={control}
+            render={({ field }) => (
+              <FormField
+                label="Gift Packaging"
+                isSelect
+                value={String(field.value)}
+                onChange={(e) => field.onChange(e.target.value === 'true')}
+                options={[
+                  { value: 'true', label: 'Yes' },
+                  { value: 'false', label: 'No' },
+                ]}
+              />
+            )}
           />
-          <FormField
-            label="Serving Temperature"
-            id="servingTemperature"
-            value={vals.servingTemperature}
-            onChange={onInput}
-          />
-          <FormField
-            label="Gift Packaging"
-            id="hasPackaging"
-            isSelect
-            value={String(vals.hasPackaging)}
-            onChange={onInput}
-            options={[
-              { value: 'true', label: 'Yes' },
-              { value: 'false', label: 'No' },
-            ]}
-          />
-          <FormField
-            label="Decanting Status"
-            id="decanting"
-            isSelect
-            value={String(vals.decanting)}
-            onChange={onInput}
-            options={[
-              { value: 'true', label: 'Required' },
-              { value: 'false', label: 'Not needed' },
-            ]}
+          <Controller
+            name="decanting"
+            control={control}
+            render={({ field }) => (
+              <FormField
+                label="Decanting Status"
+                isSelect
+                value={String(field.value)}
+                onChange={(e) => field.onChange(e.target.value === 'true')}
+                options={[
+                  { value: 'true', label: 'Required' },
+                  { value: 'false', label: 'Not needed' },
+                ]}
+              />
+            )}
           />
         </FormGrid>
 
         <FormGrid>
-          <FormField label="Wine Supplier" id="supplier" value={vals.supplier} onChange={onInput} />
-          <FormField label="Name Suffix" id="suffix" value={vals.suffix} onChange={onInput} />
-          <FormField
-            label="Online Shop Link"
-            id="buyLink"
-            value={vals.buyLink}
-            onChange={onInput}
-          />
+          <FormField label="Wine Supplier" {...register('supplier')} />
+          <FormField label="Name Suffix" {...register('suffix')} />
+          <FormField label="Online Shop Link" {...register('buyLink')} />
           <CheckboxWrapper>
-            <input type="checkbox" id="inStock" checked={vals.inStock} onChange={onInput} />
+            <input type="checkbox" {...register('inStock')} />
             <span style={{ marginLeft: '8px', fontWeight: 600 }}>Available in Stock</span>
           </CheckboxWrapper>
         </FormGrid>
@@ -335,18 +358,10 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
         <FullWidthWrapper>
           <FormField
             label="Tasting Notes (comma separated)"
-            id="tastingNotes"
-            value={vals.tastingNotes}
-            onChange={onInput}
             isTextarea
+            {...register('tastingNotes')}
           />
-          <FormField
-            label="Ideal Food Pairings"
-            id="foodPairing"
-            value={vals.foodPairing}
-            onChange={onInput}
-            isTextarea
-          />
+          <FormField label="Ideal Food Pairings" isTextarea {...register('foodPairing')} />
           <Suspense
             fallback={
               <div>
@@ -355,10 +370,16 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
               </div>
             }
           >
-            <TextEditor
-              label="Detailed Description"
-              value={vals.description}
-              onChange={(v: string) => setVals((p) => ({ ...p, description: v }))}
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <TextEditor
+                  label="Detailed Description"
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                />
+              )}
             />
           </Suspense>
         </FullWidthWrapper>

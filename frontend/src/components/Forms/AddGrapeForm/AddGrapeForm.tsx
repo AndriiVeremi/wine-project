@@ -1,9 +1,14 @@
-import { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import type { SubmitHandler, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { toast } from 'react-hot-toast';
 import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 import MainButton from '@/components/Buttons/MainButton';
 import type { Grape } from '@/types/grape';
+import type { ApiError } from '@/types/api';
 
 import {
   AddGrapeWrapper,
@@ -51,23 +56,31 @@ const typeOpts = [
   { value: 'rose', label: 'Rose' },
 ];
 
-const init = {
+const grapeSchema = z.object({
+  name: z.string().min(2, 'Name is too short'),
+  type: z.enum(['red', 'white', 'rose']),
+  description: z.string().optional().or(z.literal('')),
+  acidity: z.string().min(1, 'Select acidity'),
+  body: z.string().min(1, 'Select body'),
+  tannins: z.string().optional().or(z.literal('')),
+  agingPotential: z.string().optional().or(z.literal('')),
+  characteristics: z.array(z.string()),
+  foodPairing: z.array(z.string()),
+});
+
+type GrapeFormValues = z.infer<typeof grapeSchema>;
+
+const defaultValues: GrapeFormValues = {
   name: '',
-  type: 'red' as 'red' | 'white' | 'rose',
+  type: 'red',
   description: '',
   acidity: 'Medium',
   body: 'Medium',
   tannins: 'Medium',
   agingPotential: '',
-  characteristics: [] as string[],
-  foodPairing: [] as string[],
+  characteristics: [],
+  foodPairing: [],
 };
-
-interface Props {
-  wineryId?: string;
-  grapeData?: Grape | null;
-  onSuccess?: () => void;
-}
 
 const DynamicTags = ({
   label,
@@ -110,19 +123,48 @@ const DynamicTags = ({
   );
 };
 
+interface Props {
+  wineryId?: string;
+  grapeData?: Grape | null;
+  onSuccess?: () => void;
+}
+
 const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
-  const [vals, setVals] = useState(init);
   const [mainImg, setMainImg] = useState<File | null>(null);
   const [extraImgs, setExtraImgs] = useState<File[]>([]);
   const [mainPre, setMainPre] = useState<string | null>(null);
   const [extraPres, setExtraPre] = useState<string[]>([]);
-  const [busy, setBusy] = useState(false);
 
-  const { addGrape, updateGrape } = useGrapeMutations();
+  useEffect(() => {
+    return () => {
+      if (mainPre && mainPre.startsWith('blob:')) {
+        URL.revokeObjectURL(mainPre);
+      }
+      extraPres.forEach((url) => {
+        if (url && url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, [mainPre, extraPres]);
+
+  const { addGrape, updateGrape, isAdding, isUpdating } = useGrapeMutations();
+  const busy = isAdding || isUpdating;
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<GrapeFormValues>({
+    resolver: zodResolver(grapeSchema),
+    defaultValues,
+  });
 
   useEffect(() => {
     if (grapeData) {
-      setVals({
+      reset({
         name: grapeData.name,
         type: grapeData.type,
         description: grapeData.description || '',
@@ -138,84 +180,68 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
         setExtraPre(grapeData.imageUrls.slice(1));
       }
     }
-  }, [grapeData]);
+  }, [grapeData, reset]);
 
-  const onMain = (f: File) => {
-    setMainImg(f);
-    setMainPre(URL.createObjectURL(f));
-  };
-
-  const onInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    const { id, value } = e.target;
-    setVals((p) => ({ ...p, [id]: value }));
-  };
-
-  const saveData = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setBusy(true);
+  const onSubmit: SubmitHandler<GrapeFormValues> = async (vals) => {
     const tid = toast.loading('Saving varietal...');
     try {
       const winId =
         typeof grapeData?.winery === 'object'
           ? (grapeData.winery as { _id?: string })?._id
           : grapeData?.winery;
-      const payload = { ...vals, winery: wineryId || winId };
-      const allFiles = [];
-      if (mainImg) allFiles.push(mainImg);
-      allFiles.push(...extraImgs);
 
       const fd = new FormData();
-      Object.entries(payload).forEach(([k, v]) => {
+      Object.entries({ ...vals, winery: wineryId || winId }).forEach(([k, v]) => {
         if (Array.isArray(v)) fd.append(k, JSON.stringify(v));
-        else fd.append(k, String(v));
+        else if (v !== undefined && v !== null) fd.append(k, String(v));
       });
-      allFiles.forEach((f) => fd.append('images', f));
+
+      if (mainImg) fd.append('images', mainImg);
+      extraImgs.forEach((f) => fd.append('images', f));
 
       if (grapeData?._id) {
         await updateGrape({ id: grapeData._id, data: fd });
-        toast.success('Updated!', { id: tid });
       } else {
         await addGrape(fd);
-        toast.success('Added!', { id: tid });
       }
+
+      toast.success('Varietal saved successfully!', { id: tid });
       if (onSuccess) onSuccess();
-    } catch (err) {
-      const error = err as { response?: { data?: { message?: string } } };
-      toast.error(error.response?.data?.message || 'Error', { id: tid });
-    } finally {
-      setBusy(false);
+    } catch (err: unknown) {
+      const error = err as ApiError;
+      toast.error(error.response?.data?.message || error.message || 'Error saving varietal', {
+        id: tid,
+      });
     }
   };
 
   return (
     <AddGrapeWrapper>
-      <FormContainer onSubmit={saveData}>
+      <FormContainer onSubmit={handleSubmit(onSubmit as unknown as SubmitHandler<FieldValues>)}>
         <TopSection>
           <PhotoSide>
             <GalleryUpload
               mainPreview={mainPre}
               galleryPreviews={extraPres}
-              onMainFileChange={onMain}
+              onMainFileChange={(f) => {
+                setMainImg(f);
+                setMainPre(URL.createObjectURL(f));
+              }}
               onGalleryFileChange={(file, index) => {
-                const galleryIndex = index;
-                const newFiles = [...extraImgs];
-                newFiles[galleryIndex] = file;
-                setExtraImgs(newFiles);
-
-                const newPreviews = [...extraPres];
-                newPreviews[galleryIndex] = URL.createObjectURL(file);
-                setExtraPre(newPreviews);
+                const nextFiles = [...extraImgs];
+                nextFiles[index] = file;
+                setExtraImgs(nextFiles);
+                const nextPreviews = [...extraPres];
+                nextPreviews[index] = URL.createObjectURL(file);
+                setExtraPre(nextPreviews);
               }}
               onRemoveGalleryFile={(index) => {
-                const newFiles = [...extraImgs];
-                newFiles.splice(index, 1);
-                setExtraImgs(newFiles);
-
-                const newPreviews = [...extraPres];
-                newPreviews.splice(index, 1);
-                setExtraPre(newPreviews);
+                const nextFiles = [...extraImgs];
+                nextFiles.splice(index, 1);
+                setExtraImgs(nextFiles);
+                const nextPreviews = [...extraPres];
+                nextPreviews.splice(index, 1);
+                setExtraPre(nextPreviews);
               }}
               maxGalleryCount={5}
             />
@@ -224,17 +250,15 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
             <InfoGrid>
               <FormField
                 label="Varietal Name"
-                id="name"
-                value={vals.name}
-                onChange={onInput}
+                {...register('name')}
+                error={errors.name?.message}
                 required
               />
               <FormField
                 label="Wine Style Type"
-                id="type"
                 isSelect
-                value={vals.type}
-                onChange={onInput}
+                {...register('type')}
+                error={errors.type?.message}
                 required
                 options={typeOpts}
               />
@@ -245,61 +269,66 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
         <FormGrid>
           <FormField
             label="Acidity Level"
-            id="acidity"
             isSelect
-            value={vals.acidity}
-            onChange={onInput}
+            {...register('acidity')}
+            error={errors.acidity?.message}
             required
             options={acidOpts}
           />
           <FormField
             label="Body Weight"
-            id="body"
             isSelect
-            value={vals.body}
-            onChange={onInput}
+            {...register('body')}
+            error={errors.body?.message}
             required
             options={bodyOpts}
           />
           <FormField
             label="Tannin Structure"
-            id="tannins"
             isSelect
-            value={vals.tannins}
-            onChange={onInput}
+            {...register('tannins')}
             options={tanninOpts}
           />
           <FormField
             label="Aging Potential"
-            id="agingPotential"
-            value={vals.agingPotential}
-            onChange={onInput}
+            {...register('agingPotential')}
             placeholder="e.g. 5-10 years"
           />
 
           <FullWidthWrapper>
-            <DynamicTags
-              label="Flavors & Aromas"
-              tags={vals.characteristics}
-              onUpdate={(t) => setVals((p) => ({ ...p, characteristics: t }))}
+            <Controller
+              name="characteristics"
+              control={control}
+              render={({ field }) => (
+                <DynamicTags
+                  label="Flavors & Aromas"
+                  tags={field.value}
+                  onUpdate={field.onChange}
+                />
+              )}
             />
-            <DynamicTags
-              label="Perfect Food Pairings"
-              tags={vals.foodPairing}
-              onUpdate={(t) => setVals((p) => ({ ...p, foodPairing: t }))}
+            <Controller
+              name="foodPairing"
+              control={control}
+              render={({ field }) => (
+                <DynamicTags
+                  label="Perfect Food Pairings"
+                  tags={field.value}
+                  onUpdate={field.onChange}
+                />
+              )}
             />
-            <Suspense
-              fallback={
-                <div>
-                  <Skeleton height="40px" $margin="0 0 12px 0" />
-                  <Skeleton height="200px" $borderRadius="8px" />
-                </div>
-              }
-            >
-              <TextEditor
-                label="Full Variety History"
-                value={vals.description}
-                onChange={(v: string) => setVals((p) => ({ ...p, description: v }))}
+            <Suspense fallback={<Skeleton height="240px" />}>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <TextEditor
+                    label="Full Variety History"
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                  />
+                )}
               />
             </Suspense>
           </FullWidthWrapper>

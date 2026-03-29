@@ -23,4 +23,7 @@ export const QUERY_KEYS = {
     all: ['regions'] as const,
     byCountry: (country: string) => ['regions', country] as const,
   },
+  auth: {
+    profile: (uid?: string) => ['auth', 'profile', uid] as const,
+  },
 };

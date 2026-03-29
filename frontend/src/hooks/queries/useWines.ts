@@ -7,14 +7,14 @@ import toast from 'react-hot-toast';
 export const useWines = (params: WineQueryParams) => {
   return useQuery({
     queryKey: QUERY_KEYS.wines.list(params),
-    queryFn: () => getWines(params),
+    queryFn: ({ signal }) => getWines(params, signal),
   });
 };
 
 export const useWine = (id?: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.wines.detail(id || ''),
-    queryFn: () => getWineById(id!),
+    queryFn: ({ signal }) => getWineById(id!, signal),
     enabled: !!id,
   });
 };

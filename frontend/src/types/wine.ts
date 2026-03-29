@@ -1,6 +1,13 @@
 export type WineColor = 'red' | 'white' | 'rose' | 'orange';
-
 export type WineSweetness = 'dry' | 'semi-dry' | 'semi-sweet' | 'sweet';
+
+export interface BaseEntity {
+  _id: string;
+  name?: string;
+  [key: string]: unknown;
+}
+
+export type Populated<T> = T | string;
 
 export interface WineQueryParams {
   color?: WineColor;
@@ -26,20 +33,14 @@ export interface WineryInfo {
   owner?: string | { _id: string };
   isVip?: boolean;
   logoUrl?: string;
-  country?: {
-    _id: string;
-    name: string;
-  };
-  region?: {
-    _id: string;
-    name: string;
-  };
+  country?: { _id: string; name: string };
+  region?: { _id: string; name: string };
 }
 
 export interface GrapeInfo {
   _id: string;
   name: string;
-  type?: 'red' | 'white' | 'rose';
+  type?: WineColor;
   description?: string;
   characteristics?: string[];
   foodPairing?: string[];
@@ -80,48 +81,31 @@ export interface Wine {
   buyLink?: string;
 }
 
-export interface WishlistWine {
-  id: string;
-  name: string;
-  winery: { id: string; name: string } | null;
-  imageUrl: string;
-  color: string;
-  sweetness: string;
-}
-
 export interface Review {
   _id: string;
-  wineId?:
-    | {
-        _id: string;
-        name: string;
-        imageUrl: string;
-      }
-    | string;
-  wineryId?:
-    | {
-        _id: string;
-        name: string;
-        logoUrl?: string;
-      }
-    | string;
-  tourId?:
-    | {
-        _id: string;
-        name: string;
-      }
-    | string;
-  userId:
-    | {
-        _id: string;
-        firstName: string;
-        lastName: string;
-        avatarUrl?: string;
-      }
-    | string;
   rating: number;
   comment: string;
   createdAt: string;
+  wineId?: Populated<{
+    _id: string;
+    name: string;
+    imageUrl: string;
+  }>;
+  wineryId?: Populated<{
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  }>;
+  tourId?: Populated<{
+    _id: string;
+    name: string;
+  }>;
+  userId: Populated<{
+    _id: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl?: string;
+  }>;
 }
 
 export interface UserReviewResponse {

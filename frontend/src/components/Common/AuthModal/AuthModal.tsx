@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
 import LoginForm from '@/components/Forms/AuthForm/LoginForm';
 import RegisterForm from '@/components/Forms/AuthForm/RegisterForm';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import {
   ModalOverlay,
   ModalContainer,
@@ -20,17 +22,7 @@ interface AuthModalProps {
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'login' }) => {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>(initialTab);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
-
-    return () => {
-      document.body.classList.remove('no-scroll');
-    };
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
   useEffect(() => {
     setActiveTab(initialTab);
@@ -44,7 +36,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
     }
   };
 
-  return (
+  return createPortal(
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContainer>
         <CloseButton onClick={onClose} aria-label="Close modal">
@@ -62,7 +54,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
 
         <FormWrapper>{activeTab === 'login' ? <LoginForm /> : <RegisterForm />}</FormWrapper>
       </ModalContainer>
-    </ModalOverlay>
+    </ModalOverlay>,
+    document.body,
   );
 };
 

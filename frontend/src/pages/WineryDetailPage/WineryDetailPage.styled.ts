@@ -28,7 +28,7 @@ export const GalleryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  order: 2; /* На мобільці після контактів */
+  order: 2;
 
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: gallery;
@@ -92,7 +92,7 @@ export const WineryInfoBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  order: 1; /* На мобільці першим після назви */
+  order: 1;
   background: #fff;
   padding: 24px;
   border-radius: 16px;

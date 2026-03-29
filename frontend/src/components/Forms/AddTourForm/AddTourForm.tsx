@@ -1,10 +1,15 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import type { SubmitHandler, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/Buttons/MainButton';
 import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 
 import type { Tour } from '@/types/tours';
+import type { ApiError } from '@/types/api';
 import {
   AddTourWrapper,
   ButtonWrapper,
@@ -22,7 +27,23 @@ import Skeleton from '@/components/Common/Skeleton/Skeleton';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 
-const init = {
+const tourSchema = z
+  .object({
+    name: z.string().min(2, 'Name is too short'),
+    description: z.string().optional().or(z.literal('')),
+    duration: z.number().min(1, 'Duration must be positive'),
+    price: z.number().min(0, 'Price cannot be negative'),
+    minGroupSize: z.number().min(1, 'Minimum group size is 1'),
+    maxGroupSize: z.number().min(1, 'Maximum group size is 1'),
+  })
+  .refine((data) => data.minGroupSize <= data.maxGroupSize, {
+    message: "Min size can't be greater than max size",
+    path: ['minGroupSize'],
+  });
+
+type TourFormValues = z.infer<typeof tourSchema>;
+
+const defaultValues: TourFormValues = {
   name: '',
   description: '',
   duration: 60,
@@ -38,7 +59,6 @@ interface Props {
 }
 
 const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
-  const [form, setForm] = useState(init);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
@@ -46,8 +66,29 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
   const loading = isAdding || isUpdating;
 
   useEffect(() => {
+    return () => {
+      previews.forEach((url) => {
+        if (url && url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, [previews]);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<TourFormValues>({
+    resolver: zodResolver(tourSchema),
+    defaultValues,
+  });
+
+  useEffect(() => {
     if (tourData) {
-      setForm({
+      reset({
         name: tourData.name,
         description: tourData.description || '',
         duration: tourData.duration || 60,
@@ -57,53 +98,30 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
       });
       if (tourData.images) setPreviews(tourData.images);
     }
-  }, [tourData]);
+  }, [tourData, reset]);
 
-  const handleInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-  ) => {
-    const { id, value } = e.target;
-    let val: string | number = value;
+  const onSubmit: SubmitHandler<TourFormValues> = async (vals) => {
+    const tourWinery = tourData?.winery as { _id: string } | undefined;
+    const targetWineryId =
+      wineryId || tourWinery?._id || (typeof tourData?.winery === 'string' ? tourData.winery : '');
 
-    if (['price', 'duration', 'minGroupSize', 'maxGroupSize'].includes(id)) {
-      val = value === '' ? 0 : Number(value);
+    if (!targetWineryId) {
+      return toast.error('No winery ID found');
     }
 
-    setForm((prev) => ({ ...prev, [id]: val }));
-  };
-
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!wineryId && !tourData?.winery) {
-      return toast.error('No winery ID');
-    }
-
-    if (form.minGroupSize > form.maxGroupSize) {
-      return toast.error('Invalid group size');
-    }
-
-    const tid = toast.loading('Saving...');
+    const tid = toast.loading('Saving tour...');
 
     try {
       const data = new FormData();
-
-      data.append('name', form.name);
-      data.append('description', form.description);
-      data.append('duration', String(form.duration));
-      data.append('price', String(form.price));
-      data.append(
-        'winery',
-        wineryId ||
-          (typeof tourData?.winery === 'object'
-            ? (tourData.winery as unknown as { _id: string })._id
-            : tourData?.winery) ||
-          '',
-      );
+      data.append('name', vals.name);
+      data.append('description', vals.description || '');
+      data.append('duration', String(vals.duration));
+      data.append('price', String(vals.price));
+      data.append('winery', targetWineryId);
 
       const groupSize = {
-        min: form.minGroupSize,
-        max: form.maxGroupSize,
+        min: vals.minGroupSize,
+        max: vals.maxGroupSize,
       };
       data.append('groupSize', JSON.stringify(groupSize));
 
@@ -111,22 +129,23 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
 
       if (tourData?._id) {
         await updateTour({ id: tourData._id, data });
-        toast.success('Updated', { id: tid });
       } else {
         await addTour(data);
-        toast.success('Added', { id: tid });
       }
 
+      toast.success('Tour saved successfully!', { id: tid });
       if (onSuccess) onSuccess();
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error';
-      toast.error(msg, { id: tid });
+      const error = err as ApiError;
+      toast.error(error.response?.data?.message || error.message || 'Error saving tour', {
+        id: tid,
+      });
     }
   };
 
   return (
     <AddTourWrapper>
-      <FormContainer onSubmit={handleSave}>
+      <FormContainer onSubmit={handleSubmit(onSubmit as unknown as SubmitHandler<FieldValues>)}>
         <TopSection>
           <PhotoSide>
             <GalleryUpload
@@ -136,17 +155,13 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
                 const nextFiles = [...files];
                 nextFiles[0] = f;
                 setFiles(nextFiles);
-
-                const nextPreviews = [...previews];
-                nextPreviews[0] = URL.createObjectURL(f);
-                setPreviews(nextPreviews);
+                setPreviews((prev) => [URL.createObjectURL(f), ...prev.slice(1)]);
               }}
               onGalleryFileChange={(file, index) => {
                 const galleryIndex = index + 1;
                 const nextFiles = [...files];
                 nextFiles[galleryIndex] = file;
                 setFiles(nextFiles);
-
                 const nextPreviews = [...previews];
                 nextPreviews[galleryIndex] = URL.createObjectURL(file);
                 setPreviews(nextPreviews);
@@ -156,7 +171,6 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
                 const nextFiles = [...files];
                 nextFiles.splice(galleryIndex, 1);
                 setFiles(nextFiles);
-
                 const nextPreviews = [...previews];
                 nextPreviews.splice(galleryIndex, 1);
                 setPreviews(nextPreviews);
@@ -167,27 +181,24 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
           <InfoSide>
             <FormField
               label="Tour Name"
-              id="name"
-              value={form.name}
-              onChange={handleInput}
+              {...register('name')}
+              error={errors.name?.message}
               required
             />
 
             <FormGrid>
               <FormField
                 label="Price (₾)"
-                id="price"
                 type="number"
-                value={form.price}
-                onChange={handleInput}
+                {...register('price', { valueAsNumber: true })}
+                error={errors.price?.message}
                 required
               />
               <FormField
                 label="Duration (min)"
-                id="duration"
                 type="number"
-                value={form.duration}
-                onChange={handleInput}
+                {...register('duration', { valueAsNumber: true })}
+                error={errors.duration?.message}
                 required
               />
             </FormGrid>
@@ -196,18 +207,16 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
             <GroupSizeWrapper>
               <FormField
                 label="Min"
-                id="minGroupSize"
                 type="number"
-                value={form.minGroupSize}
-                onChange={handleInput}
+                {...register('minGroupSize', { valueAsNumber: true })}
+                error={errors.minGroupSize?.message}
                 required
               />
               <FormField
                 label="Max"
-                id="maxGroupSize"
                 type="number"
-                value={form.maxGroupSize}
-                onChange={handleInput}
+                {...register('maxGroupSize', { valueAsNumber: true })}
+                error={errors.maxGroupSize?.message}
                 required
               />
             </GroupSizeWrapper>
@@ -215,18 +224,17 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
         </TopSection>
 
         <FullWidthWrapper>
-          <Suspense
-            fallback={
-              <div>
-                <Skeleton height="40px" $margin="0 0 12px 0" />
-                <Skeleton height="200px" $borderRadius="8px" />
-              </div>
-            }
-          >
-            <TextEditor
-              label="Description"
-              value={form.description}
-              onChange={(v: string) => setForm((prev) => ({ ...prev, description: v }))}
+          <Suspense fallback={<Skeleton height="200px" />}>
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <TextEditor
+                  label="Description"
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                />
+              )}
             />
           </Suspense>
         </FullWidthWrapper>

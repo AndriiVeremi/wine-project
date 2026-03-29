@@ -1,5 +1,6 @@
 import { Component, type ReactNode, type ErrorInfo } from 'react';
 import { notifyError } from '@/utils/toast';
+import { ErrorContainer, ErrorTitle, ErrorMessage, ReloadButton } from './ErrorBoundary.styled';
 
 interface Props {
   children: ReactNode;
@@ -27,36 +28,13 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '50vh',
-              padding: '40px',
-              textAlign: 'center',
-            }}
-          >
-            <h2 style={{ color: '#841013', marginBottom: '16px' }}>Oops! Something went wrong</h2>
-            <p style={{ color: '#666', marginBottom: '24px' }}>
+          <ErrorContainer>
+            <ErrorTitle>Oops! Something went wrong</ErrorTitle>
+            <ErrorMessage>
               {this.state.error?.message || 'An unexpected error occurred'}
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              style={{
-                padding: '12px 24px',
-                backgroundColor: '#841013',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '16px',
-              }}
-            >
-              Reload Page
-            </button>
-          </div>
+            </ErrorMessage>
+            <ReloadButton onClick={() => window.location.reload()}>Reload Page</ReloadButton>
+          </ErrorContainer>
         )
       );
     }

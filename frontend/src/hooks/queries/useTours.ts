@@ -7,14 +7,14 @@ import toast from 'react-hot-toast';
 export const useTours = (params: TourQueryParams) => {
   return useQuery({
     queryKey: QUERY_KEYS.tours.list(params),
-    queryFn: () => getTours(params),
+    queryFn: ({ signal }) => getTours(params, signal),
   });
 };
 
 export const useTour = (id?: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.tours.detail(id || ''),
-    queryFn: () => getTourById(id!),
+    queryFn: ({ signal }) => getTourById(id!, signal),
     enabled: !!id,
   });
 };

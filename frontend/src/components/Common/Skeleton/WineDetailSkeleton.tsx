@@ -16,10 +16,8 @@ const WineDetailSkeleton = () => {
   return (
     <div style={{ padding: '20px 0' }}>
       <StyledDetailSkeleton>
-        {/* Image side */}
         <Skeleton height="500px" $borderRadius="20px" />
 
-        {/* Info side */}
         <div>
           <Skeleton width="60%" height="48px" $margin="0 0 20px 0" />
           <Skeleton width="40%" height="24px" $margin="0 0 15px 0" />
@@ -33,13 +31,11 @@ const WineDetailSkeleton = () => {
         </div>
       </StyledDetailSkeleton>
 
-      {/* Tabs */}
       <div style={{ display: 'flex', gap: '20px', margin: '40px 0 20px 0' }}>
         <Skeleton width="120px" height="40px" $borderRadius="30px" />
         <Skeleton width="120px" height="40px" $borderRadius="30px" />
       </div>
 
-      {/* Content */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <Skeleton width="100%" height="20px" />
         <Skeleton width="100%" height="20px" />

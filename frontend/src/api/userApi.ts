@@ -1,8 +1,8 @@
 import apiClient from './axios';
-import type { WishlistWine } from '@/types/wine';
+import type { Wine } from '@/types/wine';
 
-export const getUserFavorites = () => {
-  return apiClient.get<WishlistWine[]>('/users/me/favorites');
+export const getFavorites = () => {
+  return apiClient.get<Wine[]>('/users/me/favorites');
 };
 
 export const addWineToFavorites = (wineId: string) => {

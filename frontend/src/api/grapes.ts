@@ -1,21 +1,12 @@
 import apiClient from './axios';
-import type { Grape } from '@/types/grape';
+import type { Grape, GrapesQueryParams } from '@/types/grape';
 
-export const getGrapes = (params: {
-  search?: string;
-  type?: string;
-  region?: string;
-  body?: string;
-  acidity?: string;
-  page?: number;
-  limit?: number;
-  wineryId?: string;
-}) => {
-  return apiClient.get('/grapes', { params });
+export const getGrapes = (params: GrapesQueryParams, signal?: AbortSignal) => {
+  return apiClient.get('/grapes', { params, signal });
 };
 
-export const getGrapeById = (id: string) => {
-  return apiClient.get<Grape>(`/grapes/${id}`);
+export const getGrapeById = (id: string, signal?: AbortSignal) => {
+  return apiClient.get<Grape>(`/grapes/${id}`, { signal });
 };
 
 export const addGrape = (data: FormData | Partial<Grape>) => {
