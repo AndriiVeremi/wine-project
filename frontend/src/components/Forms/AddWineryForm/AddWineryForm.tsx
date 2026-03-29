@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
-import { useWineriesStore } from '@/store/wineries/wineriesStore';
+import { useWineryMutations } from '@/hooks/queries/useWineries';
 import { useLocationStore } from '@/store/location/locationStore';
 import { getCountries } from '@/api/regions';
 import FormField from '@/components/Common/FormField/FormField';
@@ -43,7 +43,8 @@ interface Props {
 }
 
 const AddWinery = ({ wineryData, onSuccess }: Props) => {
-  const { add, update, loading } = useWineriesStore();
+  const { addWinery, updateWinery, isAdding, isUpdating } = useWineryMutations();
+  const loading = isAdding || isUpdating;
   const { fetchRegions, regions } = useLocationStore();
 
   const [form, setForm] = useState(init);
@@ -137,16 +138,15 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
 
     try {
       if (wineryData?._id) {
-        await update(wineryData._id, data);
+        await updateWinery({ id: wineryData._id, data });
         toast.success('Updated!');
       } else {
-        await add(data);
+        await addWinery(data);
         toast.success('Registered!');
       }
       if (onSuccess) onSuccess();
     } catch (err) {
       console.error('Failed to save winery', err);
-      toast.error('Save failed');
     }
   };
 

@@ -18,11 +18,11 @@ export const getGrapeById = (id: string) => {
   return apiClient.get<Grape>(`/grapes/${id}`);
 };
 
-export const addGrape = (data: Partial<Grape>) => {
+export const addGrape = (data: FormData | Partial<Grape>) => {
   return apiClient.post('/grapes', data);
 };
 
-export const updateGrape = (id: string, data: Partial<Grape>) => {
+export const updateGrape = (id: string, data: FormData | Partial<Grape>) => {
   return apiClient.patch(`/grapes/${id}`, data);
 };
 

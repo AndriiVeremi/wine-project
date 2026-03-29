@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getWineries, deleteWinery, toggleWineryVip } from '@/api/wineries';
+import { useState } from 'react';
 import { FiHome, FiStar } from 'react-icons/fi';
 import { useDebounce } from '@/hooks/useDebounce';
 import type { Winery } from '@/types/wineries';
+import { useWineries, useWineryMutations } from '@/hooks/queries/useWineries';
 import TableManager, { type Column } from '@/components/Common/TableManager/TableManager';
 import {
   ItemImg,
@@ -12,36 +12,20 @@ import {
 import { SectionTitle } from '@/pages/AccountPage/AccountPage.styled';
 import MainButton from '@/components/Buttons/MainButton';
 import AddWinery from '@/components/Forms/AddWineryForm/AddWineryForm';
-import toast from 'react-hot-toast';
 
 const AdminWineries = () => {
   const [view, setView] = useState<'list' | 'add' | 'edit'>('list');
   const [editingWinery, setEditingWinery] = useState<Winery | null>(null);
-  const [items, setItems] = useState<Winery[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [pages, setPages] = useState(1);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const q = useDebounce(search, 500);
 
-  const loadData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await getWineries({ limit: 10, page, search: q });
-      setItems(res.data.wineries);
-      setTotal(res.data.totalCount);
-      setPages(res.data.totalPages);
-    } catch {
-      toast.error('Failed to load data');
-    } finally {
-      setLoading(false);
-    }
-  }, [page, q]);
+  const { data, isLoading } = useWineries({ limit: 10, page, search: q });
+  const { deleteWinery, toggleVip } = useWineryMutations();
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  const items = data?.data?.wineries || [];
+  const total = data?.data?.totalCount || 0;
+  const pages = data?.data?.totalPages || 1;
 
   const handleEdit = (winery: Winery) => {
     setEditingWinery(winery);
@@ -50,23 +34,11 @@ const AdminWineries = () => {
 
   const onRemove = async (id: string) => {
     if (!window.confirm('Delete this winery?')) return;
-    try {
-      await deleteWinery(id);
-      toast.success('Deleted');
-      loadData();
-    } catch {
-      toast.error('Error');
-    }
+    await deleteWinery(id);
   };
 
   const onVip = async (id: string) => {
-    try {
-      await toggleWineryVip(id);
-      toast.success('VIP status updated');
-      loadData();
-    } catch {
-      toast.error('Failed');
-    }
+    await toggleVip(id);
   };
 
   const cols: Column<Winery>[] = [
@@ -129,7 +101,6 @@ const AdminWineries = () => {
           wineryData={editingWinery}
           onSuccess={() => {
             setView('list');
-            loadData();
           }}
         />
       </ManagerWrapper>
@@ -141,7 +112,7 @@ const AdminWineries = () => {
       title="Wineries"
       data={items}
       columns={cols}
-      loading={loading}
+      loading={isLoading}
       total={total}
       totalPages={pages}
       page={page}

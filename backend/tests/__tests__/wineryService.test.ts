@@ -55,32 +55,35 @@ describe('wineryService', () => {
       { _id: '2', name: 'Simple Winery', isVip: false },
     ];
     const createMockChain = (result: unknown) => ({
-      sort: jest.fn().mockReturnValue({
-        populate: jest.fn().mockReturnValue({
-          populate: jest.fn().mockResolvedValue(result),
-        }),
-        skip: jest.fn().mockReturnValue({
-          limit: jest.fn().mockReturnValue({
-            populate: jest.fn().mockReturnValue({
-              populate: jest.fn().mockResolvedValue(result),
-            }),
-          }),
-        }),
-      }),
+      sort: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      populate: jest.fn().mockReturnThis(),
+      exec: jest.fn().mockResolvedValue(result),
+      // For compatibility with simpler mock chains if needed
+      then: jest.fn().mockImplementation((callback) => Promise.resolve(result).then(callback)),
     });
+
+    // Simple mock helper for the new implementation: find().sort().skip().limit().populate().populate()
+    const mockFullChain = (result: unknown) => ({
+      sort: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      populate: jest.fn().mockReturnThis(),
+      // Mongoose models are often thenable
+      then: jest.fn().mockImplementation((callback) => Promise.resolve(result).then(callback)),
+    });
+
     it('get all wineries with page', async () => {
-      mockWineryFind
-        .mockReturnValueOnce(createMockChain([testWineries[0]]))
-        .mockReturnValueOnce(createMockChain([testWineries[1]]));
+      mockWineryFind.mockReturnValue(mockFullChain(testWineries));
       mockWineryCountDocuments.mockResolvedValue(2);
       const result = await wineryService.getWineries({});
       expect(result.wineries).toHaveLength(2);
       expect(result.totalCount).toBe(2);
     });
+
     it('use custom page and limit', async () => {
-      mockWineryFind
-        .mockReturnValueOnce(createMockChain([]))
-        .mockReturnValueOnce(createMockChain([testWineries[1]]));
+      mockWineryFind.mockReturnValue(mockFullChain([testWineries[1]]));
       mockWineryCountDocuments.mockResolvedValue(12);
       const result = await wineryService.getWineries({ page: 2, limit: 5 });
       expect(result.page).toBe(2);

@@ -3,8 +3,8 @@ import Container from '@/components/Common/Container';
 import GrapeList from '@/components/Grape/GrapeList/GrapeList';
 import AppPagination from '@/components/Common/AppPagination';
 import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
-import { useGrapesStore } from '@/store/grape/grapesStore';
 import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
+import { useGrapes } from '@/hooks/queries/useGrapes';
 import GrapeCardSkeleton from '@/components/Common/Skeleton/GrapeCardSkeleton';
 import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
@@ -13,27 +13,18 @@ import { notifyError } from '@/utils/toast';
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
 const GrapesPage = () => {
-  const grapes = useGrapesStore((s) => s.grapes);
-  const loading = useGrapesStore((s) => s.loading);
-  const error = useGrapesStore((s) => s.error);
-  const page = useGrapesStore((s) => s.page);
-  const totalPages = useGrapesStore((s) => s.totalPages);
-  const fetchGrapes = useGrapesStore((s) => s.fetchGrapes);
-
-  const { nameInput, setNameInput, applyName } = useGrapeFiltersStore();
+  const { nameInput, setNameInput, applyName, setFilter } = useGrapeFiltersStore();
 
   const query = useGrapeQueryParams();
+  const { data, isLoading, isFetching, error } = useGrapes({ ...query, limit: 12 });
+
+  const grapes = data?.data?.grapes || [];
+  const page = data?.data?.page || 1;
+  const totalPages = data?.data?.totalPages || 1;
 
   useEffect(() => {
-    fetchGrapes({
-      ...query,
-      page: 1,
-      limit: 12,
-    });
-  }, [query, fetchGrapes]);
-
-  useEffect(() => {
-    if (error) notifyError(error);
+    if (error)
+      notifyError(error instanceof Error ? error.message : 'Failed to load grape varieties');
   }, [error]);
 
   return (
@@ -47,7 +38,7 @@ const GrapesPage = () => {
         placeholder="Search grape varieties..."
       />
 
-      {loading && (
+      {isLoading || isFetching ? (
         <SkeletonGrid
           $columns={1}
           $tabletColumns={2}
@@ -59,21 +50,23 @@ const GrapesPage = () => {
             <GrapeCardSkeleton key={i} />
           ))}
         </SkeletonGrid>
-      )}
+      ) : (
+        <>
+          {!error && grapes?.length === 0 && (
+            <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
+          )}
 
-      {!loading && !error && grapes?.length === 0 && (
-        <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
-      )}
-
-      {!loading && grapes?.length > 0 && (
-        <ListSection>
-          <GrapeList grapes={grapes} />
-          <AppPagination
-            page={page}
-            totalPages={totalPages}
-            onChange={(p) => fetchGrapes({ ...query, page: p, limit: 12 })}
-          />
-        </ListSection>
+          {grapes?.length > 0 && (
+            <ListSection>
+              <GrapeList grapes={grapes} />
+              <AppPagination
+                page={page}
+                totalPages={totalPages}
+                onChange={(p) => setFilter('page', p)}
+              />
+            </ListSection>
+          )}
+        </>
       )}
     </Container>
   );

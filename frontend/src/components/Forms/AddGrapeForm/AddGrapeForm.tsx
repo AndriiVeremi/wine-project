@@ -20,7 +20,7 @@ import {
   TagsList,
 } from './AddGrapeForm.styled';
 import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
-import { useGrapesStore } from '@/store/grape/grapesStore';
+import { useGrapeMutations } from '@/hooks/queries/useGrapes';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
@@ -118,7 +118,7 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
   const [extraPres, setExtraPre] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
 
-  const { add, update } = useGrapesStore();
+  const { addGrape, updateGrape } = useGrapeMutations();
 
   useEffect(() => {
     if (grapeData) {
@@ -166,11 +166,18 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
       if (mainImg) allFiles.push(mainImg);
       allFiles.push(...extraImgs);
 
+      const fd = new FormData();
+      Object.entries(payload).forEach(([k, v]) => {
+        if (Array.isArray(v)) fd.append(k, JSON.stringify(v));
+        else fd.append(k, String(v));
+      });
+      allFiles.forEach((f) => fd.append('images', f));
+
       if (grapeData?._id) {
-        await update(grapeData._id, payload, allFiles);
+        await updateGrape({ id: grapeData._id, data: fd });
         toast.success('Updated!', { id: tid });
       } else {
-        await add(payload, allFiles);
+        await addGrape(fd);
         toast.success('Added!', { id: tid });
       }
       if (onSuccess) onSuccess();

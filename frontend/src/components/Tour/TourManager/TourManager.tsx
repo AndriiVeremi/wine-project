@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useToursStore } from '@/store/tours/toursStore';
 import { useAuthStore } from '@/store/auth/authStore';
 import { FiMap } from 'react-icons/fi';
 import MainButton from '@/components/Buttons/MainButton';
 import AddTour from '@/components/Forms/AddTourForm/AddTourForm';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useTours, useTourMutations } from '@/hooks/queries/useTours';
 import type { Tour } from '@/types/tours';
 import TableManager, { type Column } from '@/components/Common/TableManager/TableManager';
 import {
@@ -13,7 +13,6 @@ import {
   Header,
 } from '@/components/Common/TableManager/TableManager.styled';
 import { SectionTitle } from '@/pages/AccountPage/AccountPage.styled';
-import toast from 'react-hot-toast';
 
 interface Props {
   wineryId?: string;
@@ -26,21 +25,25 @@ const TourManager = ({ wineryId }: Props) => {
   const [page, setPage] = useState(1);
   const debouncedSearch = useDebounce(search, 500);
 
-  const { tours, fetch, remove, loading, totalPages, total } = useToursStore();
-  const { user, profile } = useAuthStore();
+  const { data: toursData, isLoading } = useTours({
+    limit: 10,
+    page,
+    wineryId,
+    name: debouncedSearch,
+  });
+
+  const { deleteTour } = useTourMutations();
+
+  const { profile } = useAuthStore();
   const isAdmin = profile?.role === 'ADMIN';
 
-  useEffect(() => {
-    if (user?.uid && (wineryId || isAdmin)) {
-      fetch({ limit: 10, page, wineryId });
-    } else if (user?.uid && !isAdmin && !wineryId) {
-      useToursStore.setState({ tours: [], total: 0, totalPages: 0 });
-    }
-  }, [user?.uid, page, wineryId, fetch, isAdmin]);
+  const tours = toursData?.data?.tours || [];
+  const total = toursData?.data?.totalCount || 0;
+  const totalPages = toursData?.data?.totalPages || 1;
 
   useEffect(() => {
     setPage(1);
-  }, [wineryId]);
+  }, [wineryId, debouncedSearch]);
 
   if (!isAdmin && !wineryId) {
     return (
@@ -63,13 +66,7 @@ const TourManager = ({ wineryId }: Props) => {
 
   const handleRemove = async (id: string) => {
     if (window.confirm('Delete?')) {
-      try {
-        await remove(id);
-        toast.success('Deleted');
-        fetch({ limit: 10, page, wineryId });
-      } catch {
-        toast.error('Error');
-      }
+      await deleteTour(id);
     }
   };
 
@@ -92,8 +89,6 @@ const TourManager = ({ wineryId }: Props) => {
     },
   ];
 
-  const data = tours.filter((t) => t.name.toLowerCase().includes(debouncedSearch.toLowerCase()));
-
   if (view !== 'list') {
     return (
       <ManagerWrapper>
@@ -108,7 +103,6 @@ const TourManager = ({ wineryId }: Props) => {
           tourData={editingTour}
           onSuccess={() => {
             setView('list');
-            fetch({ limit: 10, page, wineryId });
           }}
         />
       </ManagerWrapper>
@@ -118,9 +112,9 @@ const TourManager = ({ wineryId }: Props) => {
   return (
     <TableManager
       title={isAdmin ? 'All Tours' : 'My Tours'}
-      data={data}
+      data={tours}
       columns={columns}
-      loading={loading}
+      loading={isLoading}
       total={total}
       totalPages={totalPages}
       page={page}

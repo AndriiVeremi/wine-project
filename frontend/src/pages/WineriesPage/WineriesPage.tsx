@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useWineriesStore } from '@/store/wineries/wineriesStore';
 import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
 import { useWineryQueryParams } from '@/hooks/useWineryQueryParams';
+import { useWineries } from '@/hooks/queries/useWineries';
 
 import WineryList from '@/components/Winery/WineryList/WineryList';
 import AppPagination from '@/components/Common/AppPagination';
@@ -14,24 +14,20 @@ import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
 import { notifyError } from '@/utils/toast';
 
 const WineriesPage = () => {
-  const { wineries, fetchWineries, loading, error, page, totalPages } = useWineriesStore();
-
   const nameInput = useWineriesFiltersStore((s) => s.nameInput);
   const setNameInput = useWineriesFiltersStore((s) => s.setNameInput);
   const applyName = useWineriesFiltersStore((s) => s.applyName);
+  const setFilter = useWineriesFiltersStore((s) => s.setFilter);
 
   const query = useWineryQueryParams();
+  const { data, isLoading, isFetching, error } = useWineries({ limit: 12, ...query });
+
+  const wineries = data?.data?.wineries || [];
+  const page = data?.data?.page || 1;
+  const totalPages = data?.data?.totalPages || 1;
 
   useEffect(() => {
-    fetchWineries({
-      page: 1,
-      limit: 12,
-      ...query,
-    });
-  }, [fetchWineries, query]);
-
-  useEffect(() => {
-    if (error) notifyError(error);
+    if (error) notifyError(error instanceof Error ? error.message : 'Failed to load wineries');
   }, [error]);
 
   return (
@@ -44,7 +40,7 @@ const WineriesPage = () => {
         placeholder="Search wineries..."
       />
 
-      {loading && (
+      {isLoading || isFetching ? (
         <SkeletonGrid
           $columns={1}
           $tabletColumns={2}
@@ -56,19 +52,23 @@ const WineriesPage = () => {
             <WineryCardSkeleton key={i} />
           ))}
         </SkeletonGrid>
-      )}
+      ) : (
+        <>
+          {!error && wineries.length === 0 && (
+            <p style={{ textAlign: 'center', marginTop: '40px' }}>No wineries found</p>
+          )}
 
-      {!loading && !error && wineries?.length === 0 && <p>No wineries found</p>}
-
-      {!loading && !error && wineries.length > 0 && (
-        <ListSection>
-          <WineryList wineries={wineries} />
-          <AppPagination
-            page={page}
-            totalPages={totalPages}
-            onChange={(p) => fetchWineries({ page: p, limit: 12, ...query })}
-          />
-        </ListSection>
+          {!error && wineries.length > 0 && (
+            <ListSection>
+              <WineryList wineries={wineries} />
+              <AppPagination
+                page={page}
+                totalPages={totalPages}
+                onChange={(p) => setFilter('page', p)}
+              />
+            </ListSection>
+          )}
+        </>
       )}
     </Container>
   );

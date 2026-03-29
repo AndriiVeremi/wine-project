@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaClock, FaWineGlassAlt } from 'react-icons/fa';
 import { getGrapeById } from '@/api/grapes';
-import { useWinesStore } from '@/store/wine/winesStore';
+import { useWines } from '@/hooks/queries/useWines';
 import type { Grape } from '@/types/grape';
 import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
@@ -41,7 +41,12 @@ const GrapeDetailPage = () => {
   const [data, setData] = useState<Grape | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeIdx, setActiveIdx] = useState(0);
-  const { wines, fetch, loading: winesLoading } = useWinesStore();
+
+  const { data: winesData, isLoading: winesLoading } = useWines(
+    data?.name ? { grape: data.name, limit: 10 } : {},
+  );
+
+  const wines = winesData?.data?.wines || [];
 
   const loadData = useCallback(async () => {
     if (!id) return;
@@ -58,12 +63,6 @@ const GrapeDetailPage = () => {
   useEffect(() => {
     loadData();
   }, [loadData]);
-
-  useEffect(() => {
-    if (data?.name) {
-      fetch({ grape: data.name, limit: 10 });
-    }
-  }, [data?.name, fetch]);
 
   if (loading) return <Loader />;
   if (!data)
@@ -214,7 +213,7 @@ const GrapeDetailPage = () => {
           <SectionHeaderTitle>Wines of {data.name}</SectionHeaderTitle>
           <Slider
             items={wines.slice(0, 8)}
-            isLoading={winesLoading && wines.length === 0}
+            isLoading={winesLoading}
             renderSkeleton={() => <WineCardSkeleton />}
             renderItem={(w) => <SliderCardWine wine={w} />}
           />

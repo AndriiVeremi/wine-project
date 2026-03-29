@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams } from 'react-router-dom';
 import { getRegionByName } from '@/api/regions';
-import { useWineriesStore } from '@/store/wineries/wineriesStore';
-import { useWinesStore } from '@/store/wine/winesStore';
+import { useWineries } from '@/hooks/queries/useWineries';
+import { useWines } from '@/hooks/queries/useWines';
 import { Loader } from '@/components/Common/Loader';
 import Container from '@/components/Common/Container';
 import Slider from '@/components/Slider/Slider';
@@ -49,8 +49,15 @@ const RegionDetailPage = () => {
   const [activeTab, setActiveTab] = useState<'wineries' | 'wines'>('wineries');
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
-  const { wineries, fetchWineries, loading: wineriesLoading } = useWineriesStore();
-  const { wines, fetch: fetchWines, loading: winesLoading } = useWinesStore();
+  const { data: wineriesData, isLoading: wineriesLoading } = useWineries(
+    activeTab === 'wineries' && region?._id ? { region: region._id, limit: 12 } : {},
+  );
+  const { data: winesData, isLoading: winesLoading } = useWines(
+    activeTab === 'wines' && region?._id ? { region: region._id, limit: 12 } : {},
+  );
+
+  const wineries = wineriesData?.data?.wineries || [];
+  const wines = winesData?.data?.wines || [];
 
   useEffect(() => {
     if (isImageModalOpen) {
@@ -78,18 +85,6 @@ const RegionDetailPage = () => {
     };
     loadRegion();
   }, [name]);
-
-  useEffect(() => {
-    if (activeTab === 'wineries' && region?._id) {
-      fetchWineries({ region: region._id, limit: 12 });
-    }
-  }, [activeTab, region, fetchWineries]);
-
-  useEffect(() => {
-    if (activeTab === 'wines' && region?._id) {
-      fetchWines({ region: region._id, limit: 12 });
-    }
-  }, [activeTab, region, fetchWines]);
 
   const getDynamicTitle = () => {
     if (!region) return '';
