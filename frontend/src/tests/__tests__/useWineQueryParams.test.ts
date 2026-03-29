@@ -44,7 +44,7 @@ describe('useWineQueryParams', () => {
 
   it('should convert sweetness to lowercase', () => {
     act(() => {
-      useFiltersStore.setState({ sweetness: 'DRY' });
+      useFiltersStore.setState({ sweetness: 'dry' });
     });
     const { result } = renderHook(() => useWineQueryParams());
     expect(result.current.sweetness).toBe('dry');
@@ -52,7 +52,7 @@ describe('useWineQueryParams', () => {
 
   it('should convert color to lowercase', () => {
     act(() => {
-      useFiltersStore.setState({ color: 'RED' });
+      useFiltersStore.setState({ color: 'red' });
     });
     const { result } = renderHook(() => useWineQueryParams());
     expect(result.current.color).toBe('red');

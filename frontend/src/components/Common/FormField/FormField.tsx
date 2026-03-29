@@ -26,7 +26,6 @@ const FormField = forwardRef<
     { label, id, error, isTextarea = false, isSelect = false, options, required, ...props },
     ref,
   ) => {
-    // Use provided id or fallback to name (which register() provides)
     const fieldId = id || props.name;
 
     return (

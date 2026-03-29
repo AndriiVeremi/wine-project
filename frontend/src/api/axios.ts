@@ -12,12 +12,10 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
-// Cache for the token to avoid awaiting getIdToken on every request
 let authToken: string | null = null;
 
 const auth = getAuth();
 
-// Initialize Firebase Auth listener to keep authToken in sync
 onIdTokenChanged(auth, async (user) => {
   if (user) {
     authToken = await user.getIdToken();
@@ -29,8 +27,6 @@ onIdTokenChanged(auth, async (user) => {
 apiClient.interceptors.request.use(async (config: PerformanceConfig) => {
   config.metadata = { startTime: performance.now() };
 
-  // 1. Check if we have a cached token
-  // 2. If not, but there is a user, wait for the token
   if (!authToken && auth.currentUser) {
     authToken = await auth.currentUser.getIdToken();
   }
@@ -57,12 +53,10 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    // If the request was canceled (e.g. by TanStack Query), don't treat it as a scary error
     if (axios.isCancel(error)) {
       return Promise.reject(error);
     }
 
-    // If we get a 401, clear the token so the next request tries to fetch it again
     if (error.response?.status === 401) {
       authToken = null;
     }

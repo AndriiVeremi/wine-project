@@ -3,17 +3,15 @@ import { mockWines } from '@/tests/data/wines.mock';
 
 const BASE_URL = 'http://localhost:5005/api';
 
-// Utility RegExps
 const WINES_LIST = new RegExp(`^${BASE_URL}/wines`);
 const WINES_ITEM = new RegExp(`^${BASE_URL}/wines/[^/]+$`);
 
 export const winesHandlers = [
-  // GET /wines (filters + pagination)
   http.get(WINES_LIST, ({ request }) => {
     const url = new URL(request.url);
     let wines = [...mockWines];
 
-    // --- FILTERS ---
+
     const color = url.searchParams.get('color');
     if (color) {
       wines = wines.filter((w) => w.color === color);
@@ -49,7 +47,6 @@ export const winesHandlers = [
       wines = wines.filter((w) => w.name.toLowerCase().includes(name.toLowerCase()));
     }
 
-    // --- PAGINATION ---
     const page = Number(url.searchParams.get('page')) || 1;
     const limit = Number(url.searchParams.get('limit')) || 10;
     const start = (page - 1) * limit;
@@ -65,7 +62,6 @@ export const winesHandlers = [
     });
   }),
 
-  // POST /wines (create)
   http.post(`${BASE_URL}/wines`, async ({ request }) => {
     const formData = await request.formData();
     const newWine = {
@@ -77,13 +73,11 @@ export const winesHandlers = [
     return HttpResponse.json(newWine, { status: 201 });
   }),
 
-  // PATCH /wines/:id (update)
   http.patch(WINES_ITEM, async ({ params }) => {
     const updatedWine = { ...mockWines[0], _id: params.id as string };
     return HttpResponse.json(updatedWine, { status: 200 });
   }),
 
-  // DELETE /wines/:id
   http.delete(WINES_ITEM, () => {
     return HttpResponse.json({ success: true });
   }),

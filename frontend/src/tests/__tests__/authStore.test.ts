@@ -86,6 +86,7 @@ describe('authStore', () => {
       password: 'password',
       firstName: 'John',
       lastName: 'Doe',
+      role: 'USER' as const,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

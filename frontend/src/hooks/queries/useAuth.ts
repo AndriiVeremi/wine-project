@@ -15,7 +15,7 @@ export const useProfile = () => {
       return res.data;
     },
     enabled: !!user?.uid,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 };
 

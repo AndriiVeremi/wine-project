@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-  /* Reset */
   *,
   *::before,
   *::after {
@@ -15,7 +14,6 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
     overflow-x: hidden;
     width: 100%;
-    /* Глобальне стабілізування прокрутки */
     scrollbar-gutter: stable;
   }
 
