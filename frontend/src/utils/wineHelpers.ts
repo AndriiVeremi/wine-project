@@ -1,6 +1,3 @@
-/**
- * Returns a progress percentage based on a string value
- */
 export const calcProgress = (val: string): number => {
   if (val === 'Low' || val === 'Light' || val === 'Soft') return 20;
   if (val === 'Medium-Low' || val === 'Medium-Light' || val === 'Medium-Soft') return 40;
@@ -10,13 +7,9 @@ export const calcProgress = (val: string): number => {
   return 0;
 };
 
-/**
- * Returns an emoji based on the food pairing description
- */
 export const getFoodEmoji = (text: string): string => {
   const low = text.toLowerCase();
 
-  // Order matters: check more specific items first
   if (low.includes('cheese')) return '🧀';
   if (
     low.includes('steak') ||
@@ -107,15 +100,24 @@ export const getFoodEmoji = (text: string): string => {
   return '🍽️';
 };
 
-/**
- * Returns an emoji based on the wine characteristic or aroma
- */
 export const getCharacteristicEmoji = (text: string): string => {
   const low = text.toLowerCase();
 
   if (low.includes('cherry') || low.includes('berry') || low.includes('plum')) return '🍓';
-  if (low.includes('flower') || low.includes('floral') || low.includes('rose') || low.includes('violet')) return '🌿';
-  if (low.includes('oak') || low.includes('vanilla') || low.includes('smoke') || low.includes('tobacco')) return '🪵';
+  if (
+    low.includes('flower') ||
+    low.includes('floral') ||
+    low.includes('rose') ||
+    low.includes('violet')
+  )
+    return '🌿';
+  if (
+    low.includes('oak') ||
+    low.includes('vanilla') ||
+    low.includes('smoke') ||
+    low.includes('tobacco')
+  )
+    return '🪵';
   if (low.includes('mineral') || low.includes('stone') || low.includes('earth')) return '💎';
   if (low.includes('honey') || low.includes('sweet')) return '🍯';
   if (low.includes('pepper') || low.includes('spice')) return '🌶️';
@@ -125,7 +127,6 @@ export const getCharacteristicEmoji = (text: string): string => {
   return '✨';
 };
 
-// Data for forms and suggestions
 export const foodPairingCategories = [
   {
     name: 'Cheese',
