@@ -24,7 +24,7 @@ export const useProfileMutations = () => {
   const user = useAuthStore((s) => s.user);
 
   const updateMutation = useMutation({
-    mutationFn: (data: Partial<UserProfile>) => updateUserApi(data),
+    mutationFn: (data: FormData | Partial<UserProfile>) => updateUserApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.auth.profile(user?.uid) });
       toast.success('Profile updated successfully');

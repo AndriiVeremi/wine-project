@@ -6,7 +6,10 @@ import { auth } from '@/config/firebase';
 import MainButton from '@/components/Buttons/MainButton';
 import UserAvatar from '@/components/User/UserAvatar';
 import FormField from '@/components/Common/FormField/FormField';
+import { useQueryClient } from '@tanstack/react-query';
 import { useProfileMutations } from '@/hooks/queries/useAuth';
+import { QUERY_KEYS } from '@/constants/queryKeys';
+import { useAuthStore } from '@/store/auth/authStore';
 import type { UserProfile } from '@/types/auth';
 import {
   AccountSettingsContainer,
@@ -23,6 +26,8 @@ interface AccountSettingsProps {
 }
 
 const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
+  const queryClient = useQueryClient();
+  const { user } = useAuthStore();
   const { updateProfile } = useProfileMutations();
   const [editing, setEditing] = useState(false);
   const [inputs, setInputs] = useState({
@@ -106,8 +111,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
     }
   };
 
-  const onAvatarUpdate = (updated: Partial<UserProfile>) => {
-    updateProfile(updated);
+  const onAvatarUpdate = () => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.auth.profile(user?.uid) });
   };
 
   return (
