@@ -29,6 +29,8 @@ import InfoButton from '@/components/Buttons/InfoButton';
 import { FiThermometer, FiWind, FiTruck } from 'react-icons/fi';
 import { HiOutlineLightBulb } from 'react-icons/hi2';
 
+import { getFoodEmoji } from '@/utils/wineHelpers';
+
 const WineDetailPage = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
@@ -153,7 +155,32 @@ const WineDetailPage = () => {
               </WineProfileGrid>
 
               <div className="description-title">Food Pairing</div>
-              <p style={{ marginTop: '10px' }}>{wine.foodPairing?.join(', ') || '—'}</p>
+              <div
+                style={{
+                  marginTop: '10px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                }}
+              >
+                {wine.foodPairing?.map((food) => (
+                  <span
+                    key={food}
+                    style={{
+                      background: '#f8fafc',
+                      padding: '4px 12px',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      border: '1px solid #f1f5f9',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <span style={{ fontSize: '18px' }}>{getFoodEmoji(food)}</span> {food}
+                  </span>
+                )) || '—'}
+              </div>
 
               <ServingSection>
                 <ServingItem title="Serving Temperature">

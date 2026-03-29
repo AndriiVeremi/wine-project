@@ -54,7 +54,7 @@ const WineOverview = ({ wine }: Props) => {
         />
       </StockReviewRow>
 
-      <StyledWinePrice>{wine.price} $</StyledWinePrice>
+      <StyledWinePrice>{wine.price} ₾</StyledWinePrice>
 
       <TechGrid>
         <TechItem>

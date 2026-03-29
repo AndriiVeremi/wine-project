@@ -84,7 +84,7 @@ const TourManager = ({ wineryId }: Props) => {
     },
     {
       header: 'Price',
-      render: (tour) => `$${tour.price}`,
+      render: (tour) => `₾${tour.price}`,
     },
     {
       header: 'Duration',

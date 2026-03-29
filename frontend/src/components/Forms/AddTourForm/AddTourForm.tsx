@@ -177,7 +177,7 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
 
             <FormGrid>
               <FormField
-                label="Price ($)"
+                label="Price (₾)"
                 id="price"
                 type="number"
                 value={form.price}

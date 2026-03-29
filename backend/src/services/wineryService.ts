@@ -105,21 +105,14 @@ export const getWineries = async (params: GetWineriesParams) => {
     }
   }
 
-  const vipWineries = await Winery.find({ ...query, isVip: true })
-    .sort(sort)
-    .populate('country', 'name')
-    .populate('region', 'name');
-
-  const regularWineries = await Winery.find({ ...query, isVip: false })
-    .sort(sort)
+  const allWineries = await Winery.find(query)
+    .sort({ isVip: -1, ...sort })
     .skip((page - 1) * limit)
     .limit(limit)
     .populate('country', 'name')
     .populate('region', 'name');
 
   const totalCount = await Winery.countDocuments(query);
-
-  const allWineries = [...vipWineries, ...regularWineries];
 
   // Simple loop to add rating data
   const wineriesWithRatings = [];
