@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/store/auth/authStore';
+import { useProfile } from '@/hooks/queries/useAuth';
 import { FaWineBottle } from 'react-icons/fa';
 import MainButton from '@/components/Buttons/MainButton';
 import AddWine from '@/components/Forms/AddWinesForm/AddWinesForm';
@@ -25,7 +25,7 @@ const WineManager = ({ wineryId }: Props) => {
   const [page, setPage] = useState(1);
   const findText = useDebounce(search, 500);
 
-  const { profile } = useAuthStore();
+  const { data: profile } = useProfile();
   const isAdmin = profile?.role === 'ADMIN';
 
   const { data, isLoading } = useWines({
@@ -71,9 +71,7 @@ const WineManager = ({ wineryId }: Props) => {
       if (wines.length === 1 && page > 1) {
         setPage(page - 1);
       }
-    } catch {
-      // Error handled by hook
-    }
+    } catch {}
   };
 
   const cols: Column<Wine>[] = [

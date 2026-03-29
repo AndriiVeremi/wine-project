@@ -25,7 +25,7 @@ const LegalPage = lazy(() => import('@/pages/LegalPage/LegalPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 
 function App() {
-  const { setUser, isLoading } = useAuthStore();
+  const { setUser, isInitialized } = useAuthStore();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -34,7 +34,7 @@ function App() {
     return () => unsubscribe();
   }, [setUser]);
 
-  if (isLoading) {
+  if (!isInitialized) {
     return <Loader isFullScreen={true} />;
   }
 

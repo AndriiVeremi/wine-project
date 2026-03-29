@@ -7,7 +7,7 @@ import WineryList from '@/components/Winery/WineryList/WineryList';
 import AppPagination from '@/components/Common/AppPagination';
 import Container from '@/components/Common/Container';
 import WineryCardSkeleton from '@/components/Common/Skeleton/WineryCardSkeleton';
-import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
+import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';

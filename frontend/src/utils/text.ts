@@ -1,7 +1,6 @@
 export const stripHtml = (html: string) => {
-  const tmp = document.createElement('DIV');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
+  if (!html) return '';
+  return html.replace(/<[^>]*>?/gm, '');
 };
 
 export const truncateText = (text: string, limit: number = 100) => {

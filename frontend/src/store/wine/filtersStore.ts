@@ -41,7 +41,6 @@ export const useFiltersStore = create<FiltersState>()((set) => ({
     set((state) => ({
       ...state,
       [key]: value,
-      // Reset page to 1 when any filter other than page changes
       page: key === 'page' ? (value as number) : 1,
     })),
 

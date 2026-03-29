@@ -1,12 +1,8 @@
 import type { AxiosError } from 'axios';
-
-interface ApiErrorResponse {
-  message?: string;
-  errors?: { message: string }[];
-}
+import type { ApiError } from '@/types/api';
 
 export const getApiErrorMessage = (err: unknown): string => {
-  const error = err as AxiosError<ApiErrorResponse>;
+  const error = err as AxiosError<ApiError['response']['data']>;
 
   if (error.response?.data?.errors?.length) {
     return error.response.data.errors[0].message;

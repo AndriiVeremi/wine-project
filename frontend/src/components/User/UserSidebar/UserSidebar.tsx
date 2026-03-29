@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/store/auth/authStore';
+import { useProfile } from '@/hooks/queries/useAuth';
 import { useNavigate } from 'react-router-dom';
 import {
   FiUser,
@@ -46,7 +47,8 @@ type MenuItemData =
   | { name: string; icon: React.ReactNode; type: 'link'; path: string };
 
 const AccountSidebar = ({ currentSection, setSection }: Props) => {
-  const { profile, logout } = useAuthStore();
+  const { logout } = useAuthStore();
+  const { data: profile } = useProfile();
   const navigate = useNavigate();
 
   const isOwner = profile?.role === 'WINERY_OWNER';

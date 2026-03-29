@@ -7,7 +7,7 @@ import { useTours } from '@/hooks/queries/useTours';
 import TourList from '@/components/Tour/TourList/TourList';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import TourCardSkeleton from '@/components/Common/Skeleton/TourCardSkeleton';
-import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
+import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
 

@@ -7,14 +7,14 @@ import toast from 'react-hot-toast';
 export const useGrapes = (params: GrapesQueryParams) => {
   return useQuery({
     queryKey: QUERY_KEYS.grapes.list(params),
-    queryFn: () => getGrapes(params),
+    queryFn: ({ signal }) => getGrapes(params, signal),
   });
 };
 
 export const useGrape = (id?: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.grapes.detail(id || ''),
-    queryFn: () => getGrapeById(id!),
+    queryFn: ({ signal }) => getGrapeById(id!, signal),
     enabled: !!id,
   });
 };

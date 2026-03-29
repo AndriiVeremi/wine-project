@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth/authStore';
+import { useProfile } from '@/hooks/queries/useAuth';
 import AccountSidebar from '@/components/User/UserSidebar/UserSidebar';
 import type { AccountSection } from '@/components/User/UserSidebar/UserSidebar';
 import WineManager from '@/components/Wine/WineManager/WineManager';
@@ -26,20 +27,15 @@ import {
 } from './AccountPage.styled';
 
 const AccountPage = () => {
-  const { user, profile, fetchProfile, isLoading } = useAuthStore();
+  const { user } = useAuthStore();
+  const { data: profile, isLoading } = useProfile();
   const [activeSection, setActiveSection] = useState<AccountSection>('Personal Info');
 
-  useEffect(() => {
-    if (user?.uid && !profile) {
-      fetchProfile();
-    }
-  }, [user?.uid, profile, fetchProfile]);
-
   if (!user) return <Navigate to="/" replace />;
-  if (isLoading) return <PlaceholderText>Loading...</PlaceholderText>;
+  if (isLoading) return <PlaceholderText>Loading profile...</PlaceholderText>;
 
   const renderContent = () => {
-    const wineryId = profile?.winery?._id;
+    const wineryId = (profile?.winery as unknown as { _id: string })?._id;
 
     switch (activeSection) {
       case 'Personal Info':
@@ -48,10 +44,7 @@ const AccountPage = () => {
         return (
           <>
             <SectionTitle>My Winery</SectionTitle>
-            <AddWinery
-              wineryData={profile?.winery as unknown as Winery}
-              onSuccess={() => fetchProfile()}
-            />
+            <AddWinery wineryData={profile?.winery as unknown as Winery} />
           </>
         );
       case 'My Wines':
@@ -77,14 +70,7 @@ const AccountPage = () => {
       case 'My Reviews':
         return <AccountReviews />;
       case 'Account Settings':
-        return (
-          <AccountSettings
-            info={profile}
-            updateData={(updated) =>
-              useAuthStore.setState({ profile: { ...profile!, ...updated } })
-            }
-          />
-        );
+        return <AccountSettings info={profile as UserProfile} />;
       case 'Contacts':
         return (
           <>

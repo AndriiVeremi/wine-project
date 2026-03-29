@@ -6,15 +6,12 @@ export interface Winery {
   country: string;
   region: string;
   address: string;
-
-  // Додаємо нові поля
   coordinates?: {
     lat: number;
     lng: number;
   };
   websiteUrl?: string;
   videoUrl?: string;
-
   isVip: boolean;
   logoUrl?: string;
   galleryUrl?: string[];

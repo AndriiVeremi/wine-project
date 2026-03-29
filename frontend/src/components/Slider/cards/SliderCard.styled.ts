@@ -21,10 +21,10 @@ export const CardBase = styled.div`
 
 export const ImageWrapper = styled.div`
   width: 100%;
-  height: 200px; /* Трохи збільшимо картинку */
+  height: 200px;
   overflow: hidden;
   background: #f9f9f9;
-  position: relative; /* Для позиціонування ціни */
+  position: relative;
 
   img {
     width: 100%;
@@ -34,7 +34,7 @@ export const ImageWrapper = styled.div`
   }
 
   ${CardBase}:hover & img {
-    transform: scale(1.1); /* Легкий зум картинки при наведенні */
+    transform: scale(1.1);
   }
 `;
 
@@ -118,6 +118,6 @@ export const FooterLink = styled.div`
   text-decoration: none;
 
   ${CardBase}:hover & {
-    gap: 10px; /* Стрілочка відсувається при наведенні на картку */
+    gap: 10px;
   }
 `;

@@ -16,10 +16,8 @@ const WineDetailSkeleton = () => {
   return (
     <div style={{ padding: '20px 0' }}>
       <StyledDetailSkeleton>
-        {/* Image side */}
         <Skeleton height="500px" $borderRadius="20px" />
 
-        {/* Info side */}
         <div>
           <Skeleton width="60%" height="48px" $margin="0 0 20px 0" />
           <Skeleton width="40%" height="24px" $margin="0 0 15px 0" />

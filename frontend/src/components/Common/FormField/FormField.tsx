@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import {
   FieldWrapper,
   Label,
@@ -7,85 +7,74 @@ import {
   Textarea,
 } from '@/components/Forms/AuthForm/Form.styled';
 
-interface FormFieldProps {
+interface FormFieldProps extends React.InputHTMLAttributes<
+  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+> {
   label: string;
-  id: string;
-  name?: string;
-  type?: string;
-  step?: string;
-  value: string | number;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-  ) => void;
-  placeholder?: string;
-  required?: boolean;
-  disabled?: boolean;
-  options?: { value: string | number; label: string }[];
+  id?: string;
+  error?: string;
   isTextarea?: boolean;
   isSelect?: boolean;
+  options?: { value: string | number; label: string }[];
 }
 
-const FormField: React.FC<FormFieldProps> = ({
-  label,
-  id,
-  type = 'text',
-  step,
-  value,
-  onChange,
-  placeholder,
-  required = false,
-  disabled = false,
-  options,
-  isTextarea = false,
-  isSelect = false,
-}) => {
-  return (
-    <FieldWrapper>
-      <Label htmlFor={id}>
-        {label} {required && '*'}
-      </Label>
+const FormField = forwardRef<
+  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
+  FormFieldProps
+>(
+  (
+    { label, id, error, isTextarea = false, isSelect = false, options, required, ...props },
+    ref,
+  ) => {
+    // Use provided id or fallback to name (which register() provides)
+    const fieldId = id || props.name;
 
-      {isSelect ? (
-        <Select
-          id={id}
-          name={id}
-          value={value}
-          onChange={onChange}
-          required={required}
-          disabled={disabled}
-        >
-          <option value="">Select...</option>
-          {options?.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </Select>
-      ) : isTextarea ? (
-        <Textarea
-          id={id}
-          name={id}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          required={required}
-          disabled={disabled}
-        />
-      ) : (
-        <Input
-          id={id}
-          name={id}
-          type={type}
-          step={step}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          required={required}
-          disabled={disabled}
-        />
-      )}
-    </FieldWrapper>
-  );
-};
+    return (
+      <FieldWrapper>
+        <Label htmlFor={fieldId}>
+          {label} {required && '*'}
+        </Label>
+
+        {isSelect ? (
+          <Select
+            id={fieldId}
+            ref={ref as React.Ref<HTMLSelectElement>}
+            required={required}
+            {...(props as React.SelectHTMLAttributes<HTMLSelectElement>)}
+          >
+            <option value="">Select...</option>
+            {options?.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </Select>
+        ) : isTextarea ? (
+          <Textarea
+            id={fieldId}
+            ref={ref as React.Ref<HTMLTextAreaElement>}
+            required={required}
+            {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+          />
+        ) : (
+          <Input
+            id={fieldId}
+            ref={ref as React.Ref<HTMLInputElement>}
+            required={required}
+            {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
+          />
+        )}
+
+        {error && (
+          <span style={{ color: '#e44848', fontSize: '12px', marginTop: '4px', fontWeight: 500 }}>
+            {error}
+          </span>
+        )}
+      </FieldWrapper>
+    );
+  },
+);
+
+FormField.displayName = 'FormField';
 
 export default FormField;

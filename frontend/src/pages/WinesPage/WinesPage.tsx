@@ -3,7 +3,7 @@ import Container from '@/components/Common/Container';
 import FilterClearButton from '@/components/Buttons/FilterClearButton';
 import AppPagination from '@/components/Common/AppPagination';
 import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
-import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
+import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { SearchAndClearWrapper, StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
 import { useFiltersStore } from '@/store/wine/filtersStore';

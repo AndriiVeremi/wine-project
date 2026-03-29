@@ -6,7 +6,7 @@ import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useGrapeQueryParams } from '@/hooks/useGrapeQueryParams';
 import { useGrapes } from '@/hooks/queries/useGrapes';
 import GrapeCardSkeleton from '@/components/Common/Skeleton/GrapeCardSkeleton';
-import { SkeletonGrid } from '@/components/Common/ListStyles/SkeletonGrid';
+import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { notifyError } from '@/utils/toast';
 

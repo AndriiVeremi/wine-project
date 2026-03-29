@@ -1,13 +1,14 @@
 import apiClient from './axios';
 import type { Tour, TourQueryParams, ToursResponse } from '@/types/tours';
 
-export const getTours = (params?: TourQueryParams) =>
-  apiClient.get<ToursResponse>('/tours', { params });
+export const getTours = (params?: TourQueryParams, signal?: AbortSignal) =>
+  apiClient.get<ToursResponse>('/tours', { params, signal });
 
-export const getTourById = (id: string) => apiClient.get<Tour>(`/tours/${id}`);
+export const getTourById = (id: string, signal?: AbortSignal) =>
+  apiClient.get<Tour>(`/tours/${id}`, { signal });
 
-export const getToursByWinery = (wineryId: string) =>
-  apiClient.get<Tour[]>(`/tours/winery/${wineryId}`);
+export const getToursByWinery = (wineryId: string, signal?: AbortSignal) =>
+  apiClient.get<Tour[]>(`/tours/winery/${wineryId}`, { signal });
 
 export const addTour = (data: FormData) =>
   apiClient.post<Tour>('/tours', data, {
