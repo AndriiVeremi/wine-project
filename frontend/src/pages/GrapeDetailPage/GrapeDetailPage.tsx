@@ -4,6 +4,7 @@ import { FaClock, FaWineGlassAlt } from 'react-icons/fa';
 import { getGrapeById } from '@/api/grapes';
 import { useWines } from '@/hooks/queries/useWines';
 import type { Grape } from '@/types/grape';
+import type { Wine } from '@/types/wine';
 import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
 import Slider from '@/components/Slider/Slider';

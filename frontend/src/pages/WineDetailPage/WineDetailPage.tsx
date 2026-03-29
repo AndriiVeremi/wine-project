@@ -157,7 +157,7 @@ const WineDetailPage = () => {
                   gap: '8px',
                 }}
               >
-                {wine.foodPairing?.map((food) => (
+                {wine.foodPairing?.map((food: string) => (
                   <span
                     key={food}
                     style={{

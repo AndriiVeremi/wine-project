@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { getWineryById } from '@/api/wineries';
 import type { Winery } from '@/types/wineries';
+import type { Wine } from '@/types/wine';
 import { useWines } from '@/hooks/queries/useWines';
 import RatingStars from '@/components/Common/RatingStars';
 import { Loader } from '@/components/Common/Loader';
@@ -235,7 +236,7 @@ const WineryDetailPage = () => {
               items={wines.slice(0, 8)}
               isLoading={winesLoading}
               renderSkeleton={() => <WineCardSkeleton />}
-              renderItem={(wine) => <SliderCardWine wine={wine} />}
+              renderItem={(wine: Wine) => <SliderCardWine wine={wine} />}
             />
           </section>
         )}

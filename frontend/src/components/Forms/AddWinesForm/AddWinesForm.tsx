@@ -195,7 +195,10 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
                 value={vals.winery}
                 onChange={onInput}
                 required
-                options={wineryList.map((w: { _id: string; name: string }) => ({ value: w._id, label: w.name }))}
+                options={wineryList.map((w: { _id: string; name: string }) => ({
+                  value: w._id,
+                  label: w.name,
+                }))}
               />
               <FormField
                 label="Vintage Year"
@@ -212,7 +215,10 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
                 value={vals.grape}
                 onChange={onInput}
                 required
-                options={grapeList.map((g: { _id: string; name: string }) => ({ value: g._id, label: g.name }))}
+                options={grapeList.map((g: { _id: string; name: string }) => ({
+                  value: g._id,
+                  label: g.name,
+                }))}
               />
               <FormField
                 label="Price per Bottle (₾)"
