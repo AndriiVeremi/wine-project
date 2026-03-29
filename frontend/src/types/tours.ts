@@ -28,4 +28,5 @@ export interface TourQueryParams {
   wineryId?: string;
   region?: string;
   name?: string;
+  [key: string]: unknown;
 }

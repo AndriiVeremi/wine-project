@@ -31,4 +31,5 @@ export interface WineriesQueryParams {
   country?: string;
   region?: string;
   search?: string;
+  [key: string]: unknown;
 }

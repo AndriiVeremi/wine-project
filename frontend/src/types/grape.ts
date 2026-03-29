@@ -32,4 +32,5 @@ export interface GrapesQueryParams {
   page?: number;
   limit?: number;
   wineryId?: string;
+  [key: string]: unknown;
 }
