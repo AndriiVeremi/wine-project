@@ -51,6 +51,9 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
+    headers: {
+      'Content-Security-Policy': "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;",
+    },
   },
   optimizeDeps: {
     include: ['react-hook-form', 'zod', '@hookform/resolvers/zod'],
