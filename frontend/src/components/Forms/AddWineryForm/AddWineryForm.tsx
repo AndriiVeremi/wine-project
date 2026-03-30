@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense, lazy } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import type { SubmitHandler, FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { z } from 'zod';
 import { useWineryMutations } from '@/hooks/queries/useWineries';
 import { useLocationStore } from '@/store/location/locationStore';
 import { getCountries } from '@/api/regions';

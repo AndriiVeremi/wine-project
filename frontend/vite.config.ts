@@ -32,8 +32,11 @@ export default defineConfig({
             if (id.includes('@tanstack')) {
               return 'query';
             }
-            if (id.includes('react-hook-form') || id.includes('zod')) {
-              return 'forms';
+            if (id.includes('react-hook-form')) {
+              return 'react-hook-form';
+            }
+            if (id.includes('zod')) {
+              return 'zod';
             }
             if (id.includes('@tiptap')) {
               return 'tiptap';

@@ -2,7 +2,7 @@ import React, { useEffect, Suspense, lazy, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import type { SubmitHandler, FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { z } from 'zod';
 import toast from 'react-hot-toast';
 import MainButton from '@/components/Buttons/MainButton';
 import FormField from '@/components/Common/FormField/FormField';
