@@ -52,7 +52,8 @@ export default defineConfig({
     port: 5173,
     open: true,
     headers: {
-      'Content-Security-Policy': "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;",
+      'Content-Security-Policy':
+        "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;",
     },
   },
   optimizeDeps: {
