@@ -8,7 +8,6 @@ import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 import MainButton from '@/components/Buttons/MainButton';
 import type { Grape } from '@/types/grape';
-import type { ApiError } from '@/types/api';
 
 import {
   AddGrapeWrapper,
@@ -205,13 +204,10 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
         await addGrape(fd);
       }
 
-      toast.success('Varietal saved successfully!', { id: tid });
+      toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
-      const error = err as ApiError;
-      toast.error(error.response?.data?.message || error.message || 'Error saving varietal', {
-        id: tid,
-      });
+    } catch {
+      toast.dismiss(tid);
     }
   };
 

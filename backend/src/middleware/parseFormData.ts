@@ -5,7 +5,14 @@ export const parseFormData = (req: Request, res: Response, next: NextFunction) =
 
   const numbers = ['vintage', 'price', 'volume', 'boxQuantity', 'duration'];
   const booleans = ['hasPackaging', 'decanting', 'inStock', 'isVip'];
-  const objects = ['tastingNotes', 'foodPairing', 'galleryUrl', 'groupSize', 'images'];
+  const objects = [
+    'tastingNotes',
+    'foodPairing',
+    'galleryUrl',
+    'groupSize',
+    'images',
+    'characteristics',
+  ];
 
   for (const key of numbers) {
     if (req.body[key] !== undefined && req.body[key] !== '') {

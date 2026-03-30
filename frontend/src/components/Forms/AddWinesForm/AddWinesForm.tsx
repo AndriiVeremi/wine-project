@@ -23,7 +23,6 @@ import { useWineMutations } from '@/hooks/queries/useWines';
 import { useWineries } from '@/hooks/queries/useWineries';
 import { useGrapes } from '@/hooks/queries/useGrapes';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
-import type { ApiError } from '@/types/api';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 
@@ -206,13 +205,10 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
         await addWine(fd);
       }
 
-      toast.success('Saved successfully!', { id: tid });
+      toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
-      const error = err as ApiError;
-      toast.error(error.response?.data?.message || error.message || 'Something went wrong', {
-        id: tid,
-      });
+    } catch {
+      toast.dismiss(tid);
     }
   };
 

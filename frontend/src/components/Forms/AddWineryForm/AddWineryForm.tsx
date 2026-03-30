@@ -12,7 +12,6 @@ import WineryLogoUpload from '@/components/Common/WineryLogoUpload/WineryLogoUpl
 import MainButton from '@/components/Buttons/MainButton';
 import { toast } from 'react-hot-toast';
 import type { Winery } from '@/types/wineries';
-import type { ApiError } from '@/types/api';
 
 import {
   StyledAddWineryForm,
@@ -182,11 +181,10 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
       } else {
         await addWinery(fd);
       }
-      toast.success('Winery saved successfully!', { id: tid });
+      toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
-      const error = err as ApiError;
-      toast.error(error.response?.data?.message || error.message || 'Failed to save', { id: tid });
+    } catch {
+      toast.dismiss(tid);
     }
   };
 

@@ -5,6 +5,7 @@ import validateBody from '@/middleware/validateBody';
 import { createGrapeSchema, updateGrapeSchema } from '@/schemas/grapeSchemas';
 import { isValidId } from '@/middleware/isValidId';
 import upload from '@/middleware/uploadMiddleware';
+import parseFormData from '@/middleware/parseFormData';
 
 const router = Router();
 
@@ -31,6 +32,8 @@ router.post(
   '/',
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
+  upload.array('images', 5),
+  parseFormData,
   validateBody(createGrapeSchema),
   GrapeController.addGrape,
 );
@@ -49,6 +52,8 @@ router.patch(
   isValidId(),
   authMiddleware,
   roleMiddleware(['WINERY_OWNER', 'ADMIN']),
+  upload.array('images', 5),
+  parseFormData,
   validateBody(updateGrapeSchema),
   GrapeController.updateGrape,
 );

@@ -9,7 +9,6 @@ import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 
 import type { Tour } from '@/types/tours';
-import type { ApiError } from '@/types/api';
 import {
   AddTourWrapper,
   ButtonWrapper,
@@ -133,13 +132,10 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
         await addTour(data);
       }
 
-      toast.success('Tour saved successfully!', { id: tid });
+      toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
-      const error = err as ApiError;
-      toast.error(error.response?.data?.message || error.message || 'Error saving tour', {
-        id: tid,
-      });
+    } catch {
+      toast.dismiss(tid);
     }
   };
 

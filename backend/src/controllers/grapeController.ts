@@ -15,16 +15,19 @@ class GrapeController {
   });
 
   public addGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
-    const data = await GrapeService.createGrape(req.body, req.userId!, req.userRole!);
+    const files = req.files as Express.Multer.File[];
+    const data = await GrapeService.createGrape(req.body, req.userId!, req.userRole!, files);
     res.status(201).json(data);
   });
 
   public updateGrape = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
+    const files = req.files as Express.Multer.File[];
     const data = await GrapeService.updateGrape(
       req.params.id as string,
       req.body,
       req.userId!,
       req.userRole!,
+      files,
     );
     res.json(data);
   });
