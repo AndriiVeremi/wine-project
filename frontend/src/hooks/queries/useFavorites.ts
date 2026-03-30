@@ -3,6 +3,7 @@ import { getFavorites, addWineToFavorites, removeWineFromFavorites } from '@/api
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { useAuthStore } from '@/store/auth/authStore';
 import type { Wine } from '@/types/wine';
+import type { ApiError } from '@/types/api';
 import toast from 'react-hot-toast';
 
 export const useFavorites = () => {
@@ -53,11 +54,15 @@ export const useFavoriteMutations = () => {
 
       return { previousFavorites };
     },
-    onError: (_err, _newVal, context) => {
+    onError: (err: unknown, _newVal, context) => {
       if (context?.previousFavorites) {
         queryClient.setQueryData(QUERY_KEYS.favorites.all, context.previousFavorites);
       }
-      toast.error('Failed to update favorites');
+
+      const error = err as ApiError;
+      const errorMessage =
+        error?.response?.data?.message || error?.message || 'Failed to update favorites';
+      toast.error(errorMessage);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.favorites.all });

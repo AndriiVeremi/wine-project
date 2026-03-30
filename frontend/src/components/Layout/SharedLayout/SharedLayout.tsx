@@ -55,7 +55,7 @@ const SharedLayout = () => {
           <HomeBgLeft
             src={homeBgLeftSrc}
             srcSet={`${homeBgLeftMobileSrc} 240w, ${homeBgLeftSrc} 406w, ${homeBgLeftX2Src} 812w`}
-            sizes="(max-width: 480px) 120px, (max-width: 900px) 200px, 406px"
+            sizes="(max-width: 480px) 100px, (max-width: 900px) 180px, 406px"
             alt="Georgian wine decorative background left"
             fetchPriority="high"
             loading="eager"
@@ -65,7 +65,7 @@ const SharedLayout = () => {
           <HomeBgRight
             src={homeBgRightSrc}
             srcSet={`${homeBgRightMobileSrc} 520w, ${homeBgRightSrc} 903w, ${homeBgRightX2Src} 1806w`}
-            sizes="(max-width: 480px) 260px, (max-width: 900px) 400px, 903px"
+            sizes="(max-width: 480px) 200px, (max-width: 900px) 350px, 903px"
             alt="Georgian wine decorative background right"
             fetchPriority="high"
             loading="eager"

@@ -108,6 +108,10 @@ export const addFavoriteWine = async (userId: string, wineId: string) => {
     throw new HttpError('User not found', 404);
   }
 
+  if (user.role === 'WINERY_OWNER') {
+    throw new HttpError('Winery owners cannot add wines to favorites', 403);
+  }
+
   const wine = await Wine.findById(wineId);
   if (!wine) {
     throw new HttpError('Wine not found', 404);

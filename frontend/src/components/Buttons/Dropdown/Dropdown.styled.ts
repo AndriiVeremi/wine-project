@@ -123,10 +123,10 @@ export const Item = styled.li<{ $selected?: boolean }>`
   color: ${({ $selected }) => ($selected ? 'var(--white)' : 'var(--primary-gray)')};
   background: ${({ $selected }) => ($selected ? 'var(--primary-wine)' : 'transparent')};
   transition: all 0.2s ease;
+  white-space: nowrap;
 
   &:hover {
     background: ${({ $selected }) => ($selected ? 'var(--primary-wine)' : 'var(--footer-cream)')};
     color: ${({ $selected }) => ($selected ? 'var(--white)' : 'var(--primary-wine)')};
-    padding-left: 28px;
   }
 `;

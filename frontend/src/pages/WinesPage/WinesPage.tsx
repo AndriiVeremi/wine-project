@@ -85,7 +85,22 @@ const WinesPage = () => {
 
           {!error && wines.length > 0 && (
             <ListSection>
-              <Suspense fallback={null}>
+              <Suspense
+                fallback={
+                  <SkeletonGrid
+                    $columns={1}
+                    $tabletColumns={2}
+                    $desktopColumns={4}
+                    $gap="20px"
+                    $tabletGap="24px"
+                    $desktopGap="30px"
+                  >
+                    {[...Array(skeletonCount)].map((_, i) => (
+                      <WineCardSkeleton key={i} />
+                    ))}
+                  </SkeletonGrid>
+                }
+              >
                 <WineList wines={wines} />
               </Suspense>
 

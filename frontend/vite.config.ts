@@ -29,6 +29,12 @@ export default defineConfig({
             if (id.includes('leaflet')) {
               return 'leaflet';
             }
+            if (id.includes('@tanstack')) {
+              return 'query';
+            }
+            if (id.includes('react-hook-form') || id.includes('zod')) {
+              return 'forms';
+            }
             if (id.includes('@tiptap')) {
               return 'tiptap';
             }

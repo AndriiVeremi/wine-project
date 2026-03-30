@@ -66,6 +66,40 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
 
   const handleSave = async () => {
     try {
+      if (inputs.newPassword !== '') {
+        if (inputs.newPassword !== inputs.confirmPassword) {
+          toast.error('Passwords do not match!');
+          return;
+        }
+
+        if (inputs.newPassword.length < 6) {
+          toast.error('Password must be at least 6 characters');
+          return;
+        }
+      }
+
+      const phoneRegexp = /^\+\d{10,14}$/;
+      if (inputs.phone && !phoneRegexp.test(inputs.phone)) {
+        toast.error('Phone number must start with + and contain 10-14 digits');
+        return;
+      }
+
+      if (inputs.birthDate) {
+        const birthDateObj = new Date(inputs.birthDate);
+        const minDate = new Date('1900-01-01');
+        const maxDate = new Date();
+
+        if (birthDateObj < minDate) {
+          toast.error('Birth date cannot be earlier than 1900');
+          return;
+        }
+
+        if (birthDateObj > maxDate) {
+          toast.error('Birth date cannot be in the future');
+          return;
+        }
+      }
+
       const updatePayload = {
         firstName: inputs.firstName.trim(),
         lastName: inputs.lastName.trim(),
@@ -77,16 +111,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
       await updateProfile(updatePayload);
 
       if (inputs.newPassword !== '') {
-        if (inputs.newPassword !== inputs.confirmPassword) {
-          toast.error('Passwords do not match!');
-          return;
-        }
-
-        if (inputs.newPassword.length < 6) {
-          toast.error('Password must be at least 6 characters');
-          return;
-        }
-
         const user = auth.currentUser;
         if (user) {
           await updatePassword(user, inputs.newPassword);
