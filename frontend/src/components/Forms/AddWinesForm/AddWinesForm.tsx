@@ -23,7 +23,6 @@ import { useWineMutations } from '@/hooks/queries/useWines';
 import { useWineries } from '@/hooks/queries/useWineries';
 import { useGrapes } from '@/hooks/queries/useGrapes';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
-import type { ApiError } from '@/types/api';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
 
@@ -208,7 +207,7 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
 
       toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
+    } catch {
       toast.dismiss(tid);
     }
   };

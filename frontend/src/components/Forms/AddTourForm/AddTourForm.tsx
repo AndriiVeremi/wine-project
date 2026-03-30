@@ -9,7 +9,6 @@ import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 
 import type { Tour } from '@/types/tours';
-import type { ApiError } from '@/types/api';
 import {
   AddTourWrapper,
   ButtonWrapper,
@@ -135,7 +134,7 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
 
       toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
+    } catch {
       toast.dismiss(tid);
     }
   };

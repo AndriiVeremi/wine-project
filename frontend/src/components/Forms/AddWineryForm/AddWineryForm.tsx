@@ -12,7 +12,6 @@ import WineryLogoUpload from '@/components/Common/WineryLogoUpload/WineryLogoUpl
 import MainButton from '@/components/Buttons/MainButton';
 import { toast } from 'react-hot-toast';
 import type { Winery } from '@/types/wineries';
-import type { ApiError } from '@/types/api';
 
 import {
   StyledAddWineryForm,
@@ -184,7 +183,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
       }
       toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
+    } catch {
       toast.dismiss(tid);
     }
   };

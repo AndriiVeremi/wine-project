@@ -8,7 +8,6 @@ import FormField from '@/components/Common/FormField/FormField';
 import GalleryUpload from '@/components/Common/GalleryUpload/GalleryUpload';
 import MainButton from '@/components/Buttons/MainButton';
 import type { Grape } from '@/types/grape';
-import type { ApiError } from '@/types/api';
 
 import {
   AddGrapeWrapper,
@@ -207,7 +206,7 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
 
       toast.dismiss(tid);
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
+    } catch {
       toast.dismiss(tid);
     }
   };
