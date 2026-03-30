@@ -1,5 +1,6 @@
 import Joi from 'joi';
 const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneRegexp = /^\+\d{10,14}$/;
 
 export const registerSchema = Joi.object({
   firstName: Joi.string().required(),
@@ -21,7 +22,10 @@ export const addFavoriteSchema = Joi.object({
 export const updateProfileSchema = Joi.object({
   firstName: Joi.string(),
   lastName: Joi.string(),
-  phone: Joi.string().allow('', null),
-  birthDate: Joi.date().iso().allow('', null),
+  phone: Joi.string().pattern(phoneRegexp).allow('', null),
+  birthDate: Joi.date().iso().min('1900-01-01').max('now').allow('', null).messages({
+    'date.min': 'Birth date cannot be earlier than 1900',
+    'date.max': 'Birth date cannot be in the future',
+  }),
   address: Joi.string().allow('', null),
 });

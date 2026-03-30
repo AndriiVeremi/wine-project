@@ -58,6 +58,7 @@ const WineDetailPage = () => {
   }, [id]);
 
   if (loading) return <p>Loading...</p>;
+
   if (error) return <p>Error: {error instanceof Error ? error.message : 'Failed to load'}</p>;
   if (!wine) return <p>Wine not found</p>;
 

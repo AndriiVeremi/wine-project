@@ -80,7 +80,13 @@ const WineOverview = ({ wine }: Props) => {
       </TechGrid>
 
       <BuyFavRow>
-        <MainButton size="small">Buy</MainButton>
+        <MainButton
+          size="small"
+          disabled={!wine.buyLink}
+          onClick={() => wine.buyLink && window.open(wine.buyLink, '_blank', 'noopener,noreferrer')}
+        >
+          {wine.buyLink ? 'Buy Now' : 'Out of Stock'}
+        </MainButton>
         <FavoriteButton size={50} wine={wine} />
       </BuyFavRow>
 
