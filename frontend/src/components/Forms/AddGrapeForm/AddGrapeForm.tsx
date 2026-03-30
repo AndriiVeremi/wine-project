@@ -205,13 +205,10 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
         await addGrape(fd);
       }
 
-      toast.success('Varietal saved successfully!', { id: tid });
+      toast.dismiss(tid);
       if (onSuccess) onSuccess();
     } catch (err: unknown) {
-      const error = err as ApiError;
-      toast.error(error.response?.data?.message || error.message || 'Error saving varietal', {
-        id: tid,
-      });
+      toast.dismiss(tid);
     }
   };
 

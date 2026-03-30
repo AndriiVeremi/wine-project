@@ -56,7 +56,12 @@ class GrapeService {
     return grape;
   }
 
-  public async createGrape(data: Partial<IGrape>, userId: string, userRole: string) {
+  public async createGrape(
+    data: Partial<IGrape>,
+    userId: string,
+    userRole: string,
+    files?: Express.Multer.File[],
+  ) {
     if (data.winery) {
       const winery = await Winery.findById(data.winery);
       if (!winery) throw new HttpError('Winery not found', 404);
@@ -64,10 +69,22 @@ class GrapeService {
         throw new HttpError('Not owner', 403);
       }
     }
+
+    if (files && files.length > 0) {
+      const urls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
+      data.imageUrls = urls;
+    }
+
     return await Grape.create(data);
   }
 
-  public async updateGrape(id: string, data: Partial<IGrape>, userId: string, userRole: string) {
+  public async updateGrape(
+    id: string,
+    data: Partial<IGrape>,
+    userId: string,
+    userRole: string,
+    files?: Express.Multer.File[],
+  ) {
     const grape = await Grape.findById(id);
     if (!grape) throw new HttpError('Not found', 404);
 
@@ -76,6 +93,11 @@ class GrapeService {
       if (winery && userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
         throw new HttpError('Not owner', 403);
       }
+    }
+
+    if (files && files.length > 0) {
+      const urls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
+      data.imageUrls = urls;
     }
 
     return await Grape.findByIdAndUpdate(id, data, { new: true });

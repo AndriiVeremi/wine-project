@@ -206,13 +206,10 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
         await addWine(fd);
       }
 
-      toast.success('Saved successfully!', { id: tid });
+      toast.dismiss(tid);
       if (onSuccess) onSuccess();
     } catch (err: unknown) {
-      const error = err as ApiError;
-      toast.error(error.response?.data?.message || error.message || 'Something went wrong', {
-        id: tid,
-      });
+      toast.dismiss(tid);
     }
   };
 
