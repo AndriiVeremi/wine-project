@@ -71,6 +71,7 @@ app.use(
         frameSrc: [
           "'self'",
           'https://*.firebaseapp.com',
+          'https://apis.google.com',
           'https://www.youtube.com',
           'https://youtube.com',
           'https://www.youtube-nocookie.com',

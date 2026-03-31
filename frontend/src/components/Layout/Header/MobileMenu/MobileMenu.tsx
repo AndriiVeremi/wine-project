@@ -14,9 +14,9 @@ import {
   TelegramIcon,
   UserMenuMobile,
 } from './MobileMenu.styled';
-import Location from '@/components/Common/Location';
+import Location from '@/features/location/Location';
 import Language from '@/components/Common/Language';
-import Login from '@/components/Common/LoginPanel';
+import Login from '@/features/auth/LoginPanel';
 
 interface Props {
   isOpen: boolean;

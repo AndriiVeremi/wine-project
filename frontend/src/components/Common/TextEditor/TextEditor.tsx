@@ -48,8 +48,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ label, value, onChange }) => {
   });
 
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value);
+    if (editor && value !== editor.getHTML() && !editor.isFocused) {
+      editor.commands.setContent(value, false);
     }
   }, [value, editor]);
 

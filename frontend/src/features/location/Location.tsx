@@ -3,7 +3,12 @@ import { useLocationStore } from '@/store/location/locationStore';
 import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
 import { getCountries } from '@/api/regions';
 import { Text, LocationIcon, DropDownIcon, RelativeContainer } from './Location.styled';
-import { List, ListItem, DropdownMenu, DropdownMenuItem } from '../ListStyles/ListStyles';
+import {
+  List,
+  ListItem,
+  DropdownMenu,
+  DropdownMenuItem,
+} from '@/components/Common/ListStyles/ListStyles';
 
 interface Country {
   _id: string;

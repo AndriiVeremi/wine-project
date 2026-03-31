@@ -35,7 +35,7 @@ import {
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
 import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
 
-const WineryMap = lazy(() => import('@/components/Common/Location/WineryMap'));
+const WineryMap = lazy(() => import('@/features/location/WineryMap'));
 
 function getYouTubeEmbedUrl(url?: string) {
   if (!url) return null;

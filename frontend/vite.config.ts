@@ -23,37 +23,37 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('firebase')) {
-              return 'firebase';
+            if (id.includes('firebase')) return 'firebase';
+            if (id.includes('leaflet')) return 'leaflet';
+            if (id.includes('@tiptap')) return 'editor';
+            if (id.includes('swiper')) return 'swiper';
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('react-router-dom') ||
+              id.includes('styled-components')
+            ) {
+              return 'framework';
             }
-            if (id.includes('leaflet')) {
-              return 'leaflet';
+            if (id.includes('@tanstack') || id.includes('axios') || id.includes('zustand')) {
+              return 'data-layer';
             }
-            if (id.includes('@tanstack')) {
-              return 'query';
-            }
-            if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+            if (id.includes('react-hook-form') || id.includes('zod')) {
               return 'forms';
-            }
-            if (id.includes('@tiptap')) {
-              return 'tiptap';
-            }
-            if (id.includes('swiper')) {
-              return 'swiper';
             }
             return 'vendor';
           }
         },
       },
     },
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 500,
   },
   server: {
     port: 5173,
     open: true,
     headers: {
       'Content-Security-Policy':
-        "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;",
+        "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://*.firebaseapp.com https://apis.google.com;",
     },
   },
   optimizeDeps: {

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { FaFacebookF, FaTripadvisor } from 'react-icons/fa';
 import { BiLogoInstagramAlt } from 'react-icons/bi';
-import '@/styles/vars.css';
 
 export const StyledFooter = styled('footer')`
   width: 100%;
