@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
-import { htmlContentStyles } from '@/styles/htmlContent';
-
 export const StyledWinePageDiv = styled.div`
   width: 100%;
   display: flex;
@@ -18,7 +16,6 @@ export const StyledWinePageDiv = styled.div`
     align-items: start;
   }
 `;
-
 export const StyledWraperImage = styled.div`
   width: 100%;
   display: flex;
@@ -29,7 +26,6 @@ export const StyledWraperImage = styled.div`
     order: unset;
   }
 `;
-
 export const StyledWineInfo = styled.div`
   width: 100%;
   display: flex;
@@ -46,7 +42,6 @@ export const StyledWineInfo = styled.div`
     top: 100px;
   }
 `;
-
 export const StyledWineImg = styled.img`
   width: 100%;
   height: 450px;
@@ -62,7 +57,6 @@ export const StyledWineImg = styled.img`
     height: 700px;
   }
 `;
-
 export const WineDetailPageTabs = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,7 +82,6 @@ export const WineDetailPageTabs = styled.div`
     }
   }
 `;
-
 export const WineDescriptionContent = styled.div`
   font-family: var(--font-main);
   font-size: 16px;
@@ -110,9 +103,9 @@ export const WineDescriptionContent = styled.div`
     grid-area: content;
     order: unset;
   }
-
-  ${htmlContentStyles}
-
+  p {
+    margin-bottom: 20px;
+  }
   .description-title {
     margin-top: 24px;
     font-weight: 500;
@@ -180,7 +173,6 @@ export const ServingItem = styled.div`
     color: var(--primary-wine);
   }
 `;
-
 export const SliderSection = styled.section`
   margin-top: 60px;
   margin-bottom: 80px;
@@ -190,7 +182,6 @@ export const SliderSection = styled.section`
     margin-bottom: 120px;
   }
 `;
-
 export const SliderTitle = styled.h2`
   font-family: 'Montserrat Alternates', sans-serif;
   font-size: 32px;

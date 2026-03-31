@@ -1,5 +1,5 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onIdTokenChanged } from 'firebase/auth';
 
 interface PerformanceConfig extends InternalAxiosRequestConfig {
   metadata?: {
@@ -12,19 +12,27 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
+let authToken: string | null = null;
+
 const auth = getAuth();
+
+onIdTokenChanged(auth, async (user) => {
+  if (user) {
+    authToken = await user.getIdToken();
+  } else {
+    authToken = null;
+  }
+});
 
 apiClient.interceptors.request.use(async (config: PerformanceConfig) => {
   config.metadata = { startTime: performance.now() };
 
-  try {
-    const user = auth.currentUser;
-    if (user) {
-      const token = await user.getIdToken();
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-  } catch (error) {
-    console.error('❌ [Auth Token Error]:', error);
+  if (!authToken && auth.currentUser) {
+    authToken = await auth.currentUser.getIdToken();
+  }
+
+  if (authToken) {
+    config.headers.Authorization = `Bearer ${authToken}`;
   }
 
   return config;
@@ -47,6 +55,10 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     if (axios.isCancel(error)) {
       return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401) {
+      authToken = null;
     }
 
     if (import.meta.env.DEV) {

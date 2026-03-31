@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
-import { htmlContentStyles } from '@/styles/htmlContent';
 
 export const DetailPageContainer = styled.div`
   max-width: 100%;
@@ -227,6 +226,7 @@ export const DescriptionText = styled.div`
   line-height: 1.6;
   color: #3f3f3f;
   margin-bottom: 60px;
+  white-space: pre-wrap;
   background: #fff;
   padding: 24px;
   border-radius: 16px;
@@ -234,8 +234,6 @@ export const DescriptionText = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   overflow-wrap: break-word;
   word-break: break-word;
-
-  ${htmlContentStyles}
 
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 18px;

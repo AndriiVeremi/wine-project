@@ -1,78 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
-import type { Theme } from './theme';
 
-export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
-  :root {
-    /* Colors - Wine */
-    --primary-wine: ${({ theme }) => theme.colors.wine.primary};
-    --secondary-wine: ${({ theme }) => theme.colors.wine.secondary};
-    --wine-gradient: ${({ theme }) => theme.colors.wine.gradient};
-
-    /* Colors - Gray */
-    --primary-gray: ${({ theme }) => theme.colors.gray.primary};
-    --secondary-gray: ${({ theme }) => theme.colors.gray.secondary};
-    --tertiary-gray: ${({ theme }) => theme.colors.gray.tertiary};
-    --shadow-gray: ${({ theme }) => theme.colors.gray.shadow};
-    --font-grey: ${({ theme }) => theme.colors.gray.font};
-    --footer-cream: ${({ theme }) => theme.colors.common.footerCream};
-    --input-gray-text: ${({ theme }) => theme.colors.gray.input};
-    --icon-gray: ${({ theme }) => theme.colors.gray.icon};
-
-    /* Colors - Filter */
-    --filter-border-color: ${({ theme }) => theme.colors.filter.border};
-    --filter-active-bg: ${({ theme }) => theme.colors.filter.activeBg};
-
-    /* Colors - Accent/Orange */
-    --star-main: ${({ theme }) => theme.colors.accent.star};
-    --primary-orange: ${({ theme }) => theme.colors.accent.orange};
-    --secondary-orange: ${({ theme }) => theme.colors.accent.secondaryOrange};
-
-    /* Basic Colors */
-    --white: ${({ theme }) => theme.colors.common.white};
-    --black: ${({ theme }) => theme.colors.common.black};
-    --error: ${({ theme }) => theme.colors.common.error};
-    --overlay: ${({ theme }) => theme.colors.common.overlay};
-    --bg-main: ${({ theme }) => theme.colors.common.bgMain};
-
-    /* Icon Colors */
-    --brown-icon: ${({ theme }) => theme.colors.accent.brownIcon};
-    --black-icon: ${({ theme }) => theme.colors.accent.blackIcon};
-
-    /* Typography */
-    --font-main: ${({ theme }) => theme.typography.fonts.main};
-    --font-accent: ${({ theme }) => theme.typography.fonts.accent};
-
-    /* Layout */
-    --container-width: ${({ theme }) => theme.layout.containerWidth};
-    --header-height: ${({ theme }) => theme.layout.headerHeight};
-    --footer-height: ${({ theme }) => theme.layout.footerHeight};
-
-    /* Spacing */
-    --space-xs: ${({ theme }) => theme.spacing.xs};
-    --space-sm: ${({ theme }) => theme.spacing.sm};
-    --space-md: ${({ theme }) => theme.spacing.md};
-    --space-lg: ${({ theme }) => theme.spacing.lg};
-    --space-xl: ${({ theme }) => theme.spacing.xl};
-
-    /* Effects */
-    --transition: ${({ theme }) => theme.effects.transition};
-    --transition-fast: ${({ theme }) => theme.effects.transitionFast};
-    --transition-smooth: ${({ theme }) => theme.effects.transitionSmooth};
-    --main-shadow: ${({ theme }) => theme.effects.shadow.main};
-    --modal-shadow: ${({ theme }) => theme.effects.shadow.modal};
-    --border-radius-sm: ${({ theme }) => theme.effects.borderRadius.sm};
-    --border-radius-md: ${({ theme }) => theme.effects.borderRadius.md};
-    --border-radius-lg: ${({ theme }) => theme.effects.borderRadius.lg};
-    --border-radius-in: ${({ theme }) => theme.effects.borderRadius.in};
-  }
-
+export const GlobalStyle = createGlobalStyle`
   *,
   *::before,
   *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: ${({ theme }) => theme.typography.fonts.main}, 'Montserrat-Fallback', sans-serif;
+    font-family: var(--font-main), 'Montserrat-Fallback', sans-serif;
   }
 
   html {
@@ -87,11 +22,11 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
   }
 
   body {
-    font-size: ${({ theme }) => theme.typography.sizes.base};
+    font-size: 16px;
     font-weight: 400;
     font-style: normal;
-    color: ${({ theme }) => theme.colors.gray.secondary};
-    background-color: ${({ theme }) => theme.colors.common.bgMain};
+    color: var(--secondary-gray);
+    background-color: var(--bg-main);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -104,10 +39,6 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
     overflow: hidden;
     height: 100vh;
     touch-action: none;
-
-    @media (min-width: 1440px) {
-      padding-right: 5px;
-    }
   }
 
   img {
@@ -123,7 +54,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
   a {
     text-decoration: none;
     color: inherit;
-    transition: ${({ theme }) => theme.effects.transitionFast};
+    transition: var(--transition-fast);
   }
 
   button, input, textarea, select {
@@ -136,12 +67,12 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
 
   button {
     cursor: pointer;
-    transition: ${({ theme }) => theme.effects.transitionFast};
+    transition: var(--transition-fast);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: ${({ theme }) => theme.typography.fonts.accent}, sans-serif !important;
-    color: ${({ theme }) => theme.colors.wine.primary};
+    font-family: var(--font-accent), sans-serif !important;
+    color: var(--primary-wine);
     font-weight: 600;
   }
   
@@ -150,14 +81,15 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
   appearance: none;
   }
 
+
   ::-webkit-scrollbar {
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background-color: ${({ theme }) => theme.colors.common.white};
+    background-color: var(--white);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.colors.wine.primary};
+    background-color: var(--primary-wine);
     border-radius: 4px;
   }
 `;

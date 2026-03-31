@@ -33,7 +33,7 @@ import { Loader } from '@/components/Common/Loader';
 import ItemReviews from '@/components/Wine/WineReviews';
 import AddReviewForm from '@/components/Forms/AddReviewForm/AddReviewForm';
 import { useAuthStore } from '@/store/auth/authStore';
-import WineryContactModal from '@/features/wineries/WineryContactModal';
+import WineryContactModal from '@/components/Common/WineryContactModal/WineryContactModal';
 import type { Winery } from '@/types/wineries';
 import Slider from '@/components/Slider/Slider';
 import SliderCardTour from '@/components/Slider/cards/SliderCardTour';

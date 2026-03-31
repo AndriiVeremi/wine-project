@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
-import { htmlContentStyles } from '@/styles/htmlContent';
 
 export const DetailContainer = styled.div`
   max-width: 100%;
@@ -115,8 +114,6 @@ export const Description = styled.div`
   line-height: 1.7;
   color: #475569;
   margin-bottom: 40px;
-
-  ${htmlContentStyles}
 
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 18px;

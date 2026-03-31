@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '@/components/Layout/Header';
 import Footer from '@/components/Layout/Footer';
-import AIAssistant from '@/features/ai/AIAssistant';
+import AIAssistant from '@/components/Common/AIAssistant/AIAssistant';
 import Container from '@/components/Common/Container';
 import { Loader } from '@/components/Common/Loader';
 import { useAuthStore } from '@/store/auth/authStore';
@@ -18,7 +18,7 @@ import {
   HomeBgRight,
 } from './SharedLayout.styled';
 
-const AuthModal = lazy(() => import('@/features/auth/AuthModal'));
+const AuthModal = lazy(() => import('@/components/Common/AuthModal/AuthModal'));
 
 const homeBgLeftSrc = '/images/home-bg/home-bgLeft.webp';
 const homeBgLeftX2Src = '/images/home-bg/home-bgLeftX2.webp';

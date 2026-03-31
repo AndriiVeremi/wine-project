@@ -29,7 +29,7 @@ import {
   SkeletonGrid,
 } from './HomePage.styled';
 
-const InteractiveMap = lazy(() => import('@/features/location/InteractiveMap'));
+const InteractiveMap = lazy(() => import('@/components/Common/InteractiveMap/InteractiveMap'));
 
 interface Winery {
   _id: string;

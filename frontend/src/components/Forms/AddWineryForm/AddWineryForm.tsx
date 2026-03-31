@@ -27,7 +27,7 @@ import { ButtonWrapper } from '../AddWinesForm/AddWinesForm.styled';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
-const WineryMap = lazy(() => import('@/features/location/WineryMap'));
+const WineryMap = lazy(() => import('@/components/Common/Location/WineryMap'));
 
 const winerySchema = z.object({
   name: z.string().min(2, 'Name is too short'),

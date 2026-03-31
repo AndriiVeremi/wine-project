@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { CiLocationOn } from 'react-icons/ci';
 import { IoChevronDownSharp } from 'react-icons/io5';
+import '@/styles/vars.css';
 
 export const Text = styled('p')<{ $isOpen?: boolean }>`
   font-family: var(--font-main);

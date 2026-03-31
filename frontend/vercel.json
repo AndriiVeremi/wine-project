@@ -11,7 +11,7 @@
             "headers": [
                 {
                     "key": "Content-Security-Policy",
-                    "value": "default-src 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://*.firebaseapp.com https://apis.google.com; frame-ancestors 'none'; img-src 'self' https: data: blob: https://*.googleapis.com https://*.googleusercontent.com https://storage.googleapis.com https://*.firebasestorage.app https://img.youtube.com; script-src 'self' 'unsafe-inline' https://apis.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https: data: https://fonts.gstatic.com; connect-src 'self' https://wine-project-gj1n.onrender.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.googleapis.com https://*.firebaseapp.com https://www.youtube.com"
+                    "value": "default-src 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'; img-src 'self' https: data: blob: https://*.googleapis.com https://*.googleusercontent.com https://storage.googleapis.com https://*.firebasestorage.app https://img.youtube.com; script-src 'self' 'unsafe-inline' https://apis.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https: data: https://fonts.gstatic.com; connect-src 'self' https://wine-project-gj1n.onrender.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.googleapis.com https://*.firebaseapp.com https://www.youtube.com"
                 }
             ]
         }

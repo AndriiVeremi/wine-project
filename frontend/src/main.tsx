@@ -12,8 +12,8 @@ import '@fontsource/montserrat-alternates/400.css';
 import '@fontsource/montserrat-alternates/600.css';
 
 import { GlobalStyle } from '@/styles/globalStyles';
-import { theme } from '@/styles/theme';
-import { ThemeProvider } from 'styled-components';
+import '@/styles/vars.css';
+import '@/styles/index.css';
 import { notifyError } from '@/utils/toast';
 
 window.addEventListener('unhandledrejection', (event) => {
@@ -32,10 +32,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <App />
-        </ThemeProvider>
+        <GlobalStyle />
+        <App />
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>,

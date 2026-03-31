@@ -1,6 +1,6 @@
-import Location from '@/features/location/Location';
+import Location from '@/components/Common/Location';
 import Language from '@/components/Common/Language';
-import Login from '@/features/auth/LoginPanel';
+import Login from '@/components/Common/LoginPanel';
 import { ListMenu, UserMenuContainer } from './UserMenu.styled';
 
 const UserMenu = () => {
