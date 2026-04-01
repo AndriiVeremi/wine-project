@@ -11,7 +11,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    scroll-behavior: smooth;
     overflow-x: hidden;
     width: 100%;
     scrollbar-gutter: stable;

@@ -41,7 +41,7 @@ export default defineConfig({
     open: true,
     headers: {
       'Content-Security-Policy':
-        "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;",
+        "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://wine-project-df887.firebaseapp.com;",
     },
   },
   optimizeDeps: {

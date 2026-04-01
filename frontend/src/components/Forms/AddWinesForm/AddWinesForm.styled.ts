@@ -23,8 +23,8 @@ export const Title = styled.h2`
 
 export const TopSection = styled.div`
   display: flex;
-  gap: 48px;
-  margin-bottom: 48px;
+  gap: 50px;
+  margin-bottom: 50px;
 
   @media (max-width: 950px) {
     flex-direction: column;
@@ -47,14 +47,14 @@ export const InfoSide = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 30px;
 `;
 
 export const FormGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 32px;
-  row-gap: 24px;
+  column-gap: 30px;
+  row-gap: 20px;
 
   @media (max-width: 650px) {
     grid-template-columns: 1fr;

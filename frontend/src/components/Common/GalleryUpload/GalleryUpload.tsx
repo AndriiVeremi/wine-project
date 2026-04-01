@@ -62,7 +62,7 @@ const GalleryUpload: React.FC<GalleryUploadProps> = ({
         ) : (
           <>
             <HiCamera size={40} color="#aaa" />
-            <span>Головне фото</span>
+            <span>Add main foto</span>
           </>
         )}
       </MainPhotoContainer>
