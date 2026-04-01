@@ -22,6 +22,7 @@ import {
   InfoSide,
   MapFieldWrapper,
   MapInstruction,
+  SelectWrapper,
 } from './AddWineryForm.styled';
 import { ButtonWrapper } from '../AddWinesForm/AddWinesForm.styled';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
@@ -269,12 +270,9 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
       </TopSection>
 
       <FieldsGrid>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label>Country</label>
-          <select
-            {...register('country')}
-            style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
-          >
+        <SelectWrapper>
+          <label>Country *</label>
+          <select {...register('country')}>
             <option value="">Select Country</option>
             {countries.map((c) => (
               <option key={c._id} value={c._id}>
@@ -282,17 +280,12 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               </option>
             ))}
           </select>
-          {errors.country && (
-            <span style={{ color: 'red', fontSize: '12px' }}>{errors.country.message}</span>
-          )}
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label>Region</label>
-          <select
-            {...register('region')}
-            disabled={!selectedCountryId}
-            style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
-          >
+          {errors.country && <span>{errors.country.message}</span>}
+        </SelectWrapper>
+
+        <SelectWrapper>
+          <label>Region *</label>
+          <select {...register('region')} disabled={!selectedCountryId}>
             <option value="">Select Region</option>
             {regions.map((r) => (
               <option key={r._id} value={r._id}>
@@ -300,10 +293,9 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               </option>
             ))}
           </select>
-          {errors.region && (
-            <span style={{ color: 'red', fontSize: '12px' }}>{errors.region.message}</span>
-          )}
-        </div>
+          {errors.region && <span>{errors.region.message}</span>}
+        </SelectWrapper>
+
         <FullWidthWrapper>
           <FormField
             label="Address"
@@ -312,6 +304,25 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
             required
           />
         </FullWidthWrapper>
+
+        <FormField
+          label="Latitude"
+          type="number"
+          step="any"
+          value={coords?.lat || ''}
+          onChange={(e) =>
+            setValue('coordinates', { lng: coords?.lng || 0, lat: parseFloat(e.target.value) })
+          }
+        />
+        <FormField
+          label="Longitude"
+          type="number"
+          step="any"
+          value={coords?.lng || ''}
+          onChange={(e) =>
+            setValue('coordinates', { lat: coords?.lat || 0, lng: parseFloat(e.target.value) })
+          }
+        />
       </FieldsGrid>
 
       <Suspense fallback={<Skeleton height="240px" />}>
@@ -325,33 +336,11 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
       </Suspense>
 
       <div>
-        <MapInstruction>Coordinates:</MapInstruction>
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', alignItems: 'flex-end' }}>
-          <div style={{ flex: 1 }}>
-            <FormField
-              label="Latitude"
-              type="number"
-              step="any"
-              value={coords?.lat || ''}
-              onChange={(e) =>
-                setValue('coordinates', { lng: coords?.lng || 0, lat: parseFloat(e.target.value) })
-              }
-            />
-          </div>
-          <div style={{ flex: 1 }}>
-            <FormField
-              label="Longitude"
-              type="number"
-              step="any"
-              value={coords?.lng || ''}
-              onChange={(e) =>
-                setValue('coordinates', { lat: coords?.lat || 0, lng: parseFloat(e.target.value) })
-              }
-            />
-          </div>
-        </div>
+        <MapInstruction>
+          Click on the map to set <span>winery coordinates</span>:
+        </MapInstruction>
         <MapFieldWrapper>
-          <Suspense fallback={<Skeleton height="300px" />}>
+          <Suspense fallback={<Skeleton height="400px" />}>
             <WineryMap
               isEditable={true}
               onLocationSelect={(lat, lng) => setValue('coordinates', { lat, lng })}

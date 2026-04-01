@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { Loader } from '@/components/Common/Loader';
 import SharedLayout from '@/components/Layout/SharedLayout';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
+import ScrollToTop from '@/components/Common/ScrollToTop/ScrollToTop';
 
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const WineriesPage = lazy(() => import('@/pages/WineriesPage'));
@@ -40,6 +41,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       <Toaster position="top-right" reverseOrder={false} />
       <ErrorBoundary>
         <Routes>
