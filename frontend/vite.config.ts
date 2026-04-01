@@ -23,30 +23,18 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('firebase')) {
-              return 'firebase';
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('react-router-dom')
+            ) {
+              return 'vendor';
             }
-            if (id.includes('leaflet')) {
-              return 'leaflet';
-            }
-            if (id.includes('@tanstack')) {
-              return 'query';
-            }
-            if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
-              return 'forms';
-            }
-            if (id.includes('@tiptap')) {
-              return 'tiptap';
-            }
-            if (id.includes('swiper')) {
-              return 'swiper';
-            }
-            return 'vendor';
           }
         },
       },
     },
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 500,
   },
   server: {
     port: 5173,

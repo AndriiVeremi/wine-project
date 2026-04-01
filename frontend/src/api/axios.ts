@@ -1,5 +1,5 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import { getAuth, onIdTokenChanged } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
 interface PerformanceConfig extends InternalAxiosRequestConfig {
   metadata?: {
@@ -12,27 +12,15 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
-let authToken: string | null = null;
-
-const auth = getAuth();
-
-onIdTokenChanged(auth, async (user) => {
-  if (user) {
-    authToken = await user.getIdToken();
-  } else {
-    authToken = null;
-  }
-});
-
 apiClient.interceptors.request.use(async (config: PerformanceConfig) => {
   config.metadata = { startTime: performance.now() };
 
-  if (!authToken && auth.currentUser) {
-    authToken = await auth.currentUser.getIdToken();
-  }
+  const auth = getAuth();
+  const user = auth.currentUser;
 
-  if (authToken) {
-    config.headers.Authorization = `Bearer ${authToken}`;
+  if (user) {
+    const token = await user.getIdToken();
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;
@@ -55,10 +43,6 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     if (axios.isCancel(error)) {
       return Promise.reject(error);
-    }
-
-    if (error.response?.status === 401) {
-      authToken = null;
     }
 
     if (import.meta.env.DEV) {

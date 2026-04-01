@@ -17,10 +17,6 @@ export const GlobalStyle = createGlobalStyle`
     scrollbar-gutter: stable;
   }
 
-  html.no-scroll {
-    overflow: hidden;
-  }
-
   body {
     font-size: 16px;
     font-weight: 400;
@@ -33,12 +29,6 @@ export const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     width: 100%;
     position: relative;
-  }
-
-  body.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-    touch-action: none;
   }
 
   img {

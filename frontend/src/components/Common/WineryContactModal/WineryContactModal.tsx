@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
 import { FiPhone, FiMail } from 'react-icons/fi';
 import {
@@ -13,6 +14,7 @@ import {
 } from './WineryContactModal.styled';
 import type { Winery } from '@/types/wineries';
 import MainButton from '@/components/Buttons/MainButton';
+import { useScrollLock } from '@/hooks/useScrollLock';
 
 interface Props {
   winery: Winery;
@@ -21,14 +23,7 @@ interface Props {
 }
 
 const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
-    return () => document.body.classList.remove('no-scroll');
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
   if (!isOpen) return null;
 
@@ -36,7 +31,7 @@ const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
     if (e.target === e.currentTarget) onClose();
   };
 
-  return (
+  return createPortal(
     <ContactModalOverlay onClick={handleOverlayClick}>
       <ContactModalContainer>
         <CloseBtn onClick={onClose} aria-label="Close">
@@ -92,7 +87,8 @@ const WineryContactModal: React.FC<Props> = ({ winery, isOpen, onClose }) => {
           winery.
         </InfoFooter>
       </ContactModalContainer>
-    </ContactModalOverlay>
+    </ContactModalOverlay>,
+    document.body,
   );
 };
 
