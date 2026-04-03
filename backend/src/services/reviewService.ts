@@ -5,7 +5,7 @@ import Winery from '@/models/wineryModel';
 import Tour from '@/models/tourModel';
 import HttpError from '@/utils/HttpError';
 
-async function updateRating(targetId: string, model: Model<unknown>) {
+export async function updateRating(targetId: string, model: Model<unknown>) {
   const filter =
     model.modelName === 'Wine'
       ? { wineId: targetId }
