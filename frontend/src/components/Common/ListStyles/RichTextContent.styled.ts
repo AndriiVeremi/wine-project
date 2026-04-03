@@ -49,7 +49,8 @@ export const richTextStyles = css`
     color: var(--black, #1e293b);
   }
 
-  h2, h3 {
+  h2,
+  h3 {
     margin: 24px 0 16px 0;
     color: var(--black, #1e293b);
     line-height: 1.2;

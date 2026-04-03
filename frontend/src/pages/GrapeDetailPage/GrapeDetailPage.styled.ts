@@ -121,7 +121,6 @@ export const Description = styled.div`
   }
 `;
 
-
 export const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
