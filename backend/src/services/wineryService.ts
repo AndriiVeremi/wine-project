@@ -1,5 +1,5 @@
 import Winery, { IWinery } from '@/models/wineryModel';
-import User from '@/models/userModel';
+import User, { IUser } from '@/models/userModel';
 import Location from '@/models/locationModel';
 import HttpError from '@/utils/HttpError';
 import { sanitize } from '@/utils/sanitize';
@@ -13,14 +13,7 @@ export const getAllWineries = async (params: {
   region?: string;
   sortBy?: string;
 }) => {
-  const {
-    page = 1,
-    limit = 10,
-    search,
-    country,
-    region,
-    sortBy,
-  } = params;
+  const { page = 1, limit = 10, search, country, region, sortBy } = params;
 
   const pageNum = Number(page);
   const limitNum = Number(limit);
@@ -103,7 +96,7 @@ export const getAllWineries = async (params: {
   };
 };
 
-export const deleteWineryById = async (wineryId: string, user: any) => {
+export const deleteWineryById = async (wineryId: string, user: IUser) => {
   const winery = await Winery.findById(wineryId);
   if (!winery) {
     throw new HttpError('Winery not found', 404);
