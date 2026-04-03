@@ -8,18 +8,18 @@
 
 Wine Project побудований за архітектурою **клієнт-сервер**. Система спроєктована з урахуванням модульності та масштабованості.
 
-```
-┌─────────────────┐     HTTPS      ┌─────────────────┐     MongoDB     ┌─────────────────┐
-│    Frontend     │◄──────────────►│    Backend      │◄──────────────► │    MongoDB      │
-│    (React)      │   REST API     │    (Express)    │                 │    Atlas        │
-└─────────────────┘                └─────────────────┘                 └─────────────────┘
-        │                                   │
-        │                                   ├── Firebase Auth
-        │                                   ├── Firebase Storage
-        │                                   ├── Google Gemini AI
-        │                                   └── Render 
-        │
-        └── Vercel 
+```mermaid
+graph LR
+    Client([Frontend<br/>React 19 / Vite]) <-->|HTTPS / REST API| Server([Backend<br/>Node.js / Express])
+    Server <-->|Mongoose| DB[(MongoDB Atlas)]
+    Server -->|Admin SDK| Auth{Firebase Auth}
+    Server -->|Uploads| Storage{Firebase Storage}
+    Server <-->|Function Calling| AI{Google Gemini AI}
+    
+    subgraph Deployment
+        Client -.-> Vercel
+        Server -.-> Render
+    end
 ```
 
 ---
@@ -44,7 +44,7 @@ Wine Project побудований за архітектурою **клієнт
 | **Tiptap** | Rich Text Editor |
 
 ### Структура
-```
+```text
 frontend/src/
 ├── api/              # API-клієнти (Axios інстанс та ендпоінти)
 ├── components/       # React-компоненти
@@ -54,29 +54,11 @@ frontend/src/
 │   └── .../          # Доменні компоненти (Wine, Winery, Tour)
 ├── constants/        # Константи, Query Keys, дані мапи
 ├── hooks/            # Кастомні хуки
-│   ├── queries/      # Хуки TanStack Query (useWines, useProfile тощо)
-│   └── .../          # Утилітарні хуки (useDebounce, useScrollLock)
 ├── pages/            # Сторінки додатку
 ├── store/            # Zustand сторі (Client-side state)
 ├── types/            # TypeScript типи (уніфіковані, DRY)
 └── utils/            # Утиліти (форматування, обробка помилок)
 ```
-
-### Маршрутизація
-| Маршрут | Сторінка |
-|---------|----------|
-| `/` | HomePage |
-| `/wines` | WinesPage |
-| `/wines/:id` | WineDetailPage |
-| `/wineries` | WineriesPage |
-| `/wineries/:id` | WineryDetailPage |
-| `/tours` | WineToursPage |
-| `/tours/:id` | WineTourDetailPage |
-| `/grapes` | GrapesPage |
-| `/grapes/:id` | GrapeDetailPage |
-| `/regions/:id` | RegionDetailPage |
-| `/about` | AboutPage |
-| `/account` | AccountPage |
 
 ---
 
@@ -98,47 +80,44 @@ frontend/src/
 | **sanitize-html** | Очищення HTML (XSS захист) |
 
 ### Структура
-```
-backend/src/
-├── config/           # Swagger конфіг
-├── controllers/      # Обробники запитів
-├── data/            # Сид-дані
-├── middleware/      # Проміжне ПЗ
-├── models/          # Mongoose моделі
-├── routes/          # Маршрути
-├── schemas/        # Joi-схеми
-├── services/       # Бізнес-логіка
-├── types/          # TypeScript типи
-├── utils/          # Утиліти
-└── index.ts        # Точка входу
-```
+Бекенд використовує **Service Repository Pattern**, де контролери відповідають лише за HTTP-відповіді, а бізнес-логіка винесена у сервіси у вигляді чистих асинхронних функцій.
 
-### API ендпоінти
-| Префікс | Ресурс |
-|---------|--------|
-| `/api/users` | Користувачі |
-| `/api/wines` | Вина |
-| `/api/wineries` | Виноробні |
-| `/api/grapes` | Сорти винограду |
-| `/api/locations` | Локації |
-| `/api/regions` | Регіони |
-| `/api/tours` | Тури |
-| `/api/reviews` | Відгуки |
-| `/api/ai` | AI-Сомільє |
-| `/api/admin/reviews` | Адмін: відгуки |
+```text
+backend/src/
+├── config/           # Swagger та AI конфіг
+├── controllers/      # Обробники HTTP запитів
+├── data/             # Сид-дані
+├── middleware/       # Авторизація, завантаження файлів (Multer)
+├── models/           # Mongoose моделі
+├── routes/           # Маршрути (Express Router)
+├── schemas/          # Joi-схеми
+├── services/         # Бізнес-логіка (Функціональний підхід)
+└── index.ts          # Точка входу
+```
 
 ---
 
 ## Потік даних
 
-### Автентифікація
-```
-1. Користувач вводить email/password на фронтенді
-2. Firebase Auth створює сесію
-3. Axios Interceptor перед кожним запитом викликає `user.getIdToken()`, отримуючи актуальний токен (кешований або оновлений)
-4. Токен додається у заголовок Authorization
-5. Backend перевіряє токен через Firebase Admin SDK
-6. Firebase Admin повертає decoded token з UID
+### Автентифікація (Firebase + Custom JWT logic)
+Процес авторизації побудований на перехопленні запитів (Interceptors) для гарантії актуальності токена без необхідності зберігати його в LocalStorage.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Firebase
+    participant Backend
+    
+    User->>Frontend: Вводить логін/пароль
+    Frontend->>Firebase: Авторизація (Client SDK)
+    Firebase-->>Frontend: Повертає сесію
+    Frontend->>Firebase: user.getIdToken() перед запитом
+    Firebase-->>Frontend: Актуальний Bearer Token
+    Frontend->>Backend: Запит до API + Authorization Header
+    Backend->>Firebase: auth().verifyIdToken() (Admin SDK)
+    Firebase-->>Backend: Розшифрований об'єкт користувача
+    Backend-->>Frontend: Захищені дані
 ```
 
 ---
@@ -146,16 +125,24 @@ backend/src/
 ## AI-помічник (Сомельє)
 
 ### Архітектура
-```
-User Message ──► Backend ──► Google Gemini AI
-                    │               │
-                    │◄── Response ◄─┤
-                    │               │
-                    ├── Tool Calls  │
-                    │  (Function    │
-                    │   Calling)    │
-                    │               │
-                    └──► Database ──┘
+AI-Сомельє використовує технологію **Function Calling**. Модель не просто генерує текст, а має доступ до інструментів бази даних (пошук вин, виноробень, турів), що робить її відповіді на 100% прив'язаними до реального асортименту. 
+Ліміт токенів контролюється через змінну середовища `GEMINI_MAX_OUTPUT_TOKENS`.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Backend
+    participant Gemini
+    participant DB as MongoDB
+    
+    User->>Backend: Питання (напр. "Порадь сухе червоне з Грузії")
+    Backend->>Gemini: Передача контексту + доступні функції
+    Gemini-->>Backend: Виклик функції: searchWines(color: red, sweetness: dry)
+    Backend->>DB: Запит до бази даних
+    DB-->>Backend: Результат (список вин)
+    Backend->>Gemini: Повернення результату функції
+    Gemini-->>Backend: Формування красивої відповіді для користувача
+    Backend-->>User: Текстова відповідь + пропозиції
 ```
 
 ---
@@ -165,33 +152,32 @@ User Message ──► Backend ──► Google Gemini AI
 ### Захист на бекенді
 | Механізм | Опис |
 |----------|------|
-| **Helmet** | HTTP-заголовки безпеки |
-| **CORS** | Дозволені origins |
-| **Rate Limiting** | 100 запитів/15 хв |
-| **JWT Validation** | Firebase tokens |
-| **Input Validation** | Joi schemas |
-| **HTML Sanitization** | Очищення HTML від XSS |
-| **RBAC** | Рольовий доступ |
+| **Helmet** | HTTP-заголовки безпеки (Content-Security-Policy тощо) |
+| **CORS** | Динамічний білий список дозволених доменів |
+| **Rate Limiting** | 1000 запитів/15 хв (захист від DDoS) |
+| **Input Validation** | Joi schemas + Mongoose validation |
+| **HTML Sanitization** | Очищення описів вин/вінерій від XSS скриптів |
 
-### Ролі та права
+### Рольова модель (RBAC)
 | Роль | Права |
 |------|-------|
-| `USER` | Читання, створення відгуків, улюблені |
-| `WINERY_OWNER` | + Управління своєю виноробнею, винами, турами |
-| `ADMIN` | + Управління відгуками, VIP-статус |
+| `USER` | Читання, створення відгуків, додавання в улюблені |
+| `WINERY_OWNER` | + Створення та управління власною виноробнею, винами, турами |
+| `ADMIN` | + Видалення користувачів, видалення будь-яких відгуків, надання VIP-статусу |
 
 ---
 
 ## CI/CD
 
-### GitHub Actions
-```
-Push/PR ──► Lint ──► Test ──► Build ──► Deploy
-              │        │        │
-              ▼        ▼        ▼
-           ESLint   Vitest   Vercel
-           Prettier  Jest    (Frontend)
-                               │
-                               └──► Docker
-                                   (Backend)
+### Потік розгортання
+```mermaid
+graph TD
+    A[Push / PR to Main] --> B{GitHub Actions}
+    B --> C[ESLint & Prettier]
+    B --> D[Jest / Vitest]
+    C --> E[Build]
+    D --> E
+    E --> F[Vercel Deploy]
+    E --> G[Docker Build & Push]
+    G --> H[Render Deploy]
 ```
