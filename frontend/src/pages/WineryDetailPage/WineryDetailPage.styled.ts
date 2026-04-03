@@ -221,19 +221,16 @@ export const TabButtonsWrapper = styled.div`
   }
 `;
 
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
+
 export const DescriptionText = styled.div`
-  font-size: 16px;
-  line-height: 1.6;
-  color: #3f3f3f;
+  ${richTextStyles}
   margin-bottom: 60px;
-  white-space: pre-wrap;
   background: #fff;
   padding: 24px;
   border-radius: 16px;
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  overflow-wrap: break-word;
-  word-break: break-word;
 
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 18px;

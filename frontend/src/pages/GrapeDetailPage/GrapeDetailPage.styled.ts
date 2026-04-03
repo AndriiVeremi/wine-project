@@ -109,10 +109,11 @@ export const Title = styled.h1`
   }
 `;
 
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
+
 export const Description = styled.div`
+  ${richTextStyles}
   font-size: 16px;
-  line-height: 1.7;
-  color: #475569;
   margin-bottom: 40px;
 
   @media (min-width: ${breakpoints.tablet}) {

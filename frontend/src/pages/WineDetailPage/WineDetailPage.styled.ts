@@ -82,11 +82,10 @@ export const WineDetailPageTabs = styled.div`
     }
   }
 `;
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
+
 export const WineDescriptionContent = styled.div`
-  font-family: var(--font-main);
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--primary-gray);
+  ${richTextStyles}
   max-width: 100%;
   order: 4;
   background: #fff;
@@ -103,12 +102,10 @@ export const WineDescriptionContent = styled.div`
     grid-area: content;
     order: unset;
   }
-  p {
-    margin-bottom: 20px;
-  }
   .description-title {
     margin-top: 24px;
     font-weight: 500;
+    color: var(--black);
     @media (min-width: ${breakpoints.tablet}) {
       margin-top: 32px;
     }
