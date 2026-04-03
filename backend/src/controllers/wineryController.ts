@@ -77,7 +77,7 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
   const isOwner = winery.owner.toString() === userId.toString();
   const isAdmin = userRole === 'ADMIN';
 
-  if (!isOwner && !isAdmin) {
+  if (!isAdmin && !isOwner) {
     throw new HttpError('You do not have permission to update this winery.', 403);
   }
 
