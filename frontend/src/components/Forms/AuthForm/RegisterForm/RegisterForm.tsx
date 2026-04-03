@@ -53,8 +53,7 @@ const RegisterForm = () => {
         email,
         password: pass,
       });
-    } catch {
-    }
+    } catch {}
   };
 
   return (

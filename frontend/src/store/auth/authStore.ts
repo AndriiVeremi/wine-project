@@ -67,10 +67,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: null, isLoading: false, isAuthModalOpen: false });
 
       toast.success('Registration successful! Please check your email to verify account.', {
-        duration: 8000
+        duration: 8000,
       });
     } catch (err: unknown) {
-
       const errorMessage = getErrorMessage(err);
       set({ error: errorMessage, isLoading: false });
       throw new Error(errorMessage);
@@ -91,7 +90,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       set({ isAuthModalOpen: false, isLoading: false });
     } catch (err: unknown) {
-
       const errorMessage = getErrorMessage(err);
       set({ error: errorMessage, isLoading: false });
       throw new Error(errorMessage);

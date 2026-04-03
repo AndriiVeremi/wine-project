@@ -53,8 +53,7 @@ const LoginForm = () => {
       await resendVerification(email, password);
       toast.success('Verification email sent! Please check your inbox.');
       setShowResend(false);
-    } catch {
-    }
+    } catch {}
   };
 
   const onForgotPassword = async () => {
@@ -66,8 +65,7 @@ const LoginForm = () => {
     try {
       await resetPassword(email);
       toast.success('Password reset email sent! Check your inbox.');
-    } catch {
-    }
+    } catch {}
   };
 
   return (
