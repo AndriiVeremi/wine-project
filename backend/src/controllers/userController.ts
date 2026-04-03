@@ -5,7 +5,6 @@ import { AuthenticatedRequest } from '@/middleware/auth';
 import HttpError from '@/utils/HttpError';
 import * as userService from '@/services/userService';
 import ctrlWrapper from '@/utils/ctrlWrapper';
-import upload from '@/middleware/uploadMiddleware';
 
 export const getUserProfile = ctrlWrapper(
   async (req: AuthenticatedRequest, res: express.Response) => {
@@ -26,8 +25,9 @@ export const registerUser = ctrlWrapper(async (req: express.Request, res: expres
   const allowedRoles = ['USER', 'WINERY_OWNER'];
   const assignedRole = allowedRoles.includes(role) ? role : 'USER';
 
+  let userRecord;
   try {
-    const userRecord = await firebaseAdmin.auth().createUser({
+    userRecord = await firebaseAdmin.auth().createUser({
       email,
       password,
       displayName: `${firstName} ${lastName}`,
@@ -60,15 +60,12 @@ export const registerUser = ctrlWrapper(async (req: express.Request, res: expres
     });
   } catch (error: unknown) {
     const err = error as { code?: string };
-    if (err.code !== 'auth/email-already-exists') {
+
+    if (userRecord && err.code !== 'auth/email-already-exists') {
       try {
-        const user = await firebaseAdmin.auth().getUserByEmail(email);
-        if (user) {
-          await firebaseAdmin.auth().deleteUser(user.uid);
-          console.log(`User ${user.uid} deleted due to DB error.`);
-        }
+        await firebaseAdmin.auth().deleteUser(userRecord.uid);
       } catch (cleanupError) {
-        console.error('Failed to delete user', cleanupError);
+        console.error('Cleanup failed', cleanupError);
       }
     }
 
@@ -104,81 +101,36 @@ export const addFavoriteWine = ctrlWrapper(
 
 export const removeFavoriteWine = ctrlWrapper(
   async (req: AuthenticatedRequest, res: express.Response) => {
-    const wineId = req.params.wineId as string;
-    const result = await userService.removeFavoriteWine(req.userId!, wineId);
+    const { wineId } = req.params;
+    const result = await userService.removeFavoriteWine(req.userId!, wineId as string);
     res.status(200).json(result);
   },
 );
 
-export const updateAvatar = [
-  upload.single('avatar'),
-  ctrlWrapper(async (req: AuthenticatedRequest, res: express.Response) => {
+export const updateAvatar = ctrlWrapper(
+  async (req: AuthenticatedRequest, res: express.Response) => {
     if (!req.file) {
-      throw new HttpError('Avatar file is required', 400);
+      throw new HttpError('No file uploaded', 400);
     }
-
     const result = await userService.updateAvatar(req.userId!, req.file);
     res.status(200).json(result);
-  }),
-];
+  },
+);
 
-export const getAllUsers = ctrlWrapper(async (req: AuthenticatedRequest, res: express.Response) => {
-  const { search, page = 1, limit = 10 } = req.query;
-  const filter: Record<string, unknown> = {};
-
-  if (search) {
-    filter.$or = [
-      { firstName: { $regex: search, $options: 'i' } },
-      { lastName: { $regex: search, $options: 'i' } },
-      { email: { $regex: search, $options: 'i' } },
-    ];
-  }
-
-  const p = Number(page);
-  const l = Number(limit);
-  const skip = (p - 1) * l;
-
-  const users = await User.find(filter).skip(skip).limit(l).sort({ createdAt: -1 });
-  const total = await User.countDocuments(filter);
-
-  res.status(200).json({
-    users,
-    totalCount: total,
-    totalPages: Math.ceil(total / l),
-    page: p,
-  });
+export const getAllUsers = ctrlWrapper(async (req: express.Request, res: express.Response) => {
+  const { page = 1, limit = 10 } = req.query;
+  const result = await userService.getAllUsers(Number(page), Number(limit));
+  res.status(200).json(result);
 });
 
-export const toggleUserBan = ctrlWrapper(
-  async (req: AuthenticatedRequest, res: express.Response) => {
-    const { id } = req.params;
-    const user = await User.findById(id);
+export const toggleUserBan = ctrlWrapper(async (req: express.Request, res: express.Response) => {
+  const { id } = req.params;
+  const result = await userService.toggleUserBan(id as string);
+  res.status(200).json(result);
+});
 
-    if (!user) throw new HttpError('User not found', 404);
-    if (user.role === 'ADMIN') throw new HttpError('Cannot ban an admin', 403);
-
-    user.isBanned = !user.isBanned;
-    await user.save();
-
-    res
-      .status(200)
-      .json({ message: `User status updated to ${user.isBanned ? 'banned' : 'active'}`, user });
-  },
-);
-
-export const adminDeleteUser = ctrlWrapper(
-  async (req: AuthenticatedRequest, res: express.Response) => {
-    const { id } = req.params;
-    const user = await User.findById(id);
-
-    if (!user) throw new HttpError('User not found', 404);
-    if (user.role === 'ADMIN') throw new HttpError('Cannot delete an admin', 403);
-
-    // Тут можна додати логіку видалення з Firebase, якщо потрібно
-    await User.findByIdAndDelete(id);
-
-    res.status(204).send();
-  },
-);
-
-export {};
+export const adminDeleteUser = ctrlWrapper(async (req: express.Request, res: express.Response) => {
+  const { id } = req.params;
+  const result = await userService.adminDeleteUser(id as string);
+  res.status(200).json(result);
+});

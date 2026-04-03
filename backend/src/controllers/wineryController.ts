@@ -44,7 +44,9 @@ export const registerWinery = ctrlWrapper(async (req: AuthenticatedRequest, res:
 
 export const getWineries = ctrlWrapper(async (req: Request, res: Response) => {
   const params = req.query;
-  const { wineries, totalCount, page, limit, totalPages } = await wineryService.getWineries(params);
+  const { wineries, totalCount, page, limit, totalPages } = await wineryService.getAllWineries(
+    params as any,
+  );
 
   res.status(200).json({
     wineries,
