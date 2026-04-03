@@ -104,7 +104,20 @@ npm run dev
     docker compose -f docker-compose.dev.yml run --rm backend npm run db:destroy
     ```
 
-### 5. Зупинка
+### 5. Призначення ролі Адміна (Development)
+
+Оскільки проект використовує захищену систему ролей через Firebase Custom Claims, зміна поля в базі даних MongoDB **не дасть** повного доступу адміна. Для цього потрібно оновити "цифровий підпис" користувача.
+
+Для розробки створено спеціальний скрипт. Запустіть його всередині Docker-контейнера:
+
+```bash
+# Дізнайтеся свій Firebase UID у консолі Firebase (Auth -> Users)
+docker exec -it backend npx ts-node set-admin.ts ВАШ_FIREBASE_UID
+```
+
+Після успішного виконання обов'язково **вийдіть та знову зайдіть** у свій акаунт на сайті, щоб отримати оновлений токен.
+
+### 6. Зупинка
 
 *   **Бекенд:** `docker compose -f docker-compose.dev.yml down` у папці `backend`.
 *   **Фронтенд:** `Ctrl + C` у відповідному терміналі.
