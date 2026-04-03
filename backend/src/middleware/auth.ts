@@ -41,7 +41,7 @@ export const authMiddleware = async (
     }
 
     req.userId = mongoUser._id.toString();
-    req.userRole = mongoUser.role;
+    req.userRole = (decodedToken.role as string) || mongoUser.role;
 
     next();
   } catch (error) {
