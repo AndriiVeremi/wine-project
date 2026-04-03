@@ -16,16 +16,16 @@ const FavoriteButton = ({ wine, className, style, size = 24, color = '#841013' }
   const { data: favorites = [] } = useFavorites();
   const { toggleFavorite } = useFavoriteMutations();
 
-  const isFavorite = favorites.some((f) => f._id === wine._id);
+  const isFavorite = favorites.some((f) => (f._id || (f as { id?: string }).id) === wine._id);
   const user = useAuthStore((s) => s.user);
   const openAuthModal = useAuthStore((s) => s.openAuthModal);
 
-  const handleToggle = async (e: React.MouseEvent) => {
+  const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
     if (user) {
-      await toggleFavorite({ wineId: wine._id, isFavorite });
+      toggleFavorite({ wineId: wine._id, isFavorite });
     } else {
       openAuthModal('login');
     }

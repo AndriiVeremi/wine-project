@@ -3,10 +3,13 @@ import {
   type User as FirebaseUser,
   signOut as firebaseSignOut,
   signInWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 import { registerUserApi } from '@/api/authApi';
 import type { IRegisterData } from '@/types/auth';
+import toast from 'react-hot-toast';
 
 interface AuthState {
   user: FirebaseUser | null;
@@ -20,6 +23,9 @@ interface AuthState {
   register: (data: IRegisterData) => Promise<void>;
   login: (email: string, pass: string) => Promise<void>;
   logout: () => Promise<void>;
+  sendVerification: () => Promise<void>;
+  resendVerification: (email: string, pass: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   clearError: () => void;
   openAuthModal: (view: 'login' | 'register') => void;
   closeAuthModal: () => void;
@@ -34,7 +40,7 @@ const getErrorMessage = (error: unknown): string => {
   return String(error);
 };
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isInitialized: false,
   isLoading: false,
@@ -50,7 +56,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       await registerUserApi(data);
-      await get().login(data.email, data.password);
+      // Після API реєстрації логінимося
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+
+      // Відправляємо лист ОДРАЗУ після отримання об'єкта користувача
+      if (userCredential.user) {
+        await sendEmailVerification(userCredential.user);
+        console.log('Verification email sent to:', data.email);
+      }
+
+      // Розлогінюємо, бо пошта ще не підтверджена
+      await firebaseSignOut(auth);
+      set({ user: null, isLoading: false, isAuthModalOpen: false });
+
+      toast.success('Registration successful! Please check your email to verify account.', {
+        duration: 8000,
+      });
     } catch (err: unknown) {
       const errorMessage = getErrorMessage(err);
       set({ error: errorMessage, isLoading: false });
@@ -61,7 +82,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   login: async (email, pass) => {
     set({ isLoading: true, error: null });
     try {
-      await signInWithEmailAndPassword(auth, email, pass);
+      const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+      const user = userCredential.user;
+
+      if (!user.emailVerified) {
+        // Лист вже відправлено при реєстрації, але тут ми можемо
+        // або просто повідомити, або додати логіку повторної відправки.
+        await firebaseSignOut(auth);
+        set({ user: null, isLoading: false });
+        throw new Error('Please verify your email. Check your inbox or registration email.');
+      }
+
       set({ isAuthModalOpen: false, isLoading: false });
     } catch (err: unknown) {
       const errorMessage = getErrorMessage(err);
@@ -78,6 +109,48 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch (err) {
       console.error('Logout error:', err);
       set({ isLoading: false });
+    }
+  },
+
+  sendVerification: async () => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        await user.reload();
+        await sendEmailVerification(user);
+        console.log('Verification email sent successfully');
+      } catch (err: unknown) {
+        const error = err as { code: string; message: string };
+        console.error('FIREBASE_ERROR:', error.code, error.message);
+        toast.error(`Verification error: ${error.message}`);
+        throw err;
+      }
+    }
+  },
+
+  resendVerification: async (email: string, pass: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+      await sendEmailVerification(userCredential.user);
+      await firebaseSignOut(auth);
+      set({ user: null, isLoading: false });
+    } catch (err: unknown) {
+      const errorMessage = getErrorMessage(err);
+      set({ error: errorMessage, isLoading: false });
+      throw new Error(errorMessage);
+    }
+  },
+
+  resetPassword: async (email: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await sendPasswordResetEmail(auth, email);
+      set({ isLoading: false });
+    } catch (err: unknown) {
+      const errorMessage = getErrorMessage(err);
+      set({ error: errorMessage, isLoading: false });
+      throw new Error(errorMessage);
     }
   },
 

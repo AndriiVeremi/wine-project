@@ -33,7 +33,7 @@ const UserWishList = () => {
       render: (w) => (
         <ItemImg
           src={w.imageUrl}
-          onClick={() => navigate(`/wines/${w._id}`)}
+          onClick={() => navigate(`/wines/${w._id || (w as { id?: string }).id}`)}
           style={{ cursor: 'pointer' }}
         />
       ),
@@ -42,7 +42,7 @@ const UserWishList = () => {
       header: 'Wine Name',
       render: (w) => (
         <span
-          onClick={() => navigate(`/wines/${w._id}`)}
+          onClick={() => navigate(`/wines/${w._id || (w as { id?: string }).id}`)}
           style={{ cursor: 'pointer', fontWeight: 500 }}
         >
           {w.name}
@@ -75,10 +75,10 @@ const UserWishList = () => {
       search={search}
       onSearch={setSearch}
       onPage={setPage}
-      onRemove={async (id) => {
-        await toggleFavorite({ wineId: id, isFavorite: true });
+      onRemove={(id) => {
+        toggleFavorite({ wineId: id, isFavorite: true });
       }}
-      getId={(w) => w._id}
+      getId={(w) => w._id || (w as { id?: string }).id || ''}
       emptyIcon={<FiHeart />}
       emptyTitle="Your wishlist is empty"
       emptyText="Save some wines to see them here."

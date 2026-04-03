@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiStar } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import { updatePassword } from 'firebase/auth';
-import { auth } from '@/config/firebase';
 import MainButton from '@/components/Buttons/MainButton';
 import UserAvatar from '@/components/User/UserAvatar';
 import FormField from '@/components/Common/FormField/FormField';
@@ -37,8 +35,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
     phone: info?.phone || '',
     birthDate: info?.birthDate?.split('T')[0] || '',
     address: info?.address || '',
-    newPassword: '',
-    confirmPassword: '',
   });
 
   useEffect(() => {
@@ -66,18 +62,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
 
   const handleSave = async () => {
     try {
-      if (inputs.newPassword !== '') {
-        if (inputs.newPassword !== inputs.confirmPassword) {
-          toast.error('Passwords do not match!');
-          return;
-        }
-
-        if (inputs.newPassword.length < 6) {
-          toast.error('Password must be at least 6 characters');
-          return;
-        }
-      }
-
       const phoneRegexp = /^\+\d{10,14}$/;
       if (inputs.phone && !phoneRegexp.test(inputs.phone)) {
         toast.error('Phone number must start with + and contain 10-14 digits');
@@ -109,28 +93,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
       };
 
       await updateProfile(updatePayload);
-
-      if (inputs.newPassword !== '') {
-        const user = auth.currentUser;
-        if (user) {
-          await updatePassword(user, inputs.newPassword);
-          toast.success('Password updated in Firebase!');
-          setInputs((prev) => ({ ...prev, newPassword: '', confirmPassword: '' }));
-        }
-      }
-
       setEditing(false);
     } catch (err: unknown) {
-      if (
-        err &&
-        typeof err === 'object' &&
-        'code' in err &&
-        (err as { code: string }).code === 'auth/requires-recent-login'
-      ) {
-        toast.error('Please logout and login again to change password (security rule)');
-      } else {
-        toast.error('Something went wrong. Please try again.');
-      }
+      toast.error('Something went wrong. Please try again.');
       console.error(err);
     }
   };
@@ -200,24 +165,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ info }) => {
             onChange={handleChange}
             disabled={!editing}
             placeholder="Your address"
-          />
-          <FormField
-            label="New Password"
-            id="newPassword"
-            type="password"
-            value={inputs.newPassword}
-            onChange={handleChange}
-            disabled={!editing}
-            placeholder="Enter new password"
-          />
-          <FormField
-            label="Confirm Password"
-            id="confirmPassword"
-            type="password"
-            value={inputs.confirmPassword}
-            onChange={handleChange}
-            disabled={!editing}
-            placeholder="Confirm new password"
           />
         </FormGrid>
 

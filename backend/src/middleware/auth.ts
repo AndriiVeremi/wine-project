@@ -24,6 +24,12 @@ export const authMiddleware = async (
   const token = authorization.split('Bearer ')[1];
   try {
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
+
+    if (!decodedToken.email_verified && process.env.NODE_ENV === 'production') {
+      res.status(403).send({ message: 'Email not verified. Please check your inbox.' });
+      return;
+    }
+
     req.user = decodedToken;
 
     let mongoUser = await User.findOne({ firebaseUid: decodedToken.uid });

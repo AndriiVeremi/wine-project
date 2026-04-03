@@ -45,13 +45,17 @@ const RegisterForm = () => {
       return;
     }
 
-    await register({
-      firstName: fName,
-      lastName: lName,
-      role,
-      email,
-      password: pass,
-    });
+    try {
+      await register({
+        firstName: fName,
+        lastName: lName,
+        role,
+        email,
+        password: pass,
+      });
+    } catch {
+      // Error is handled in useEffect
+    }
   };
 
   return (
