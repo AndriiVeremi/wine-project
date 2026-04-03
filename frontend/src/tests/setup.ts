@@ -5,8 +5,18 @@ vi.mock('firebase/auth', () => ({
     currentUser: null,
   })),
   onAuthStateChanged: vi.fn(),
-  signOut: vi.fn(),
-  signInWithEmailAndPassword: vi.fn(),
+  signOut: vi.fn(() => Promise.resolve()),
+  signInWithEmailAndPassword: vi.fn(() =>
+    Promise.resolve({
+      user: {
+        emailVerified: true,
+        reload: vi.fn(() => Promise.resolve()),
+        getIdToken: vi.fn(() => Promise.resolve('mock-token')),
+      },
+    }),
+  ),
+  sendEmailVerification: vi.fn(() => Promise.resolve()),
+  sendPasswordResetEmail: vi.fn(() => Promise.resolve()),
 }));
 
 vi.mock('@/config/firebase', () => ({
