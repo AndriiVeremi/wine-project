@@ -7,7 +7,6 @@ export interface IWinery extends Document {
   country: mongoose.Types.ObjectId;
   region: mongoose.Types.ObjectId;
   address: string;
-  // Нові поля для мапи та сайту
   coordinates?: {
     lat: number;
     lng: number;
@@ -21,8 +20,8 @@ export interface IWinery extends Document {
   whereToBuy: { name: string; url: string }[];
   contactEmail: string;
   contactPhone: string;
-  averageRating?: number;
-  totalReviews?: number;
+  averageRating: number;
+  totalReviews: number;
 }
 
 const winerySchema: Schema = new Schema({
@@ -37,7 +36,6 @@ const winerySchema: Schema = new Schema({
   region: { type: Schema.Types.ObjectId, ref: 'Location' },
   address: { type: String },
 
-  // Реалізація координат
   coordinates: {
     lat: { type: Number },
     lng: { type: Number },
@@ -56,5 +54,8 @@ const winerySchema: Schema = new Schema({
   ],
   contactEmail: { type: String, required: true },
   contactPhone: { type: String, required: true },
+  averageRating: { type: Number, default: 0 },
+  totalReviews: { type: Number, default: 0 },
 });
+
 export default mongoose.model<IWinery>('Winery', winerySchema);

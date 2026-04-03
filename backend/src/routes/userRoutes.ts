@@ -10,6 +10,7 @@ import {
   updateProfileSchema,
 } from '@/schemas/userSchemas';
 import { isValidId } from '@/middleware/isValidId';
+import upload from '@/middleware/uploadMiddleware';
 
 const router = Router();
 
@@ -92,7 +93,7 @@ router.delete(
   isValidId('wineId'),
   userController.removeFavoriteWine,
 );
-router.patch('/me/avatar', authMiddleware, userController.updateAvatar);
+router.patch('/me/avatar', authMiddleware, upload.single('avatar'), userController.updateAvatar);
 
 /**
  * @swagger

@@ -157,4 +157,40 @@ export const updateAvatar = async (userId: string, file: Express.Multer.File) =>
   return { avatarUrl: user.avatarUrl };
 };
 
+export const getAllUsers = async (page: number, limit: number) => {
+  const skip = (page - 1) * limit;
+  const users = await User.find().skip(skip).limit(limit).select('-__v');
+  const total = await User.countDocuments();
+  return { users, total, page, totalPages: Math.ceil(total / limit) };
+};
+
+export const toggleUserBan = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new HttpError('User not found', 404);
+  }
+
+  user.isBanned = !user.isBanned;
+  await user.save();
+
+  return { message: `User status changed to ${user.isBanned ? 'banned' : 'active'}` };
+};
+
+export const adminDeleteUser = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new HttpError('User not found', 404);
+  }
+
+  await User.findByIdAndDelete(id);
+
+  try {
+    await auth.deleteUser(user.firebaseUid);
+  } catch (error) {
+    console.error(`Failed to delete Firebase user ${user.firebaseUid}:`, error);
+  }
+
+  return { message: 'User deleted successfully' };
+};
+
 export const getDefaultAvatar = () => DEFAULT_AVATAR;

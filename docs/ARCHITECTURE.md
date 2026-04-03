@@ -10,7 +10,7 @@ Wine Project побудований за архітектурою **клієнт
 
 ```
 ┌─────────────────┐     HTTPS      ┌─────────────────┐     MongoDB     ┌─────────────────┐
-│    Frontend     │◄──────────────►│    Backend      │◄──────────────►и│    MongoDB      │
+│    Frontend     │◄──────────────►│    Backend      │◄──────────────► │    MongoDB      │
 │    (React)      │   REST API     │    (Express)    │                 │    Atlas        │
 └─────────────────┘                └─────────────────┘                 └─────────────────┘
         │                                   │
@@ -134,46 +134,11 @@ backend/src/
 ### Автентифікація
 ```
 1. Користувач вводить email/password на фронтенді
-2. Firebase Auth створює токен
-3. Токен кешується у пам'яті (memory variable) та автоматично оновлюється через `onIdTokenChanged`
-4. Axios Interceptor синхронно додає кешований токен у заголовок Authorization
+2. Firebase Auth створює сесію
+3. Axios Interceptor перед кожним запитом викликає `user.getIdToken()`, отримуючи актуальний токен (кешований або оновлений)
+4. Токен додається у заголовок Authorization
 5. Backend перевіряє токен через Firebase Admin SDK
 6. Firebase Admin повертає decoded token з UID
-```
-
-### Запит на створення вина
-```
-Frontend                    Backend                     Database
-   │                           │                            │
-   ├── POST /api/wines ───────►│                            │
-   │  Headers: Authorization   │                            │
-   │                           ├── Валідація Joi            │
-   │                           ├── Перевірка auth middleware│
-   │                           ├── wineService.create()     │
-   │                           │                            │
-   │                           │──► Wine.create() ─────────►│
-   │                           │◄──── Wine saved ───────────│
-   │◄── 201 Created ──────────┤                             │
-   │◄── { wine: {...} } ──────┤                             │
-```
-
----
-
-## Зберігання файлів
-
-### Firebase Storage
-Використовується для:
-- Логотипи виноробень
-- Зображення вин
-- Галереї виноробень
-- Аватари користувачів
-
-### Потік завантаження
-```
-1. Файл вибирається на фронтенді
-2. Завантаження напряму в Firebase Storage
-3. Отримання URL завантаженого файлу
-4. URL зберігається в MongoDB
 ```
 
 ---
@@ -193,20 +158,9 @@ User Message ──► Backend ──► Google Gemini AI
                     └──► Database ──┘
 ```
 
-### Доступні інструменти
-| Функція | Опис |
-|---------|------|
-| `searchWines` | Пошук вин за критеріями |
-| `getRegionInfo` | Інформація про регіон |
-| `getWineryInfo` | Інформація про виноробню |
-| `searchTours` | Пошук турів |
-| `getMyFavoriteWines` | Улюблені вина користувача |
-
 ---
 
 ## Безпека
-
-Детальний опис механізмів безпеки та налаштувань CSP дивіться у [SECURITY.md](./SECURITY.md).
 
 ### Захист на бекенді
 | Механізм | Опис |
@@ -241,9 +195,3 @@ Push/PR ──► Lint ──► Test ──► Build ──► Deploy
                                └──► Docker
                                    (Backend)
 ```
-
-### Середовища
-| Середовище | Фронтенд | Бекенд |
-|------------|----------|--------|
-| Development | localhost:5173 | localhost:5005 |
-| Production | Vercel | Docker |

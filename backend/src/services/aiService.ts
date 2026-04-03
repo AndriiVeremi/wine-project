@@ -151,7 +151,7 @@ export class AIService {
     const chat = model.startChat({
       history: cleanedHistory,
       generationConfig: {
-        maxOutputTokens: 1000,
+        maxOutputTokens: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 2000,
       },
     });
 
