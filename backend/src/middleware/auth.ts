@@ -41,7 +41,14 @@ export const authMiddleware = async (
     }
 
     req.userId = mongoUser._id.toString();
-    req.userRole = (decodedToken.role as string) || mongoUser.role;
+    const tokenRole = decodedToken.role as string;
+    const dbRole = mongoUser.role;
+
+    if (tokenRole === 'ADMIN' || dbRole === 'ADMIN') {
+      req.userRole = 'ADMIN';
+    } else {
+      req.userRole = tokenRole || dbRole || 'USER';
+    }
 
     next();
   } catch (error) {
