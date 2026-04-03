@@ -145,21 +145,12 @@ export const SpecItem = styled.div`
     color: var(--black-color);
   }
 `;
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
+
 export const DescriptionBox = styled.div`
+  ${richTextStyles}
   display: flex;
   flex-direction: column;
-  gap: 16px;
-
-  h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--black-color);
-  }
-  p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--primary-gray);
-  }
 `;
 export const Sidebar = styled.aside`
   width: 100%;
