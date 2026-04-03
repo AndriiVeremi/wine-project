@@ -45,7 +45,7 @@ describe('authStore', () => {
 
   it('should set user and initialized state', () => {
     const mockUser = { uid: '123', email: 'test@test.com' };
-    useAuthStore.getState().setUser(mockUser as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+    useAuthStore.getState().setUser(mockUser as never);
 
     const state = useAuthStore.getState();
     expect(state.user).toEqual(mockUser);
@@ -57,7 +57,7 @@ describe('authStore', () => {
     const pass = 'password';
     vi.mocked(signInWithEmailAndPassword).mockResolvedValue({
       user: { uid: '123', emailVerified: true },
-    } as any);
+    } as never);
 
     await useAuthStore.getState().login(email, pass);
 
@@ -90,10 +90,10 @@ describe('authStore', () => {
       role: 'USER' as const,
     };
 
-    vi.mocked(registerUserApi).mockResolvedValue({ data: {} } as any);
+    vi.mocked(registerUserApi).mockResolvedValue({ data: {} } as never);
     vi.mocked(signInWithEmailAndPassword).mockResolvedValue({
       user: { uid: '123', emailVerified: true },
-    } as any);
+    } as never);
     vi.mocked(sendEmailVerification).mockResolvedValue(undefined);
 
     await useAuthStore.getState().register(registerData);

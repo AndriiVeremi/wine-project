@@ -54,7 +54,6 @@ const RegisterForm = () => {
         password: pass,
       });
     } catch {
-      // Error is handled in useEffect
     }
   };
 

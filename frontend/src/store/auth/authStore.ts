@@ -56,23 +56,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       await registerUserApi(data);
-      // Після API реєстрації логінимося
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
 
-      // Відправляємо лист ОДРАЗУ після отримання об'єкта користувача
       if (userCredential.user) {
         await sendEmailVerification(userCredential.user);
         console.log('Verification email sent to:', data.email);
       }
 
-      // Розлогінюємо, бо пошта ще не підтверджена
       await firebaseSignOut(auth);
       set({ user: null, isLoading: false, isAuthModalOpen: false });
 
       toast.success('Registration successful! Please check your email to verify account.', {
-        duration: 8000,
+        duration: 8000
       });
     } catch (err: unknown) {
+
       const errorMessage = getErrorMessage(err);
       set({ error: errorMessage, isLoading: false });
       throw new Error(errorMessage);
@@ -86,8 +84,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = userCredential.user;
 
       if (!user.emailVerified) {
-        // Лист вже відправлено при реєстрації, але тут ми можемо
-        // або просто повідомити, або додати логіку повторної відправки.
         await firebaseSignOut(auth);
         set({ user: null, isLoading: false });
         throw new Error('Please verify your email. Check your inbox or registration email.');
@@ -95,6 +91,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       set({ isAuthModalOpen: false, isLoading: false });
     } catch (err: unknown) {
+
       const errorMessage = getErrorMessage(err);
       set({ error: errorMessage, isLoading: false });
       throw new Error(errorMessage);

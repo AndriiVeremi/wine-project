@@ -54,7 +54,6 @@ const LoginForm = () => {
       toast.success('Verification email sent! Please check your inbox.');
       setShowResend(false);
     } catch {
-      // Error handled in store
     }
   };
 
@@ -68,7 +67,6 @@ const LoginForm = () => {
       await resetPassword(email);
       toast.success('Password reset email sent! Check your inbox.');
     } catch {
-      // Error is handled in store/useEffect
     }
   };
 
