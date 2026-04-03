@@ -8,6 +8,7 @@ import Location from '@/models/locationModel';
 import Grape from '@/models/grapeModel';
 import Region from '@/models/regionModel';
 import Tour from '@/models/tourModel';
+import { updateRating } from '@/services/reviewService';
 import { firebaseAdmin } from '@/services/firebase';
 import path from 'path';
 import fs from 'fs';
@@ -164,6 +165,22 @@ const importData = async () => {
     if (reviews && reviews.length) {
       console.log('Importing reviews...');
       for (const item of reviews) await Review.create(item);
+
+      console.log('Recalculating ratings...');
+      const allWineries = await Winery.find({}, '_id');
+      for (const w of allWineries) {
+        await updateRating(w._id.toString(), Winery);
+      }
+
+      const allWines = await Wine.find({}, '_id');
+      for (const wine of allWines) {
+        await updateRating(wine._id.toString(), Wine);
+      }
+
+      const allTours = await Tour.find({}, '_id');
+      for (const tour of allTours) {
+        await updateRating(tour._id.toString(), Tour);
+      }
     }
 
     console.log('Data Imported successfully!');
