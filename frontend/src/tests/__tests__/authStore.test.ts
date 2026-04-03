@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useAuthStore } from '@/store/auth/authStore';
 import { auth } from '@/config/firebase';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, sendEmailVerification } from 'firebase/auth';
 import { registerUserApi } from '@/api/authApi';
 
 vi.mock('firebase/auth', () => ({
@@ -10,6 +10,7 @@ vi.mock('firebase/auth', () => ({
   signOut: vi.fn(),
   onAuthStateChanged: vi.fn(),
   onIdTokenChanged: vi.fn(),
+  sendEmailVerification: vi.fn(),
 }));
 
 vi.mock('@/config/firebase', () => ({
@@ -44,7 +45,7 @@ describe('authStore', () => {
 
   it('should set user and initialized state', () => {
     const mockUser = { uid: '123', email: 'test@test.com' };
-    useAuthStore.getState().setUser(mockUser as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+    useAuthStore.getState().setUser(mockUser as never);
 
     const state = useAuthStore.getState();
     expect(state.user).toEqual(mockUser);
@@ -54,7 +55,9 @@ describe('authStore', () => {
   it('should call login successfully', async () => {
     const email = 'test@test.com';
     const pass = 'password';
-    vi.mocked(signInWithEmailAndPassword).mockResolvedValue({ user: { uid: '123' } } as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+    vi.mocked(signInWithEmailAndPassword).mockResolvedValue({
+      user: { uid: '123', emailVerified: true },
+    } as never);
 
     await useAuthStore.getState().login(email, pass);
 
@@ -87,12 +90,16 @@ describe('authStore', () => {
       role: 'USER' as const,
     };
 
-    vi.mocked(registerUserApi).mockResolvedValue({ data: {} } as any); // eslint-disable-line @typescript-eslint/no-explicit-any
-    vi.mocked(signInWithEmailAndPassword).mockResolvedValue({ user: {} } as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+    vi.mocked(registerUserApi).mockResolvedValue({ data: {} } as never);
+    vi.mocked(signInWithEmailAndPassword).mockResolvedValue({
+      user: { uid: '123', emailVerified: true },
+    } as never);
+    vi.mocked(sendEmailVerification).mockResolvedValue(undefined);
 
     await useAuthStore.getState().register(registerData);
 
     expect(registerUserApi).toHaveBeenCalledWith(registerData);
+    expect(sendEmailVerification).toHaveBeenCalled();
   });
 
   it('should call logout successfully', async () => {

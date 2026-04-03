@@ -70,7 +70,7 @@ export const useFavoriteMutations = () => {
   });
 
   return {
-    toggleFavorite: toggleMutation.mutateAsync,
+    toggleFavorite: toggleMutation.mutate,
     isToggling: toggleMutation.isPending,
   };
 };
