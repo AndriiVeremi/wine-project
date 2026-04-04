@@ -33,6 +33,7 @@ import {
   InfoCard,
   SliderSection,
   SectionHeaderTitle,
+  SideSection,
 } from './GrapeDetailPage.styled';
 
 import { calcProgress, getFoodEmoji } from '@/utils/wineHelpers';
@@ -77,24 +78,112 @@ const GrapeDetailPage = () => {
     <Container>
       <DetailContainer>
         <HeroSection>
-          <ImageWrapper>
-            <MainImage>
-              <img
-                src={data.imageUrls?.[activeIdx] || '/assets/grape-placeholder.png'}
-                alt={data.name}
-              />
-            </MainImage>
-            {data.imageUrls && data.imageUrls.length > 1 && (
-              <ThumbnailGrid>
-                {data.imageUrls.map((url, i) => (
-                  <Thumbnail key={i} $active={activeIdx === i} onClick={() => setActiveIdx(i)}>
-                    <img src={url} alt="Varietal photo" />
-                  </Thumbnail>
-                ))}
-              </ThumbnailGrid>
-            )}
-          </ImageWrapper>
+          {/* Left Column: Image Gallery + Characteristics + Pairings + Stats */}
+          <div className="left-column">
+            <ImageWrapper>
+              <MainImage>
+                <img
+                  src={data.imageUrls?.[activeIdx] || '/assets/grape-placeholder.png'}
+                  alt={data.name}
+                />
+              </MainImage>
+              {data.imageUrls && data.imageUrls.length > 1 && (
+                <ThumbnailGrid>
+                  {data.imageUrls.map((url, i) => (
+                    <Thumbnail key={i} $active={activeIdx === i} onClick={() => setActiveIdx(i)}>
+                      <img src={url} alt="Varietal photo" />
+                    </Thumbnail>
+                  ))}
+                </ThumbnailGrid>
+              )}
+            </ImageWrapper>
 
+            <SideSection>
+              {data.characteristics && data.characteristics.length > 0 && (
+                <section>
+                  <SectionTitle>Key Characteristics</SectionTitle>
+                  <TagCloud>
+                    {data.characteristics.map((item) => (
+                      <Tag key={item}>
+                        <FaWineGlassAlt
+                          size={12}
+                          style={{ marginRight: '8px', color: '#841013' }}
+                        />
+                        {item}
+                      </Tag>
+                    ))}
+                  </TagCloud>
+                </section>
+              )}
+
+              {data.foodPairing && data.foodPairing.length > 0 && (
+                <section>
+                  <SectionTitle>Perfect Pairings</SectionTitle>
+                  <FoodGrid>
+                    {data.foodPairing.map((f) => (
+                      <FoodCard key={f}>
+                        <span className="icon">{getFoodEmoji(f)}</span>
+                        <span>{f}</span>
+                      </FoodCard>
+                    ))}
+                  </FoodGrid>
+                </section>
+              )}
+
+              <InfoCard>
+                <StatsGrid>
+                  <StatItem>
+                    <StatLabel>Acidity: {data.acidity}</StatLabel>
+                    <ProgressBar $percent={calcProgress(data.acidity)} $type="acid" />
+                  </StatItem>
+                  <StatItem>
+                    <StatLabel>Body: {data.body}</StatLabel>
+                    <ProgressBar $percent={calcProgress(data.body)} $type="body" />
+                  </StatItem>
+                  {data.tannins && data.tannins !== 'None' && (
+                    <StatItem>
+                      <StatLabel>Tannins: {data.tannins}</StatLabel>
+                      <ProgressBar $percent={calcProgress(data.tannins)} $type="tannin" />
+                    </StatItem>
+                  )}
+                  <StatItem>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        marginTop: '5px',
+                      }}
+                    >
+                      <FaClock color="#94a3b8" />
+                      <span
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          color: '#94a3b8',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        Aging Potential
+                      </span>
+                    </div>
+                    <p
+                      style={{
+                        fontSize: '15px',
+                        color: '#1e293b',
+                        fontWeight: 600,
+                        marginTop: '4px',
+                      }}
+                    >
+                      {data.agingPotential || 'Best enjoyed young'}
+                    </p>
+                  </StatItem>
+                </StatsGrid>
+              </InfoCard>
+            </SideSection>
+          </div>
+
+          {/* Right Column: Badge + Title + Synonyms + Description */}
           <InfoWrapper>
             <Badge $type={data.type}>{data.type} variety</Badge>
             <Title>{data.name}</Title>
@@ -129,84 +218,8 @@ const GrapeDetailPage = () => {
             )}
 
             <Description dangerouslySetInnerHTML={{ __html: data.description }} />
-
-            <InfoCard>
-              <StatsGrid>
-                <StatItem>
-                  <StatLabel>Acidity: {data.acidity}</StatLabel>
-                  <ProgressBar $percent={calcProgress(data.acidity)} $type="acid" />
-                </StatItem>
-                <StatItem>
-                  <StatLabel>Body: {data.body}</StatLabel>
-                  <ProgressBar $percent={calcProgress(data.body)} $type="body" />
-                </StatItem>
-                {data.tannins && data.tannins !== 'None' && (
-                  <StatItem>
-                    <StatLabel>Tannins: {data.tannins}</StatLabel>
-                    <ProgressBar $percent={calcProgress(data.tannins)} $type="tannin" />
-                  </StatItem>
-                )}
-                <StatItem>
-                  <div
-                    style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '5px' }}
-                  >
-                    <FaClock color="#94a3b8" />
-                    <span
-                      style={{
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        color: '#94a3b8',
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      Aging Potential
-                    </span>
-                  </div>
-                  <p
-                    style={{
-                      fontSize: '15px',
-                      color: '#1e293b',
-                      fontWeight: 600,
-                      marginTop: '4px',
-                    }}
-                  >
-                    {data.agingPotential || 'Best enjoyed young'}
-                  </p>
-                </StatItem>
-              </StatsGrid>
-            </InfoCard>
           </InfoWrapper>
         </HeroSection>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px' }}>
-          {data.characteristics && data.characteristics.length > 0 && (
-            <section>
-              <SectionTitle>Key Characteristics</SectionTitle>
-              <TagCloud>
-                {data.characteristics.map((item) => (
-                  <Tag key={item}>
-                    <FaWineGlassAlt size={12} style={{ marginRight: '8px', color: '#841013' }} />
-                    {item}
-                  </Tag>
-                ))}
-              </TagCloud>
-            </section>
-          )}
-
-          {data.foodPairing && data.foodPairing.length > 0 && (
-            <section>
-              <SectionTitle>Perfect Pairings</SectionTitle>
-              <FoodGrid>
-                {data.foodPairing.map((f) => (
-                  <FoodCard key={f}>
-                    <span className="icon">{getFoodEmoji(f)}</span>
-                    <span>{f}</span>
-                  </FoodCard>
-                ))}
-              </FoodGrid>
-            </section>
-          )}
-        </div>
       </DetailContainer>
 
       {(wines.length > 0 || winesLoading) && (
