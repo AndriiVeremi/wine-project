@@ -49,10 +49,21 @@ export const richTextStyles = css`
     color: var(--black, #1e293b);
   }
 
-  h2,
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary-wine, #841013);
+    margin-top: 26px;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
   h3 {
-    margin: 24px 0 16px 0;
-    color: var(--black, #1e293b);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-wine, #841013);
+    margin-top: 22px;
+    margin-bottom: 12px;
     line-height: 1.2;
   }
 `;

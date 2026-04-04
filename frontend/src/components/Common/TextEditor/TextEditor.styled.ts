@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
 
 export const StyledEditorWrapper = styled.div`
   display: flex;
@@ -82,50 +83,8 @@ export const StyledEditorContent = styled.div`
 
   .ProseMirror {
     outline: none;
-    font-family: var(--font-main);
-    font-size: 16px;
-    line-height: 1.7;
+    ${richTextStyles}
     min-height: 180px;
-
-    p {
-      margin-bottom: 14px;
-    }
-
-    ul,
-    ol {
-      padding-left: 28px;
-      margin-bottom: 14px;
-    }
-
-    li {
-      margin-bottom: 6px;
-    }
-
-    h2 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--primary-wine);
-      margin-top: 26px;
-      margin-bottom: 14px;
-    }
-
-    h3 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--primary-wine);
-      margin-top: 22px;
-      margin-bottom: 12px;
-    }
-
-    blockquote {
-      border-left: 5px solid var(--primary-wine);
-      padding: 14px 20px;
-      margin: 20px 0;
-      color: var(--font-grey);
-      font-style: italic;
-      background-color: rgba(132, 16, 19, 0.05);
-      border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-    }
   }
 `;
 

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
 
 export const DetailContainer = styled.div`
   max-width: 100%;
@@ -17,6 +18,17 @@ export const HeroSection = styled.section`
     grid-template-columns: 1fr 1fr;
     gap: 60px;
     margin-bottom: 60px;
+    align-items: flex-start;
+  }
+
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    @media (min-width: ${breakpoints.desktop}) {
+      gap: 60px;
+    }
   }
 `;
 
@@ -109,8 +121,6 @@ export const Title = styled.h1`
   }
 `;
 
-import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
-
 export const Description = styled.div`
   ${richTextStyles}
   font-size: 16px;
@@ -121,12 +131,26 @@ export const Description = styled.div`
   }
 `;
 
+export const SideSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  @media (min-width: ${breakpoints.desktop}) {
+    gap: 60px;
+  }
+`;
+
 export const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
 
   @media (min-width: ${breakpoints.mobile}) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: ${breakpoints.desktop}) {
     grid-template-columns: 1fr 1fr;
   }
 `;
@@ -180,11 +204,11 @@ export const InfoCard = styled.div`
 
 export const SectionTitle = styled.h2`
   font-family: 'Montserrat Alternates', sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: #1e293b;
   text-transform: uppercase;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   letter-spacing: 0.05em;
   display: flex;
   align-items: center;
@@ -196,25 +220,20 @@ export const SectionTitle = styled.h2`
     height: 1px;
     background: #f1f5f9;
   }
-
-  @media (min-width: ${breakpoints.tablet}) {
-    font-size: 28px;
-  }
 `;
 
 export const TagCloud = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 40px;
 `;
 
 export const Tag = styled.span`
-  padding: 10px 20px;
+  padding: 8px 16px;
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #334155;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
@@ -230,13 +249,12 @@ export const Tag = styled.span`
 
 export const FoodGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-  margin-bottom: 60px;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
 `;
 
 export const FoodCard = styled.div`
-  padding: 24px 16px;
+  padding: 16px 12px;
   background: #fff;
   border-radius: 16px;
   text-align: center;
@@ -250,13 +268,13 @@ export const FoodCard = styled.div`
   }
 
   .icon {
-    font-size: 32px;
-    margin-bottom: 12px;
+    font-size: 24px;
+    margin-bottom: 8px;
     display: block;
   }
 
   span {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
     color: #1e293b;
   }
