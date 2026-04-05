@@ -1,7 +1,6 @@
 import { HydratedDocument, PipelineStage, Types } from 'mongoose';
 import Wine, { IWine } from '@/models/wineModel';
 import Winery, { IWinery } from '@/models/wineryModel';
-import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import HttpError from '@/utils/HttpError';
 import { uploadFile, deleteFile } from '@/services/firebase';
@@ -186,18 +185,21 @@ export class WineService {
     return wine;
   }
 
-  public async createWine(wineData: IWine, userId: string): Promise<HydratedDocument<IWine>> {
-    const user = await User.findById(userId);
-    if (!user) throw new HttpError('User not found.', 404);
+  public async createWine(
+    wineData: IWine,
+    userId: string,
+    userRole: string,
+  ): Promise<HydratedDocument<IWine>> {
+    const isAdmin = userRole === 'ADMIN';
 
-    if (user.role !== 'WINERY_OWNER' && user.role !== 'ADMIN') {
+    if (userRole !== 'WINERY_OWNER' && !isAdmin) {
       throw new HttpError('Only winery owners can create wines.', 403);
     }
 
     const winery = await Winery.findById(wineData.winery);
     if (!winery) throw new HttpError('Winery not found.', 404);
 
-    if (user.role === 'WINERY_OWNER' && winery.owner.toString() !== userId) {
+    if (!isAdmin && winery.owner.toString() !== userId) {
       throw new HttpError('You are not owner of this winery.', 403);
     }
 

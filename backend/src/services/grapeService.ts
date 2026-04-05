@@ -62,12 +62,17 @@ class GrapeService {
     userRole: string,
     files?: Express.Multer.File[],
   ) {
-    if (data.winery) {
+    const isAdmin = userRole === 'ADMIN';
+
+    if (data.winery && !isAdmin) {
       const winery = await Winery.findById(data.winery);
       if (!winery) throw new HttpError('Winery not found', 404);
-      if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
+      if (winery.owner.toString() !== userId) {
         throw new HttpError('Not owner', 403);
       }
+    } else if (data.winery && isAdmin) {
+      const winery = await Winery.findById(data.winery);
+      if (!winery) throw new HttpError('Winery not found', 404);
     }
 
     if (files && files.length > 0) {
@@ -134,9 +139,11 @@ class GrapeService {
     const grape = await Grape.findById(id);
     if (!grape) throw new HttpError('Not found', 404);
 
-    if (grape.winery) {
+    const isAdmin = userRole === 'ADMIN';
+
+    if (grape.winery && !isAdmin) {
       const winery = await Winery.findById(grape.winery);
-      if (winery && userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
+      if (winery && winery.owner.toString() !== userId) {
         throw new HttpError('Not owner', 403);
       }
     }

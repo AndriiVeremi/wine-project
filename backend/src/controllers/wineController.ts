@@ -26,7 +26,7 @@ export const createWine = ctrlWrapper(async (req: AuthenticatedRequest, res: Res
     wineData.imageUrl = await uploadFile(files.image[0], 'wines/main');
   }
 
-  const newWine = await wineService.createWine(wineData, req.userId!);
+  const newWine = await wineService.createWine(wineData, req.userId!, req.userRole!);
   res.status(201).json(newWine);
 });
 

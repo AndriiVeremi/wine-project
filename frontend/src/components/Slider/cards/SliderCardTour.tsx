@@ -77,7 +77,7 @@ const SliderCardTour: React.FC<TourCardProps> = ({ tour }) => {
             margin: '8px 0 5px',
           }}
         >
-          ${tour.price}/person
+          ₾ {tour.price}/person
         </p>
 
         <FooterLink onClick={() => navigate(`/tours/${tour._id}`)}>View Tour →</FooterLink>
