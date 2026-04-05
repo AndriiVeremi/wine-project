@@ -33,14 +33,17 @@ describe('GrapeService', () => {
   };
 
   describe('updateGrape', () => {
-    it('should NOT delete old images when new files are uploaded if limit is not exceeded', async () => {
+    it('should NOT delete old images when new files are uploaded IF they are included in data.imageUrls', async () => {
       mockGrapeFindById.mockResolvedValue(mockGrape);
       mockWineryFindById.mockResolvedValue(mockWinery);
-      mockGrapeFindByIdAndUpdate.mockResolvedValue({ ...mockGrape, imageUrls: ['http://mock-url.com/old-file.png', 'http://mock-url.com/new-file.png'] });
+      mockGrapeFindByIdAndUpdate.mockResolvedValue({ 
+        ...mockGrape, 
+        imageUrls: ['http://mock-url.com/old-file.png', 'http://mock-url.com/new-file.png'] 
+      });
 
       const files = [{ originalname: 'new.png', buffer: Buffer.from(''), mimetype: 'image/png' }] as Express.Multer.File[];
       
-      await grapeService.updateGrape('grape-1', {}, 'user-1', 'USER', files);
+      await grapeService.updateGrape('grape-1', { imageUrls: ['http://mock-url.com/old-file.png'] }, 'user-1', 'USER', files);
 
       expect(deleteFile).not.toHaveBeenCalled();
       expect(uploadFile).toHaveBeenCalled();
@@ -54,7 +57,6 @@ describe('GrapeService', () => {
       mockGrapeFindById.mockResolvedValue(grapeWithTwoImages);
       mockWineryFindById.mockResolvedValue(mockWinery);
       
-      // Keep only url-1
       await grapeService.updateGrape('grape-1', { imageUrls: ['url-1'] }, 'user-1', 'USER');
 
       expect(deleteFile).toHaveBeenCalledWith('url-2');
@@ -93,7 +95,6 @@ describe('GrapeService', () => {
 
       await grapeService.updateGrapeImages('grape-1', newFiles);
 
-      // Total 6 images: url-1..url-6. Limit is 5. url-6 should be deleted.
       expect(deleteFile).toHaveBeenCalledWith('url-6');
     });
   });
