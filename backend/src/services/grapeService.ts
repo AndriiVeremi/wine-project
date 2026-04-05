@@ -108,7 +108,7 @@ class GrapeService {
     if (files && files.length > 0) {
       const newUrls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
       const finalUrls = [...updatedUrls, ...newUrls];
-      
+
       if (finalUrls.length > 5) {
         const droppedUrls = finalUrls.slice(5);
         await Promise.all(droppedUrls.map((url) => deleteFile(url)));

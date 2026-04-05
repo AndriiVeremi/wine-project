@@ -113,7 +113,7 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
       files.images.map((file) => uploadFile(file, 'wineries/gallery')),
     );
     const finalGallery = [...updatedGallery, ...imageUrls];
-    
+
     if (finalGallery.length > 10) {
       const droppedUrls = finalGallery.slice(10);
       await Promise.all(droppedUrls.map((url) => deleteFile(url)));
