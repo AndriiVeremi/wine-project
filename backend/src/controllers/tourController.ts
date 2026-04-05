@@ -31,7 +31,7 @@ export const createTour = ctrlWrapper(async (req: AuthenticatedRequest, res: Res
     tourData.images = await Promise.all(uploadPromises);
   }
 
-  const result = await tourService.createTour(tourData, req.userId!);
+  const result = await tourService.createTour(tourData, req.userId!, req.userRole!);
   res.status(201).json(result);
 });
 
@@ -76,12 +76,12 @@ export const updateTour = ctrlWrapper(async (req: AuthenticatedRequest, res: Res
 
   tourData.images = finalImages;
 
-  const result = await tourService.updateTour(id as string, tourData, req.userId!);
+  const result = await tourService.updateTour(id as string, tourData, req.userId!, req.userRole!);
   res.status(200).json(result);
 });
 
 export const deleteTour = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const id = req.params.id as string;
-  await tourService.deleteTour(id, req.userId!);
+  await tourService.deleteTour(id, req.userId!, req.userRole!);
   res.status(204).send();
 });

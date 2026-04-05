@@ -1,6 +1,5 @@
 import { HydratedDocument, Types } from 'mongoose';
 import Tour, { ITour } from '@/models/tourModel';
-import User from '@/models/userModel';
 import Winery from '@/models/wineryModel';
 import Region from '@/models/regionModel';
 import HttpError from '@/utils/HttpError';
@@ -105,13 +104,14 @@ export const getToursByWinery = async (wineryId: string) => {
   return await Tour.find({ winery: wineryId });
 };
 
-export const createTour = async (data: ITour, userId: string): Promise<HydratedDocument<ITour>> => {
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new HttpError('User not found.', 404);
-  }
+export const createTour = async (
+  data: ITour,
+  userId: string,
+  userRole: string,
+): Promise<HydratedDocument<ITour>> => {
+  const isAdmin = userRole === 'ADMIN';
 
-  if (user.role !== 'WINERY_OWNER' && user.role !== 'ADMIN') {
+  if (userRole !== 'WINERY_OWNER' && !isAdmin) {
     throw new HttpError('Only winery owners or administrators can create a tour.', 403);
   }
 
@@ -120,7 +120,7 @@ export const createTour = async (data: ITour, userId: string): Promise<HydratedD
     throw new HttpError('Winery not found.', 404);
   }
 
-  if (user.role === 'WINERY_OWNER' && winery.owner.toString() !== userId) {
+  if (!isAdmin && winery.owner.toString() !== userId) {
     throw new HttpError('You are not the owner of this winery.', 403);
   }
 
@@ -156,27 +156,25 @@ export const updateTour = async (
   id: string,
   updateData: Partial<ITour>,
   userId: string,
+  userRole: string,
 ): Promise<HydratedDocument<ITour>> => {
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new HttpError('User not found.', 404);
-  }
-
   const tour = await Tour.findById(id);
   if (!tour) {
     throw new HttpError('Tour not found.', 404);
   }
 
-  const winery = await Winery.findById(tour.winery);
-  if (!winery) {
-    throw new HttpError('Winery not found.', 404);
-  }
+  const isAdmin = userRole === 'ADMIN';
 
-  const isOwner = winery.owner.toString() === userId;
-  const isAdmin = user.role === 'ADMIN';
+  if (!isAdmin) {
+    const winery = await Winery.findById(tour.winery);
+    if (!winery) {
+      throw new HttpError('Winery not found.', 404);
+    }
 
-  if (!isOwner && !isAdmin) {
-    throw new HttpError('You do not have permission to update this tour.', 403);
+    const isOwner = winery.owner.toString() === userId;
+    if (!isOwner) {
+      throw new HttpError('You do not have permission to update this tour.', 403);
+    }
   }
 
   const updatedTour = await Tour.findByIdAndUpdate(id, updateData, { new: true });
@@ -188,27 +186,24 @@ export const updateTour = async (
   return updatedTour;
 };
 
-export const deleteTour = async (id: string, userId: string): Promise<void> => {
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new HttpError('User not found.', 404);
-  }
-
+export const deleteTour = async (id: string, userId: string, userRole: string): Promise<void> => {
   const tour = await Tour.findById(id);
   if (!tour) {
     throw new HttpError('Tour not found.', 404);
   }
 
-  const winery = await Winery.findById(tour.winery);
-  if (!winery) {
-    throw new HttpError('Winery not found.', 404);
-  }
+  const isAdmin = userRole === 'ADMIN';
 
-  const isOwner = winery.owner.toString() === userId;
-  const isAdmin = user.role === 'ADMIN';
+  if (!isAdmin) {
+    const winery = await Winery.findById(tour.winery);
+    if (!winery) {
+      throw new HttpError('Winery not found.', 404);
+    }
 
-  if (!isOwner && !isAdmin) {
-    throw new HttpError('You do not have permission to delete this tour.', 403);
+    const isOwner = winery.owner.toString() === userId;
+    if (!isOwner) {
+      throw new HttpError('You do not have permission to delete this tour.', 403);
+    }
   }
 
   if (tour.images && tour.images.length > 0) {

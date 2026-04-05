@@ -25,7 +25,7 @@ const SliderCardWine: React.FC<WineCardProps> = ({ wine }) => {
     <CardBase onClick={() => navigate(`/wines/${wine._id}`)}>
       <ImageWrapper>
         <img src={wine.imageUrl} alt={wine.name} />
-        <PriceBadge>{wine.price} $</PriceBadge>
+        <PriceBadge>₾ {wine.price}</PriceBadge>
       </ImageWrapper>
       <Content>
         <WineryName>

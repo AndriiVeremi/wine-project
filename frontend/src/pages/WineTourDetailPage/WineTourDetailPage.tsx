@@ -172,7 +172,7 @@ const WineTourDetailPage = () => {
             <MobileBookingCard>
               <PriceRow>
                 <div className="label">Price per person</div>
-                <div className="amount">${tour.price}</div>
+                <div className="amount">₾ {tour.price}</div>
               </PriceRow>
 
               <FeatureList>
@@ -209,7 +209,7 @@ const WineTourDetailPage = () => {
             <BookingCard>
               <PriceRow>
                 <div className="label">Price per person</div>
-                <div className="amount">${tour.price}</div>
+                <div className="amount">₾ {tour.price}</div>
               </PriceRow>
 
               <FeatureList>
