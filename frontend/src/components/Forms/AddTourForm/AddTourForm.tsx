@@ -124,7 +124,15 @@ const AddTour: React.FC<Props> = ({ wineryId, tourData, onSuccess }) => {
       };
       data.append('groupSize', JSON.stringify(groupSize));
 
-      files.forEach((f) => data.append('images', f));
+      previews.forEach((url) => {
+        if (url && !url.startsWith('blob:')) {
+          data.append('images', url);
+        }
+      });
+
+      files.forEach((f) => {
+        if (f) data.append('images', f);
+      });
 
       if (tourData?._id) {
         await updateTour({ id: tourData._id, data });

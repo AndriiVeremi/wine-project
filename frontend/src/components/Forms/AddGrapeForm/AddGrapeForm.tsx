@@ -198,6 +198,15 @@ const AddGrape = ({ wineryId, grapeData, onSuccess }: Props) => {
       if (mainImg) fd.append('images', mainImg);
       extraImgs.forEach((f) => fd.append('images', f));
 
+      if (mainPre && !mainPre.startsWith('blob:')) {
+        fd.append('imageUrls', mainPre);
+      }
+      extraPres.forEach((url) => {
+        if (url && !url.startsWith('blob:')) {
+          fd.append('imageUrls', url);
+        }
+      });
+
       if (grapeData?._id) {
         await updateGrape({ id: grapeData._id, data: fd });
       } else {

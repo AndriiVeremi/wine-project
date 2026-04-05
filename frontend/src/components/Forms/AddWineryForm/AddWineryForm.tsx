@@ -174,7 +174,16 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
     });
 
     if (logo) fd.append('logo', logo);
-    gallery.forEach((f) => fd.append('images', f));
+
+    galleryPreviews.forEach((url) => {
+      if (url && !url.startsWith('blob:')) {
+        fd.append('images', url);
+      }
+    });
+
+    gallery.forEach((f) => {
+      if (f) fd.append('images', f);
+    });
 
     try {
       if (wineryData?._id) {
