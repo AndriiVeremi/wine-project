@@ -222,11 +222,19 @@ export class WineService {
     const wine = await Wine.findById(wineId).populate('winery').exec();
     if (!wine) return null;
 
-    const winery = wine.winery as unknown as HydratedDocument<IWinery>;
-    if (!winery) throw new HttpError('Winery not found.', 404);
+    const isAdmin = userRole === 'ADMIN';
 
-    if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
-      throw new HttpError('You cant update this wine.', 403);
+    if (!isAdmin) {
+      const winery = wine.winery as unknown as HydratedDocument<IWinery>;
+      if (!winery) throw new HttpError('Winery not found.', 404);
+
+      if (winery.owner.toString() !== userId) {
+        throw new HttpError('You cant update this wine.', 403);
+      }
+
+      if ('winery' in updateData) {
+        delete updateData.winery;
+      }
     }
 
     if (updateData.grape) {
@@ -250,11 +258,15 @@ export class WineService {
     const wine = await Wine.findById(wineId).populate('winery').exec();
     if (!wine) return null;
 
-    const winery = wine.winery as unknown as HydratedDocument<IWinery>;
-    if (!winery) throw new HttpError('Winery not found.', 404);
+    const isAdmin = userRole === 'ADMIN';
 
-    if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
-      throw new HttpError('You cant update this wine.', 403);
+    if (!isAdmin) {
+      const winery = wine.winery as unknown as HydratedDocument<IWinery>;
+      if (!winery) throw new HttpError('Winery not found.', 404);
+
+      if (winery.owner.toString() !== userId) {
+        throw new HttpError('You cant update this wine.', 403);
+      }
     }
 
     if (wine.imageUrl) {
@@ -269,11 +281,15 @@ export class WineService {
     const wine = await Wine.findById(wineId).populate('winery').exec();
     if (!wine) throw new HttpError('Wine not found.', 404);
 
-    const winery = wine.winery as unknown as HydratedDocument<IWinery>;
-    if (!winery) throw new HttpError('Winery not found.', 404);
+    const isAdmin = userRole === 'ADMIN';
 
-    if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
-      throw new HttpError('You cant delete this wine.', 403);
+    if (!isAdmin) {
+      const winery = wine.winery as unknown as HydratedDocument<IWinery>;
+      if (!winery) throw new HttpError('Winery not found.', 404);
+
+      if (winery.owner.toString() !== userId) {
+        throw new HttpError('You cant delete this wine.', 403);
+      }
     }
 
     if (wine.imageUrl) {

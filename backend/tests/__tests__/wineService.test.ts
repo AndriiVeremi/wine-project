@@ -202,14 +202,24 @@ describe('WineService', () => {
       expect(result).toBeNull();
     });
 
-    it('error when winery not found', async () => {
+    it('error when winery not found for non-admin', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue({ ...testWine, winery: null }),
       });
       await expect(
-        wineService.updateWine('wine-1', { name: 'New' }, 'user-1', 'ADMIN'),
+        wineService.updateWine('wine-1', { name: 'New' }, 'user-1', 'WINERY_OWNER'),
       ).rejects.toThrow('Winery not found.');
+    });
+
+    it('admin can update even if winery not found', async () => {
+      mockWineFindById.mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue({ ...testWine, winery: null }),
+      });
+      mockWineFindByIdAndUpdate.mockResolvedValue({ ...testWine, name: 'New' });
+      const result = await wineService.updateWine('wine-1', { name: 'New' }, 'admin-1', 'ADMIN');
+      expect(result).toBeDefined();
     });
 
     it('error when user not authorized', async () => {
@@ -242,6 +252,16 @@ describe('WineService', () => {
         owner: 'user-1',
       },
     };
+
+    it('error when winery not found for non-admin', async () => {
+      mockWineFindById.mockReturnValue({
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue({ ...testWine, winery: null }),
+      });
+      await expect(wineService.deleteWine('wine-1', 'user-1', 'WINERY_OWNER')).rejects.toThrow(
+        'Winery not found.',
+      );
+    });
 
     it('delete wine good', async () => {
       mockWineFindById.mockReturnValue({

@@ -23,18 +23,20 @@ export const ImageWrapper = styled.div`
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background: #f9f9f9;
+  background: #ffffff;
   position: relative;
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 10px;
     transition: transform 0.5s ease;
+    box-sizing: border-box;
   }
 
   ${CardBase}:hover & img {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 `;
 
