@@ -1,7 +1,7 @@
 import User from '@/models/userModel';
 import Wine from '@/models/wineModel';
 import HttpError from '@/utils/HttpError';
-import { firebaseAdmin, uploadFile } from '@/services/firebase';
+import { firebaseAdmin, uploadFile, deleteFile } from '@/services/firebase';
 import { Types } from 'mongoose';
 
 const auth = firebaseAdmin.auth();
@@ -150,6 +150,10 @@ export const updateAvatar = async (userId: string, file: Express.Multer.File) =>
     throw new HttpError('User not found', 404);
   }
 
+  if (user.avatarUrl && !user.avatarUrl.startsWith('data:')) {
+    await deleteFile(user.avatarUrl);
+  }
+
   const avatarUrl = await uploadFile(file, 'avatars');
   user.avatarUrl = avatarUrl;
   await user.save();
@@ -180,6 +184,10 @@ export const adminDeleteUser = async (id: string) => {
   const user = await User.findById(id);
   if (!user) {
     throw new HttpError('User not found', 404);
+  }
+
+  if (user.avatarUrl && !user.avatarUrl.startsWith('data:')) {
+    await deleteFile(user.avatarUrl);
   }
 
   await User.findByIdAndDelete(id);

@@ -4,6 +4,7 @@ jest.mock('@/models/userModel');
 jest.mock('@/models/grapeModel');
 jest.mock('@/services/firebase', () => ({
   uploadFile: jest.fn().mockResolvedValue('http://mock-url.com/file.png'),
+  deleteFile: jest.fn().mockResolvedValue(undefined),
 }));
 import Wine from '@/models/wineModel';
 import Winery from '@/models/wineryModel';
@@ -11,7 +12,7 @@ import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import { WineService } from '@/services/wineService';
 import HttpError from '@/utils/HttpError';
-import { uploadFile } from '@/services/firebase';
+import { uploadFile, deleteFile } from '@/services/firebase';
 const wineService = new WineService();
 const mockWineAggregate = Wine.aggregate as jest.Mock;
 const mockWineFindById = Wine.findById as jest.Mock;
@@ -491,12 +492,16 @@ describe('WineService', () => {
     it('delete wine good', async () => {
       mockWineFindById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue(testWine),
+          exec: jest.fn().mockResolvedValue({
+            ...testWine,
+            imageUrl: 'http://mock-url.com/image.png',
+          }),
         }),
       });
       mockWineFindByIdAndDelete.mockResolvedValue(true);
       await expect(wineService.deleteWine('wine-1', 'user-1', 'ADMIN')).resolves.not.toThrow();
       expect(mockWineFindByIdAndDelete).toHaveBeenCalledWith('wine-1');
+      expect(deleteFile).toHaveBeenCalledWith('http://mock-url.com/image.png');
     });
     it('admin can delete any wine', async () => {
       mockWineFindById.mockReturnValue({

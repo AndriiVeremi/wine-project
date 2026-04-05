@@ -4,6 +4,7 @@ import User from '@/models/userModel';
 import Winery from '@/models/wineryModel';
 import Region from '@/models/regionModel';
 import HttpError from '@/utils/HttpError';
+import { deleteFile } from '@/services/firebase';
 
 export interface PopulatedTour extends Omit<ITour, 'winery'> {
   winery: { _id: Types.ObjectId; name: string };
@@ -155,6 +156,10 @@ export const deleteTour = async (id: string, userId: string): Promise<void> => {
 
   if (!isOwner && !isAdmin) {
     throw new HttpError('You do not have permission to delete this tour.', 403);
+  }
+
+  if (tour.images && tour.images.length > 0) {
+    await Promise.all(tour.images.map((url) => deleteFile(url)));
   }
 
   await Tour.findByIdAndDelete(id);

@@ -1,0 +1,75 @@
+ .age-verification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.age-verification-modal {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.age-verification-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.age-verification-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.age-verification-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.age-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.age-btn-confirm {
+  background-color: #8b0000;
+  color: #ffffff;
+}
+
+.age-btn-confirm:hover {
+  background-color: #a00000;
+  transform: translateY(-2px);
+}
+
+.age-btn-decline {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.age-btn-decline:hover {
+  background-color: #e2e2e2;
+  transform: translateY(-2px);
+}
