@@ -33,3 +33,27 @@ export const uploadFile = async (file: Express.Multer.File, folder: string): Pro
 
   return `https://storage.googleapis.com/${bucket.name}/${fileName}`;
 };
+
+export const deleteFile = async (url: string): Promise<void> => {
+  if (!url) return;
+
+  const bucket = admin.storage().bucket();
+  const bucketName = bucket.name;
+  const baseUrl = `https://storage.googleapis.com/${bucketName}/`;
+
+  if (!url.startsWith(baseUrl)) {
+    return;
+  }
+
+  const fileName = url.replace(baseUrl, '');
+  const fileRef = bucket.file(fileName);
+
+  try {
+    const [exists] = await fileRef.exists();
+    if (exists) {
+      await fileRef.delete();
+    }
+  } catch (error) {
+    console.error(`Failed to delete file from Firebase Storage: ${url}`, error);
+  }
+};

@@ -4,7 +4,7 @@ import Winery, { IWinery } from '@/models/wineryModel';
 import User from '@/models/userModel';
 import Grape from '@/models/grapeModel';
 import HttpError from '@/utils/HttpError';
-import { uploadFile } from '@/services/firebase';
+import { uploadFile, deleteFile } from '@/services/firebase';
 import { sanitize } from '@/utils/sanitize';
 
 interface WineQuery {
@@ -255,6 +255,10 @@ export class WineService {
       throw new HttpError('You cant update this wine.', 403);
     }
 
+    if (wine.imageUrl) {
+      await deleteFile(wine.imageUrl);
+    }
+
     const imageUrl = await uploadFile(file, 'wines');
     return await Wine.findByIdAndUpdate(wineId, { imageUrl }, { new: true });
   }
@@ -268,6 +272,10 @@ export class WineService {
 
     if (userRole !== 'ADMIN' && winery.owner.toString() !== userId) {
       throw new HttpError('You cant delete this wine.', 403);
+    }
+
+    if (wine.imageUrl) {
+      await deleteFile(wine.imageUrl);
     }
 
     await Wine.findByIdAndDelete(wineId);

@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import Grape, { IGrape } from '@/models/grapeModel';
 import Winery from '@/models/wineryModel';
-import { uploadFile } from '@/services/firebase';
+import { uploadFile, deleteFile } from '@/services/firebase';
 import HttpError from '@/utils/HttpError';
 
 interface GrapeQuery {
@@ -95,10 +95,33 @@ class GrapeService {
       }
     }
 
-    if (files && files.length > 0) {
-      const urls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
-      data.imageUrls = urls;
+    let updatedUrls = grape.imageUrls || [];
+
+    if (data.imageUrls && Array.isArray(data.imageUrls)) {
+      const removedUrls = updatedUrls.filter((url) => !data.imageUrls!.includes(url));
+      if (removedUrls.length > 0) {
+        await Promise.all(removedUrls.map((url) => deleteFile(url)));
+      }
+      updatedUrls = data.imageUrls;
+    } else if (files && files.length > 0) {
+      if (updatedUrls.length > 0) {
+        await Promise.all(updatedUrls.map((url) => deleteFile(url)));
+      }
+      updatedUrls = [];
     }
+
+    if (files && files.length > 0) {
+      const newUrls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
+      const combinedUrls = [...updatedUrls, ...newUrls];
+      updatedUrls = combinedUrls.slice(0, 5);
+
+      if (combinedUrls.length > 5) {
+        const droppedUrls = combinedUrls.slice(5);
+        await Promise.all(droppedUrls.map((url) => deleteFile(url)));
+      }
+    }
+
+    data.imageUrls = updatedUrls;
 
     return await Grape.findByIdAndUpdate(id, data, { new: true });
   }
@@ -114,6 +137,10 @@ class GrapeService {
       }
     }
 
+    if (grape.imageUrls && grape.imageUrls.length > 0) {
+      await Promise.all(grape.imageUrls.map((url) => deleteFile(url)));
+    }
+
     await Grape.findByIdAndDelete(id);
   }
 
@@ -123,7 +150,13 @@ class GrapeService {
 
     const newUrls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
 
-    const updatedUrls = [...(grape.imageUrls || []), ...newUrls].slice(0, 5);
+    const combinedUrls = [...(grape.imageUrls || []), ...newUrls];
+    const updatedUrls = combinedUrls.slice(0, 5);
+
+    if (combinedUrls.length > 5) {
+      const droppedUrls = combinedUrls.slice(5);
+      await Promise.all(droppedUrls.map((url) => deleteFile(url)));
+    }
 
     return await Grape.findByIdAndUpdate(grapeId, { imageUrls: updatedUrls }, { new: true });
   }

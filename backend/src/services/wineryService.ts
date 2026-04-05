@@ -4,6 +4,7 @@ import Location from '@/models/locationModel';
 import HttpError from '@/utils/HttpError';
 import { sanitize } from '@/utils/sanitize';
 import { Types, isValidObjectId } from 'mongoose';
+import { deleteFile } from '@/services/firebase';
 
 export const getAllWineries = async (params: {
   page?: string | number;
@@ -107,6 +108,14 @@ export const deleteWineryById = async (wineryId: string, user: IUser) => {
 
   if (!isOwner && !isAdmin) {
     throw new HttpError('You do not have permission to delete this winery.', 403);
+  }
+
+  if (winery.logoUrl) {
+    await deleteFile(winery.logoUrl);
+  }
+
+  if (winery.galleryUrl && winery.galleryUrl.length > 0) {
+    await Promise.all(winery.galleryUrl.map((url) => deleteFile(url)));
   }
 
   await User.findByIdAndUpdate(winery.owner, { $unset: { winery: '' } });

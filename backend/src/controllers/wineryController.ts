@@ -6,7 +6,7 @@ import * as userService from '@/services/userService';
 import Winery from '@/models/wineryModel';
 import User from '@/models/userModel';
 import ctrlWrapper from '@/utils/ctrlWrapper';
-import { uploadFile } from '@/services/firebase';
+import { uploadFile, deleteFile } from '@/services/firebase';
 
 export const registerWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: Response) => {
   const ownerId = req.userId!;
@@ -92,16 +92,19 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
   if (files?.logo && files.logo[0]) {
+    if (winery.logoUrl) {
+      await deleteFile(winery.logoUrl);
+    }
     updateData.logoUrl = await uploadFile(files.logo[0], 'wineries/logos');
   }
 
   if (files?.images) {
+    if (winery.galleryUrl && winery.galleryUrl.length > 0) {
+      await Promise.all(winery.galleryUrl.map((url) => deleteFile(url)));
+    }
     const imageUrls = await Promise.all(
       files.images.map((file) => uploadFile(file, 'wineries/gallery')),
     );
-    // Append or replace? Usually for gallery we might want to append or specify which ones to replace.
-    // For now, let's replace for simplicity or just append if needed.
-    // Let's assume we replace the whole gallery if new images are provided.
     updateData.galleryUrl = imageUrls;
   }
 

@@ -34,5 +34,6 @@ export const firebaseAdmin = {
 };
 
 export const uploadFile = jest.fn().mockResolvedValue('http://mock-url.com/file.png');
+export const deleteFile = jest.fn().mockResolvedValue(undefined);
 
 export default firebaseAdmin;
