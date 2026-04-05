@@ -37,7 +37,9 @@ const SliderCardTour: React.FC<TourCardProps> = ({ tour }) => {
         <RatingBlock>
           <FiStar fill={tour.averageRating && tour.averageRating > 0 ? '#ffb400' : 'none'} />
           <span style={{ fontWeight: 'bold', color: '#333' }}>
-            {tour.averageRating && tour.averageRating > 0 ? tour.averageRating : 'No rating'}
+            {tour.averageRating && tour.averageRating > 0
+              ? tour.averageRating.toFixed(1)
+              : 'No rating'}
           </span>
         </RatingBlock>
 

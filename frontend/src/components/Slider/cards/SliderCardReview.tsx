@@ -37,6 +37,8 @@ const AuthorName = styled.p`
   }
 `;
 
+const stripHtml = (html: string) => html.replace(/<[^>]*>?/gm, '');
+
 interface ReviewCardProps {
   review: {
     _id: string;
@@ -75,7 +77,7 @@ const SliderCardReview: React.FC<ReviewCardProps> = ({ review }) => {
           </RatingBlock>
         </div>
 
-        <ReviewText>{review.comment}</ReviewText>
+        <ReviewText>{stripHtml(review.comment)}</ReviewText>
 
         <AuthorName>
           {review.userId?.firstName} {review.userId?.lastName}

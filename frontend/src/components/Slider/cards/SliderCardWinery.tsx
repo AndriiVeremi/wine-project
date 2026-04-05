@@ -26,6 +26,8 @@ const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
   const regionName =
     typeof winery.region === 'string' ? winery.region : winery.region?.name || 'Georgia';
 
+  const stripHtml = (html: string) => html.replace(/<[^>]*>?/gm, '');
+
   return (
     <CardBase>
       <ImageWrapper>
@@ -46,7 +48,9 @@ const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
             aria-hidden="true"
           />
           <span style={{ fontWeight: 'bold', color: '#333' }}>
-            {winery.averageRating && winery.averageRating > 0 ? winery.averageRating : 'No rating'}
+            {winery.averageRating && winery.averageRating > 0
+              ? winery.averageRating.toFixed(1)
+              : 'No rating'}
           </span>
           <span style={{ color: '#666', fontSize: '12px' }}>
             ({winery.totalReviews || 0} reviews)
@@ -78,7 +82,9 @@ const SliderCardWinery: React.FC<WineryCardProps> = ({ winery }) => {
             lineHeight: '1.5',
           }}
         >
-          {winery.history || 'Discover our unique traditions and exceptional wine quality.'}
+          {stripHtml(
+            winery.history || 'Discover our unique traditions and exceptional wine quality.',
+          )}
         </p>
 
         <FooterLink
