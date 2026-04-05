@@ -12,7 +12,6 @@ export const registerWinery = ctrlWrapper(async (req: AuthenticatedRequest, res:
   const ownerId = req.userId!;
   const wineryData = { ...req.body };
 
-  // Parse JSON fields if they are strings (common in multipart/form-data)
   if (typeof wineryData.whereToBuy === 'string') {
     wineryData.whereToBuy = JSON.parse(wineryData.whereToBuy);
   }
@@ -81,7 +80,6 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
     throw new HttpError('You do not have permission to update this winery.', 403);
   }
 
-  // Parse JSON fields if they are strings
   if (typeof updateData.whereToBuy === 'string') {
     updateData.whereToBuy = JSON.parse(updateData.whereToBuy);
   }
@@ -91,14 +89,18 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
 
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-  let updatedGallery = winery.galleryUrl || [];
+  let imagesToKeep: string[] = [];
+  if (updateData.galleryUrl) {
+    imagesToKeep = Array.isArray(updateData.galleryUrl)
+      ? updateData.galleryUrl
+      : [updateData.galleryUrl];
+  }
 
-  if (updateData.galleryUrl && Array.isArray(updateData.galleryUrl)) {
-    const removedImages = updatedGallery.filter((url) => !updateData.galleryUrl.includes(url));
-    if (removedImages.length > 0) {
-      await Promise.all(removedImages.map((url) => deleteFile(url)));
-    }
-    updatedGallery = updateData.galleryUrl;
+  const currentGallery = winery.galleryUrl || [];
+
+  const removedImages = currentGallery.filter((url) => !imagesToKeep.includes(url));
+  if (removedImages.length > 0) {
+    await Promise.all(removedImages.map((url) => deleteFile(url)));
   }
 
   if (files?.logo && files.logo[0]) {
@@ -108,22 +110,28 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
     updateData.logoUrl = await uploadFile(files.logo[0], 'wineries/logos');
   }
 
+  let updatedGallery = [...imagesToKeep];
   if (files?.images) {
-    const imageUrls = await Promise.all(
+    const isMainPhotoReplaced =
+      imagesToKeep.length === 0 || !imagesToKeep.includes(currentGallery[0]);
+    const newUrls = await Promise.all(
       files.images.map((file) => uploadFile(file, 'wineries/gallery')),
     );
-    const finalGallery = [...updatedGallery, ...imageUrls];
 
-    if (finalGallery.length > 10) {
-      const droppedUrls = finalGallery.slice(10);
-      await Promise.all(droppedUrls.map((url) => deleteFile(url)));
-      updatedGallery = finalGallery.slice(0, 10);
+    if (isMainPhotoReplaced && newUrls.length > 0) {
+      updatedGallery = [newUrls[0], ...imagesToKeep, ...newUrls.slice(1)];
     } else {
-      updatedGallery = finalGallery;
+      updatedGallery = [...imagesToKeep, ...newUrls];
     }
   }
 
-  updateData.galleryUrl = updatedGallery;
+  const finalGallery = updatedGallery.slice(0, 10);
+  if (updatedGallery.length > 10) {
+    const dropped = updatedGallery.slice(10);
+    await Promise.all(dropped.map((url) => deleteFile(url)));
+  }
+
+  updateData.galleryUrl = finalGallery;
 
   const updatedWinery = await wineryService.updateWinery(id as string, updateData);
 

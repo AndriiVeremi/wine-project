@@ -95,30 +95,37 @@ class GrapeService {
       }
     }
 
-    let updatedUrls = grape.imageUrls || [];
-
-    if (data.imageUrls && Array.isArray(data.imageUrls)) {
-      const removedUrls = updatedUrls.filter((url) => !data.imageUrls!.includes(url));
-      if (removedUrls.length > 0) {
-        await Promise.all(removedUrls.map((url) => deleteFile(url)));
-      }
-      updatedUrls = data.imageUrls;
+    let imagesToKeep: string[] = [];
+    if (data.imageUrls) {
+      imagesToKeep = Array.isArray(data.imageUrls) ? data.imageUrls : [data.imageUrls];
     }
 
+    const currentUrls = grape.imageUrls || [];
+
+    const removedUrls = currentUrls.filter((url) => !imagesToKeep.includes(url));
+    if (removedUrls.length > 0) {
+      await Promise.all(removedUrls.map((url) => deleteFile(url)));
+    }
+
+    let updatedUrls = [...imagesToKeep];
     if (files && files.length > 0) {
+      const isMainPhotoReplaced =
+        imagesToKeep.length === 0 || !imagesToKeep.includes(currentUrls[0]);
       const newUrls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
-      const finalUrls = [...updatedUrls, ...newUrls];
-
-      if (finalUrls.length > 5) {
-        const droppedUrls = finalUrls.slice(5);
-        await Promise.all(droppedUrls.map((url) => deleteFile(url)));
-        updatedUrls = finalUrls.slice(0, 5);
+      if (isMainPhotoReplaced && newUrls.length > 0) {
+        updatedUrls = [newUrls[0], ...imagesToKeep, ...newUrls.slice(1)];
       } else {
-        updatedUrls = finalUrls;
+        updatedUrls = [...imagesToKeep, ...newUrls];
       }
     }
 
-    data.imageUrls = updatedUrls;
+    const finalUrls = updatedUrls.slice(0, 5);
+    if (updatedUrls.length > 5) {
+      const droppedUrls = updatedUrls.slice(5);
+      await Promise.all(droppedUrls.map((url) => deleteFile(url)));
+    }
+
+    data.imageUrls = finalUrls;
 
     return await Grape.findByIdAndUpdate(id, data, { new: true });
   }
