@@ -57,7 +57,6 @@ export const getAllTours = async (query: {
     }
 
     if (filter.winery) {
-      // If both wineryId and region are provided, check if the winery is in that region
       const wineryIdStr = filter.winery.toString();
       if (!wineryIds.map((id) => id.toString()).includes(wineryIdStr)) {
         return { tours: [], totalCount: 0, page, limit, totalPages: 0 };

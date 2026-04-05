@@ -37,7 +37,6 @@ export const getAllWineries = async (params: {
       if (countryDoc) {
         query.country = countryDoc._id;
       } else {
-        // Якщо країну не знайдено, повертаємо порожній список
         return {
           wineries: [],
           totalCount: 0,

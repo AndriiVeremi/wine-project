@@ -24,7 +24,7 @@ export class RegionService {
       type: 'country',
     });
     if (!country) {
-      return []; // Return empty array instead of throwing 404 to avoid frontend errors
+      return [];
     }
 
     const regions = await Region.find({ country: country._id }).populate('country', 'name');

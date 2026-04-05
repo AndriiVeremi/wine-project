@@ -22,6 +22,7 @@ import { FormContainer } from '@/components/Forms/AuthForm/Form.styled';
 import { useWineMutations } from '@/hooks/queries/useWines';
 import { useWineries } from '@/hooks/queries/useWineries';
 import { useGrapes } from '@/hooks/queries/useGrapes';
+import { useProfile } from '@/hooks/queries/useAuth';
 import Skeleton from '@/components/Common/Skeleton/Skeleton';
 
 const TextEditor = lazy(() => import('@/components/Common/TextEditor/TextEditor'));
@@ -93,6 +94,8 @@ interface Props {
 
 const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
   const { addWine, updateWine, isAdding, isUpdating } = useWineMutations();
+  const { data: profile } = useProfile();
+  const isAdmin = profile?.role === 'ADMIN';
   const busy = isAdding || isUpdating;
 
   const { data: wineriesData } = useWineries({ limit: 100 });
@@ -233,16 +236,18 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
           <InfoSide>
             <FormGrid>
               <FormField label="Wine Name" {...register('name')} error={errors.name?.message} />
-              <FormField
-                label="Winery"
-                isSelect
-                {...register('winery')}
-                error={errors.winery?.message}
-                options={wineryList.map((w: { _id: string; name: string }) => ({
-                  value: w._id,
-                  label: w.name,
-                }))}
-              />
+              {isAdmin && (
+                <FormField
+                  label="Winery"
+                  isSelect
+                  {...register('winery')}
+                  error={errors.winery?.message}
+                  options={wineryList.map((w: { _id: string; name: string }) => ({
+                    value: w._id,
+                    label: w.name,
+                  }))}
+                />
+              )}
               <FormField
                 label="Vintage Year"
                 type="number"

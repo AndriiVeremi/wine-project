@@ -36,8 +36,12 @@ export const CardLink = styled(Link)`
 export const WineImage = styled.img`
   width: 100%;
   height: 310px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #ffffff;
   border-radius: 12px;
+  padding: 10px;
+  display: block;
+  box-sizing: border-box;
 `;
 
 export const StyledFavoriteButton = styled(FavoriteButton)`
