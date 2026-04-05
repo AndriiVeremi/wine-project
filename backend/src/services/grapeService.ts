@@ -103,21 +103,18 @@ class GrapeService {
         await Promise.all(removedUrls.map((url) => deleteFile(url)));
       }
       updatedUrls = data.imageUrls;
-    } else if (files && files.length > 0) {
-      if (updatedUrls.length > 0) {
-        await Promise.all(updatedUrls.map((url) => deleteFile(url)));
-      }
-      updatedUrls = [];
     }
 
     if (files && files.length > 0) {
       const newUrls = await Promise.all(files.map((f) => uploadFile(f, 'grapes')));
-      const combinedUrls = [...updatedUrls, ...newUrls];
-      updatedUrls = combinedUrls.slice(0, 5);
-
-      if (combinedUrls.length > 5) {
-        const droppedUrls = combinedUrls.slice(5);
+      const finalUrls = [...updatedUrls, ...newUrls];
+      
+      if (finalUrls.length > 5) {
+        const droppedUrls = finalUrls.slice(5);
         await Promise.all(droppedUrls.map((url) => deleteFile(url)));
+        updatedUrls = finalUrls.slice(0, 5);
+      } else {
+        updatedUrls = finalUrls;
       }
     }
 

@@ -91,6 +91,16 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
 
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
+  let updatedGallery = winery.galleryUrl || [];
+
+  if (updateData.galleryUrl && Array.isArray(updateData.galleryUrl)) {
+    const removedImages = updatedGallery.filter((url) => !updateData.galleryUrl.includes(url));
+    if (removedImages.length > 0) {
+      await Promise.all(removedImages.map((url) => deleteFile(url)));
+    }
+    updatedGallery = updateData.galleryUrl;
+  }
+
   if (files?.logo && files.logo[0]) {
     if (winery.logoUrl) {
       await deleteFile(winery.logoUrl);
@@ -99,14 +109,21 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
   }
 
   if (files?.images) {
-    if (winery.galleryUrl && winery.galleryUrl.length > 0) {
-      await Promise.all(winery.galleryUrl.map((url) => deleteFile(url)));
-    }
     const imageUrls = await Promise.all(
       files.images.map((file) => uploadFile(file, 'wineries/gallery')),
     );
-    updateData.galleryUrl = imageUrls;
+    const finalGallery = [...updatedGallery, ...imageUrls];
+    
+    if (finalGallery.length > 10) {
+      const droppedUrls = finalGallery.slice(10);
+      await Promise.all(droppedUrls.map((url) => deleteFile(url)));
+      updatedGallery = finalGallery.slice(0, 10);
+    } else {
+      updatedGallery = finalGallery;
+    }
   }
+
+  updateData.galleryUrl = updatedGallery;
 
   const updatedWinery = await wineryService.updateWinery(id as string, updateData);
 
