@@ -209,6 +209,7 @@ export const TabButtonsWrapper = styled.div`
   @media (min-width: ${breakpoints.tablet}) {
     flex-direction: row;
     gap: 24px;
+    margin-bottom: 60px;
 
     button {
       width: auto;
@@ -217,6 +218,8 @@ export const TabButtonsWrapper = styled.div`
   }
 
   @media (min-width: ${breakpoints.desktop}) {
+    margin-bottom: 60px;
+
     button {
       min-width: 316px;
     }

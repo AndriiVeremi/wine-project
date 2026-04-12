@@ -193,7 +193,6 @@ const WineryDetailPage = () => {
         ) : (
           <div style={{ marginBottom: '80px' }}>
             <ItemReviews key={refresh} wineryId={winery._id} />
-            <div style={{ height: '40px' }} />
             <AddReviewForm
               wineryId={winery._id}
               onReviewAdded={() => {

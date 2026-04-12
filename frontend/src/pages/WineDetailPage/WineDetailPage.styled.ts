@@ -6,7 +6,7 @@ export const StyledWinePageDiv = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 60px;
   @media (min-width: ${breakpoints.desktop}) {
     display: grid;
     grid-template-columns: 1fr 500px;
@@ -14,7 +14,7 @@ export const StyledWinePageDiv = styled.div`
       'image info'
       'tabs tabs'
       'content content';
-    gap: 40px 40px;
+    gap: 60px 40px;
     align-items: start;
   }
 `;
@@ -48,9 +48,8 @@ export const StyledWineImg = styled.img`
   height: 450px;
   object-fit: contain;
   background-color: #fff;
-  border-radius: 16px;
   padding: 20px;
-  border: 1px solid #f0f0f0;
+
   @media (min-width: ${breakpoints.tablet}) {
     height: 550px;
   }
@@ -77,7 +76,6 @@ export const WineDetailPageTabs = styled.div`
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: tabs;
     order: unset;
-    margin-top: 40px;
     justify-content: center;
     button {
       min-width: 316px;
