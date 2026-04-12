@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
 
 export const DetailPageContainer = styled.div`
   max-width: 100%;
@@ -199,6 +200,7 @@ export const TabButtonsWrapper = styled.div`
   flex-direction: column;
   gap: 12px;
   margin-bottom: 30px;
+  justify-content: center;
 
   button {
     width: 100%;
@@ -221,16 +223,11 @@ export const TabButtonsWrapper = styled.div`
   }
 `;
 
-import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
-
 export const DescriptionText = styled.div`
   ${richTextStyles}
   margin-bottom: 60px;
   background: #fff;
   padding: 24px;
-  border-radius: 16px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 18px;
