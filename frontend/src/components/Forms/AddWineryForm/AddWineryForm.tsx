@@ -403,14 +403,3 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
 };
 
 export default AddWinery;
-led={loading}>
-              {loading ? 'WAIT...' : 'REGISTER'}
-            </MainButton>
-          </>
-        )}
-      </ButtonWrapper>
-    </StyledAddWineryForm>
-  );
-};
-
-export default AddWinery;
