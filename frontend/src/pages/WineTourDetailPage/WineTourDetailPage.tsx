@@ -257,6 +257,7 @@ const WineTourDetailPage = () => {
               padding: '40px',
               background: '#f8fafc',
               borderRadius: '24px',
+              marginTop: '40px',
             }}
           >
             <h3 style={{ fontSize: '22px', marginBottom: '24px' }}>Share your experience</h3>

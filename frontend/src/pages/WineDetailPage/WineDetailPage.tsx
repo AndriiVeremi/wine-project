@@ -245,13 +245,15 @@ const WineDetailPage = () => {
           ) : (
             <>
               <WineReviews key={refreshReviews} wineId={wine._id} />
-              <AddReviewForm
-                wineId={wine._id}
-                onReviewAdded={() => {
-                  setRefreshReviews((prev) => prev + 1);
-                  setActiveTab('reviews');
-                }}
-              />
+              <div style={{ marginTop: '40px' }}>
+                <AddReviewForm
+                  wineId={wine._id}
+                  onReviewAdded={() => {
+                    setRefreshReviews((prev) => prev + 1);
+                    setActiveTab('reviews');
+                  }}
+                />
+              </div>
             </>
           )}
         </WineDescriptionContent>

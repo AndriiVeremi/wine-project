@@ -103,7 +103,9 @@ export const WineryInfoBlock = styled.div`
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: info;
     order: unset;
-    padding: 32px;
+    padding: 0px;
+    border: none;
+    box-shadow: none;
   }
 `;
 
@@ -127,12 +129,20 @@ export const WineryNameTitle = styled.h1`
 export const WineryHeaderRow = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
 
   @media (min-width: ${breakpoints.tablet}) {
     flex-direction: row;
     gap: 40px;
+    justify-content: space-evenly;
+    align-items: flex-start;
+  }
+  @media (min-width: ${breakpoints.desktop}) {
+    flex-direction: row;
+    gap: 40px;
+    justify-content: space-evenly;
+    align-items: flex-start;
   }
 `;
 
