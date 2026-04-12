@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phoneRegexp = /^\+\d{10,14}$/;
+const phoneRegexp = /^\+?\d{7,15}$/;
 
 export const registerWinerySchema = Joi.object({
   name: Joi.string().required().min(3).max(100),
@@ -41,7 +41,7 @@ export const updateWinerySchema = Joi.object({
   region: Joi.string(),
   address: Joi.string().min(5),
   logoUrl: Joi.string().uri().allow('', null).optional(),
-  galleryUrl: Joi.array().items(Joi.string().uri()).allow(null).optional(),
+  galleryUrl: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()).optional(),
   whereToBuy: Joi.array()
     .items(
       Joi.object({
