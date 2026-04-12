@@ -132,8 +132,23 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
             : wineryData.region,
         coordinates: wineryData.coordinates || null,
       });
-      if (wineryData.logoUrl) setLogoPreview(wineryData.logoUrl);
-      if (wineryData.galleryUrl) setGalleryPreviews(wineryData.galleryUrl);
+
+      if (wineryData.logoUrl) {
+        setLogoPreview(wineryData.logoUrl);
+      }
+
+      const existingPhotos = wineryData.imageUrls || wineryData.galleryUrl;
+
+      if (Array.isArray(existingPhotos)) {
+        setGalleryPreviews(existingPhotos);
+      } else if (existingPhotos) {
+        try {
+          const parsed = JSON.parse(existingPhotos as unknown as string);
+          if (Array.isArray(parsed)) setGalleryPreviews(parsed);
+        } catch {
+          setGalleryPreviews([existingPhotos as unknown as string]);
+        }
+      }
     }
   }, [wineryData, reset]);
 
