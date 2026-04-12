@@ -55,6 +55,7 @@ const wineSchema = z.object({
   country: z.string().optional(),
   manufacturer: z.string().optional(),
   buyLink: z.string().optional(),
+  galleryUrl: z.array(z.string()).optional(),
 });
 
 type WineFormValues = z.infer<typeof wineSchema>;
@@ -84,6 +85,7 @@ const defaultValues: WineFormValues = {
   country: '',
   manufacturer: '',
   buyLink: '',
+  galleryUrl: [],
 };
 
 interface Props {
@@ -153,6 +155,7 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
         suffix: wineData.suffix,
         inStock: wineData.inStock,
         buyLink: wineData.buyLink,
+        galleryUrl: wineData.galleryUrl || [],
       };
       reset(initialValues);
       if (wineData.imageUrl) setImagePreview(wineData.imageUrl);
@@ -195,6 +198,8 @@ const AddWine = ({ wineryId, wineData, onSuccess }: Props) => {
             .map((s) => s.trim())
             .filter(Boolean);
           fd.append(k, JSON.stringify(arr));
+        } else if (k === 'galleryUrl') {
+          fd.append(k, JSON.stringify(v));
         } else {
           fd.append(k, String(v));
         }
