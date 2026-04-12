@@ -104,6 +104,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.1,
     totalReviews: 12,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Light-bodied red wine with cherry notes.',
     tastingNotes: ['cherry', 'spice'],
     winery: {
