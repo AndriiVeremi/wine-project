@@ -109,9 +109,12 @@ app.use(
 );
 app.use(express.json());
 
+const rateLimitWindowMs = Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
+const rateLimitMaxRequests = Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 1000;
+
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 1000,
+  windowMs: rateLimitWindowMs,
+  limit: rateLimitMaxRequests,
   message: { message: 'Too many requests from this IP, please try again later.' },
 });
 
@@ -122,7 +125,9 @@ app.get('/health', (_req, res) => {
 app.use('/api', limiter);
 app.use('/api', apiRouter);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+if (process.env.ENABLE_SWAGGER === 'true') {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 app.use(errorMiddleware);
 
 const startServer = async () => {
