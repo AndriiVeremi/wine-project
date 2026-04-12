@@ -22,12 +22,25 @@ import {
   ProfileItem,
   ServingSection,
   ServingItem,
+  CharacterBar,
+  SommelierCard,
 } from './WineDetailPage.styled';
 import InfoButton from '@/components/Buttons/InfoButton';
 import { FiThermometer, FiWind, FiTruck } from 'react-icons/fi';
 import { HiOutlineLightBulb } from 'react-icons/hi2';
 
 import { getFoodEmoji } from '@/utils/wineHelpers';
+
+const getScalePercent = (val: string = '') => {
+  const low = ['light', 'low', 'delicate'];
+  const med = ['medium', 'balanced'];
+  const high = ['full', 'high', 'powerful', 'rich'];
+  const v = val.toLowerCase();
+  if (high.some((s) => v.includes(s))) return 90;
+  if (med.some((s) => v.includes(s))) return 60;
+  if (low.some((s) => v.includes(s))) return 30;
+  return 50;
+};
 
 const WineDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -88,121 +101,143 @@ const WineDetailPage = () => {
         <WineDescriptionContent>
           {activeTab === 'description' ? (
             <>
-              <div style={{ marginBottom: '30px' }}>
-                <h3
-                  style={{
-                    fontSize: '20px',
-                    marginBottom: '15px',
-                    color: 'var(--primary-wine)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}
-                >
-                  <HiOutlineLightBulb size={24} /> Sommelier's Notes
+              <SommelierCard>
+                <h3>
+                  <HiOutlineLightBulb size={26} /> Sommelier's Notes
                 </h3>
-                <p>
-                  <span className="description-label">Taste:</span>
-                  {wine.tastingNotes?.[0] ||
-                    (
-                      wine.grape as unknown as { characteristics?: string[] }
-                    )?.characteristics?.join(', ') ||
-                    '—'}
-                </p>
-                <p>
-                  <span className="description-label">Aroma:</span>
-                  {wine.tastingNotes?.[1] ||
-                    (wine.grape as unknown as { aromas?: string[] })?.aromas?.join(', ') ||
-                    '—'}
-                </p>
-                <p>
-                  <span className="description-label">Color:</span>
-                  {wine.color} — {wine.sweetness}
-                </p>
-              </div>
+                <div className="note-item">
+                  <span className="note-label">Taste Profile</span>
+                  <span className="note-text">
+                    {wine.tastingNotes?.[0] ||
+                      (
+                        wine.grape as unknown as { characteristics?: string[] }
+                      )?.characteristics?.join(', ') ||
+                      '—'}
+                  </span>
+                </div>
+                <div className="note-item">
+                  <span className="note-label">Aromatic Bouquet</span>
+                  <span className="note-text">
+                    {wine.tastingNotes?.[1] ||
+                      (wine.grape as unknown as { aromas?: string[] })?.aromas?.join(', ') ||
+                      '—'}
+                  </span>
+                </div>
+                <div className="note-item">
+                  <span className="note-label">Visual & Texture</span>
+                  <span className="note-text">
+                    Beautiful {wine.color} hue with a {wine.sweetness} finish.
+                  </span>
+                </div>
+              </SommelierCard>
 
-              <div className="description-title" style={{ marginBottom: '15px' }}>
+              <div className="description-title" style={{ marginBottom: '20px' }}>
                 Wine Character
               </div>
               <WineProfileGrid>
                 <ProfileItem>
-                  <span className="label">Body</span>
-                  <span className="value">{wine.grape?.body || '—'}</span>
+                  <div className="label-row">
+                    <span className="label">Body</span>
+                    <span className="value">{wine.grape?.body || 'Medium'}</span>
+                  </div>
+                  <CharacterBar $percent={getScalePercent(wine.grape?.body)} />
                 </ProfileItem>
                 <ProfileItem>
-                  <span className="label">Acidity</span>
-                  <span className="value">{wine.grape?.acidity || '—'}</span>
+                  <div className="label-row">
+                    <span className="label">Acidity</span>
+                    <span className="value">{wine.grape?.acidity || 'Balanced'}</span>
+                  </div>
+                  <CharacterBar $percent={getScalePercent(wine.grape?.acidity)} />
                 </ProfileItem>
                 {wine.color === 'red' && (
                   <ProfileItem>
-                    <span className="label">Tannins</span>
-                    <span className="value">{wine.grape?.tannins || '—'}</span>
+                    <div className="label-row">
+                      <span className="label">Tannins</span>
+                      <span className="value">{wine.grape?.tannins || 'Soft'}</span>
+                    </div>
+                    <CharacterBar $percent={getScalePercent(wine.grape?.tannins)} />
                   </ProfileItem>
                 )}
                 <ProfileItem>
-                  <span className="label">Alcohol</span>
-                  <span className="value">{wine.alcohol || '—'}</span>
-                </ProfileItem>
-                <ProfileItem>
-                  <span className="label">Aging</span>
-                  <span className="value">{wine.grape?.agingPotential || '—'}</span>
+                  <div className="label-row">
+                    <span className="label">Aging Potential</span>
+                    <span className="value">{wine.grape?.agingPotential || 'Ready to drink'}</span>
+                  </div>
+                  <CharacterBar $percent={70} />
                 </ProfileItem>
               </WineProfileGrid>
 
-              <div className="description-title">Food Pairing</div>
+              <div className="description-title">Gastronomic Pairings</div>
               <div
                 style={{
-                  marginTop: '10px',
+                  marginTop: '15px',
                   display: 'flex',
                   flexWrap: 'wrap',
-                  gap: '8px',
+                  gap: '10px',
                 }}
               >
                 {wine.foodPairing?.map((food: string) => (
                   <span
                     key={food}
                     style={{
-                      background: '#f8fafc',
-                      padding: '4px 12px',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      border: '1px solid #f1f5f9',
+                      background: 'var(--white)',
+                      padding: '8px 16px',
+                      borderRadius: '12px',
+                      fontSize: '15px',
+                      fontWeight: 500,
+                      color: 'var(--primary-gray)',
+                      border: '1px solid #eee',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '6px',
+                      gap: '8px',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.02)',
                     }}
                   >
-                    <span style={{ fontSize: '18px' }}>{getFoodEmoji(food)}</span> {food}
+                    <span style={{ fontSize: '20px' }}>{getFoodEmoji(food)}</span> {food}
                   </span>
                 )) || '—'}
               </div>
 
               <ServingSection>
-                <ServingItem title="Serving Temperature">
-                  <FiThermometer size={20} />
-                  <span>Serving: {wine.servingTemperature || '—'}</span>
+                <ServingItem>
+                  <FiThermometer size={22} />
+                  <div>
+                    <div style={{ fontSize: '12px', color: '#999', textTransform: 'uppercase' }}>
+                      Temp
+                    </div>
+                    <strong>{wine.servingTemperature || '16-18°C'}</strong>
+                  </div>
                 </ServingItem>
-                <ServingItem title="Decanting">
-                  <FiWind size={20} />
-                  <span>
-                    Decanting:{' '}
-                    {wine.decanting === undefined
-                      ? '—'
-                      : wine.decanting
-                        ? 'Required'
-                        : 'Not required'}
-                  </span>
+                <ServingItem>
+                  <FiWind size={22} />
+                  <div>
+                    <div style={{ fontSize: '12px', color: '#999', textTransform: 'uppercase' }}>
+                      Decanting
+                    </div>
+                    <strong>{wine.decanting ? 'Required' : 'Optional'}</strong>
+                  </div>
                 </ServingItem>
-                <ServingItem title="Shipping">
-                  <FiTruck size={20} />
-                  <span>Standard Shipping Available</span>
+                <ServingItem>
+                  <FiTruck size={22} />
+                  <div>
+                    <div style={{ fontSize: '12px', color: '#999', textTransform: 'uppercase' }}>
+                      Delivery
+                    </div>
+                    <strong>Standard</strong>
+                  </div>
                 </ServingItem>
               </ServingSection>
 
-              <div className="description-title" style={{ marginTop: '40px' }}>
-                Why is it worth buying?
+              <div className="description-title" style={{ marginTop: '50px' }}>
+                Sommelier's Opinion
                 <div
-                  style={{ marginTop: '15px', fontWeight: 'normal', color: 'var(--primary-gray)' }}
+                  style={{
+                    marginTop: '20px',
+                    fontWeight: 'normal',
+                    color: 'var(--primary-gray)',
+                    fontSize: '17px',
+                    lineHeight: '1.8',
+                  }}
                   dangerouslySetInnerHTML={{ __html: wine.description || '—' }}
                 />
               </div>
