@@ -97,7 +97,8 @@ const WineryDetailPage = () => {
       ? winery.galleryUrl
       : [winery.logoUrl || '/assets/winery-placeholder.png'];
 
-  const thumbnails = galleryImages.slice(0, 4);
+  const mainImage = galleryImages[activeImageIdx];
+  const extraThumbnails = galleryImages.slice(1);
 
   return (
     <Container>
@@ -105,18 +106,21 @@ const WineryDetailPage = () => {
         <HeroSection>
           <GalleryWrapper>
             <MainBanner>
-              <img src={galleryImages[activeImageIdx] || galleryImages[0]} alt={winery.name} />
+              <img src={mainImage} alt={winery.name} />
             </MainBanner>
             <ThumbnailsGrid>
-              {thumbnails.map((url, index) => (
-                <Thumbnail
-                  key={index}
-                  $active={activeImageIdx === index}
-                  onClick={() => setActiveImageIdx(index)}
-                >
-                  <img src={url} alt="Thumbnail" />
-                </Thumbnail>
-              ))}
+              {extraThumbnails.map((url, index) => {
+                const realIndex = index + 1;
+                return (
+                  <Thumbnail
+                    key={realIndex}
+                    $active={activeImageIdx === realIndex}
+                    onClick={() => setActiveImageIdx(realIndex)}
+                  >
+                    <img src={url} alt={`Gallery ${realIndex + 1}`} />
+                  </Thumbnail>
+                );
+              })}
             </ThumbnailsGrid>
           </GalleryWrapper>
           <WineryInfoBlock>
