@@ -4,8 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import {
   TourDetailContainer,
-  MainContentWrapper,
-  MainContent,
   GallerySection,
   MainBanner,
   ThumbnailsGrid,
