@@ -15,6 +15,7 @@ export interface Winery {
   isVip: boolean;
   logoUrl?: string;
   galleryUrl?: string[];
+  imageUrls?: string[];
   whereToBuy?: { name: string; url: string }[];
   contactEmail: string;
   contactPhone: string;
