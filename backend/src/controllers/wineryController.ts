@@ -89,18 +89,27 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
 
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-  let imagesToKeep: string[] = [];
-  if (updateData.galleryUrl) {
-    imagesToKeep = Array.isArray(updateData.galleryUrl)
-      ? updateData.galleryUrl
-      : [updateData.galleryUrl];
-  }
-
   const currentGallery = winery.galleryUrl || [];
+  let finalGallery = [...currentGallery];
 
-  const removedImages = currentGallery.filter((url) => !imagesToKeep.includes(url));
-  if (removedImages.length > 0) {
-    await Promise.all(removedImages.map((url) => deleteFile(url)));
+  if (updateData.galleryUrl !== undefined) {
+    let imagesToKeep: string[] = [];
+    try {
+      imagesToKeep =
+        typeof updateData.galleryUrl === 'string'
+          ? JSON.parse(updateData.galleryUrl)
+          : updateData.galleryUrl;
+    } catch {
+      imagesToKeep = Array.isArray(updateData.galleryUrl)
+        ? updateData.galleryUrl
+        : [updateData.galleryUrl];
+    }
+
+    const removedImages = currentGallery.filter((url) => !imagesToKeep.includes(url));
+    if (removedImages.length > 0) {
+      await Promise.all(removedImages.map((url) => deleteFile(url)));
+    }
+    finalGallery = [...imagesToKeep];
   }
 
   if (files?.logo && files.logo[0]) {
@@ -110,25 +119,17 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
     updateData.logoUrl = await uploadFile(files.logo[0], 'wineries/logos');
   }
 
-  let updatedGallery = [...imagesToKeep];
   if (files?.images) {
-    const isMainPhotoReplaced =
-      imagesToKeep.length === 0 || !imagesToKeep.includes(currentGallery[0]);
     const newUrls = await Promise.all(
       files.images.map((file) => uploadFile(file, 'wineries/gallery')),
     );
-
-    if (isMainPhotoReplaced && newUrls.length > 0) {
-      updatedGallery = [newUrls[0], ...imagesToKeep, ...newUrls.slice(1)];
-    } else {
-      updatedGallery = [...imagesToKeep, ...newUrls];
-    }
+    finalGallery = [...finalGallery, ...newUrls];
   }
 
-  const finalGallery = updatedGallery.slice(0, 10);
-  if (updatedGallery.length > 10) {
-    const dropped = updatedGallery.slice(10);
+  if (finalGallery.length > 5) {
+    const dropped = finalGallery.slice(5);
     await Promise.all(dropped.map((url) => deleteFile(url)));
+    finalGallery = finalGallery.slice(0, 5);
   }
 
   updateData.galleryUrl = finalGallery;

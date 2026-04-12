@@ -183,6 +183,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
         fd.append(key, JSON.stringify(val));
       } else if (key === 'contactPhone') {
         fd.append(key, String(val).replace(/\s+/g, ''));
+      } else if (key === 'galleryUrl') {
       } else {
         fd.append(key, String(val));
       }
@@ -190,11 +191,8 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
 
     if (logo) fd.append('logo', logo);
 
-    galleryPreviews.forEach((url) => {
-      if (url && !url.startsWith('blob:')) {
-        fd.append('images', url);
-      }
-    });
+    const existingUrls = galleryPreviews.filter((url) => url && !url.startsWith('blob:'));
+    fd.append('galleryUrl', JSON.stringify(existingUrls));
 
     gallery.forEach((f) => {
       if (f) fd.append('images', f);
@@ -252,6 +250,7 @@ const AddWinery = ({ wineryData, onSuccess }: Props) => {
               newPreviews.splice(galleryIndex, 1);
               setGalleryPreviews(newPreviews);
             }}
+            maxGalleryCount={5}
           />
           <div style={{ marginTop: '20px' }}>
             <WineryLogoUpload
