@@ -61,6 +61,7 @@ export interface Wine {
   description: string;
   tastingNotes: string[];
   imageUrl: string;
+  galleryUrl: string[];
   color: WineColor;
   sweetness: WineSweetness;
   averageRating: number;

@@ -95,6 +95,16 @@ const TextEditor: React.FC<TextEditorProps> = ({ label, value, onChange }) => {
           <div className="toolbar-group">
             <button
               type="button"
+              onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+              className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+              title="Heading 1"
+              aria-label="Heading 1"
+            >
+              <FaHeading style={{ fontSize: '16px' }} />
+              <span style={{ fontSize: '10px', marginLeft: '2px' }}>1</span>
+            </button>
+            <button
+              type="button"
               onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
               className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
               title="Heading 2"

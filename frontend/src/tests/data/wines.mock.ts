@@ -26,6 +26,7 @@ export const mockWine: Wine = {
   tastingNotes: [],
 
   imageUrl: '',
+  galleryUrl: [],
 
   color: 'red',
   sweetness: 'dry',
@@ -60,6 +61,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.3,
     totalReviews: 18,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Elegant white wine with citrus notes.',
     tastingNotes: ['citrus', 'vanilla'],
     winery: {
@@ -82,6 +84,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.7,
     totalReviews: 25,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Rich red wine with dark berry aromas.',
     tastingNotes: ['blackberry', 'oak'],
     winery: {
@@ -104,6 +107,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.1,
     totalReviews: 12,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Light-bodied red wine with cherry notes.',
     tastingNotes: ['cherry', 'spice'],
     winery: {
@@ -126,6 +130,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.0,
     totalReviews: 8,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Crisp white wine with tropical fruit notes.',
     tastingNotes: ['lime', 'passionfruit'],
     winery: {
@@ -148,6 +153,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.2,
     totalReviews: 14,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Smooth red wine with plum notes.',
     tastingNotes: ['plum', 'chocolate'],
     winery: {
@@ -170,6 +176,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.4,
     totalReviews: 20,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Sweet white wine with floral notes.',
     tastingNotes: ['honey', 'peach'],
     winery: {
@@ -192,6 +199,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.6,
     totalReviews: 30,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Bold red wine with peppery notes.',
     tastingNotes: ['pepper', 'blackberry'],
     winery: {
@@ -214,6 +222,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.0,
     totalReviews: 9,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Refreshing rosé with strawberry notes.',
     tastingNotes: ['strawberry', 'rose petals'],
     winery: {
@@ -236,6 +245,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.5,
     totalReviews: 22,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Deep red wine with plum and spice.',
     tastingNotes: ['plum', 'spice'],
     winery: {
@@ -258,6 +268,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.8,
     totalReviews: 40,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Aged red wine with complex flavors.',
     tastingNotes: ['oak', 'leather'],
     winery: {
@@ -280,6 +291,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.1,
     totalReviews: 15,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Sparkling wine with apple and pear notes.',
     tastingNotes: ['apple', 'pear'],
     winery: {
@@ -302,6 +314,7 @@ export const mockWines: Wine[] = [
     averageRating: 4.9,
     totalReviews: 50,
     imageUrl: 'https://placehold.co/400x600',
+    galleryUrl: [],
     description: 'Sweet fortified wine with rich berry notes.',
     tastingNotes: ['raspberry', 'chocolate'],
     winery: {
