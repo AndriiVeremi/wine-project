@@ -95,11 +95,14 @@ export const updateWinery = ctrlWrapper(async (req: AuthenticatedRequest, res: R
   if (updateData.galleryUrl !== undefined) {
     let imagesToKeep: string[] = [];
     try {
-      imagesToKeep = typeof updateData.galleryUrl === 'string' 
-        ? JSON.parse(updateData.galleryUrl) 
-        : updateData.galleryUrl;
+      imagesToKeep =
+        typeof updateData.galleryUrl === 'string'
+          ? JSON.parse(updateData.galleryUrl)
+          : updateData.galleryUrl;
     } catch {
-      imagesToKeep = Array.isArray(updateData.galleryUrl) ? updateData.galleryUrl : [updateData.galleryUrl];
+      imagesToKeep = Array.isArray(updateData.galleryUrl)
+        ? updateData.galleryUrl
+        : [updateData.galleryUrl];
     }
 
     const removedImages = currentGallery.filter((url) => !imagesToKeep.includes(url));
