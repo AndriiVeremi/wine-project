@@ -193,13 +193,15 @@ const WineryDetailPage = () => {
         ) : (
           <div style={{ marginBottom: '80px' }}>
             <ItemReviews key={refresh} wineryId={winery._id} />
-            <AddReviewForm
-              wineryId={winery._id}
-              onReviewAdded={() => {
-                setRefresh((prev) => prev + 1);
-                loadWinery();
-              }}
-            />
+            <div style={{ marginTop: '40px' }}>
+              <AddReviewForm
+                wineryId={winery._id}
+                onReviewAdded={() => {
+                  setRefresh((prev) => prev + 1);
+                  loadWinery();
+                }}
+              />
+            </div>
           </div>
         )}
         <MapSection style={{ marginBottom: '80px' }}>
