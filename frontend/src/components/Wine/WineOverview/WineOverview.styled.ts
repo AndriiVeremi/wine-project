@@ -22,7 +22,6 @@ export const WineOverviewTitle = styled.h3`
   margin-bottom: 24px;
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 30px;
-    margin-bottom: 48px;
   }
 `;
 export const StockReviewRow = styled.div`
@@ -32,7 +31,6 @@ export const StockReviewRow = styled.div`
   margin-bottom: 24px;
   @media (min-width: ${breakpoints.tablet}) {
     gap: 56px;
-    margin-bottom: 40px;
   }
 `;
 export const WineInStock = styled.p<{ $inStock?: boolean }>`
@@ -52,7 +50,6 @@ export const StyledWinePrice = styled.p`
   @media (min-width: ${breakpoints.tablet}) {
     padding-left: 24px;
     font-size: 30px;
-    margin-bottom: 64px;
   }
 `;
 export const BuyFavRow = styled.div`
@@ -62,7 +59,6 @@ export const BuyFavRow = styled.div`
   margin-bottom: 40px;
   @media (min-width: ${breakpoints.tablet}) {
     gap: 80px;
-    margin-bottom: 64px;
   }
 `;
 

@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
+import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
+
 export const StyledWinePageDiv = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 60px;
   @media (min-width: ${breakpoints.desktop}) {
     display: grid;
     grid-template-columns: 1fr 500px;
@@ -12,7 +14,7 @@ export const StyledWinePageDiv = styled.div`
       'image info'
       'tabs tabs'
       'content content';
-    gap: 40px 40px;
+    gap: 60px 40px;
     align-items: start;
   }
 `;
@@ -46,9 +48,8 @@ export const StyledWineImg = styled.img`
   height: 450px;
   object-fit: contain;
   background-color: #fff;
-  border-radius: 16px;
   padding: 20px;
-  border: 1px solid #f0f0f0;
+
   @media (min-width: ${breakpoints.tablet}) {
     height: 550px;
   }
@@ -75,28 +76,22 @@ export const WineDetailPageTabs = styled.div`
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: tabs;
     order: unset;
-    margin-top: 40px;
     justify-content: center;
     button {
       min-width: 316px;
     }
   }
 `;
-import { richTextStyles } from '@/components/Common/ListStyles/RichTextContent.styled';
 
 export const WineDescriptionContent = styled.div`
   ${richTextStyles}
   max-width: 100%;
   order: 4;
   background: #fff;
-  padding: 24px;
-  border-radius: 16px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
   @media (min-width: ${breakpoints.tablet}) {
     font-size: 18px;
     line-height: 1.8;
-    padding: 32px;
   }
   @media (min-width: ${breakpoints.desktop}) {
     grid-area: content;

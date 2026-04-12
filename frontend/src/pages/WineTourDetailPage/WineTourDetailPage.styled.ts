@@ -17,7 +17,7 @@ export const TourDetailContainer = styled.div`
       'specs specs'
       'highlights highlights'
       'content content';
-    gap: 40px 60px;
+    gap: 60px 60px;
   }
 `;
 
@@ -46,14 +46,6 @@ export const TourSubtitle = styled.div`
   gap: 16px;
   color: var(--secondary-gray);
   font-size: 16px;
-`;
-
-export const MainContentWrapper = styled.div`
-  display: contents; /* Використовуємо contents, щоб діти стали частиною батьківського grid */
-`;
-
-export const MainContent = styled.div`
-  display: contents; /* Використовуємо contents, щоб діти стали частиною батьківського grid */
 `;
 
 export const GallerySection = styled.div`
@@ -305,7 +297,7 @@ export const SliderSection = styled.section`
   margin-top: 60px;
   margin-bottom: 60px;
   @media (min-width: ${breakpoints.desktop}) {
-    grid-column: 1 / -1; /* Слайдер завжди на всю ширину */
+    grid-column: 1 / -1;
   }
 `;
 

@@ -145,16 +145,16 @@ const WineTourDetailPage = () => {
 
             <FeatureList>
               <FeatureItem>
-                <FiCheckCircle /> **Professional** wine expert guide
+                <FiCheckCircle /> Professional wine expert guide
               </FeatureItem>
               <FeatureItem>
-                <FiCheckCircle /> **Exclusive** winery access
+                <FiCheckCircle /> Exclusive winery access
               </FeatureItem>
               <FeatureItem>
-                <FiCheckCircle /> **Full** tasting experience
+                <FiCheckCircle /> Full tasting experience
               </FeatureItem>
               <FeatureItem>
-                <FiCheckCircle /> **No** hidden service fees
+                <FiCheckCircle /> No hidden service fees
               </FeatureItem>
             </FeatureList>
 
@@ -254,7 +254,6 @@ const WineTourDetailPage = () => {
           <ItemReviews tourId={id} key={reviewsKey} />
           <div
             style={{
-              marginTop: '60px',
               padding: '40px',
               background: '#f8fafc',
               borderRadius: '24px',
