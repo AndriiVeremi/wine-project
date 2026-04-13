@@ -27,7 +27,18 @@ const AIAssistant: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [hasNudged, setHasNudged] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen && !hasNudged && user) {
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+        setHasNudged(true);
+      }, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, hasNudged, user]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -74,7 +85,7 @@ const AIAssistant: React.FC = () => {
       {isOpen ? (
         <ChatWindow>
           <ChatHeader>
-            <span>AI Assistant</span>
+            <span>AI Sommelier</span>
             <CloseButton onClick={() => setIsOpen(false)} aria-label="Close AI assistant">
               <IoClose />
             </CloseButton>

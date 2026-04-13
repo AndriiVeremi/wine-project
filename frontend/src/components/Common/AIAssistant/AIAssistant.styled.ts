@@ -32,8 +32,9 @@ export const ChatWindow = styled.div`
   position: absolute;
   bottom: 80px;
   right: 0;
-  width: 350px;
+  width: 450px;
   height: 700px;
+  max-width: calc(100vw - 40px);
   background: white;
   border-radius: 15px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -41,6 +42,10 @@ export const ChatWindow = styled.div`
   flex-direction: column;
   overflow: hidden;
   border: 1px solid #eee;
+
+  @media (max-width: 500px) {
+    width: 320px;
+  }
 `;
 
 export const ChatHeader = styled.div`
@@ -84,12 +89,23 @@ export const MessagesContainer = styled.div`
 export const Message = styled.div<{ $isUser: boolean }>`
   padding: 10px 14px;
   border-radius: 12px;
-  max-width: 80%;
+  max-width: 85%;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.5;
+  white-space: pre-wrap;
   align-self: ${({ $isUser }) => ($isUser ? 'flex-end' : 'flex-start')};
   background: ${({ $isUser }) => ($isUser ? '#722f37' : '#f0f0f0')};
   color: ${({ $isUser }) => ($isUser ? 'white' : '#333')};
+
+  & > ul,
+  & > ol {
+    padding-left: 20px;
+    margin: 5px 0;
+  }
+
+  & > p {
+    margin: 5px 0;
+  }
 `;
 
 export const InputContainer = styled.div`
