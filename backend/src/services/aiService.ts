@@ -159,7 +159,11 @@ export class AIService {
     let response = result.response;
     let functionCalls = response.functionCalls();
 
-    while (functionCalls && functionCalls.length > 0) {
+    let callCount = 0;
+    const maxFunctionCalls = Number(process.env.AI_MAX_FUNCTION_CALLS) || 5;
+
+    while (functionCalls && functionCalls.length > 0 && callCount < maxFunctionCalls) {
+      callCount++;
       const parts = [];
 
       for (const call of functionCalls) {
