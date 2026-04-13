@@ -1,10 +1,21 @@
 import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
 import AIController from '@/controllers/aiController';
 import validateBody from '@/middleware/validateBody';
 import { aiChatSchema } from '@/schemas/aiSchemas';
 import { authMiddleware } from '@/middleware/auth';
 
 const router = Router();
+
+const aiChatLimiter = rateLimit({
+  windowMs: Number(process.env.AI_RATE_LIMIT_WINDOW_MS) || 60 * 60 * 1000, // 1 hour
+  limit: Number(process.env.AI_RATE_LIMIT_MAX_REQUESTS) || 15, // 15 requests
+  message: {
+    message: 'AI chat limit reached for this hour. Please try again later.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 /**
  * @swagger
@@ -54,6 +65,6 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.post('/chat', authMiddleware, validateBody(aiChatSchema), AIController.chat);
+router.post('/chat', aiChatLimiter, authMiddleware, validateBody(aiChatSchema), AIController.chat);
 
 export default router;
