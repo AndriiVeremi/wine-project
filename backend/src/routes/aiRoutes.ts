@@ -65,12 +65,6 @@ const aiChatLimiter = rateLimit({
  *       500:
  *         description: Server error
  */
-router.post(
-  '/chat',
-  aiChatLimiter,
-  authMiddleware,
-  validateBody(aiChatSchema),
-  AIController.chat,
-);
+router.post('/chat', aiChatLimiter, authMiddleware, validateBody(aiChatSchema), AIController.chat);
 
 export default router;

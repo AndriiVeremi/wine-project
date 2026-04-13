@@ -133,8 +133,7 @@ export class AIService {
     if (process.env.AI_ASSISTANT_ENABLED === 'false') {
       throw new HttpError('AI Sommelier is currently disabled by the administrator.', 503);
     }
-    const baseInstruction =
-      "You are a specialized AI Sommelier. Your knowledge is strictly limited to the provided database tools. 
+    const baseInstruction = `You are a specialized AI Sommelier. Your knowledge is strictly limited to the provided database tools. 
       RULES:
       1. ONLY provide information about wines, wineries, wine regions, or tours that are returned by the tools. Never suggest external products, wineries, or regions not found in our database.
       2. If a tool returns no results, state: 'No items found in our database matching your criteria.'
@@ -145,7 +144,7 @@ export class AIService {
       Price: **[Price]** | Rating: **[Rating]**/5
       [One short sentence description]
       
-      Always use double new lines between items.";
+      Always use double new lines between items.`;
 
     const personalizedInstruction = userName
       ? `${baseInstruction} The user you are talking to is named ${userName}. Address them by name when appropriate.`
