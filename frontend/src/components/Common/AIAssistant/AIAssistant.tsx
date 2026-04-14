@@ -18,16 +18,42 @@ import {
 const AIAssistant: React.FC = () => {
   const { user } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
-    {
-      role: 'ai',
-      text: 'Hello! I am your wine assistant. Would you like help choosing a wine or information about wine regions?',
-    },
-  ]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const storageKey = user ? `wine_chat_${user.uid}` : null;
+
+  useEffect(() => {
+    if (storageKey) {
+      const savedMessages = sessionStorage.getItem(`${storageKey}_msgs`);
+      const savedHistory = sessionStorage.getItem(`${storageKey}_hist`);
+
+      if (savedMessages && savedHistory) {
+        setMessages(JSON.parse(savedMessages));
+        setChatHistory(JSON.parse(savedHistory));
+      } else {
+        const firstName = user?.displayName?.split(' ')[0] || '';
+        setMessages([
+          {
+            role: 'ai',
+            text: `Hello${firstName ? `, ${firstName}` : ''}! I am your wine assistant. Would you like help choosing a wine or information about wine regions?`,
+          },
+        ]);
+        setChatHistory([]);
+      }
+    }
+  }, [storageKey, user?.displayName]);
+  useEffect(() => {
+    if (storageKey && messages.length > 0) {
+      const limitedMessages = messages.slice(-20);
+      const limitedHistory = chatHistory.slice(-20);
+
+      sessionStorage.setItem(`${storageKey}_msgs`, JSON.stringify(limitedMessages));
+      sessionStorage.setItem(`${storageKey}_hist`, JSON.stringify(limitedHistory));
+    }
+  }, [messages, chatHistory, storageKey]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
