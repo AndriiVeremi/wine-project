@@ -22,6 +22,7 @@ export const chatWithAI = async (message: string, history: ChatMessage[] = []) =
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      timeout: 60000,
     },
   );
   return response.data.response;
