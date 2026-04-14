@@ -12,6 +12,8 @@ import { getUserFavorites } from '@/services/userService';
 import Region from '@/models/regionModel';
 import dotenv from 'dotenv';
 import HttpError from '@/utils/HttpError';
+import { SOMMELIER_PROMPT, AI_CONFIG } from '@/config/aiConfig';
+import { sanitizeAIResponse } from '@/utils/aiUtils';
 
 dotenv.config();
 
@@ -105,29 +107,18 @@ export class AIService {
     userId?: string,
   ) {
     if (process.env.AI_ASSISTANT_ENABLED === 'false') {
-      throw new HttpError('AI Sommelier is currently disabled by the administrator.', 503);
+      throw new HttpError('AI Sommelier is currently disabled.', 503);
     }
 
     if (!process.env.GEMINI_API_KEY) {
-      throw new HttpError('Gemini API Key is not configured in environment variables.', 500);
+      throw new HttpError('Gemini API Key is missing.', 500);
     }
 
-    const client = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
-    });
-
-    const baseInstruction = `You are a professional AI Sommelier.
-      RULES:
-      1. ONLY recommend items from the provided database tools.
-      2. Respond in the same language as the user.
-      3. Answer greetings and be polite.
-      4. Use this template for wines: * **[Name]** | [Color], [Sweetness] | Price: **[Price]** | Rating: **[Rating]**/5`;
+    const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
     const systemInstruction = userName
-      ? `${baseInstruction} User name: ${userName}.`
-      : baseInstruction;
-
-    const modelName = process.env.GEMINI_MODEL_NAME || 'gemini-1.5-flash';
+      ? `${SOMMELIER_PROMPT} Customer name: ${userName}.`
+      : SOMMELIER_PROMPT;
 
     const contents: Content[] = history.map((h) => ({
       role: h.role,
@@ -142,18 +133,18 @@ export class AIService {
     try {
       while (callCount < maxFunctionCalls) {
         const response = await client.models.generateContent({
-          model: modelName,
+          model: AI_CONFIG.MODEL_NAME,
           contents: contents,
           config: {
             tools,
             systemInstruction: systemInstruction,
-            maxOutputTokens: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 400,
-            temperature: 0.7,
+            maxOutputTokens: AI_CONFIG.MAX_OUTPUT_TOKENS,
+            temperature: AI_CONFIG.TEMPERATURE,
           },
         });
 
         const candidate = response.candidates?.[0];
-        if (!candidate || !candidate.content || !candidate.content.parts) break;
+        if (!candidate?.content?.parts) break;
 
         const parts = candidate.content.parts;
         const functionCalls = parts.filter((p) => p.functionCall);
@@ -163,6 +154,7 @@ export class AIService {
 
         if (functionCalls.length === 0) break;
 
+        finalResponseText = '';
         callCount++;
         const functionResponses: Part[] = [];
 
@@ -173,27 +165,27 @@ export class AIService {
 
           try {
             if (name === 'searchWines') {
-              const searchArgs = args as unknown as SearchWinesArgs;
+              const sArgs = args as unknown as SearchWinesArgs;
               const { wines } = await wineService.getAllWines({
-                ...searchArgs,
-                maxPrice: searchArgs.maxPrice?.toString(),
-                minRating: searchArgs.minRating?.toString(),
+                ...sArgs,
+                maxPrice: sArgs.maxPrice?.toString(),
+                minRating: sArgs.minRating?.toString(),
               });
               result = wines.length > 0 ? wines.slice(0, 5) : { message: 'No wines found' };
             } else if (name === 'getRegionInfo') {
-              const regionArgs = args as unknown as GetRegionInfoArgs;
+              const rArgs = args as unknown as GetRegionInfoArgs;
               result = (await Region.findOne({
-                name: { $regex: regionArgs.regionName, $options: 'i' },
+                name: { $regex: rArgs.regionName, $options: 'i' },
               })) || { error: 'Not found' };
             } else if (name === 'getWineryInfo') {
-              const wineryArgs = args as unknown as GetWineryInfoArgs;
-              const winery = await getWineryByName(wineryArgs.wineryName);
+              const wArgs = args as unknown as GetWineryInfoArgs;
+              const winery = await getWineryByName(wArgs.wineryName);
               result = winery
                 ? { name: winery.name, address: winery.address }
                 : { error: 'Not found' };
             } else if (name === 'searchTours') {
-              const tourArgs = args as unknown as SearchToursArgs;
-              const tours = await getToursByRegion(tourArgs.regionName);
+              const tArgs = args as unknown as SearchToursArgs;
+              const tours = await getToursByRegion(tArgs.regionName);
               result = tours.length > 0 ? tours.slice(0, 3) : { message: 'No tours found' };
             } else if (name === 'getMyFavoriteWines') {
               result = userId ? await getUserFavorites(userId) : { error: 'Auth required' };
@@ -203,10 +195,7 @@ export class AIService {
           }
 
           functionResponses.push({
-            functionResponse: {
-              name: name as string,
-              response: { result },
-            },
+            functionResponse: { name: name as string, response: { result } },
           });
         }
 
@@ -214,11 +203,10 @@ export class AIService {
         contents.push({ role: 'user', parts: functionResponses });
       }
 
-      return finalResponseText || 'I am sorry, I could not process that.';
+      return sanitizeAIResponse(finalResponseText) || 'I am sorry, I could not process that.';
     } catch (error: unknown) {
-      console.error('CRITICAL AI ERROR:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown';
-      throw new HttpError(`AI Error: ${errorMessage}`, 500);
+      console.error('AI Error:', error);
+      throw new HttpError('AI Processing failed', 500);
     }
   }
 }

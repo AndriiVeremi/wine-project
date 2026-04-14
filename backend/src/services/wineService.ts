@@ -2,6 +2,7 @@ import { HydratedDocument, PipelineStage, Types } from 'mongoose';
 import Wine, { IWine } from '@/models/wineModel';
 import Winery, { IWinery } from '@/models/wineryModel';
 import Grape from '@/models/grapeModel';
+import Location from '@/models/locationModel';
 import HttpError from '@/utils/HttpError';
 import { uploadFile, deleteFile } from '@/services/firebase';
 import { sanitize } from '@/utils/sanitize';
@@ -59,8 +60,50 @@ export class WineService {
 
     if (country || region) {
       const wineryFilter: Record<string, string | Types.ObjectId> = {};
-      if (country) wineryFilter.country = country;
-      if (region) wineryFilter.region = region;
+
+      if (country) {
+        if (Types.ObjectId.isValid(country)) {
+          wineryFilter.country = country;
+        } else {
+          const foundCountry = await Location.findOne({
+            name: { $regex: country, $options: 'i' },
+            type: 'country',
+          });
+          if (foundCountry) {
+            wineryFilter.country = foundCountry._id as Types.ObjectId;
+          } else {
+            return {
+              wines: [],
+              totalCount: 0,
+              page: currentPage,
+              limit: currentLimit,
+              totalPages: 0,
+            };
+          }
+        }
+      }
+
+      if (region) {
+        if (Types.ObjectId.isValid(region)) {
+          wineryFilter.region = region;
+        } else {
+          const foundRegion = await Location.findOne({
+            name: { $regex: region, $options: 'i' },
+            type: 'region',
+          });
+          if (foundRegion) {
+            wineryFilter.region = foundRegion._id as Types.ObjectId;
+          } else {
+            return {
+              wines: [],
+              totalCount: 0,
+              page: currentPage,
+              limit: currentLimit,
+              totalPages: 0,
+            };
+          }
+        }
+      }
 
       const matchingWineries = await Winery.find(wineryFilter).select('_id');
       const wineryIds = matchingWineries.map((w) => w._id);
@@ -75,7 +118,9 @@ export class WineService {
     if (sweetness) filter.sweetness = sweetness;
 
     if (grape) {
-      const foundGrape = await Grape.findOne({ name: grape }).select('_id');
+      const foundGrape = await Grape.findOne({ name: { $regex: grape, $options: 'i' } }).select(
+        '_id',
+      );
       if (foundGrape) {
         filter.grape = foundGrape._id;
       } else {
