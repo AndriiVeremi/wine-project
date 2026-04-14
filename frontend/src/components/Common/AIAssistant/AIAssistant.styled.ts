@@ -33,8 +33,8 @@ export const ChatWindow = styled.div`
   bottom: 80px;
   right: 0;
   width: 450px;
-  height: 700px;
-  max-width: calc(100vw - 40px);
+  height: min(700px, 80vh);
+  max-height: calc(100vh - 100px);
   background: white;
   border-radius: 15px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -45,6 +45,7 @@ export const ChatWindow = styled.div`
 
   @media (max-width: 500px) {
     width: 320px;
+    height: min(600px, 80vh);
   }
 `;
 
