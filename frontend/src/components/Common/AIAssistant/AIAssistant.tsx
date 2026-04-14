@@ -23,8 +23,7 @@ const AIAssistant: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const storageKey = user ? `wine_chat_${user.firebaseUid || user._id}` : null;
+  const storageKey = user ? `wine_chat_${user.uid}` : null;
 
   useEffect(() => {
     if (storageKey) {
@@ -35,17 +34,17 @@ const AIAssistant: React.FC = () => {
         setMessages(JSON.parse(savedMessages));
         setChatHistory(JSON.parse(savedHistory));
       } else {
+        const firstName = user?.displayName?.split(' ')[0] || '';
         setMessages([
           {
             role: 'ai',
-            text: `Hello${user?.firstName ? `, ${user.firstName}` : ''}! I am your wine assistant. Would you like help choosing a wine or information about wine regions?`,
+            text: `Hello${firstName ? `, ${firstName}` : ''}! I am your wine assistant. Would you like help choosing a wine or information about wine regions?`,
           },
         ]);
         setChatHistory([]);
       }
     }
-  }, [storageKey, user?.firstName]);
-
+  }, [storageKey, user?.displayName]);
   useEffect(() => {
     if (storageKey && messages.length > 0) {
       const limitedMessages = messages.slice(-20);
