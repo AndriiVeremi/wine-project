@@ -11,6 +11,7 @@ export const CardBase = styled.div`
   border: 1px solid #f0f0f0;
   height: 420px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-8px);

@@ -132,7 +132,7 @@ export const getToursByRegion = async (
   const region = await Region.findOne({ name: { $regex: regionName, $options: 'i' } });
 
   if (!region) {
-    throw new HttpError(`Region with name '${regionName}' not found.`, 404);
+    return [];
   }
 
   const wineriesInRegion = await Winery.find({ region: region._id }).select('_id');
