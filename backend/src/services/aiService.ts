@@ -9,6 +9,7 @@ import { WineService } from '@/services/wineService';
 import { getWineryByName } from '@/services/wineryService';
 import { getToursByRegion } from '@/services/tourService';
 import { getUserFavorites } from '@/services/userService';
+import GrapeService from '@/services/grapeService';
 import Region from '@/models/regionModel';
 import dotenv from 'dotenv';
 import HttpError from '@/utils/HttpError';
@@ -43,6 +44,11 @@ interface GetWineryInfoArgs {
 
 interface SearchToursArgs {
   regionName: string;
+}
+
+interface SearchGrapesArgs {
+  search?: string;
+  type?: string;
 }
 
 const tools: Tool[] = [
@@ -88,6 +94,17 @@ const tools: Tool[] = [
           type: 'OBJECT',
           properties: { regionName: { type: 'STRING' } },
           required: ['regionName'],
+        },
+      },
+      {
+        name: 'searchGrapes',
+        description: 'Search for grape varieties information.',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            search: { type: 'STRING', description: 'Grape name' },
+            type: { type: 'STRING', description: 'Grape type (white/red/rose)' },
+          },
         },
       },
       {
@@ -171,22 +188,65 @@ export class AIService {
                 maxPrice: sArgs.maxPrice?.toString(),
                 minRating: sArgs.minRating?.toString(),
               });
-              result = wines.length > 0 ? wines.slice(0, 5) : { message: 'No wines found' };
+              result =
+                wines.length > 0
+                  ? wines.slice(0, 3).map((w) => ({
+                      _id: w._id,
+                      name: w.name,
+                      price: w.price,
+                      imageUrl: w.imageUrl,
+                      averageRating: w.averageRating,
+                      color: w.color,
+                      sweetness: w.sweetness,
+                      vintage: w.vintage,
+                    }))
+                  : { message: 'No wines found' };
             } else if (name === 'getRegionInfo') {
               const rArgs = args as unknown as GetRegionInfoArgs;
-              result = (await Region.findOne({
+              const region = await Region.findOne({
                 name: { $regex: rArgs.regionName, $options: 'i' },
-              })) || { error: 'Not found' };
+              });
+              result = region
+                ? { _id: region._id, name: region.name, description: region.description }
+                : { error: 'Not found' };
             } else if (name === 'getWineryInfo') {
               const wArgs = args as unknown as GetWineryInfoArgs;
               const winery = await getWineryByName(wArgs.wineryName);
               result = winery
-                ? { name: winery.name, address: winery.address }
+                ? {
+                    _id: winery._id,
+                    name: winery.name,
+                    address: winery.address,
+                    imageUrl: winery.logoUrl,
+                  }
                 : { error: 'Not found' };
             } else if (name === 'searchTours') {
               const tArgs = args as unknown as SearchToursArgs;
               const tours = await getToursByRegion(tArgs.regionName);
-              result = tours.length > 0 ? tours.slice(0, 3) : { message: 'No tours found' };
+              result =
+                tours.length > 0
+                  ? tours.slice(0, 3).map((t) => ({
+                      _id: t._id,
+                      name: t.name,
+                      price: t.price,
+                      imageUrl: t.images?.[0] || '',
+                      averageRating: t.averageRating,
+                      duration: t.duration,
+                    }))
+                  : { message: 'No tours found' };
+            } else if (name === 'searchGrapes') {
+              const gArgs = args as unknown as SearchGrapesArgs;
+              const { grapes } = await GrapeService.getGrapes(gArgs);
+              result =
+                grapes.length > 0
+                  ? grapes.slice(0, 3).map((g) => ({
+                      name: g.name,
+                      description: g.description,
+                      type: g.type,
+                      characteristics: g.characteristics,
+                      aromas: g.aromas,
+                    }))
+                  : { message: 'No grapes found' };
             } else if (name === 'getMyFavoriteWines') {
               result = userId ? await getUserFavorites(userId) : { error: 'Auth required' };
             }

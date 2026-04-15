@@ -15,10 +15,17 @@ import {
   SendButton,
 } from './AIAssistant.styled';
 
+import AIAssistantMessage from './components/AIAssistantMessage';
+
+interface ChatUIMessage {
+  role: 'user' | 'ai';
+  text: string;
+}
+
 const AIAssistant: React.FC = () => {
   const { user } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([]);
+  const [messages, setMessages] = useState<ChatUIMessage[]>([]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
@@ -38,7 +45,11 @@ const AIAssistant: React.FC = () => {
         setMessages([
           {
             role: 'ai',
-            text: `Hello${firstName ? `, ${firstName}` : ''}! I am your wine assistant. Would you like help choosing a wine or information about wine regions?`,
+            text: JSON.stringify({
+              text: `Hello${firstName ? `, ${firstName}` : ''}! I am your wine assistant. Would you like help choosing a wine or information about wine regions?`,
+              wines: [],
+              tours: [],
+            }),
           },
         ]);
         setChatHistory([]);
@@ -80,7 +91,14 @@ const AIAssistant: React.FC = () => {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: 'ai', text: 'Sorry, an error occurred. Please try again later.' },
+        {
+          role: 'ai',
+          text: JSON.stringify({
+            text: 'Sorry, an error occurred. Please try again later.',
+            wines: [],
+            tours: [],
+          }),
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -108,7 +126,7 @@ const AIAssistant: React.FC = () => {
           <MessagesContainer>
             {messages.map((msg, index) => (
               <Message key={index} $isUser={msg.role === 'user'}>
-                {msg.text}
+                {msg.role === 'ai' ? <AIAssistantMessage content={msg.text} /> : msg.text}
               </Message>
             ))}
             {isLoading && <Message $isUser={false}>Thinking...</Message>}
