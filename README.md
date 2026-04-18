@@ -44,4 +44,8 @@
 | **Ihor Dykyi** | UI/UX Designer, PM, Fullstack Developer, QA | [jure-s](https://github.com/jure-s) |
 
 ---
+## Демо
+
+  ![Deployment status](./Demo.jpg)
+
 Розроблено командою **Wine Project**.
