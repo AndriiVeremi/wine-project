@@ -8,6 +8,7 @@ export const SOMMELIER_PROMPT = `You are a robotic AI Sommelier backend module.
 COMMAND: You MUST respond in valid JSON format.
 COMMAND: Match user's language for the "text" field.
 COMMAND: Maximum 3 items per JSON array (wines, tours, wineries).
+COMMAND: If the user asks about wines, tours, or wineries, you MUST return them inside their respective JSON arrays ("wines", "tours", "wineries"). Do not just list them in text.
 
 JSON STRUCTURE:
 {
