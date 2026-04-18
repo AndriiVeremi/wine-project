@@ -140,6 +140,20 @@ sweetness: string (required)
 description: string
 tastingNotes: string[]
 image: file (optional)
+gallery: file[] (optional)
+volume: number
+boxQuantity: number
+hasPackaging: boolean
+alcohol: string
+decanting: boolean
+bottleDiameter: string
+servingTemperature: string
+foodPairing: string[]
+supplier: string
+suffix: string
+isVip: boolean
+inStock: boolean
+buyLink: string
 ```
 
 ### Оновити вино (WINERY_OWNER, ADMIN)
@@ -286,15 +300,34 @@ GET /api/locations/regions?country=:countryId
 
 ## Регіони (`/api/regions`)
 
-### Отримати всі регіони
+### Отримати всі детальні регіони
 ```
 GET /api/regions
 GET /api/regions?country=:countryName
 ```
 
-### Отримати регіон за назвою
+### Отримати детальний регіон за назвою
 ```
 GET /api/regions/:name
+```
+**Response (об'єкт Region):**
+```json
+{
+  "_id": "...",
+  "name": "Kakheti",
+  "description": "...",
+  "locationAndClimate": { "title": "...", "description": "...", "features": [...] },
+  "soils": { "title": "...", "description": "...", "mainTypes": [...], "properties": [...] },
+  "cultureAndTraditions": { "title": "...", "description": "...", "rituals": [...] },
+  "grape": {
+    "title": "...",
+    "white": [{ "name": "Rkatsiteli", "description": "..." }],
+    "red": [{ "name": "Saperavi", "description": "..." }]
+  },
+  "typicalWines": { "title": "...", "description": "...", "styles": [...] },
+  "pdo": { "title": "...", "description": "...", "list": [...] },
+  "regionImportance": { "title": "...", "description": "...", "points": [...] }
+}
 ```
 
 ---

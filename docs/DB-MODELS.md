@@ -25,7 +25,7 @@
   winery: { type: Schema.Types.ObjectId, ref: 'Winery' },
   favoriteWines: [{ type: Schema.Types.ObjectId, ref: 'Wine' }],
   isBanned: { type: Boolean, default: false }
-}
+}, { timestamps: true }
 ```
 
 ### Ролі користувачів
@@ -56,6 +56,7 @@
   isVip: { type: Boolean, default: false },
   logoUrl: String,
   galleryUrl: [String],
+  whereToBuy: [{ name: String, url: String }],
   averageRating: { type: Number, default: 0 },
   totalReviews: { type: Number, default: 0 }
 }
@@ -77,6 +78,7 @@
   description: String,
   tastingNotes: [String],
   imageUrl: String,
+  galleryUrl: [String],
   color: { 
     type: String, 
     enum: ['red', 'white', 'rose', 'orange'], 
@@ -89,7 +91,20 @@
   },
   averageRating: { type: Number, default: 0 },
   totalReviews: { type: Number, default: 0 },
-  price: { type: Number, required: true }
+  price: { type: Number, required: true },
+  volume: Number,
+  boxQuantity: Number,
+  hasPackaging: Boolean,
+  alcohol: String,
+  decanting: Boolean,
+  bottleDiameter: String,
+  servingTemperature: String,
+  foodPairing: [String],
+  supplier: String,
+  suffix: String,
+  isVip: { type: Boolean, default: false },
+  inStock: { type: Boolean, default: true },
+  buyLink: String
 }
 ```
 
@@ -142,7 +157,7 @@
 ---
 
 ## Location (Локація)
-Ієрархічна модель для країн та регіонів.
+Ієрархічна модель для країн та регіонів (використовується для фільтрів).
 
 ```typescript
 {
@@ -160,6 +175,55 @@
 - `country` — країна (кореневий елемент)
 - `region` — регіон (має `parentLocation` — посилання на країну)
 
+---
+
+## Region (Детальний Регіон)
+Розширена модель для сторінок регіонів з детальним описом клімату, ґрунтів та сортів.
+
+```typescript
+{
+  name: { type: String, required: true, unique: true },
+  description: String,
+  imageUrl: String,
+  country: { type: Schema.Types.ObjectId, ref: 'Location' },
+  locationAndClimate: {
+    title: String,
+    description: String,
+    features: [String]
+  },
+  soils: {
+    title: String,
+    description: String,
+    mainTypes: [String],
+    properties: [String]
+  },
+  cultureAndTraditions: {
+    title: String,
+    description: String,
+    rituals: [String]
+  },
+  grape: {
+    title: String,
+    white: [{ name: String, description: String }],
+    red: [{ name: String, description: String }]
+  },
+  typicalWines: {
+    title: String,
+    description: String,
+    styles: [String]
+  },
+  pdo: {
+    title: String,
+    description: String,
+    list: [String]
+  },
+  regionImportance: {
+    title: String,
+    description: String,
+    points: [String]
+  }
+}
+```
 ---
 
 ## Review (Відгук)

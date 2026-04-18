@@ -14,7 +14,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "db:seed": "ts-node -r tsconfig-paths/register src/data/seeder.ts --import",
     "db:seed:prod": "node dist/data/seeder.js --import",
-    "db:destroy": "ts-node -r tsconfig-paths/register src/data/seeder.ts --delete"
+    "db:destroy": "ts-node -r tsconfig-paths/register src/data/seeder.ts --delete",
+    "benchmark": "autocannon -c 10 -d 5 http://localhost:5005/api/wines"
   },
   "keywords": [],
   "author": "",
@@ -46,6 +47,7 @@
     "@types/sanitize-html": "^2.16.1",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "autocannon": "^8.0.0",
     "axios": "^1.13.6",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.1.8",
