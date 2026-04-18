@@ -12,10 +12,11 @@ CSP - це механізм безпеки, який дозволяє обмеж
 
 | Директива | Дозволені ресурси | Призначення |
 |-----------|-------------------|-------------|
-| `connect-src` | `identitytoolkit.googleapis.com`, `securetoken.googleapis.com` | Авторизація Firebase |
-| `img-src` | `storage.googleapis.com`, `*.firebasestorage.app` | Зображення вин та виноробень |
+| `connect-src` | `identitytoolkit.googleapis.com`, `securetoken.googleapis.com`, `*.googleapis.com` | Авторизація Firebase та API Google |
+| `img-src` | `storage.googleapis.com`, `*.firebasestorage.app`, `*.googleusercontent.com` | Зображення вин, виноробень та аватари |
 | `script-src` | `apis.google.com`, `www.gstatic.com` | Скрипти Google SDK |
 | `font-src` | `fonts.gstatic.com` | Шрифти Google Fonts |
+| `frame-src` | `*.firebaseapp.com`, `www.youtube.com`, `youtube.com` | Віджети Firebase та відео YouTube |
 
 ### Де налаштовується CSP?
 
@@ -28,10 +29,7 @@ CSP - це механізм безпеки, який дозволяє обмеж
 
 ## CORS (Cross-Origin Resource Sharing)
 
-Доступ до API обмежений через CORS. Дозволені домени налаштовуються через змінну оточення `CORS_ORIGIN` на бекенді.
-
-- **Локально:** `http://localhost:5173`
-- **Продакшн:** Домен вашого фронтенду на Vercel.
+Доступ до API обмежений через CORS. Дозволені домени налаштовуються через змінну оточення `CORS_ORIGIN` на бекенді. Також підтримуються піддомени на Vercel (`*.vercel.app`) для зручності попереднього перегляду розгортань.
 
 ## Rate Limiting
 
