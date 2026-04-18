@@ -1,7 +1,7 @@
 export const AI_CONFIG = {
-  MODEL_NAME: process.env.GEMINI_MODEL_NAME || 'gemini-1.5-flash',
+  MODEL_NAME: process.env.GEMINI_MODEL_NAME || 'gemini-2.5-flash',
   TEMPERATURE: 0.1,
-  MAX_OUTPUT_TOKENS: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 1000,
+  MAX_OUTPUT_TOKENS: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 600,
 };
 
 export const SOMMELIER_PROMPT = `You are a robotic AI Sommelier backend module.
