@@ -11,6 +11,7 @@ import { useWineQueryParams } from '@/hooks/useWineQueryParams';
 import { useDeviceType } from '@/hooks/useDeviceType';
 import { useWines } from '@/hooks/queries/useWines';
 import { notifyError } from '@/utils/toast';
+import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
 
 const WineList = lazy(() => import('@/components/Wine/WineList/WineList'));
 
@@ -80,7 +81,10 @@ const WinesPage = () => {
       ) : (
         <>
           {!error && wines.length === 0 && (
-            <p style={{ textAlign: 'center', marginTop: '40px' }}>No wines found</p>
+            <EmptyMessage
+              title="No wines found"
+              message="We couldn't find any wines matching your criteria. Try adjusting your filters."
+            />
           )}
 
           {!error && wines.length > 0 && (

@@ -47,7 +47,8 @@ export class ReviewService {
         .exec(),
       Review.countDocuments(query),
     ]);
-    return { reviews, total };
+    const totalPages = Math.ceil(total / limit);
+    return { reviews, total, totalPages, page };
   }
 
   public async getReviewById(id: string) {
