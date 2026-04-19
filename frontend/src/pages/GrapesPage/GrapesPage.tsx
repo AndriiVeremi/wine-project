@@ -9,6 +9,7 @@ import GrapeCardSkeleton from '@/components/Common/Skeleton/GrapeCardSkeleton';
 import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { notifyError } from '@/utils/toast';
+import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
@@ -52,8 +53,11 @@ const GrapesPage = () => {
         </SkeletonGrid>
       ) : (
         <>
-          {!error && grapes?.length === 0 && (
-            <p style={{ textAlign: 'center', marginTop: '40px' }}>No grape varieties found.</p>
+          {!error && grapes.length === 0 && (
+            <EmptyMessage
+              title="No grapes found"
+              message="No grape varieties match your request. Try searching for a different variety."
+            />
           )}
 
           {grapes?.length > 0 && (

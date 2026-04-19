@@ -10,6 +10,7 @@ import TourCardSkeleton from '@/components/Common/Skeleton/TourCardSkeleton';
 import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
+import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
 
 const TourPage = () => {
   const { nameInput, setNameInput, applyName, setFilter } = useTourFiltersStore();
@@ -43,7 +44,12 @@ const TourPage = () => {
         </SkeletonGrid>
       ) : (
         <>
-          {!error && tours.length === 0 && <p>No tours found</p>}
+          {!error && tours.length === 0 && (
+            <EmptyMessage
+              title="No tours found"
+              message="We couldn't find any tours matching your criteria. Check back later or try other dates."
+            />
+          )}
           {!error && tours.length > 0 && (
             <ListSection>
               <TourList tours={tours} />

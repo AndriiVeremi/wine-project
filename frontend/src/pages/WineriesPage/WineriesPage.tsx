@@ -12,6 +12,7 @@ import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 
 import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
 import { notifyError } from '@/utils/toast';
+import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
 
 const WineriesPage = () => {
   const nameInput = useWineriesFiltersStore((s) => s.nameInput);
@@ -55,7 +56,10 @@ const WineriesPage = () => {
       ) : (
         <>
           {!error && wineries.length === 0 && (
-            <p style={{ textAlign: 'center', marginTop: '40px' }}>No wineries found</p>
+            <EmptyMessage
+              title="No wineries found"
+              message="We couldn't find any wineries matching your search. Try adjusting your filters."
+            />
           )}
 
           {!error && wineries.length > 0 && (
