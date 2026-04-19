@@ -46,7 +46,7 @@
 | **Ihor Dykyi** | UI/UX Designer, PM, Fullstack Developer, QA | [jure-s](https://github.com/jure-s) |
 
 ---
-## Демо
+## Демо | [Wine Discovery](https://wine-project-three.vercel.app) 
 
   ![Deployment status](./Demo.jpg)
 
