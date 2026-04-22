@@ -12,6 +12,7 @@ import { useDeviceType } from '@/hooks/useDeviceType';
 import { useWines } from '@/hooks/queries/useWines';
 import { notifyError } from '@/utils/toast';
 import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
+import ErrorMessage from '@/components/Common/ErrorMessage/ErrorMessage';
 
 const WineList = lazy(() => import('@/components/Wine/WineList/WineList'));
 
@@ -32,7 +33,7 @@ const WinesPage = () => {
     return { skeletonCount: 8, limit: 16 };
   }, [isMobile, isTablet]);
 
-  const { data, isLoading, isFetching, error } = useWines({ limit, ...query });
+  const { data, isLoading, isFetching, error, refetch } = useWines({ limit, ...query });
 
   const wines = data?.data?.wines || [];
   const page = data?.data?.page || 1;
@@ -78,6 +79,15 @@ const WinesPage = () => {
             <WineCardSkeleton key={i} />
           ))}
         </SkeletonGrid>
+      ) : error ? (
+        <ErrorMessage
+          message={
+            error instanceof Error
+              ? error.message
+              : 'Failed to load wines. The server might be temporarily unavailable.'
+          }
+          onRetry={() => refetch()}
+        />
       ) : (
         <>
           {!error && wines.length === 0 && (

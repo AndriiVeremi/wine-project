@@ -11,12 +11,13 @@ import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { StyledSearchBar, StyledTourFilter } from './WineToursPage.styled';
 import { notifyError } from '@/utils/toast';
 import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
+import ErrorMessage from '@/components/Common/ErrorMessage/ErrorMessage';
 
 const TourPage = () => {
   const { nameInput, setNameInput, applyName, setFilter } = useTourFiltersStore();
 
   const query = useTourQueryParams();
-  const { data, isLoading, isFetching, error } = useTours({ limit: 12, ...query });
+  const { data, isLoading, isFetching, error, refetch } = useTours({ limit: 12, ...query });
 
   const tours = data?.data?.tours || [];
   const page = data?.data?.page || 1;
@@ -42,6 +43,15 @@ const TourPage = () => {
             <TourCardSkeleton key={i} />
           ))}
         </SkeletonGrid>
+      ) : error ? (
+        <ErrorMessage
+          message={
+            error instanceof Error
+              ? error.message
+              : 'Failed to load tours. The server might be temporarily unavailable.'
+          }
+          onRetry={() => refetch()}
+        />
       ) : (
         <>
           {!error && tours.length === 0 && (

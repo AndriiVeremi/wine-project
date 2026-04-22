@@ -13,6 +13,7 @@ import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { StyledSearchBar, StyledWineryFilter } from './WineriesPage.styled';
 import { notifyError } from '@/utils/toast';
 import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
+import ErrorMessage from '@/components/Common/ErrorMessage/ErrorMessage';
 
 const WineriesPage = () => {
   const nameInput = useWineriesFiltersStore((s) => s.nameInput);
@@ -21,7 +22,7 @@ const WineriesPage = () => {
   const setFilter = useWineriesFiltersStore((s) => s.setFilter);
 
   const query = useWineryQueryParams();
-  const { data, isLoading, isFetching, error } = useWineries({ limit: 12, ...query });
+  const { data, isLoading, isFetching, error, refetch } = useWineries({ limit: 12, ...query });
 
   const wineries = data?.data?.wineries || [];
   const page = data?.data?.page || 1;
@@ -53,6 +54,15 @@ const WineriesPage = () => {
             <WineryCardSkeleton key={i} />
           ))}
         </SkeletonGrid>
+      ) : error ? (
+        <ErrorMessage
+          message={
+            error instanceof Error
+              ? error.message
+              : 'Failed to load wineries. The server might be temporarily unavailable.'
+          }
+          onRetry={() => refetch()}
+        />
       ) : (
         <>
           {!error && wineries.length === 0 && (

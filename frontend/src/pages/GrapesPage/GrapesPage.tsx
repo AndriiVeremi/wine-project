@@ -10,6 +10,7 @@ import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { notifyError } from '@/utils/toast';
 import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
+import ErrorMessage from '@/components/Common/ErrorMessage/ErrorMessage';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
@@ -17,7 +18,7 @@ const GrapesPage = () => {
   const { nameInput, setNameInput, applyName, setFilter } = useGrapeFiltersStore();
 
   const query = useGrapeQueryParams();
-  const { data, isLoading, isFetching, error } = useGrapes({ ...query, limit: 12 });
+  const { data, isLoading, isFetching, error, refetch } = useGrapes({ ...query, limit: 12 });
 
   const grapes = data?.data?.grapes || [];
   const page = data?.data?.page || 1;
@@ -51,6 +52,15 @@ const GrapesPage = () => {
             <GrapeCardSkeleton key={i} />
           ))}
         </SkeletonGrid>
+      ) : error ? (
+        <ErrorMessage
+          message={
+            error instanceof Error
+              ? error.message
+              : 'Failed to load grape varieties. The server might be temporarily unavailable.'
+          }
+          onRetry={() => refetch()}
+        />
       ) : (
         <>
           {!error && grapes.length === 0 && (
