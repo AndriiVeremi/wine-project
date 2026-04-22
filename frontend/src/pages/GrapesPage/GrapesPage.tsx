@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Container from '@/components/Common/Container';
 import GrapeList from '@/components/Grape/GrapeList/GrapeList';
 import AppPagination from '@/components/Common/AppPagination';
@@ -11,11 +11,13 @@ import { ListSection } from '@/components/Common/ListStyles/ListStyles';
 import { notifyError } from '@/utils/toast';
 import EmptyMessage from '@/components/Common/EmptyMessage/EmptyMessage';
 import ErrorMessage from '@/components/Common/ErrorMessage/ErrorMessage';
+import FilterClearButton from '@/components/Buttons/FilterClearButton';
 
 import { StyledSearchBar, StyledGrapeFilter } from './GrapesPage.styled';
 
 const GrapesPage = () => {
-  const { nameInput, setNameInput, applyName, setFilter } = useGrapeFiltersStore();
+  const { nameInput, setNameInput, applyName, clearFilters, setFilter } = useGrapeFiltersStore();
+  const filterRef = useRef<HTMLDivElement>(null);
 
   const query = useGrapeQueryParams();
   const { data, isLoading, isFetching, error, refetch } = useGrapes({ ...query, limit: 12 });
@@ -24,6 +26,13 @@ const GrapesPage = () => {
   const page = data?.data?.page || 1;
   const totalPages = data?.data?.totalPages || 1;
 
+  const handleClear = () => {
+    clearFilters();
+    if (window.innerWidth < 768 && filterRef.current) {
+      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   useEffect(() => {
     if (error)
       notifyError(error instanceof Error ? error.message : 'Failed to load grape varieties');
@@ -31,14 +40,16 @@ const GrapesPage = () => {
 
   return (
     <Container>
-      <StyledGrapeFilter />
+      <StyledGrapeFilter ref={filterRef} />
 
       <StyledSearchBar
         value={nameInput}
         onChange={setNameInput}
         onSearch={applyName}
         placeholder="Search grape varieties..."
-      />
+      >
+        <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
+      </StyledSearchBar>
 
       {isLoading || isFetching ? (
         <SkeletonGrid

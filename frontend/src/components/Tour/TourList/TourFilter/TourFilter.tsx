@@ -1,25 +1,29 @@
-import { useState, useRef } from 'react';
+import { useState, useMemo, forwardRef } from 'react';
 import { useTourFiltersStore } from '@/store/tours/tourFiltersStore';
 import { useLocationStore } from '@/store/location/locationStore';
-import FilterClearButton from '@/components/Buttons/FilterClearButton';
 import {
   StyledDropDown,
   StyledWineFilterContainer,
 } from '@/components/Wine/WineFilter/WineFilter.styled';
 import { useQuery } from '@tanstack/react-query';
 import { getRegions } from '@/api/regions';
+import { QUERY_KEYS } from '@/constants/queryKeys';
+
+interface PropsTourFilter {
+  className?: string;
+}
 
 interface RegionOption {
   _id: string;
   name: string;
 }
 
-const TourFilter = () => {
-  const { region, setFilter, clearFilters } = useTourFiltersStore();
+const TourFilter = forwardRef<HTMLDivElement, PropsTourFilter>(({ className }, ref) => {
+  const { region, setFilter } = useTourFiltersStore();
   const { country } = useLocationStore();
 
   const { data: regionsRaw = [], isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
-    queryKey: ['regions', country],
+    queryKey: QUERY_KEYS.regions.byCountry(country),
     queryFn: async () => {
       if (!country) return [];
       const res = await getRegions(country);
@@ -28,30 +32,29 @@ const TourFilter = () => {
     enabled: !!country,
   });
 
-  const regions = Array.isArray(regionsRaw) ? regionsRaw : [];
+  const regions = useMemo(
+    () => (Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : []),
+    [regionsRaw],
+  );
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const filterRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = (id: string) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
-  const handleClear = () => {
-    clearFilters();
-    if (window.innerWidth < 768 && filterRef.current) {
-      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const selectedRegionName = useMemo(() => {
+    return regions.find((r) => r._id === region)?.name || '';
+  }, [regions, region]);
 
-  const selectedRegionName = regions.find((r) => r._id === region)?.name || '';
+  const regionOptions = useMemo(() => regions.map((r) => r.name), [regions]);
 
   return (
-    <StyledWineFilterContainer ref={filterRef}>
+    <StyledWineFilterContainer className={className} ref={ref}>
       <StyledDropDown
         label="Region"
         value={selectedRegionName}
-        options={regions.map((r) => r.name)}
+        options={regionOptions}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}
         onOpen={() => handleOpen('region')}
@@ -62,10 +65,8 @@ const TourFilter = () => {
         }}
         disabled={isLoadingRegions || regions.length === 0}
       />
-
-      <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
     </StyledWineFilterContainer>
   );
-};
+});
 
 export default TourFilter;

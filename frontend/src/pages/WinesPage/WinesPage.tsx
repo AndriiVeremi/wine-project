@@ -5,7 +5,7 @@ import AppPagination from '@/components/Common/AppPagination';
 import WineCardSkeleton from '@/components/Common/Skeleton/WineCardSkeleton';
 import { SkeletonGrid } from '@/components/Common/Skeleton/SkeletonGrid';
 import { ListSection } from '@/components/Common/ListStyles/ListStyles';
-import { SearchAndClearWrapper, StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
+import { StyledSearchBar, StyledWineFilter } from './WinesPage.styled';
 import { useFiltersStore } from '@/store/wine/filtersStore';
 import { useWineQueryParams } from '@/hooks/useWineQueryParams';
 import { useDeviceType } from '@/hooks/useDeviceType';
@@ -54,16 +54,14 @@ const WinesPage = () => {
     <Container>
       <StyledWineFilter ref={filterRef} />
 
-      <SearchAndClearWrapper>
-        <StyledSearchBar
-          value={nameInput}
-          onChange={setNameInput}
-          onSearch={applyName}
-          placeholder="Search wines..."
-        />
-
+      <StyledSearchBar
+        value={nameInput}
+        onChange={setNameInput}
+        onSearch={applyName}
+        placeholder="Search wines..."
+      >
         <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
-      </SearchAndClearWrapper>
+      </StyledSearchBar>
 
       {isLoading || isFetching ? (
         <SkeletonGrid

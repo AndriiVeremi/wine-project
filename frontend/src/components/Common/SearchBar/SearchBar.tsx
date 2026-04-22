@@ -1,5 +1,5 @@
 import { FiSearch } from 'react-icons/fi';
-import { SearchBarWrapper, SearchInput, SearchButton } from './SearchBar.styled';
+import { SearchBarContainer, InputWrapper, SearchInput, SearchButton } from './SearchBar.styled';
 
 interface SearchBarProps {
   value: string;
@@ -7,22 +7,33 @@ interface SearchBarProps {
   onSearch: () => void;
   placeholder?: string;
   className?: string;
+  children?: React.ReactNode;
 }
 
-const SearchBar = ({ value, onChange, onSearch, placeholder, className }: SearchBarProps) => {
+const SearchBar = ({
+  value,
+  onChange,
+  onSearch,
+  placeholder,
+  className,
+  children,
+}: SearchBarProps) => {
   return (
-    <SearchBarWrapper className={className}>
-      <SearchInput
-        type="search"
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) => onChange(e.target.value)}
-      />
+    <SearchBarContainer className={className}>
+      <InputWrapper>
+        <SearchInput
+          type="search"
+          value={value}
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+        />
 
-      <SearchButton onClick={onSearch} aria-label="Search">
-        <FiSearch />
-      </SearchButton>
-    </SearchBarWrapper>
+        <SearchButton onClick={onSearch} aria-label="Search">
+          <FiSearch />
+        </SearchButton>
+      </InputWrapper>
+      {children}
+    </SearchBarContainer>
   );
 };
 

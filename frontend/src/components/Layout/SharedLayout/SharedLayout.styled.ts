@@ -44,12 +44,10 @@ export const MainContent = styled.main<{ $isHome: boolean; $hasTitle: boolean }>
   position: relative;
   z-index: 1;
   padding-top: 20px;
-  padding-bottom: 40px;
   min-height: 80vh;
 
   @media (min-width: ${breakpoints.desktop}) {
     padding-top: 80px;
-    padding-bottom: 100px;
   }
 `;
 
