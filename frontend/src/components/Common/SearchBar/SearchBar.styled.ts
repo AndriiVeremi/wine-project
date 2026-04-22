@@ -1,23 +1,53 @@
 import styled from 'styled-components';
 import { breakpoints } from '@/styles/breakpoints';
 
-export const SearchBarWrapper = styled.div`
+export const SearchBarContainer = styled.div`
   width: 100%;
-  position: relative;
-  background: var(--filter-active-bg);
-  padding: 14px 20px;
-  border-radius: 28px;
-  border: 1px solid var(--filter-border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--footer-cream);
+  padding: 16px;
+  border-radius: 24px;
+  border: 1px solid rgba(132, 16, 19, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 
   @media (min-width: ${breakpoints.tablet}) {
-    padding: 16px 22px;
-    border-radius: 30px;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 10px 10px 24px;
+    gap: 16px;
+    border-radius: 40px;
+  }
+`;
+
+export const InputWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  background: var(--white);
+  padding: 8px 14px;
+  border-radius: 30px;
+  border: 1px solid var(--filter-border-color);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  flex: 1;
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--primary-wine);
+    box-shadow: 0 4px 12px rgba(132, 16, 19, 0.08);
+  }
+
+  @media (min-width: ${breakpoints.tablet}) {
+    padding: 10px 16px;
+    border-radius: 32px;
   }
 
   @media (min-width: ${breakpoints.desktop}) {
-    padding: 14px 20px;
-    border-radius: 26px;
-    max-width: 100%;
+    padding: 8px 12px;
+    border-radius: 30px;
   }
 `;
 
@@ -25,7 +55,11 @@ export const SearchInput = styled.input`
   width: 100%;
   font-size: 16px;
   font-family: var(--font-main);
-  color: var(--primary-gray);
+  color: var(--black-color);
+  padding-right: 50px;
+  background: transparent;
+  border: none;
+  outline: none;
 
   &::placeholder {
     color: var(--secondary-gray);
@@ -39,49 +73,38 @@ export const SearchInput = styled.input`
 
 export const SearchButton = styled.button`
   position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 60px;
-  border-radius: 28px;
-  border: 1px solid var(--primary-wine);
-  background: var(--white);
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  height: calc(100% - 12px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary-wine);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
-  color: var(--primary-wine);
-  transition:
-    transform var(--transition),
-    background var(--transition);
+  color: var(--white);
+  transition: all 0.3s ease;
 
   svg {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
   }
 
   &:hover {
-    background: var(--primary-wine);
-    color: var(--white);
+    background: var(--primary-wine-hover, #a1161a);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
   }
 
   @media (min-width: ${breakpoints.tablet}) {
-    width: 70px;
-    border-radius: 30px;
-
     svg {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  @media (min-width: ${breakpoints.desktop}) {
-    width: 56px;
-    border-radius: 26px;
-
-    svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
   }
 `;

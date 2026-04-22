@@ -47,10 +47,19 @@ apiClient.interceptors.response.use(
 
     if (import.meta.env.DEV) {
       const status = error.response?.status;
-      const message = (error.response?.data as { message?: string })?.message || error.message;
+      let message = (error.response?.data as { message?: string })?.message || error.message;
+
+      if (!error.response) {
+        message =
+          'The server is currently unavailable. It might be starting up. Please try again in a few seconds.';
+        error.message = message;
+      }
+
       if (status !== 401) {
         console.error(`❌ [API Error] ${status || 'Network'}:`, message);
       }
+    } else if (!error.response) {
+      error.message = 'The server is currently unavailable. Please try again in a few seconds.';
     }
     return Promise.reject(error);
   },

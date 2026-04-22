@@ -8,14 +8,12 @@ export const StyledWineryFilterContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 30px;
   width: 100%;
   position: relative;
   z-index: 100;
 
   @media (min-width: ${breakpoints.tablet}) {
     gap: 16px;
-    margin-bottom: 40px;
   }
 `;
 

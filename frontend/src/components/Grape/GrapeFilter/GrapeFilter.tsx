@@ -1,26 +1,30 @@
-import { useState, useRef } from 'react';
+import { useState, useMemo, forwardRef } from 'react';
 import { useGrapeFiltersStore } from '@/store/grape/grapeFiltersStore';
 import { useLocationStore } from '@/store/location/locationStore';
-import FilterClearButton from '../../Buttons/FilterClearButton';
 import { StyledDropDown, StyledWineFilterContainer } from '../../Wine/WineFilter/WineFilter.styled';
 import { useQuery } from '@tanstack/react-query';
 import { getRegions } from '@/api/regions';
+import { QUERY_KEYS } from '@/constants/queryKeys';
 
 const ACITIDY_OPTIONS = ['Low', 'Medium', 'High', 'Very High'];
 const BODY_OPTIONS = ['Light', 'Medium', 'Full-bodied'];
 const GRAPE_TYPES = ['Red', 'White', 'Rose'];
+
+interface PropsGrapeFilter {
+  className?: string;
+}
 
 interface RegionOption {
   _id: string;
   name: string;
 }
 
-const GrapeFilter = () => {
+const GrapeFilter = forwardRef<HTMLDivElement, PropsGrapeFilter>(({ className }, ref) => {
   const filters = useGrapeFiltersStore();
   const { country } = useLocationStore();
 
   const { data: regionsRaw, isLoading: isLoadingRegions } = useQuery<RegionOption[]>({
-    queryKey: ['regions', country],
+    queryKey: QUERY_KEYS.regions.byCountry(country),
     queryFn: async () => {
       if (!country) return [];
       const res = await getRegions(country);
@@ -29,27 +33,22 @@ const GrapeFilter = () => {
     enabled: !!country,
   });
 
-  const regions = Array.isArray(regionsRaw) ? regionsRaw : [];
+  const regions = useMemo(() => (Array.isArray(regionsRaw) ? regionsRaw : []), [regionsRaw]);
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const filterRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = (id: string) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
-  const handleClear = () => {
-    filters.clearFilters();
-    if (window.innerWidth < 768 && filterRef.current) {
-      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const selectedRegionName = useMemo(() => {
+    return regions.find((r) => r._id === filters.region)?.name || '';
+  }, [regions, filters.region]);
 
-  const selectedRegionName =
-    (Array.isArray(regions) ? regions : []).find((r) => r._id === filters.region)?.name || '';
+  const regionOptions = useMemo(() => regions.map((r) => r.name), [regions]);
 
   return (
-    <StyledWineFilterContainer ref={filterRef}>
+    <StyledWineFilterContainer className={className} ref={ref}>
       <StyledDropDown
         label="Type"
         value={filters.type}
@@ -66,18 +65,16 @@ const GrapeFilter = () => {
       <StyledDropDown
         label="Region"
         value={selectedRegionName}
-        options={(Array.isArray(regions) ? regions : []).map((r) => r.name)}
+        options={regionOptions}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}
         onOpen={() => handleOpen('region')}
         onSelect={(val) => {
-          const selectedRegion = (Array.isArray(regions) ? regions : []).find(
-            (r) => r.name === val,
-          );
+          const selectedRegion = regions.find((r) => r.name === val);
           filters.setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}
-        disabled={isLoadingRegions || !Array.isArray(regions) || regions.length === 0}
+        disabled={isLoadingRegions || regions.length === 0}
       />
 
       <StyledDropDown
@@ -105,10 +102,8 @@ const GrapeFilter = () => {
           setOpenDropdown(null);
         }}
       />
-
-      <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
     </StyledWineFilterContainer>
   );
-};
+});
 
 export default GrapeFilter;

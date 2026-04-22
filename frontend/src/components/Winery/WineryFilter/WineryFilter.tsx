@@ -1,23 +1,27 @@
-import { useState, useRef } from 'react';
+import { useState, useMemo, forwardRef } from 'react';
 import { StyledDropDown, StyledWineryFilterContainer } from './WineryFilter.styled';
 import { useWineriesFiltersStore } from '@/store/wineries/wineriesFiltersStore';
 import { useLocationStore } from '@/store/location/locationStore';
-import FilterClearButton from '../../Buttons/FilterClearButton';
 import { useQuery } from '@tanstack/react-query';
 import { getRegions } from '@/api/regions';
+import { QUERY_KEYS } from '@/constants/queryKeys';
+
+interface PropsWineryFilter {
+  className?: string;
+}
 
 interface RegionOption {
   _id: string;
   name: string;
 }
 
-const WineryFilter = () => {
-  const { region, setFilter, clearFilters } = useWineriesFiltersStore();
+const WineryFilter = forwardRef<HTMLDivElement, PropsWineryFilter>(({ className }, ref) => {
+  const { region, setFilter } = useWineriesFiltersStore();
 
   const { country } = useLocationStore();
 
   const { data: regionsRaw = [], isLoading: isLoadingRegions } = useQuery({
-    queryKey: ['regions', country],
+    queryKey: QUERY_KEYS.regions.byCountry(country),
     queryFn: async () => {
       if (!country) return [];
       const res = await getRegions(country);
@@ -26,47 +30,41 @@ const WineryFilter = () => {
     enabled: !!country,
   });
 
-  const regions = Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : [];
+  const regions = useMemo(
+    () => (Array.isArray(regionsRaw) ? (regionsRaw as RegionOption[]) : []),
+    [regionsRaw],
+  );
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const filterRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = (id: string) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
-  const handleClear = () => {
-    clearFilters();
-    if (window.innerWidth < 768 && filterRef.current) {
-      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const selectedRegionName = useMemo(() => {
+    return regions.find((r) => r._id === region)?.name || '';
+  }, [regions, region]);
 
-  const selectedRegionName =
-    (Array.isArray(regions) ? regions : []).find((r) => r._id === region)?.name || '';
+  const regionOptions = useMemo(() => regions.map((r) => r.name), [regions]);
 
   return (
-    <StyledWineryFilterContainer ref={filterRef}>
+    <StyledWineryFilterContainer className={className} ref={ref}>
       <StyledDropDown
         label="Region"
         value={selectedRegionName}
-        options={(Array.isArray(regions) ? regions : []).map((r) => r.name)}
+        options={regionOptions}
         isOpen={openDropdown === 'region'}
         $isOpen={openDropdown === 'region'}
         onOpen={() => handleOpen('region')}
         onSelect={(value) => {
-          const selectedRegion = (Array.isArray(regions) ? regions : []).find(
-            (r) => r.name === value,
-          );
+          const selectedRegion = regions.find((r) => r.name === value);
           setFilter('region', selectedRegion?._id || '');
           setOpenDropdown(null);
         }}
         disabled={isLoadingRegions || regions.length === 0}
       />
-
-      <FilterClearButton onClick={handleClear}>Clear filters</FilterClearButton>
     </StyledWineryFilterContainer>
   );
-};
+});
 
 export default WineryFilter;

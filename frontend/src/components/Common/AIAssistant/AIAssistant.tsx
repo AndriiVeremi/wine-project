@@ -88,13 +88,17 @@ const AIAssistant: React.FC = () => {
         { role: 'user', parts: [{ text: userMessage }] },
         { role: 'model', parts: [{ text: response }] },
       ]);
-    } catch {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Sorry, an error occurred. Please try again later.';
       setMessages((prev) => [
         ...prev,
         {
           role: 'ai',
           text: JSON.stringify({
-            text: 'Sorry, an error occurred. Please try again later.',
+            text: errorMessage,
             wines: [],
             tours: [],
           }),
