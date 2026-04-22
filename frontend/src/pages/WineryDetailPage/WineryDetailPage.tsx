@@ -84,7 +84,7 @@ const WineryDetailPage = () => {
     loadAll();
   }, [id, loadWinery]);
 
-  if (loading) return <Loader isFullScreen={false} />;
+  if (loading) return <Loader isFullScreen={true} />;
   if (error || !winery)
     return (
       <Container>

@@ -92,10 +92,10 @@ const SharedLayout = () => {
             fallback={
               isHome ? (
                 <div style={{ minHeight: '1000px' }}>
-                  <Loader isFullScreen={false} />
+                  <Loader isFullScreen={true} />
                 </div>
               ) : (
-                <Loader isFullScreen={false} />
+                <Loader isFullScreen={true} />
               )
             }
           >
