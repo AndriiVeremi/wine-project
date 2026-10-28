@@ -1,5 +1,9 @@
 jest.mock('@/models/wineryModel');
 jest.mock('@/models/userModel');
+jest.mock('@/services/firebase', () => ({
+  uploadFile: jest.fn().mockResolvedValue('http://mock-url.com/file.png'),
+  deleteFile: jest.fn().mockResolvedValue(undefined),
+}));
 import * as wineryService from '@/services/wineryService';
 import HttpError from '@/utils/HttpError';
 import Winery from '@/models/wineryModel';

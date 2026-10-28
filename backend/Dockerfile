@@ -1,10 +1,10 @@
-FROM node:20
+FROM node:22.23.4-bookworm-slim
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
